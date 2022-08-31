@@ -1,16 +1,15 @@
-import { Sequelize } from 'sequelize';
+import sequelize from 'sequelize';
 
 export async function initDatabaseModels(sequelize) {
 	await addModels(sequelize);
 	await addModuleProperties(sequelize);
 	await addDefaultData(sequelize);
-
-	async function addModels(sequelize) {
-		// TODO
-		await sequelize.sync();
-	}
 }
 
+async function addModels(sequelize) {
+	// TODO
+	await sequelize.sync();
+}
 async function addModuleProperties() {
 	// TODO
 }

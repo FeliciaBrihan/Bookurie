@@ -1,9 +1,9 @@
-import './env';
+import './env.js';
 
 import { Sequelize } from 'sequelize';
 import { pool } from 'workerpool';
 import { Server as SocketServer } from 'socket.io';
-import { _axios } from 'axios';
+import _axios from 'axios';
 
 export const workerPool = pool({ miniWorkers: 2, workerType: 'thread' });
 export const axios = {

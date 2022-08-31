@@ -1,10 +1,8 @@
 import { join, relative } from 'path';
 import { readdirSync, existsSync } from 'fs';
-import { Sequelize, Dialect } from 'sequelize';
+import { Sequelize } from 'sequelize';
 import { Server as SocketServer } from 'socket.io';
 // import { loggerOnlyGlobal } from 'src/logs';
-import { Express, Router } from 'express';
-import { Server } from 'http';
 
 // const logger = loggerOnlyGlobal(__filename);
 const topFolder = 'src';
@@ -103,41 +101,41 @@ export function expressModule() {
 	function getInstanceOfModule(module) {
 		const modulePath = join(process.env.MODULES_PATH, module);
 
-		const cronPath = join(modulePath, 'cron');
+		// const cronPath = join(modulePath, 'cron');
 		const modelsPath = join(modulePath, 'models');
-		const workersPath = join(modulePath, 'workers');
+		// const workersPath = join(modulePath, 'workers');
 		const expressRoutesPath = join(modulePath, 'routes');
 
-		const haveCrons = existsSync(cronPath);
+		// const haveCrons = existsSync(cronPath);
 		const haveModels = existsSync(modelsPath);
-		const haveWorkers = existsSync(workersPath);
+		// const haveWorkers = existsSync(workersPath);
 		const haveExpressRoutes = existsSync(expressRoutesPath);
 
 		async function getExpressRoutes() {
 			return await import(getRelativePath(join(expressRoutesPath)));
 		}
 
-		async function getWorkers() {
-			return await import(getRelativePath(workersPath));
-		}
+		// async function getWorkers() {
+		// 	return await import(getRelativePath(workersPath));
+		// }
 
-		async function startCronSchedule() {
-			await import(getRelativePath(cronPath));
-		}
+		// async function startCronSchedule() {
+		// 	await import(getRelativePath(cronPath));
+		// }
 
 		return {
 			modulePath,
-			cronPath,
+			// cronPath,
 			modelsPath,
-			workersPath: workersPath,
+			// workersPath: workersPath,
 			expressRoutesPath,
-			haveCrons,
+			// haveCrons,
 			haveModels,
-			haveWorkers,
+			// haveWorkers,
 			haveExpressRoutes,
 			getExpressRoutes,
-			getWorkers,
-			startCronSchedule,
+			// getWorkers,
+			// startCronSchedule,
 		};
 	}
 

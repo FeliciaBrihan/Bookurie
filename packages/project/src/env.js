@@ -17,5 +17,5 @@ process.env.JWT_ACCESS_KEY_EXPIRE_TIME = '1h';
 process.env.JWT_REFRESH_KEY_EXPIRE_TIME = '7d';
 process.env.JWT_LOCAL_KEY_EXPIRE_TIME = '5s';
 
-process.env.MODULES_PATH = join(__dirname, 'modules');
+// process.env.MODULES_PATH = join(__dirname, 'modules');
 process.env.EXTRA_COMMAND = '';

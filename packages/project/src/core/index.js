@@ -1,1 +1,1 @@
-export { expressModule } from 'src/core/expressModule';
+export { expressModule } from '../core/expressModule';
