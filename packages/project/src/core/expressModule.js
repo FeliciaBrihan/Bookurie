@@ -2,9 +2,12 @@ import { join, relative } from 'path';
 import { readdirSync, existsSync } from 'fs';
 import { Sequelize } from 'sequelize';
 import { Server as SocketServer } from 'socket.io';
-// import { loggerOnlyGlobal } from 'src/logs';
+import { loggerOnlyGlobal } from '../logs/index.js';
 
-// const logger = loggerOnlyGlobal(__filename);
+import url from 'url';
+const __filename = url.fileURLToPath(import.meta.url);
+
+const logger = loggerOnlyGlobal(__filename);
 const topFolder = 'src';
 
 export function expressModule() {
@@ -81,9 +84,9 @@ export function expressModule() {
 	async function checkDatabaseConnection(sequelizeConnection) {
 		try {
 			await sequelizeConnection.authenticate();
-			console.log('Connection has been established successfully');
+			logger.info('Connection has been established successfully');
 		} catch (error) {
-			console.error('Unable to connect to the database: %o', error);
+			logger.error('Unable to connect to the database: %o', error);
 		}
 	}
 	return {
