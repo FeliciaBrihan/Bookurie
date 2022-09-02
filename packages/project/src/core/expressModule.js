@@ -3,9 +3,8 @@ import { readdirSync, existsSync } from 'fs';
 import { Sequelize } from 'sequelize';
 import { Server as SocketServer } from 'socket.io';
 import { loggerOnlyGlobal } from '../logs/index.js';
-
-import url from 'url';
-const __filename = url.fileURLToPath(import.meta.url);
+import { __filename } from '../helpers/createFilename.js';
+import { getById } from '../modules/product/routes/getById.js';
 
 const logger = loggerOnlyGlobal(__filename);
 const topFolder = 'src';
@@ -31,7 +30,8 @@ export function expressModule() {
 	}
 
 	function addExpressRouterToApp(app, router) {
-		app.use(`/${router.routeName}`, router.routes);
+		// app.use(`/${router.routeName}`, router.routes);
+		app.use(`/product/:id`, getById);
 	}
 
 	function getServerConnection(httpServer, options) {
@@ -103,42 +103,23 @@ export function expressModule() {
 
 	function getInstanceOfModule(module) {
 		const modulePath = join(process.env.MODULES_PATH, module);
-
-		// const cronPath = join(modulePath, 'cron');
 		const modelsPath = join(modulePath, 'models');
-		// const workersPath = join(modulePath, 'workers');
 		const expressRoutesPath = join(modulePath, 'routes');
-
-		// const haveCrons = existsSync(cronPath);
 		const haveModels = existsSync(modelsPath);
-		// const haveWorkers = existsSync(workersPath);
 		const haveExpressRoutes = existsSync(expressRoutesPath);
 
 		async function getExpressRoutes() {
-			return await import(getRelativePath(join(expressRoutesPath)));
+			// return await import(getRelativePath(join(expressRoutesPath)));
+			return '../modules/product/routes/index.js';
 		}
-
-		// async function getWorkers() {
-		// 	return await import(getRelativePath(workersPath));
-		// }
-
-		// async function startCronSchedule() {
-		// 	await import(getRelativePath(cronPath));
-		// }
 
 		return {
 			modulePath,
-			// cronPath,
 			modelsPath,
-			// workersPath: workersPath,
 			expressRoutesPath,
-			// haveCrons,
 			haveModels,
-			// haveWorkers,
 			haveExpressRoutes,
 			getExpressRoutes,
-			// getWorkers,
-			// startCronSchedule,
 		};
 	}
 

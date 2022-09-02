@@ -12,8 +12,8 @@ export const axios = {
 	}),
 };
 
-export let sequelize; //cannot tell is type Sequelize without ts
-export let socket; //cannot tell is type SocketServer without ts
+export let sequelize;
+export let socket;
 
 export function setSequelize(val) {
 	sequelize = val;

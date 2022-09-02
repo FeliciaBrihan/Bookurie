@@ -11,7 +11,7 @@ export function initDatabaseMigration() {
 		process.env.EXTRA_COMMAND + 'sequelize db:migrate',
 		(err, stdout, stderr) => {
 			if (err) {
-				logger.info(err.message); //replaced the logger for the moment
+				logger.info(err.message);
 				return;
 			}
 

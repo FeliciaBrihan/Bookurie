@@ -1,3 +1,3 @@
-export { errorMessage } from './errorMessage';
-export { getDatabaseModels } from './dbTests';
-export { generateJWT } from './generateJWT';
+export { errorMessage } from './errorMessage.js';
+// export { getDatabaseModels } from './dbTests';
+export { generateJWT } from './generateJWT.js';
