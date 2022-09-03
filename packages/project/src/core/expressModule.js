@@ -30,8 +30,8 @@ export function expressModule() {
 	}
 
 	function addExpressRouterToApp(app, router) {
-		// app.use(`/${router.routeName}`, router.routes);
-		app.use(`/product/:id`, getById);
+		app.use(`/${router.routeName}`, router.routes);
+		// app.use(`/product/:id`, getById);
 	}
 
 	function getServerConnection(httpServer, options) {
@@ -109,8 +109,8 @@ export function expressModule() {
 		const haveExpressRoutes = existsSync(expressRoutesPath);
 
 		async function getExpressRoutes() {
-			// return await import(getRelativePath(join(expressRoutesPath)));
-			return '../modules/product/routes/index.js';
+			return await import(getRelativePath(join(expressRoutesPath, 'index.js')));
+			// return '../modules/product/routes/index.js';
 		}
 
 		return {

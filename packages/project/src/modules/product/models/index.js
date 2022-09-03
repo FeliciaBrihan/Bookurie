@@ -13,9 +13,6 @@ export function getModelProduct(sequelize) {
 				type: DataTypes.INTEGER,
 				allowNull: false,
 			},
-			category: {
-				type: DataTypes.STRING,
-			},
 		},
 		{ paranoid: true, tableName: 'product' }
 	);

@@ -1,5 +1,5 @@
 import { expressModule } from '../core/expressModule.js';
-import { initDatabaseModels } from '../init/initDatabaseModels';
+import { initDatabaseModels } from '../init/initDatabaseModels.js';
 
 export async function getDatabaseModels() {
 	const { getDatabaseConnection } = expressModule();
