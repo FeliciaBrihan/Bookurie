@@ -1,3 +1,3 @@
-export { initDatabase } from './initDatabase';
-export { initDatabaseModels } from './initDatabaseModels';
-export { iniDatabaseMigration } from './initDatabaseMigration';
+export { initDatabase } from './initDatabase.js';
+export { initDatabaseModels } from './initDatabaseModels.js';
+export { iniDatabaseMigration } from './initDatabaseMigration.js';

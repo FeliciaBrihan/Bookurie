@@ -1,4 +1,5 @@
 import { getDatabaseModels } from '../../../helpers/index.js';
+import { errorMessage } from '../../../helpers/index.js';
 
 export async function updateProduct(req, res) {
 	try {
@@ -21,9 +22,10 @@ export async function updateProduct(req, res) {
 			data: productUpdated,
 		});
 	} catch (err) {
-		return res.status(400).json({
+		const message = errorMessage(err);
+		return res.status(400).send({
 			status: 'fail',
-			message: err.message,
+			message,
 		});
 	}
 }

@@ -3,7 +3,6 @@ import './env.js';
 import { createServer } from 'http';
 import express, { json } from 'express';
 import swaggerUi from 'swagger-ui-express';
-import session from 'express-session';
 import cors from 'cors';
 import { initDatabase } from './init/initDatabase.js';
 import {

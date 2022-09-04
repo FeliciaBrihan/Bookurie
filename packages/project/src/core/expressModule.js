@@ -4,7 +4,6 @@ import { Sequelize } from 'sequelize';
 import { Server as SocketServer } from 'socket.io';
 import { loggerOnlyGlobal } from '../logs/index.js';
 import { __filename } from '../helpers/createFilename.js';
-import { getById } from '../modules/product/routes/getById.js';
 
 const logger = loggerOnlyGlobal(__filename);
 const topFolder = 'src';
@@ -100,30 +99,30 @@ export function expressModule() {
 		getDatabaseConnection,
 		checkDatabaseConnection,
 	};
+}
 
-	function getInstanceOfModule(module) {
-		const modulePath = join(process.env.MODULES_PATH, module);
-		const modelsPath = join(modulePath, 'models');
-		const expressRoutesPath = join(modulePath, 'routes');
-		const haveModels = existsSync(modelsPath);
-		const haveExpressRoutes = existsSync(expressRoutesPath);
+function getInstanceOfModule(module) {
+	const modulePath = join(process.env.MODULES_PATH, module);
+	const modelsPath = join(modulePath, 'models');
+	const expressRoutesPath = join(modulePath, 'routes');
+	const haveModels = existsSync(modelsPath);
+	const haveExpressRoutes = existsSync(expressRoutesPath);
 
-		async function getExpressRoutes() {
-			return await import(getRelativePath(join(expressRoutesPath, 'index.js')));
-			// return '../modules/product/routes/index.js';
-		}
-
-		return {
-			modulePath,
-			modelsPath,
-			expressRoutesPath,
-			haveModels,
-			haveExpressRoutes,
-			getExpressRoutes,
-		};
+	async function getExpressRoutes() {
+		return await import(getRelativePath(join(expressRoutesPath, 'index.js')));
+		// return '../modules/product/routes/index.js';
 	}
 
-	function getRelativePath(path) {
-		return '../' + relative(topFolder, path);
-	}
+	return {
+		modulePath,
+		modelsPath,
+		expressRoutesPath,
+		haveModels,
+		haveExpressRoutes,
+		getExpressRoutes,
+	};
+}
+
+function getRelativePath(path) {
+	return '../' + relative(topFolder, path);
 }

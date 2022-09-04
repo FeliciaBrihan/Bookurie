@@ -1,4 +1,5 @@
 import { getDatabaseModels } from '../../../helpers/index.js';
+import { errorMessage } from '../../../helpers/index.js';
 
 export async function deleteProduct(req, res) {
 	try {
@@ -13,6 +14,7 @@ export async function deleteProduct(req, res) {
 			data: null,
 		});
 	} catch (err) {
-		console.log(err);
+		const message = errorMessage(err);
+		res.status(400).send(message);
 	}
 }

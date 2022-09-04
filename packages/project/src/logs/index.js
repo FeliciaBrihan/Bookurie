@@ -145,13 +145,12 @@ const globalLogger = (filename) => {
 };
 
 const localLogger = (filename, moduleRelativePath) => {
-	// @ts-ignore
 	const logger = new createLogger({
 		transports: [
 			new _transports.DailyRotateFile({
 				level: 'info',
 				maxFiles: 10,
-				filename: moduleRelativePath + '/logs/%DATE%_info.log',
+				filename: moduleRelativePath + './logs/%DATE%_info.log',
 				format: _format.combine(
 					_format.splat(),
 					_format.timestamp(),
@@ -165,7 +164,7 @@ const localLogger = (filename, moduleRelativePath) => {
 			new _transports.DailyRotateFile({
 				level: 'warn',
 				maxFiles: 10,
-				filename: moduleRelativePath + '/logs/%DATE%_warn.log',
+				filename: moduleRelativePath + './logs/%DATE%_warn.log',
 				format: _format.combine(
 					_format.splat(),
 					_format.timestamp(),
@@ -179,7 +178,7 @@ const localLogger = (filename, moduleRelativePath) => {
 			new _transports.DailyRotateFile({
 				level: 'error',
 				maxFiles: 10,
-				filename: moduleRelativePath + '/logs/%DATE%_error.log',
+				filename: moduleRelativePath + './logs/%DATE%_error.log',
 				format: _format.combine(
 					_format.splat(),
 					_format.timestamp(),
