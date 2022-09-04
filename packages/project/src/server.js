@@ -6,7 +6,10 @@ import swaggerUi from 'swagger-ui-express';
 import session from 'express-session';
 import cors from 'cors';
 import { initDatabase } from './init/initDatabase.js';
-import { initDatabaseModels } from './init/initDatabaseModels.js';
+import {
+	initDatabaseModels,
+	addDefaultData,
+} from './init/initDatabaseModels.js';
 import { initDatabaseMigration } from './init/initDatabaseMigration.js';
 import { initSocketServer } from './init/initSocketServer.js';
 import { initExpressModules } from './init/initExpressModules.js';
@@ -50,6 +53,7 @@ export default async function server() {
 	initExpressModules(app);
 
 	initDatabaseModels(sequelize);
+	addDefaultData();
 
 	if (process.env.ENVIRONMENT !== 'TEST') {
 		httpServer.listen(process.env.PORT, () => {

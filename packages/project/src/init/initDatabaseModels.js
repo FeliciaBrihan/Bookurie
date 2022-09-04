@@ -15,30 +15,31 @@ async function addModels(sequelize) {
 
 	await sequelize.sync();
 }
-async function addModuleProperties() {
-	// TODO
+async function addModuleProperties() {}
+
+export async function addDefaultData(sequelize) {
+	// called from the server file after initDatabaseModels
+	console.log('test');
+	const { Product } = await getDatabaseModels();
+	const products = await Product.findAll();
+	if (products.length < 4) {
+		await Product.bulkCreate([
+			{
+				name: 'onion',
+				price: 7,
+			},
+			{
+				name: 'chocolate',
+				price: 8,
+			},
+			{
+				name: 'ice cream',
+				price: 15,
+			},
+			{
+				name: 'oil',
+				price: 15,
+			},
+		]);
+	}
 }
-
-// async function addDefaultData(sequelize) {
-// 	console.log('test');
-// 	const { Product } = await getDatabaseModels();
-
-// 	await Product.bulkCreate([
-// 		{
-// 			name: 'milk',
-// 			price: 7,
-// 		},
-// 		{
-// 			name: 'eggs',
-// 			price: 10,
-// 		},
-// 		{
-// 			name: 'meat',
-// 			price: 15,
-// 		},
-// 		{
-// 			name: 'bread',
-// 			price: 7,
-// 		},
-// 	]);
-// }

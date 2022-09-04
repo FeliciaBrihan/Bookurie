@@ -8,6 +8,7 @@ export async function getAll(req, res) {
 
 		return res.status(200).json({
 			status: 'success',
+			results: products.length,
 			data: products,
 		});
 	} catch (err) {
