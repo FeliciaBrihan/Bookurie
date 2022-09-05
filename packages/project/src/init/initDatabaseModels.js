@@ -11,7 +11,9 @@ async function addModels(sequelize) {
 	const { getModelProduct } = await import(
 		'../modules/product/models/index.js'
 	);
+	const { getModelUser } = await import('../modules/user/models/index.js');
 	getModelProduct(sequelize);
+	getModelUser(sequelize);
 
 	await sequelize.sync();
 }
