@@ -1,8 +1,8 @@
-import { getDatabaseModels } from '../../../helpers/index.js';
+import { sequelize } from '../../../global.js';
 import { errorMessage } from '../../../helpers/index.js';
 
 export async function getAll(req, res) {
-	const { Product } = await getDatabaseModels();
+	const { Product } = sequelize.models;
 	try {
 		const products = await Product.findAll();
 

@@ -1,9 +1,9 @@
-import { getDatabaseModels } from '../../../helpers/index.js';
+import { sequelize } from '../../../global.js';
 import { errorMessage } from '../../../helpers/index.js';
 
 export async function deleteProduct(req, res) {
 	try {
-		const { Product } = await getDatabaseModels();
+		const { Product } = sequelize.models;
 		const { id } = req.params;
 		const productToDelete = await Product.findByPk(id);
 		if (!productToDelete)

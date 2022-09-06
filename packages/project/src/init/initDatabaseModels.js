@@ -1,10 +1,7 @@
-import { sequelize } from '../global.js';
-import { getDatabaseModels } from '../helpers/dbTests.js';
-
 export async function initDatabaseModels(sequelize) {
 	await addModels(sequelize);
 	await addModuleProperties(sequelize);
-	// await addDefaultData(sequelize);
+	await addDefaultData(sequelize);
 }
 
 async function addModels(sequelize) {
@@ -19,19 +16,17 @@ async function addModels(sequelize) {
 }
 async function addModuleProperties() {}
 
-export async function addDefaultData(sequelize) {
-	// called from the server file after initDatabaseModels
-	console.log('test');
-	const { Product } = await getDatabaseModels();
+async function addDefaultData(sequelize) {
+	const { Product } = sequelize.models
 	const products = await Product.findAll();
-	if (products.length < 4) {
+	if (products.length < 5) {
 		await Product.bulkCreate([
 			{
-				name: 'onion',
+				name: 'milk',
 				price: 7,
 			},
 			{
-				name: 'chocolate',
+				name: 'peanuts',
 				price: 8,
 			},
 			{

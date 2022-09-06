@@ -1,8 +1,9 @@
-import { getDatabaseModels, errorMessage } from '../../../helpers/index.js';
+import { sequelize } from '../../../global.js';
+import { errorMessage } from '../../../helpers/index.js';
 
 export async function getAllUsers(req, res) {
 	try {
-		const { User } = await getDatabaseModels();
+		const { User } = sequelize.models;
 		const users = await User.findAll();
 		return res.status(200).json({
 			status: 'success',

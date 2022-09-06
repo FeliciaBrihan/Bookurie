@@ -1,8 +1,9 @@
-import { getDatabaseModels, errorMessage } from '../../../helpers/index.js';
+import { sequelize } from '../../../global.js';
+import { errorMessage } from '../../../helpers/index.js';
 
 export async function deleteUser(req, res) {
 	try {
-		const { User } = await getDatabaseModels();
+		const { User } = sequelize.models;
 		const { id } = req.params;
 		const user = await User.findByPk(id);
 		if (!user) return res.status(404).send('No user found with that id');

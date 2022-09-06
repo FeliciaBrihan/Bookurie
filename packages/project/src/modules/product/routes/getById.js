@@ -1,10 +1,8 @@
 import { errorMessage } from '../../../helpers/index.js';
 import { sequelize } from '../../../global.js';
-import { getDatabaseModels } from '../../../helpers/index.js';
 
 export async function getById(req, res) {
-	// const { Product } = sequelize.models;
-	const { Product } = await getDatabaseModels();
+	const { Product } = sequelize.models;
 
 	try {
 		const id = req.params.id;
