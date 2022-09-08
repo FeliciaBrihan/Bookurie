@@ -17,6 +17,7 @@ export async function userLogin(req, res) {
 		const accessToken = JWT.sign({ user }, process.env.JWT_ACCESS_KEY, {
 			expiresIn: process.env.JWT_ACCESS_KEY_EXPIRE_TIME,
 		});
+		res.cookie('jwt', accessToken, { httpOnly: true });
 		res.send({ accessToken });
 	} catch (err) {
 		const message = errorMessage(err);
