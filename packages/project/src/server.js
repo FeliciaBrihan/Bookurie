@@ -3,6 +3,7 @@ import './env.js';
 import { createServer } from 'http';
 import express, { json } from 'express';
 import swaggerUi from 'swagger-ui-express';
+import swaggerDocs from '../swagger/swagger.json' assert { type: 'json' };
 import cors from 'cors';
 import { initDatabase } from './init/initDatabase.js';
 import { initDatabaseModels } from './init/initDatabaseModels.js';
@@ -25,9 +26,15 @@ export default async function server() {
 
 	// app.use('/docs', swaggerUi.serve, async (req, res) => {
 	// 	return res.send(
-	// 		swaggerUi.generateHTML(await import('../swagger/swagger.json'))
+	// 		swaggerUi.generateHTML(
+	// 			await import('../swagger/swagger.json', { assert: { type: 'json' } })
+	// 		)
 	// 	);
 	// });
+
+	app.use('/docs', swaggerUi.serve);
+	app.use('/docs', swaggerUi.setup(swaggerDocs));
+
 	app.get('/', function (req, res) {
 		res.send('API');
 	});

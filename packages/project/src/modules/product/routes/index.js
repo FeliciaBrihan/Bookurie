@@ -11,9 +11,9 @@ import { verifyToken } from '../../auth/routes/verifyToken.js';
 const router = Router();
 
 router.get('/', verifyToken, getAll);
-router.get('/:id', verifyToken, getById);
-router.post('/', verifyToken, createProduct);
-router.put('/:id', verifyToken, updateProduct);
-router.delete('/:id', verifyToken, deleteProduct);
+router.get('/:id', getById);
+router.post('/', createProduct);
+router.put('/:id', updateProduct);
+router.delete('/:id', deleteProduct);
 
 export const routes = router;
