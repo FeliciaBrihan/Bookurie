@@ -23,7 +23,7 @@ export function getModelBook(sequelize) {
 
 			isAvailable: {
 				type: DataTypes.BOOLEAN,
-				default: true,
+				defaultValue: true,
 			},
 		},
 		{ paranoid: true, tableName: 'book' }

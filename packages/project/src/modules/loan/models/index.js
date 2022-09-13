@@ -6,7 +6,7 @@ export function getModelLoan(sequelize) {
 		{
 			isAccepted: {
 				type: DataTypes.BOOLEAN,
-				default: false,
+				defaultValue: false,
 			},
 			expirationDate: {
 				type: DataTypes.DATE,
