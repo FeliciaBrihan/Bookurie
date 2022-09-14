@@ -5,7 +5,7 @@ import JWT from 'jsonwebtoken';
 export async function userSignUp(req, res) {
 	const { User } = sequelize.models;
 	try {
-		const { firstName, lastName, username, email, password } = req.body;
+		const { firstName, lastName, username, email, password, role } = req.body;
 
 		if (!(email && password && firstName && lastName && username)) {
 			res.status(400).send('All fields are required');
@@ -22,6 +22,7 @@ export async function userSignUp(req, res) {
 			email: email.toLowerCase(),
 			username,
 			password: md5(password),
+			role,
 		});
 
 		const token = JWT.sign({ user }, process.env.JWT_ACCESS_KEY, {

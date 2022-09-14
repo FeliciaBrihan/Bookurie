@@ -19,6 +19,7 @@ export async function verifyToken(req, res, next) {
 			const user = await User.findOne({ where: { id: decodedJWT.user.id } });
 
 			req.currentUserId = user.id;
+			req.currentUser = user;
 			next();
 		} catch (err) {
 			res.status(403).send({ error: 'invalid token' });

@@ -5,13 +5,17 @@ import { getAll } from './getAll.js';
 import { getById } from './getById.js';
 import { update } from './update.js';
 import { deleteBook } from './delete.js';
+import { routes as loanRouter } from '../../loan/routes/index.js';
+import { restrictTo } from '../../auth/routes/restrictTo.js';
+import { verifyToken } from '../../auth/routes/verifyToken.js';
 
 const router = Router();
+router.use('/:bookId/loan', verifyToken, loanRouter);
 
-router.post('/', create);
+router.post('/', verifyToken, restrictTo('admin'), create);
 router.get('/', getAll);
 router.get('/:id', getById);
-router.put('/:id', update);
-router.delete('/:id', deleteBook);
+router.put('/:id', verifyToken, restrictTo('admin'), update);
+router.delete('/:id', verifyToken, restrictTo('admin'), deleteBook);
 
 export const routes = router;
