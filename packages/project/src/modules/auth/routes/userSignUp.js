@@ -25,10 +25,10 @@ export async function userSignUp(req, res) {
 			role,
 		});
 
-		const token = JWT.sign({ user }, process.env.JWT_ACCESS_KEY, {
+		const accessToken = JWT.sign({ user }, process.env.JWT_ACCESS_KEY, {
 			expiresIn: process.env.JWT_ACCESS_KEY_EXPIRE_TIME,
 		});
-		res.send(token);
+		res.send(accessToken);
 	} catch (err) {
 		const message = errorMessage(err);
 		res.status(400).send(message);

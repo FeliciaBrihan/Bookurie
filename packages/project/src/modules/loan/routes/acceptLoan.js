@@ -6,6 +6,9 @@ export async function acceptLoan(req, res) {
 	try {
 		const { id } = req.params;
 		const loan = await Loan.findByPk(id);
+
+		if (!loan) return res.status(400).send('Invalid id');
+
 		await loan.update({ isAccepted: true });
 
 		const date = new Date();

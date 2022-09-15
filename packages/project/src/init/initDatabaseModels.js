@@ -1,3 +1,5 @@
+import md5 from 'md5';
+
 export async function initDatabaseModels(sequelize) {
 	await addModels(sequelize);
 	await addModuleProperties(sequelize);
@@ -29,26 +31,16 @@ async function addModels(sequelize) {
 async function addModuleProperties() {}
 
 async function addDefaultData(sequelize) {
-	const { Product } = sequelize.models;
-	const products = await Product.findAll();
-	if (products.length < 4) {
-		await Product.bulkCreate([
-			{
-				name: 'milk',
-				price: 7,
-			},
-			{
-				name: 'peanuts',
-				price: 8,
-			},
-			{
-				name: 'ice cream',
-				price: 15,
-			},
-			{
-				name: 'oil',
-				price: 15,
-			},
-		]);
+	const { User } = sequelize.models;
+	const users = await User.findAll();
+	if (users.length === 0) {
+		await User.create({
+			firstName: 'admin',
+			lastName: 'admin',
+			username: 'admin',
+			email: 'admin@gmail.com',
+			role: 'admin',
+			password: md5('password123'),
+		});
 	}
 }

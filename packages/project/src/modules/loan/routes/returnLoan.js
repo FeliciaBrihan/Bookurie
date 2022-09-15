@@ -8,6 +8,8 @@ export async function returnLoan(req, res) {
 		const { id } = req.params;
 		const loan = await Loan.findByPk(id);
 
+		if (!loan) return res.status(400).send('Invalid id');
+
 		if (!loan.isAccepted)
 			return res
 				.status(400)
