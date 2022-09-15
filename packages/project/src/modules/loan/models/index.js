@@ -17,6 +17,10 @@ export function getModelLoan(sequelize) {
 			expirationDate: {
 				type: DataTypes.DATE,
 			},
+			isReturned: {
+				type: DataTypes.BOOLEAN,
+				defaultValue: false,
+			},
 		},
 		{ paranoid: true, tableName: 'loan' }
 	);

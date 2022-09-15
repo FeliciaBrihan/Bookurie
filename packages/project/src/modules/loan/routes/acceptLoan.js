@@ -7,6 +7,11 @@ export async function acceptLoan(req, res) {
 		const { id } = req.params;
 		const loan = await Loan.findByPk(id);
 		await loan.update({ isAccepted: true });
+
+		const date = new Date();
+		const expirationDate = date.setDate(date.getDate() + 30);
+		await loan.update({ expirationDate: expirationDate });
+
 		return res.status(200).json({
 			status: 'success',
 			message: 'Loan accepted',
