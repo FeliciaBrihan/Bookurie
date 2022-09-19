@@ -1,10 +1,13 @@
+import { sequelize } from '../../../global.js';
+
+const { Role } = sequelize.models;
+
 export function restrictTo(...roles) {
-	return function (req, res, next) {
-		if (!roles.includes(req.currentUser.role)) {
-			const error = new Error(
-				`You don't have permission to perform this action`
-			);
-			return next(error);
+	return async function (req, res, next) {
+		const role = await Role.findByPk(req.currentUser.roleId);
+		const roleName = role.name;
+		if (!roles.includes(roleName)) {
+			return res.sendStatus(401);
 		}
 		next();
 	};

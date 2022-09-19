@@ -23,6 +23,7 @@ export async function userSignUp(req, res) {
 			username,
 			password: md5(password),
 			role,
+			roleId: 1,
 		});
 
 		const accessToken = JWT.sign({ user }, process.env.JWT_ACCESS_KEY, {

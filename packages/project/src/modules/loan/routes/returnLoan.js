@@ -11,9 +11,7 @@ export async function returnLoan(req, res) {
 		if (!loan) return res.status(400).send('Invalid id');
 
 		if (!loan.isAccepted)
-			return res
-				.status(400)
-				.send('This loan is not yet accepted, you cannot return it');
+			return res.status(400).send({ error: 'Loan not accepted' });
 
 		if (loan.isReturned) return res.status(400).send('Loan already returned');
 
