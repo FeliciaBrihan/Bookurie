@@ -11,36 +11,44 @@ async function addModels(sequelize) {
 
 	const { getModelBook } = await import('../modules/book/models/index.js');
 
-	// will be deleted
-	const { getModelProduct } = await import(
-		'../modules/product/models/index.js'
-	);
 	const { getModelUser } = await import('../modules/user/models/index.js');
 
 	const { getModelRole } = await import('../modules/role/models/index.js');
 
+	const { getModelResource } = await import(
+		'../modules/resource/models/index.js'
+	);
+
 	const { getModelPermission } = await import(
 		'../modules/permission/models/index.js'
 	);
+	const { getModelRolePermission } = await import(
+		'../modules/rolePermission/models/index.js'
+	);
 
-	getModelProduct(sequelize);
 	getModelLoan(sequelize);
 	getModelBook(sequelize);
 	getModelUser(sequelize);
 	getModelRole(sequelize);
+	getModelResource(sequelize);
 	getModelPermission(sequelize);
+	getModelRolePermission(sequelize);
 
-	const { Book, User, Loan, Role, Permission } = sequelize.models;
+	const { Book, User, Loan, Role, Permission, Resource, RolePermission } =
+		sequelize.models;
 
 	Book.belongsToMany(User, { through: Loan });
 
-	Role.hasMany(User, { foreignKey: 'roleId' });
-	User.belongsTo(Role, { foreignKey: 'roleId' });
+	User.hasOne(Role, { foreignKey: 'user_id' });
+	Role.belongsTo(User, { foreignKey: 'user_id' });
 
 	Role.hasMany(Permission);
-	Permission.belongsToMany(Role, { through: 'rolePermissions' });
+	Permission.belongsToMany(Role, { through: RolePermission });
 
-	await sequelize.sync({ force: true });
+	Resource.hasMany(RolePermission);
+	RolePermission.belongsToMany(Resource, { through: 'ResourceRolePermission' });
+
+	await sequelize.sync();
 }
 async function addModuleProperties() {}
 
@@ -84,6 +92,22 @@ async function addDefaultData(sequelize) {
 			},
 		]);
 	}
+
+	const { Resource } = sequelize.models;
+	const resources = await Resource.findAll();
+	if (resources.length === 0) {
+		await Resource.bulkCreate([
+			{
+				name: 'User',
+			},
+			{
+				name: 'Book',
+			},
+			{
+				name: 'Loan',
+			},
+		]);
+	}
 	const { User } = sequelize.models;
 	const users = await User.findAll();
 	if (users.length === 0) {
@@ -92,8 +116,7 @@ async function addDefaultData(sequelize) {
 			lastName: 'admin',
 			username: 'admin',
 			email: 'admin@gmail.com',
-			role: 'admin',
-			roleId: 3,
+			role_id: 3,
 			password: md5('password123'),
 		});
 	}

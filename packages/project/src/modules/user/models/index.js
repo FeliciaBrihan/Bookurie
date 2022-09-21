@@ -10,6 +10,10 @@ export function getModelUser(sequelize) {
 			password: { type: DataTypes.STRING, allowNull: false },
 			email: { type: DataTypes.STRING, unique: true },
 			isActive: { type: DataTypes.BOOLEAN, defaultValue: false },
+			roleId: {
+				type: DataTypes.INTEGER,
+				defaultValue: 1,
+			},
 		},
 		{ paranoid: true, tableName: 'user' }
 	);

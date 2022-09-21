@@ -6,15 +6,12 @@ export async function verifyToken(req, res, next) {
 	const { User } = sequelize.models;
 
 	const token = req.headers['authorization'];
-	console.log(token);
 
 	if (typeof token !== 'undefined') {
 		const jwt = token.split(' ')[1];
-		console.log(jwt);
 
 		try {
 			const decodedJWT = JWT.verify(jwt, process.env.JWT_ACCESS_KEY);
-			console.log('test', decodedJWT);
 
 			const user = await User.findOne({ where: { id: decodedJWT.user.id } });
 
