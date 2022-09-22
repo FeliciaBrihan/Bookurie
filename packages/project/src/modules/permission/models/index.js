@@ -4,10 +4,11 @@ export function getModelPermission(sequelize) {
 	sequelize.define(
 		'Permission',
 		{
-			name: {
-				type: DataTypes.STRING,
+			id: {
+				type: DataTypes.INTEGER,
+				autoIncrement: true,
 				allowNull: false,
-				unique: true,
+				primaryKey: true,
 			},
 		},
 		{ paranoid: true, tableName: 'permission' }

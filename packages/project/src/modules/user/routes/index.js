@@ -7,7 +7,7 @@ import { getAllUsers } from './getAllUsers.js';
 import { getUserById } from './getUserById.js';
 import { verifyToken } from '../../auth/routes/verifyToken.js';
 import { restrictTo } from '../../auth/routes/restrictTo.js';
-import { changeUserRole } from './changeUserRol.js';
+import { changeUserRole } from './changeUserRole.js';
 
 const router = Router();
 
@@ -17,7 +17,7 @@ router.post('/', createUser);
 router.put('/:id', updateUser);
 router.delete('/:id', deleteUser);
 router.patch(
-	'/admin/users/:userId',
+	'/:userId/changeRole',
 	verifyToken,
 	restrictTo('admin'),
 	changeUserRole

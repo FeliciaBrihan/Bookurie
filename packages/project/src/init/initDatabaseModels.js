@@ -7,46 +7,36 @@ export async function initDatabaseModels(sequelize) {
 }
 
 async function addModels(sequelize) {
-	const { getModelLoan } = await import('../modules/loan/models/index.js');
-
 	const { getModelBook } = await import('../modules/book/models/index.js');
 
 	const { getModelUser } = await import('../modules/user/models/index.js');
 
+	const { getModelLoan } = await import('../modules/loan/models/index.js');
+
 	const { getModelRole } = await import('../modules/role/models/index.js');
 
-	const { getModelResource } = await import(
-		'../modules/resource/models/index.js'
-	);
+	const { getModelAction } = await import('../modules/action/models/index.js');
 
 	const { getModelPermission } = await import(
 		'../modules/permission/models/index.js'
-	);
-	const { getModelRolePermission } = await import(
-		'../modules/rolePermission/models/index.js'
 	);
 
 	getModelLoan(sequelize);
 	getModelBook(sequelize);
 	getModelUser(sequelize);
 	getModelRole(sequelize);
-	getModelResource(sequelize);
+	getModelAction(sequelize);
 	getModelPermission(sequelize);
-	getModelRolePermission(sequelize);
 
-	const { Book, User, Loan, Role, Permission, Resource, RolePermission } =
-		sequelize.models;
+	const { Book, User, Loan, Role, Action, Permission } = sequelize.models;
 
 	Book.belongsToMany(User, { through: Loan });
 
-	User.hasOne(Role, { foreignKey: 'user_id' });
-	Role.belongsTo(User, { foreignKey: 'user_id' });
+	User.hasOne(Role);
+	Role.belongsTo(User);
 
-	Role.hasMany(Permission);
-	Permission.belongsToMany(Role, { through: RolePermission });
-
-	Resource.hasMany(RolePermission);
-	RolePermission.belongsToMany(Resource, { through: 'ResourceRolePermission' });
+	Role.hasMany(Action);
+	Action.belongsToMany(Role, { through: Permission });
 
 	await sequelize.sync();
 }
@@ -58,56 +48,59 @@ async function addDefaultData(sequelize) {
 	if (roles.length === 0) {
 		await Role.bulkCreate([
 			{
-				name: 'user',
-			},
-			{
-				name: 'super admin',
-			},
-			{
-				name: 'admin',
+				name: 'guest',
 			},
 			{
 				name: 'staff',
 			},
 			{
-				name: 'moderator',
+				name: 'admin',
 			},
 		]);
 	}
-	const { Permission } = sequelize.models;
-	const permissions = await Permission.findAll();
-	if (permissions.length === 0) {
-		await Permission.bulkCreate([
+	const { Action } = sequelize.models;
+	const actions = await Action.findAll();
+	if (actions.length === 0) {
+		await Action.bulkCreate([
 			{
-				name: 'delete',
+				name: 'Book: read',
 			},
 			{
-				name: 'read',
+				name: 'Book: create',
 			},
 			{
-				name: 'create',
+				name: 'Book: delete',
 			},
 			{
-				name: 'update',
+				name: 'Book: update',
+			},
+			{
+				name: 'Loan: read',
+			},
+			{
+				name: 'Loan: create',
+			},
+			{
+				name: 'Loan: accept',
+			},
+			{
+				name: 'Loan: delete',
+			},
+			{
+				name: 'User: read',
+			},
+			{
+				name: 'User: create',
+			},
+			{
+				name: 'User: update',
+			},
+			{
+				name: 'User: delete',
 			},
 		]);
 	}
 
-	const { Resource } = sequelize.models;
-	const resources = await Resource.findAll();
-	if (resources.length === 0) {
-		await Resource.bulkCreate([
-			{
-				name: 'User',
-			},
-			{
-				name: 'Book',
-			},
-			{
-				name: 'Loan',
-			},
-		]);
-	}
 	const { User } = sequelize.models;
 	const users = await User.findAll();
 	if (users.length === 0) {
@@ -116,7 +109,7 @@ async function addDefaultData(sequelize) {
 			lastName: 'admin',
 			username: 'admin',
 			email: 'admin@gmail.com',
-			role_id: 3,
+			roleId: 3,
 			password: md5('password123'),
 		});
 	}

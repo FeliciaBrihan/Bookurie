@@ -1,8 +1,8 @@
 import { DataTypes } from 'sequelize';
 
-export function getModelResource(sequelize) {
+export function getModelAction(sequelize) {
 	sequelize.define(
-		'Resource',
+		'Action',
 		{
 			name: {
 				type: DataTypes.STRING,
@@ -10,6 +10,6 @@ export function getModelResource(sequelize) {
 				unique: true,
 			},
 		},
-		{ paranoid: true, tableName: 'resource' }
+		{ paranoid: true, tableName: 'action' }
 	);
 }

@@ -1,40 +1,35 @@
 import { sequelize } from '../../../global.js';
+import { errorMessage } from '../../../helpers/errorMessage.js';
 
-export function checkAuthorization(module, requiredPermission) {
+export function checkAuthorization(requiredPermission) {
 	return async function (req, res, next) {
-		const { Permission, Resource, RolePermission } = sequelize.models;
+		const { Action, Permission } = sequelize.models;
 
 		try {
 			const roleId = req.currentUser.roleId;
-			console.log(roleId);
 
-			const permission = await Permission.findOne({
+			const action = await Action.findOne({
 				where: { name: requiredPermission },
 			});
-			const permissionId = permission.id;
-			console.log(permissionId);
+			const actionId = action.id;
 
-			const resource = await Resource.findOne({ where: { name: module } });
-			const resourceId = resource.id;
-			console.log(resourceId);
-
-			if (!roleId || !permissionId || !resourceId) {
-				return res.status(400).send({ error: 'error' });
+			if (!roleId || !actionId) {
+				return res.status(401);
 			}
 
-			const rolePermission = await RolePermission.findOne({
+			const permission = await Permission.findOne({
 				where: {
 					RoleId: roleId,
-					PermissionId: permissionId,
-					ResourceId: resourceId,
+					ActionId: actionId,
 				},
 			});
-			if (!rolePermission) {
+			if (!permission) {
 				return res.sendStatus(401);
 			}
 			next();
 		} catch (error) {
-			console.log(error);
+			const message = errorMessage(error);
+			res.status(400).send(message);
 		}
 	};
 }

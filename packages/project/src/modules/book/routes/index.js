@@ -13,14 +13,14 @@ import { checkAuthorization } from '../../auth/routes/checkAuthorization.js';
 const router = Router();
 router.use('/:bookId/loan', verifyToken, loanRouter);
 
-router.post('/', verifyToken, restrictTo('admin'), create);
+router.post('/', verifyToken, checkAuthorization('Book: create'), create);
 router.get('/', getAll);
 router.get('/:id', getById);
-router.put('/:id', verifyToken, restrictTo('admin'), update);
+router.patch('/:id', verifyToken, checkAuthorization('Book: update'), update);
 router.delete(
 	'/:id',
 	verifyToken,
-	checkAuthorization('Book', 'delete'),
+	checkAuthorization('Book: delete'),
 	deleteBook
 );
 
