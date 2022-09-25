@@ -1,11 +1,10 @@
 {
 	"name": "project",
 	"version": "1.0.0",
-	"main": "./src/server.js",
+	"main": "./src/server.ts",
 	"license": "MIT",
-	"type": "module",
 	"scripts": {
-		"start": "nodemon ."
+		"start": "ts-node ."
 	},
 	"dependencies": {
 		"axios": "^0.27.2",
@@ -26,8 +25,20 @@
 		"socket.io": "^4.5.1",
 		"supertest": "^6.2.4",
 		"swagger-ui-express": "^4.5.0",
+		"typescript": "^4.8.3",
 		"winston": "^3.8.1",
 		"winston-daily-rotate-file": "^4.7.1",
 		"workerpool": "^6.2.1"
+	},
+	"devDependencies": {
+		"@types/cors": "^2.8.12",
+		"@types/express": "^4.17.14",
+		"@types/jsonwebtoken": "^8.5.9",
+		"@types/md5": "^2.3.2",
+		"@types/node": "^18.7.20",
+		"@types/nodemailer": "^6.4.6",
+		"@types/sequelize": "^4.28.14",
+		"@types/swagger-ui-express": "^4.1.3",
+		"ts-node": "^10.9.1"
 	}
 }
