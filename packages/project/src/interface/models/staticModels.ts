@@ -5,6 +5,9 @@ import { ModelLoan } from './Loan';
 import { ModelRole } from './Role';
 import { ModelAction } from './Action';
 import { ModelPermission } from './Permission';
+import { ModelPurchase } from './Purchase';
+import { ModelSubscription } from './Subscription';
+import { ModelPremium } from './Premium';
 
 export interface Models {
 	Book: ModelStatic<ModelBook>;
@@ -13,4 +16,7 @@ export interface Models {
 	Role: ModelStatic<ModelRole>;
 	Action: ModelStatic<ModelAction>;
 	Permission: ModelStatic<ModelPermission>;
+	Purchase: ModelStatic<ModelPurchase>;
+	Subscription: ModelStatic<ModelSubscription>;
+	Premium: ModelStatic<ModelPremium>;
 }

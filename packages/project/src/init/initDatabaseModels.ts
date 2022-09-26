@@ -22,6 +22,11 @@ async function addModels(sequelize: Sequelize) {
 	const { getModelPermission } = await import(
 		'../modules/permission/models/index'
 	);
+	const { getModelPurchase } = await import('../modules/purchase/models/index');
+	const { getModelSubscription } = await import(
+		'../modules/subscription/models/index'
+	);
+	const { getModelPremium } = await import('../modules/premium/models/index');
 
 	getModelLoan(sequelize);
 	getModelBook(sequelize);
@@ -29,11 +34,24 @@ async function addModels(sequelize: Sequelize) {
 	getModelRole(sequelize);
 	getModelAction(sequelize);
 	getModelPermission(sequelize);
+	getModelPurchase(sequelize);
+	getModelSubscription(sequelize);
+	getModelPremium(sequelize);
 
-	const { Book, User, Loan, Role, Action, Permission } =
-		sequelize.models as unknown as Models;
+	const {
+		Book,
+		User,
+		Loan,
+		Role,
+		Action,
+		Permission,
+		Purchase,
+		Subscription,
+		Premium,
+	} = sequelize.models as unknown as Models;
 
 	Book.belongsToMany(User, { through: Loan });
+	Book.belongsToMany(User, { through: Purchase });
 
 	User.hasOne(Role);
 	Role.belongsTo(User);
@@ -41,7 +59,13 @@ async function addModels(sequelize: Sequelize) {
 	Role.hasMany(Action);
 	Action.belongsToMany(Role, { through: Permission });
 
-	await sequelize.sync();
+	User.hasOne(Subscription);
+	Subscription.belongsTo(User);
+
+	User.hasOne(Premium);
+	Premium.belongsTo(User);
+
+	await sequelize.sync({ force: true });
 }
 async function addModuleProperties(_: Sequelize) {}
 
@@ -58,6 +82,9 @@ async function addDefaultData(sequelize: Sequelize) {
 			},
 			{
 				name: 'admin',
+			},
+			{
+				name: 'subscriber',
 			},
 		]);
 	}
@@ -114,6 +141,16 @@ async function addDefaultData(sequelize: Sequelize) {
 			email: 'admin@gmail.com',
 			roleId: 3,
 			password: md5('password123'),
+		});
+	}
+	const { Premium } = sequelize.models as unknown as Models;
+	const premium = await Premium.findAll();
+	if (premium.length === 0) {
+		await Premium.create({
+			monthlyFee: 200,
+			raffleInterval: 15,
+			rafflePrize: 'book',
+			everyBookDiscount: 40,
 		});
 	}
 }

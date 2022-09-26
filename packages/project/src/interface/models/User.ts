@@ -8,6 +8,10 @@ export interface User extends DefaultParanoidAttributes {
 	password: string;
 	email: string;
 	roleId: number;
+	budget: number;
+	bookDiscount: number;
+	subscriptionId: number;
+	hasPremiumSubscription: boolean;
 }
 
 export interface UserAttributes extends User {
