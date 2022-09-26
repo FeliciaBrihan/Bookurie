@@ -13,6 +13,13 @@ export function getModelUser(sequelize: Sequelize) {
 				type: DataTypes.INTEGER,
 				defaultValue: 1,
 			},
+			budget: DataTypes.INTEGER,
+			bookDiscount: DataTypes.INTEGER,
+			subscriptionId: DataTypes.INTEGER,
+			hasPremiumSubscription: {
+				type: DataTypes.BOOLEAN,
+				defaultValue: false,
+			},
 		},
 		{ paranoid: true, tableName: 'user' }
 	);
