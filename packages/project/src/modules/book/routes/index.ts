@@ -13,7 +13,7 @@ import { checkAuthorization } from '../../auth/routes/checkAuthorization';
 const router = Router();
 router.use('/:bookId/loan', verifyToken, loanRouter);
 
-router.post('/', verifyToken, checkAuthorization('Book: create'), create);
+router.post('/', verifyToken, create);
 router.get('/', getAll);
 router.get('/:id', getById);
 router.patch('/:id', verifyToken, checkAuthorization('Book: update'), update);

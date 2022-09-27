@@ -23,6 +23,7 @@ export async function changeUserRole(
 
 		const user = await User.findByPk(id);
 		await user?.update({ roleId: roleId });
+		await user?.update({ budget: 0 });
 
 		res.status(200).json({
 			data: user,

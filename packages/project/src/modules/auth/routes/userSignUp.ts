@@ -33,10 +33,19 @@ export async function userSignUp(
 			roleId: 1,
 		});
 
+		const min = 100;
+		const max = 1000;
+
+		const budget = Math.floor(Math.random() * (max - min) + min);
+		await user.update({ budget: budget });
+
 		const accessToken = JWT.sign({ user }, process.env.JWT_ACCESS_KEY, {
 			expiresIn: process.env.JWT_ACCESS_KEY_EXPIRE_TIME,
 		});
-		res.send(accessToken);
+		res.status(200).json({
+			token: accessToken,
+			data: user,
+		});
 	} catch (err) {
 		const message = errorMessage(err);
 		res.status(400).send(message);

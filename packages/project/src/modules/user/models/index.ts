@@ -14,7 +14,6 @@ export function getModelUser(sequelize: Sequelize) {
 				defaultValue: 1,
 			},
 			budget: DataTypes.INTEGER,
-			bookDiscount: DataTypes.INTEGER,
 			subscriptionId: DataTypes.INTEGER,
 			hasPremiumSubscription: {
 				type: DataTypes.BOOLEAN,

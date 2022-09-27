@@ -26,7 +26,7 @@ export async function returnLoan(
 		if (loan.isReturned) return res.status(400).send('Loan already returned');
 
 		const book = await Book.findByPk(loan.BookId);
-		await book.update({ isAvailable: true });
+		await book.update({ stock: book.stock + 1 });
 		await loan.update({ isReturned: true });
 
 		res.status(200).json({

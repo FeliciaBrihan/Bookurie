@@ -23,13 +23,19 @@ export async function acceptLoan(
 
 		await loan.update({ isAccepted: true });
 
+		const book = await Book.findByPk(loan.BookId);
+
+		const daysFor100Pages = 7;
+		const loanDurationDays = Math.round((book.pages * daysFor100Pages) / 100);
+
 		const date = new Date();
-		const expirationDate = date.setDate(date.getDate() + 30) as unknown as Date;
+		const expirationDate = date.setDate(
+			date.getDate() + loanDurationDays
+		) as unknown as Date;
 		await loan.update({ expirationDate: expirationDate });
 
 		// Send email to the user
 		const user = await User.findByPk(loan.UserId);
-		const book = await Book.findByPk(loan.BookId);
 
 		const transporter = nodemailer.createTransport({
 			service: 'gmail',
@@ -43,7 +49,7 @@ export async function acceptLoan(
 			from: 'bookurie',
 			to: user.email,
 			subject: 'Your book loan was accepted',
-			text: `You will receive the book "${book.title}" shortly. Enjoy! \n Please return the book in 30 days.`,
+			text: `You will receive the book "${book.title}" shortly. Enjoy! \n Please return the book in ${loanDurationDays} days.`,
 		};
 
 		transporter.sendMail(mailOptions, function (error, info) {

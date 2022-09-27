@@ -65,7 +65,7 @@ async function addModels(sequelize: Sequelize) {
 	User.hasOne(Premium);
 	Premium.belongsTo(User);
 
-	await sequelize.sync({ force: true });
+	await sequelize.sync();
 }
 async function addModuleProperties(_: Sequelize) {}
 

@@ -30,15 +30,11 @@ export function getModelBook(sequelize: Sequelize) {
 			},
 			typeFormat: {
 				type: DataTypes.ENUM('online', 'printed'),
+				allowNull: false,
 			},
-			price: DataTypes.INTEGER,
+			price: { type: DataTypes.INTEGER, allowNull: false },
 
-			stock: DataTypes.INTEGER,
-
-			isAvailable: {
-				type: DataTypes.BOOLEAN,
-				defaultValue: true,
-			},
+			stock: { type: DataTypes.INTEGER, allowNull: false },
 		},
 		{ paranoid: true, tableName: 'book' }
 	);
