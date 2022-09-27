@@ -7,6 +7,7 @@ export function getModelSubscription(sequelize: Sequelize) {
 			name: {
 				type: DataTypes.STRING,
 				allowNull: false,
+				unique: true,
 			},
 			monthlyFee: {
 				type: DataTypes.INTEGER,
