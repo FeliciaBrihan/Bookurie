@@ -10,9 +10,6 @@ export function getModelPurchase(sequelize: Sequelize) {
 				allowNull: false,
 				primaryKey: true,
 			},
-			cost: {
-				type: DataTypes.INTEGER,
-			},
 		},
 		{ paranoid: true, tableName: 'purchase' }
 	);
