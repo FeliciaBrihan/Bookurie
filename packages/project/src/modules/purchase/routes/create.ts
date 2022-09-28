@@ -19,7 +19,7 @@ export async function create(
 	req: Request & ExtraRequest,
 	res: Response<ModelPurchase | object>
 ) {
-	const { Purchase, Book, User, Subscription } =
+	const { Purchase, Book, User, Subscription, Premium } =
 		sequelize.models as unknown as Models;
 
 	try {
@@ -37,9 +37,22 @@ export async function create(
 		}
 		const subscriptionId = user.subscriptionId;
 		const subscription = await Subscription.findByPk(subscriptionId);
+		const premium = await Premium.findByPk(1);
 
 		if (user.hasPremiumSubscription) {
-			// to be continued
+			if (book.typeFormat === 'printed') {
+				const discount = premium.everyBookDiscount / 100;
+				const bookFinalPrice = book.price - book.price * discount;
+
+				if (user.budget >= bookFinalPrice) {
+					const updatedBudget = user.budget - bookFinalPrice;
+					await user.update({ budget: updatedBudget });
+				} else {
+					return res
+						.status(400)
+						.send({ message: `You don't have enough money to buy this book` });
+				}
+			}
 		}
 
 		if (user.subscriptionId) {
@@ -59,7 +72,7 @@ export async function create(
 				// to be continued
 			}
 		}
-		if (!user.subscriptionId) {
+		if (!user.subscriptionId && !user.hasPremiumSubscription) {
 			if (user.budget >= book.price) {
 				const updatedBudget = user.budget - book.price;
 				await user.update({ budget: updatedBudget });
