@@ -69,7 +69,21 @@ export async function create(
 						.send({ message: `You don't have enough money to buy this book` });
 				}
 			} else if (book.typeFormat === 'online') {
-				// to be continued
+				// need to find a way to reset the booksReadThisMonth each month
+				if (user.booksReadThisMonth < subscription.monthlyFreeBooks) {
+					user.update({ booksReadThisMonth: user.booksReadThisMonth + 1 });
+				} else {
+					const discount = subscription.everyBookDiscount / 100;
+					const bookFinalPrice = book.price - book.price * discount;
+					if (user.budget >= bookFinalPrice) {
+						const updatedBudget = user.budget - bookFinalPrice;
+						await user.update({ budget: updatedBudget });
+					} else {
+						return res.status(400).send({
+							message: `You don't have enough money to buy this book`,
+						});
+					}
+				}
 			}
 		}
 		if (!user.subscriptionId && !user.hasPremiumSubscription) {

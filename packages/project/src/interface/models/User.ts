@@ -12,6 +12,7 @@ export interface User extends DefaultParanoidAttributes {
 	bookDiscount: number;
 	subscriptionId: number;
 	hasPremiumSubscription: boolean;
+	booksReadThisMonth: number;
 }
 
 export interface UserAttributes extends User {

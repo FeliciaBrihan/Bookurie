@@ -16,6 +16,7 @@
 		"http": "^0.0.1-security",
 		"jsonwebtoken": "^8.5.1",
 		"md5": "^2.3.0",
+		"node-cron": "^3.0.2",
 		"nodemailer": "^6.7.8",
 		"nodemon": "^2.0.19",
 		"path": "^0.12.7",

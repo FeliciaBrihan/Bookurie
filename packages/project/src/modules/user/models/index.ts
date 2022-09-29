@@ -19,6 +19,10 @@ export function getModelUser(sequelize: Sequelize) {
 				type: DataTypes.BOOLEAN,
 				defaultValue: false,
 			},
+			booksReadThisMonth: {
+				type: DataTypes.INTEGER,
+				defaultValue: 0,
+			},
 		},
 		{ paranoid: true, tableName: 'user' }
 	);

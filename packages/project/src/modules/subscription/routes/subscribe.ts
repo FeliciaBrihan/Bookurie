@@ -17,6 +17,8 @@ export async function subscribe(
 		const user = await User.findByPk(userId);
 
 		if (!subscription) return res.status(400).send('Invalid id');
+		if (user.roleId !== 1)
+			return res.status(400).send({ message: 'Staff cannot subscribe' });
 
 		if (user.budget < subscription.monthlyFee)
 			return res.status(400).send('Budget under monthly fee');

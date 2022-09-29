@@ -10,7 +10,7 @@ export async function getAll(
 	const { Book } = sequelize.models as unknown as Models;
 
 	try {
-		const books = await Book.findAll();
+		const books = await Book.findAll({ where: req.query });
 		if (books.length === 0) return res.sendStatus(204);
 
 		return res.status(200).json({
