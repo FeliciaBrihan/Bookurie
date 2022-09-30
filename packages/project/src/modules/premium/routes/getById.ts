@@ -3,9 +3,12 @@ import { sequelize } from '../../../global';
 import { errorMessage } from '../../../helpers/index';
 import { ModelPremium, Models } from '../../../interface';
 
+interface ReqParam{
+	id: number
+}
+
 export async function getById(
-	// req: Request<ReqParam, {}, {}, {}>,
-	req: Request,
+	req: Request<ReqParam, {}, {}, {}>,
 	res: Response<ModelPremium | object>
 ) {
 	const { Premium } = sequelize.models as unknown as Models;

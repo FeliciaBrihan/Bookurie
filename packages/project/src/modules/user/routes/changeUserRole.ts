@@ -12,8 +12,7 @@ interface ReqBody {
 }
 
 export async function changeUserRole(
-	// req: Request<ReqParam, {}, ReqBody, {}>,
-	req: Request,
+	req: Request<ReqParam, {}, ReqBody, {}>,
 	res: Response<ModelUser | object>
 ) {
 	const { User } = sequelize.models as unknown as Models;

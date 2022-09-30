@@ -9,9 +9,8 @@ interface ReqParam {
 type ReqBody = ModelLoan;
 
 export async function create(
-	// req: Request<ReqParam, {}, ReqBody, {}> & ExtraRequest,
-	req: Request & ExtraRequest,
-	res: Response<ModelLoan | object | string>
+	req: Request<ReqParam, {}, ReqBody, {}> & ExtraRequest,
+	res: Response<ModelLoan | object>
 ) {
 	const { Loan, Book, User } = sequelize.models as unknown as Models;
 	try {
@@ -21,12 +20,15 @@ export async function create(
 		const book = await Book.findByPk(req.params.bookId);
 		const user = await User.findByPk(req.currentUserId);
 
-		if (!book) return res.status(400).send('Invalid id');
+		if (!book) return res.status(400).send({ error: 'Invalid id' });
 
 		if (book.typeFormat === 'online')
-			return res.status(400).send('Online book. Cannot be borrowed');
+			return res
+				.status(400)
+				.send({ message: 'Online book. Cannot be borrowed' });
 
-		if (!book.stock) return res.status(400).send('Book out of stock');
+		if (!book.stock)
+			return res.status(400).send({ message: 'Book out of stock' });
 
 		if (!user.subscriptionId) {
 			const discount = 0.15;
@@ -38,7 +40,7 @@ export async function create(
 			} else {
 				return res
 					.status(400)
-					.send(`You don't have enough money to borrow this book`);
+					.send({ message: `You don't have enough money to borrow this book` });
 			}
 		}
 		const loan = await Loan.create(req.body);

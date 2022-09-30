@@ -9,9 +9,8 @@ interface ReqParam {
 }
 
 export async function update(
-	// req: Request<ReqParam, {}, ReqBody, {}>,
-	req: Request,
-	res: Response<ModelSubscription | object | string>
+	req: Request<ReqParam, {}, ReqBody, {}>,
+	res: Response<ModelSubscription | object>
 ) {
 	const { Subscription } = sequelize.models as unknown as Models;
 
@@ -19,7 +18,7 @@ export async function update(
 		const { id } = req.params;
 
 		const subscription = await Subscription.findByPk(id);
-		if (!subscription) return res.status(400).send('Invalid id');
+		if (!subscription) return res.status(400).send({error: 'Invalid id'});
 		await subscription.update(req.body);
 
 		res.status(200).json({

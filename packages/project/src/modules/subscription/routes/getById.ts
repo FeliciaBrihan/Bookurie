@@ -8,16 +8,15 @@ interface ReqParam {
 }
 
 export async function getById(
-	// req: Request<ReqParam, {}, {}, {}>,
-	req: Request,
-	res: Response<ModelSubscription | object | string>
+	req: Request<ReqParam, {}, {}, {}>,
+	res: Response<ModelSubscription | object>
 ) {
 	const { Subscription } = sequelize.models as unknown as Models;
 	try {
 		const { id } = req.params;
 
 		const subscription = await Subscription.findByPk(id);
-		if (!subscription) return res.status(400).send('Invalid id');
+		if (!subscription) return res.status(400).send({ error: 'Invalid id' });
 
 		return res.status(200).json({
 			data: subscription,

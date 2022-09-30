@@ -1,11 +1,14 @@
 import { Request, Response } from 'express';
 import { sequelize } from '../../../global';
 import { errorMessage } from '../../../helpers/index';
-import { ModelPremium, Models } from '../../../interface';
+import { Premium, ModelPremium, Models } from '../../../interface';
 
+type ReqBody = Premium;
+interface ReqParam {
+	id: number;
+}
 export async function update(
-	// req: Request<ReqParam, {}, ReqBody, {}>,
-	req: Request,
+	req: Request<ReqParam, {}, ReqBody, {}>,
 	res: Response<ModelPremium | object>
 ) {
 	const { Premium } = sequelize.models as unknown as Models;

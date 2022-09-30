@@ -15,11 +15,11 @@ router.get('/', getAllUsers);
 router.get('/:id', getUserById);
 router.post('/', createUser);
 router.put('/:id', updateUser);
-router.delete('/:id', deleteUser);
+router.delete('/:id', <any>verifyToken, deleteUser);
 router.patch(
 	'/:userId/changeRole',
-	verifyToken,
-	restrictTo('admin'),
+	<any>verifyToken,
+	<any>restrictTo('admin'),
 	changeUserRole
 );
 

@@ -8,7 +8,7 @@ import { getByUser } from './getByUser';
 
 const router = Router({ mergeParams: true });
 
-router.post('/', verifyToken, create);
+router.post('/', <any>verifyToken, create);
 router.get('/', getAll);
 router.get('/all', verifyToken, getByUser);
 

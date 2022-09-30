@@ -17,12 +17,17 @@ router.use('/:bookId/purchase', verifyToken, purchaseRouter);
 
 router.post('/', verifyToken, create);
 router.get('/', getAll);
-router.get('/:id', getById);
-router.patch('/:id', verifyToken, checkAuthorization('Book: update'), update);
+router.get('/:id', <any>verifyToken, getById);
+router.patch(
+	'/:id',
+	<any>verifyToken,
+	<any>checkAuthorization('Book: update'),
+	update
+);
 router.delete(
 	'/:id',
-	verifyToken,
-	checkAuthorization('Book: delete'),
+	<any>verifyToken,
+	<any>checkAuthorization('Book: delete'),
 	deleteBook
 );
 

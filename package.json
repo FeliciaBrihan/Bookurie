@@ -1,7 +1,4 @@
 {
-	"dependencies": {
-		"yarn": "^1.22.19"
-	},
 	"name": "PracticaFelicia",
 	"version": "1.0.0",
 	"main": "index.ts",

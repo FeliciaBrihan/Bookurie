@@ -15,8 +15,7 @@ interface ReqParam {
 type ReqBody = Purchase;
 
 export async function create(
-	// req: ExtraRequest & Request<ReqParam, {}, ReqBody, {}>,
-	req: Request & ExtraRequest,
+	req: ExtraRequest & Request<ReqParam, {}, ReqBody, {}>,
 	res: Response<ModelPurchase | object>
 ) {
 	const { Purchase, Book, User, Subscription, Premium } =
@@ -42,7 +41,7 @@ export async function create(
 		if (user.hasPremiumSubscription) {
 			if (book.typeFormat === 'printed') {
 				const discount = premium.everyBookDiscount / 100;
-				const bookFinalPrice = book.price - book.price * discount;
+				const bookFinalPrice = Math.round(book.price - book.price * discount);
 
 				if (user.budget >= bookFinalPrice) {
 					const updatedBudget = user.budget - bookFinalPrice;
@@ -58,7 +57,7 @@ export async function create(
 		if (user.subscriptionId) {
 			if (book.typeFormat === 'printed') {
 				const discount = subscription.everyBookDiscount / 100;
-				const bookFinalPrice = book.price - book.price * discount;
+				const bookFinalPrice = Math.round(book.price - book.price * discount);
 
 				if (user.budget >= bookFinalPrice) {
 					const updatedBudget = user.budget - bookFinalPrice;
@@ -74,7 +73,7 @@ export async function create(
 					user.update({ booksReadThisMonth: user.booksReadThisMonth + 1 });
 				} else {
 					const discount = subscription.everyBookDiscount / 100;
-					const bookFinalPrice = book.price - book.price * discount;
+					const bookFinalPrice = Math.round(book.price - book.price * discount);
 					if (user.budget >= bookFinalPrice) {
 						const updatedBudget = user.budget - bookFinalPrice;
 						await user.update({ budget: updatedBudget });

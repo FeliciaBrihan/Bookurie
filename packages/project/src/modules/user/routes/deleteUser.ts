@@ -9,13 +9,14 @@ interface ReqParam {
 
 export async function deleteUser(
 	req: Request<ReqParam, {}, {}, {}>,
-	res: Response<ModelUser | string | object>
+
+	res: Response<ModelUser | object>
 ) {
 	try {
 		const { User } = sequelize.models as unknown as Models;
 		const { id } = req.params;
 		const user = await User.findByPk(id);
-		if (!user) return res.status(404).send('No user found with that id');
+		if (!user) return res.status(404).send({ error: 'Invalid id' });
 		await User.destroy({ where: { id: id } });
 
 		return res.status(200).json({

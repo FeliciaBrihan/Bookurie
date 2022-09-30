@@ -9,19 +9,21 @@ type ReqBody = User;
 
 export async function userSignUp(
 	req: Request<{}, {}, ReqBody, {}>,
-	res: Response<{ accessToken: string } | string | object>
+	res: Response<{ accessToken: string } | object>
 ) {
 	const { User } = sequelize.models as unknown as Models;
 	try {
 		const { firstName, lastName, username, email, password } = req.body;
 
 		if (!(email && password && firstName && lastName && username)) {
-			res.status(400).send('All fields are required');
+			res.status(400).send({ message: 'All fields are required' });
 		}
 
 		const userExists = await User.findOne({ where: { email: email } });
 		if (userExists) {
-			return res.status(409).send('User already exists, please login');
+			return res
+				.status(409)
+				.send({ message: 'User already exists, please login' });
 		}
 
 		const user = await User.create({

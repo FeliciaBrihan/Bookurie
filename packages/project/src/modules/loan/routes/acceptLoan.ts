@@ -10,16 +10,15 @@ interface ReqParam {
 }
 
 export async function acceptLoan(
-	// req: Request<ReqParam, {}, ReqBody, {}>,
-	req: Request,
-	res: Response<ModelLoan | object | string>
+	req: Request<ReqParam, {}, ReqBody, {}>,
+	res: Response<ModelLoan | object>
 ) {
 	const { Loan, User, Book } = sequelize.models as unknown as Models;
 	try {
 		const { id } = req.params;
 		const loan = await Loan.findByPk(id);
 
-		if (!loan) return res.status(400).send('Invalid id');
+		if (!loan) return res.status(400).send({ error: 'Invalid id' });
 
 		await loan.update({ isAccepted: true });
 

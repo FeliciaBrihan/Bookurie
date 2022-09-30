@@ -8,16 +8,15 @@ interface ReqParam {
 }
 
 export async function getById(
-	// req: Request<ReqParam, {}, {}, {}>,
-	req: Request,
-	res: Response<ModelBook | object | string>
+	req: Request<ReqParam, {}, {}, {}>,
+	res: Response<ModelBook | object>
 ) {
 	const { Book } = sequelize.models as unknown as Models;
 	try {
 		const { id } = req.params;
 
 		const book = await Book.findByPk(id);
-		if (!book) return res.status(400).send('Invalid id');
+		if (!book) return res.status(400).send({ error: 'Invalid id' });
 
 		return res.status(200).json({
 			data: book,

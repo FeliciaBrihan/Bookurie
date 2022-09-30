@@ -1,13 +1,15 @@
-import {Request, Response} from 'express'
+import { Request, Response } from 'express';
 import { sequelize } from '../../../global';
 import { errorMessage } from '../../../helpers/errorMessage';
 import { Permission, ModelPermission, Models } from '../../../interface';
 
-type ReqBody = Permission
+type ReqBody = Permission;
 
-export async function setPermissions(req: Request<{}, {}, ReqBody, {}>, res: Response<ModelPermission | object | string>) {
-	
-	const { Permission } = sequelize.models as unknown as Models
+export async function setPermissions(
+	req: Request<{}, {}, ReqBody, {}>,
+	res: Response<ModelPermission | object>
+) {
+	const { Permission } = sequelize.models as unknown as Models;
 
 	try {
 		const { RoleId, ActionId } = req.body;

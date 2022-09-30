@@ -5,7 +5,7 @@ import { ModelSubscription, Models, ExtraRequest } from '../../../interface';
 
 export async function subscribe(
 	req: Request & ExtraRequest,
-	res: Response<ModelSubscription | string | object>
+	res: Response<ModelSubscription | object>
 ) {
 	const { Subscription, User } = sequelize.models as unknown as Models;
 
@@ -16,15 +16,17 @@ export async function subscribe(
 		const subscription = await Subscription.findByPk(subscriptionId);
 		const user = await User.findByPk(userId);
 
-		if (!subscription) return res.status(400).send('Invalid id');
+		if (!subscription) return res.status(400).send({ error: 'Invalid id' });
 		if (user.roleId !== 1)
 			return res.status(400).send({ message: 'Staff cannot subscribe' });
 
 		if (user.budget < subscription.monthlyFee)
-			return res.status(400).send('Budget under monthly fee');
+			return res.status(400).send({ message: 'Budget under monthly fee' });
 
 		if (user.subscriptionId === +subscriptionId)
-			return res.status(400).send('You already have this subscription');
+			return res
+				.status(400)
+				.send({ message: 'You already have this subscription' });
 
 		const updatedBudget = user.budget - subscription.monthlyFee;
 
@@ -33,7 +35,7 @@ export async function subscribe(
 			budget: updatedBudget,
 		});
 
-		res.status(200).send('Subscribed!');
+		res.status(200).send({ message: 'Subscribed!' });
 	} catch (error) {
 		const message = errorMessage(error);
 		res.status(400).send(message);

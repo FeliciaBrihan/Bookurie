@@ -10,19 +10,19 @@ import { checkAuthorization } from '../../auth/routes/checkAuthorization';
 
 const router = Router({ mergeParams: true });
 
-router.post('/', verifyToken, checkAuthorization('Loan: create'), create);
+router.post('/', <any>verifyToken, <any>checkAuthorization('Loan: create'), create);
 router.get('/', verifyToken, checkAuthorization('Loan: read'), getAll);
-router.put('/:id', verifyToken, checkAuthorization('Loan: accept'), acceptLoan);
+router.put('/:id', <any>verifyToken, <any>checkAuthorization('Loan: accept'), acceptLoan);
 router.get(
 	'/myLoans',
-	verifyToken,
-	checkAuthorization('Loan: read'),
+	<any>verifyToken,
+	<any>checkAuthorization('Loan: read'),
 	getLoansByUser
 );
 router.put(
 	'/myLoans/:id',
-	verifyToken,
-	checkAuthorization('Loan: return'),
+	<any>verifyToken,
+	<any>checkAuthorization('Loan: return'),
 	returnLoan
 );
 

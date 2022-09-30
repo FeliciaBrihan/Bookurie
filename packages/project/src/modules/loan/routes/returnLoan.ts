@@ -3,14 +3,13 @@ import { sequelize } from '../../../global';
 import { errorMessage } from '../../../helpers/index';
 import { ModelLoan, Models } from '../../../interface';
 
-// interface ReqParam {
-// 	id: number;
-// }
+interface ReqParam {
+	id: number;
+}
 
 export async function returnLoan(
-	// req: Request<ReqParam, {}, {}, {}>,
-	req: Request,
-	res: Response<ModelLoan | object | string>
+	req: Request<ReqParam, {}, {}, {}>,
+	res: Response<ModelLoan | object>
 ) {
 	const { Loan, Book } = sequelize.models as unknown as Models;
 
@@ -18,12 +17,13 @@ export async function returnLoan(
 		const { id } = req.params;
 		const loan = await Loan.findByPk(id);
 
-		if (!loan) return res.status(400).send('Invalid id');
+		if (!loan) return res.status(400).send({ error: 'Invalid id' });
 
 		if (!loan.isAccepted)
 			return res.status(400).send({ error: 'Loan not accepted' });
 
-		if (loan.isReturned) return res.status(400).send('Loan already returned');
+		if (loan.isReturned)
+			return res.status(400).send({ message: 'Loan already returned' });
 
 		const book = await Book.findByPk(loan.BookId);
 		await book.update({ stock: book.stock + 1 });

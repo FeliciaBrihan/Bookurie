@@ -11,14 +11,14 @@ interface ReqParam {
 
 export async function updateUser(
 	req: Request<ReqParam, {}, ReqBody, {}>,
-	res: Response<ModelUser | object | string>
+	res: Response<ModelUser | object>
 ) {
 	try {
 		const { User } = sequelize.models as unknown as Models;
 		const { id } = req.params;
 
 		const user = await User.findByPk(id);
-		if (!user) return res.status(404).send('No user found with this id');
+		if (!user) return res.status(404).send({ error: 'Invalid id' });
 
 		const updatedUser = await user.update(req.body);
 
