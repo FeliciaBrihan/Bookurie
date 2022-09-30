@@ -13,7 +13,8 @@ export async function createUser(
 	try {
 		const { User } = sequelize.models as unknown as Models;
 		const newUser = await User.create(req.body);
-		newUser.password = md5(newUser.password);
+		const hashPassword = md5(newUser.password);
+		await newUser.update({ password: hashPassword });
 
 		return res.status(200).json({
 			data: newUser,

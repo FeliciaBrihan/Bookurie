@@ -22,7 +22,7 @@ export async function userLogin(
 		const user = await User.findOne({
 			where: { username: username, password: md5(password) },
 		});
-		if (user === null) return res.status(403).send({ error: 'Invalid user' });
+		if (!user) return res.status(403).send({ error: 'Invalid user' });
 
 		const accessToken = JWT.sign({ user }, process.env.JWT_ACCESS_KEY, {
 			expiresIn: process.env.JWT_ACCESS_KEY_EXPIRE_TIME,

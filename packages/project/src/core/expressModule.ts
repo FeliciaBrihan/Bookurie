@@ -128,23 +128,31 @@ function getInstanceOfModule(module: string) {
 	const modulePath = join(process.env.MODULES_PATH, module);
 
 	const modelsPath = join(modulePath, 'models');
+	const cronPath = join(modulePath, 'cron');
 	const expressRoutesPath = join(modulePath, 'routes');
 
 	const haveModels = existsSync(modelsPath);
+	const haveCrons = existsSync(cronPath);
 	const haveExpressRoutes = existsSync(expressRoutesPath);
 
 	async function getExpressRoutes() {
 		return await import(getRelativePath(join(expressRoutesPath, 'index.ts')));
 		// return '../modules/product/routes/index.ts';
 	}
+	async function startCronSchedule() {
+		await import(getRelativePath(cronPath));
+	}
 
 	return {
 		modulePath,
 		modelsPath,
+		cronPath,
 		expressRoutesPath,
 		haveModels,
+		haveCrons,
 		haveExpressRoutes,
 		getExpressRoutes,
+		startCronSchedule,
 	};
 }
 

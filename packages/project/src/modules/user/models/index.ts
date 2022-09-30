@@ -15,7 +15,12 @@ export function getModelUser(sequelize: Sequelize) {
 			},
 			budget: DataTypes.INTEGER,
 			subscriptionId: DataTypes.INTEGER,
-			subscriptionDate: DataTypes.DATE,
+			subscriptionDate: {
+				type: DataTypes.DATE,
+			},
+			subscriptionExpirationDate: {
+				type: DataTypes.DATE,
+			},
 			booksReadThisMonth: {
 				type: DataTypes.INTEGER,
 				defaultValue: 0,

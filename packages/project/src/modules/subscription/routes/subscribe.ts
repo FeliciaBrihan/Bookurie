@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import { getCurrentDate } from '../../../helpers/getCurrentDate';
 import { sequelize } from '../../../global';
 import { errorMessage } from '../../../helpers/index';
 import { ModelSubscription, Models, ExtraRequest } from '../../../interface';
@@ -30,9 +31,15 @@ export async function subscribe(
 
 		const updatedBudget = user.budget - subscription.monthlyFee;
 
+		const date = new Date();
+		const subscriptionExpirationDate = date.setDate(
+			date.getDate() + 1
+		) as unknown as Date;
+
 		await user.update({
 			subscriptionId: +subscriptionId,
-			subscriptionDate: new Date(),
+			subscriptionDate: getCurrentDate().date as unknown as Date,
+			subscriptionExpirationDate: subscriptionExpirationDate,
 			budget: updatedBudget,
 		});
 

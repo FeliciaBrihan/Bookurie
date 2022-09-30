@@ -12,6 +12,7 @@ export interface User extends DefaultParanoidAttributes {
 	bookDiscount: number;
 	subscriptionId: number;
 	subscriptionDate: Date;
+	subscriptionExpirationDate: Date;
 	booksReadThisMonth: number;
 }
 
