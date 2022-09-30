@@ -15,10 +15,7 @@ export function getModelUser(sequelize: Sequelize) {
 			},
 			budget: DataTypes.INTEGER,
 			subscriptionId: DataTypes.INTEGER,
-			hasPremiumSubscription: {
-				type: DataTypes.BOOLEAN,
-				defaultValue: false,
-			},
+			subscriptionDate: DataTypes.DATE,
 			booksReadThisMonth: {
 				type: DataTypes.INTEGER,
 				defaultValue: 0,

@@ -26,7 +26,7 @@ async function addModels(sequelize: Sequelize) {
 	const { getModelSubscription } = await import(
 		'../modules/subscription/models/index'
 	);
-	const { getModelPremium } = await import('../modules/premium/models/index');
+	const { getModelRaffle } = await import('../modules/raffle/models/index');
 
 	getModelLoan(sequelize);
 	getModelBook(sequelize);
@@ -36,7 +36,7 @@ async function addModels(sequelize: Sequelize) {
 	getModelPermission(sequelize);
 	getModelPurchase(sequelize);
 	getModelSubscription(sequelize);
-	getModelPremium(sequelize);
+	getModelRaffle(sequelize);
 
 	const {
 		Book,
@@ -47,7 +47,7 @@ async function addModels(sequelize: Sequelize) {
 		Permission,
 		Purchase,
 		Subscription,
-		Premium,
+		Raffle,
 	} = sequelize.models as unknown as Models;
 
 	Book.belongsToMany(User, { through: Loan });
@@ -62,8 +62,8 @@ async function addModels(sequelize: Sequelize) {
 	User.hasOne(Subscription);
 	Subscription.belongsTo(User);
 
-	User.hasOne(Premium);
-	Premium.belongsTo(User);
+	User.hasOne(Raffle);
+	Raffle.belongsTo(User);
 
 	await sequelize.sync();
 }
@@ -143,14 +143,25 @@ async function addDefaultData(sequelize: Sequelize) {
 			password: md5('password123'),
 		});
 	}
-	const { Premium } = sequelize.models as unknown as Models;
-	const premium = await Premium.findAll();
-	if (premium.length === 0) {
-		await Premium.create({
-			monthlyFee: 200,
-			raffleInterval: 15,
-			rafflePrize: 'book',
-			everyBookDiscount: 40,
-		});
+
+	const { Subscription } = sequelize.models as unknown as Models;
+	const subscriptions = await Subscription.findAll();
+	if (subscriptions.length === 0) {
+		await Subscription.bulkCreate([
+			{
+				name: 'Basic',
+				monthlyFee: 30,
+				monthlyFreeBooks: 10,
+				everyBookDiscount: 10,
+				type: 'basic',
+			},
+			{
+				name: 'Premium',
+				monthlyFee: 100,
+				monthlyFreeBooks: 1000,
+				everyBookDiscount: 40,
+				type: 'premium',
+			},
+		]);
 	}
 }

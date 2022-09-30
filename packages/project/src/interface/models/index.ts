@@ -6,5 +6,5 @@ export * from './Action';
 export * from './Permission';
 export * from './Purchase';
 export * from './Subscription';
-export * from './Premium';
+export * from './Raffle';
 export * from './staticModels';

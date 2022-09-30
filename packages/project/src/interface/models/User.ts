@@ -11,7 +11,7 @@ export interface User extends DefaultParanoidAttributes {
 	budget: number;
 	bookDiscount: number;
 	subscriptionId: number;
-	hasPremiumSubscription: boolean;
+	subscriptionDate: Date;
 	booksReadThisMonth: number;
 }
 

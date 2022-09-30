@@ -21,6 +21,10 @@ export function getModelSubscription(sequelize: Sequelize) {
 				type: DataTypes.INTEGER,
 				allowNull: false,
 			},
+			type: {
+				type: DataTypes.ENUM('basic', 'premium'),
+				allowNull: false,
+			},
 		},
 		{ paranoid: true, tableName: 'subscription' }
 	);

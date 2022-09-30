@@ -18,7 +18,7 @@ export async function create(
 	req: ExtraRequest & Request<ReqParam, {}, ReqBody, {}>,
 	res: Response<ModelPurchase | object>
 ) {
-	const { Purchase, Book, User, Subscription, Premium } =
+	const { Purchase, Book, User, Subscription } =
 		sequelize.models as unknown as Models;
 
 	try {
@@ -35,45 +35,16 @@ export async function create(
 				return res.status(400).send({ message: 'Book out of stock' });
 		}
 		const subscriptionId = user.subscriptionId;
-		const subscription = await Subscription.findByPk(subscriptionId);
-		const premium = await Premium.findByPk(1);
 
-		if (user.hasPremiumSubscription) {
-			if (book.typeFormat === 'printed') {
-				const discount = premium.everyBookDiscount / 100;
-				const bookFinalPrice = Math.round(book.price - book.price * discount);
+		if (subscriptionId) {
+			const subscription = await Subscription.findByPk(subscriptionId);
+			const userSubscriptionType = subscription.type;
 
-				if (user.budget >= bookFinalPrice) {
-					const updatedBudget = user.budget - bookFinalPrice;
-					await user.update({ budget: updatedBudget });
-				} else {
-					return res
-						.status(400)
-						.send({ message: `You don't have enough money to buy this book` });
-				}
-			}
-		}
-
-		if (user.subscriptionId) {
-			if (book.typeFormat === 'printed') {
-				const discount = subscription.everyBookDiscount / 100;
-				const bookFinalPrice = Math.round(book.price - book.price * discount);
-
-				if (user.budget >= bookFinalPrice) {
-					const updatedBudget = user.budget - bookFinalPrice;
-					await user.update({ budget: updatedBudget });
-				} else {
-					return res
-						.status(400)
-						.send({ message: `You don't have enough money to buy this book` });
-				}
-			} else if (book.typeFormat === 'online') {
-				// need to find a way to reset the booksReadThisMonth each month
-				if (user.booksReadThisMonth < subscription.monthlyFreeBooks) {
-					user.update({ booksReadThisMonth: user.booksReadThisMonth + 1 });
-				} else {
+			if (userSubscriptionType === 'premium') {
+				if (book.typeFormat === 'printed') {
 					const discount = subscription.everyBookDiscount / 100;
 					const bookFinalPrice = Math.round(book.price - book.price * discount);
+
 					if (user.budget >= bookFinalPrice) {
 						const updatedBudget = user.budget - bookFinalPrice;
 						await user.update({ budget: updatedBudget });
@@ -83,9 +54,40 @@ export async function create(
 						});
 					}
 				}
+			} else {
+				if (book.typeFormat === 'printed') {
+					const discount = subscription.everyBookDiscount / 100;
+					const bookFinalPrice = Math.round(book.price - book.price * discount);
+
+					if (user.budget >= bookFinalPrice) {
+						const updatedBudget = user.budget - bookFinalPrice;
+						await user.update({ budget: updatedBudget });
+					} else {
+						return res.status(400).send({
+							message: `You don't have enough money to buy this book`,
+						});
+					}
+				} else if (book.typeFormat === 'online') {
+					if (user.booksReadThisMonth < subscription.monthlyFreeBooks) {
+						user.update({ booksReadThisMonth: user.booksReadThisMonth + 1 });
+					} else {
+						const discount = subscription.everyBookDiscount / 100;
+						const bookFinalPrice = Math.round(
+							book.price - book.price * discount
+						);
+						if (user.budget >= bookFinalPrice) {
+							const updatedBudget = user.budget - bookFinalPrice;
+							await user.update({ budget: updatedBudget });
+						} else {
+							return res.status(400).send({
+								message: `You don't have enough money to buy this book`,
+							});
+						}
+					}
+				}
 			}
 		}
-		if (!user.subscriptionId && !user.hasPremiumSubscription) {
+		if (!user.subscriptionId) {
 			if (user.budget >= book.price) {
 				const updatedBudget = user.budget - book.price;
 				await user.update({ budget: updatedBudget });

@@ -32,6 +32,7 @@ export async function subscribe(
 
 		await user.update({
 			subscriptionId: +subscriptionId,
+			subscriptionDate: new Date(),
 			budget: updatedBudget,
 		});
 

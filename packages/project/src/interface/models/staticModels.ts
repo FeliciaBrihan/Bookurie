@@ -7,7 +7,7 @@ import { ModelAction } from './Action';
 import { ModelPermission } from './Permission';
 import { ModelPurchase } from './Purchase';
 import { ModelSubscription } from './Subscription';
-import { ModelPremium } from './Premium';
+import { ModelRaffle } from './Raffle';
 
 export interface Models {
 	Book: ModelStatic<ModelBook>;
@@ -18,5 +18,5 @@ export interface Models {
 	Permission: ModelStatic<ModelPermission>;
 	Purchase: ModelStatic<ModelPurchase>;
 	Subscription: ModelStatic<ModelSubscription>;
-	Premium: ModelStatic<ModelPremium>;
+	Raffle: ModelStatic<ModelRaffle>;
 }

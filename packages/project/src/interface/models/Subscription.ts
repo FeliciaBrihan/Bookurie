@@ -6,6 +6,7 @@ export interface Subscription extends DefaultParanoidAttributes {
 	monthlyFee: number;
 	monthlyFreeBooks: number;
 	everyBookDiscount: number;
+	type: string;
 }
 
 export interface SubscriptionAttributes extends Subscription {
