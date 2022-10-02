@@ -9,7 +9,7 @@ import { getByUser } from './getByUser';
 const router = Router({ mergeParams: true });
 
 router.post('/', <any>verifyToken, create);
-router.get('/', getAll);
-router.get('/all', verifyToken, getByUser);
+router.get('/all', getAll);
+router.get('/', verifyToken, getByUser);
 
 export const routes = router;

@@ -4,8 +4,8 @@ export function getModelRaffle(sequelize: Sequelize) {
 	sequelize.define(
 		'Raffle',
 		{
-			interval: { type: DataTypes.INTEGER, allowNull: false },
 			prize: { type: DataTypes.STRING, allowNull: false },
+			BookId: DataTypes.INTEGER,
 		},
 		{ paranoid: true, tableName: 'raffle' }
 	);

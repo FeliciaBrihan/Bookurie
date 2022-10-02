@@ -33,7 +33,7 @@ export async function subscribe(
 
 		const date = new Date();
 		const subscriptionExpirationDate = date.setDate(
-			date.getDate() + 1
+			date.getDate() + 30
 		) as unknown as Date;
 
 		await user.update({
