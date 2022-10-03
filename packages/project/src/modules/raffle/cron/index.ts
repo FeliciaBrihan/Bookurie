@@ -23,17 +23,12 @@ cron.schedule(' 0 0 1,15 * *', async () => {
 	const winner =
 		eligibleUsers[Math.floor(Math.random() * eligibleUsers.length)];
 
-	// random prize
-	const prizes = ['book', 'voucher'];
-	const prize = prizes[Math.floor(Math.random() * prizes.length)];
-	const voucher = 50;
+	const premiumSubscription = await Subscription.findOne({
+		where: { type: 'premium' },
+	});
+	const prize = premiumSubscription.rafflePrize;
 
-	if (prize === 'voucher') {
-		const user = await User.findByPk(winner);
-		await user.update({ budget: user.budget + voucher });
-
-		await Raffle.create({ prize: prize, UserId: winner });
-	} else if (prize === 'book') {
+	if (prize === 'book') {
 		const books = await Book.findAll({
 			where: {
 				typeFormat: 'printed',
@@ -46,5 +41,10 @@ cron.schedule(' 0 0 1,15 * *', async () => {
 		await book.update({ stock: book.stock - 1 });
 
 		await Raffle.create({ prize: prize, BookId: book.id, UserId: winner });
+	} else {
+		const user = await User.findByPk(winner);
+		await user.update({ budget: user.budget + +prize });
+
+		await Raffle.create({ prize: prize, UserId: winner });
 	}
 });

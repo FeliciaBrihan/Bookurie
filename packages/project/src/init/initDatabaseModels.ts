@@ -161,6 +161,7 @@ async function addDefaultData(sequelize: Sequelize) {
 				monthlyFreeBooks: 1000,
 				everyBookDiscount: 40,
 				type: 'premium',
+				rafflePrize: 50,
 			},
 		]);
 	}

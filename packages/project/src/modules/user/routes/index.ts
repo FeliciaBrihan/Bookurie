@@ -8,10 +8,12 @@ import { getUserById } from './getUserById';
 import { verifyToken } from '../../auth/routes/verifyToken';
 import { restrictTo } from '../../auth/routes/restrictTo';
 import { changeUserRole } from './changeUserRole';
+import { viewHistory } from './history';
 
 const router = Router();
 
 router.get('/', getAllUsers);
+router.get('/history', <any>verifyToken, viewHistory);
 router.get('/:id', getUserById);
 router.post('/', createUser);
 router.put('/:id', updateUser);

@@ -25,6 +25,9 @@ export function getModelSubscription(sequelize: Sequelize) {
 				type: DataTypes.ENUM('basic', 'premium'),
 				allowNull: false,
 			},
+			rafflePrize: {
+				type: DataTypes.STRING,
+			},
 		},
 		{ paranoid: true, tableName: 'subscription' }
 	);
