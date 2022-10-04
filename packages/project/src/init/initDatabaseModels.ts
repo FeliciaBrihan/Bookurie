@@ -70,7 +70,8 @@ async function addModels(sequelize: Sequelize) {
 async function addModuleProperties(_: Sequelize) {}
 
 async function addDefaultData(sequelize: Sequelize) {
-	const { Role } = sequelize.models as unknown as Models;
+	const { Role, Action, User, Subscription, Permission } =
+		sequelize.models as unknown as Models;
 	const roles = await Role.findAll();
 	if (roles.length === 0) {
 		await Role.bulkCreate([
@@ -88,7 +89,6 @@ async function addDefaultData(sequelize: Sequelize) {
 			},
 		]);
 	}
-	const { Action } = sequelize.models as unknown as Models;
 	const actions = await Action.findAll();
 	if (actions.length === 0) {
 		await Action.bulkCreate([
@@ -128,10 +128,21 @@ async function addDefaultData(sequelize: Sequelize) {
 			{
 				name: 'User: delete',
 			},
+			{
+				name: 'Subscription: create',
+			},
+			{
+				name: 'Subscription: delete',
+			},
+			{
+				name: 'Subscription: update',
+			},
+			{
+				name: 'Subscription: read',
+			},
 		]);
 	}
 
-	const { User } = sequelize.models as unknown as Models;
 	const users = await User.findAll();
 	if (users.length === 0) {
 		await User.create({
@@ -144,7 +155,6 @@ async function addDefaultData(sequelize: Sequelize) {
 		});
 	}
 
-	const { Subscription } = sequelize.models as unknown as Models;
 	const subscriptions = await Subscription.findAll();
 	if (subscriptions.length === 0) {
 		await Subscription.bulkCreate([
@@ -162,6 +172,75 @@ async function addDefaultData(sequelize: Sequelize) {
 				everyBookDiscount: 40,
 				type: 'premium',
 				rafflePrize: 50,
+			},
+		]);
+	}
+	const permissions = await Permission.findAll();
+	if (permissions.length === 0) {
+		await Permission.bulkCreate([
+			{
+				RoleId: 3,
+				ActionId: 1,
+			},
+			{
+				RoleId: 3,
+				ActionId: 2,
+			},
+			{
+				RoleId: 3,
+				ActionId: 3,
+			},
+			{
+				RoleId: 3,
+				ActionId: 4,
+			},
+			{
+				RoleId: 3,
+				ActionId: 5,
+			},
+			{
+				RoleId: 3,
+				ActionId: 6,
+			},
+			{
+				RoleId: 3,
+				ActionId: 7,
+			},
+			{
+				RoleId: 3,
+				ActionId: 8,
+			},
+			{
+				RoleId: 3,
+				ActionId: 9,
+			},
+			{
+				RoleId: 3,
+				ActionId: 10,
+			},
+			{
+				RoleId: 3,
+				ActionId: 11,
+			},
+			{
+				RoleId: 3,
+				ActionId: 12,
+			},
+			{
+				RoleId: 3,
+				ActionId: 13,
+			},
+			{
+				RoleId: 3,
+				ActionId: 14,
+			},
+			{
+				RoleId: 3,
+				ActionId: 15,
+			},
+			{
+				RoleId: 3,
+				ActionId: 16,
 			},
 		]);
 	}

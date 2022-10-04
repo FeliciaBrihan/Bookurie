@@ -9,15 +9,31 @@ import { verifyToken } from '../../auth/routes/verifyToken';
 import { restrictTo } from '../../auth/routes/restrictTo';
 import { changeUserRole } from './changeUserRole';
 import { viewHistory } from './history';
+import { checkAuthorization } from '../../auth/routes/checkAuthorization';
 
 const router = Router();
 
-router.get('/', getAllUsers);
+router.get('/', verifyToken, checkAuthorization('User: read'), getAllUsers);
 router.get('/history', <any>verifyToken, viewHistory);
-router.get('/:id', getUserById);
-router.post('/', createUser);
-router.put('/:id', updateUser);
-router.delete('/:id', <any>verifyToken, deleteUser);
+router.get(
+	'/:id',
+	<any>verifyToken,
+	<any>checkAuthorization('User: read'),
+	getUserById
+);
+router.post('/', verifyToken, checkAuthorization('User: create'), createUser);
+router.put(
+	'/:id',
+	<any>verifyToken,
+	<any>checkAuthorization('User: update'),
+	updateUser
+);
+router.delete(
+	'/:id',
+	<any>verifyToken,
+	<any>checkAuthorization('User: delete'),
+	deleteUser
+);
 router.patch(
 	'/:userId/changeRole',
 	<any>verifyToken,
