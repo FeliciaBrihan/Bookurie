@@ -18,17 +18,7 @@ router.put(
 	<any>checkAuthorization('Loan: accept'),
 	acceptLoan
 );
-router.get(
-	'/myLoans',
-	<any>verifyToken,
-	<any>checkAuthorization('Loan: read'),
-	getLoansByUser
-);
-router.put(
-	'/myLoans/:id',
-	<any>verifyToken,
-	<any>checkAuthorization('Loan: return'),
-	returnLoan
-);
+router.get('/myLoans', <any>verifyToken, getLoansByUser);
+router.put('/myLoans/:id', <any>verifyToken, returnLoan);
 
 export const routes = router;

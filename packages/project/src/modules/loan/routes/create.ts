@@ -32,7 +32,7 @@ export async function create(
 
 		if (!user.subscriptionId) {
 			const discount = 0.15;
-			const finalBookPrice = book.price - book.price * discount;
+			const finalBookPrice = Math.round(book.price - book.price * discount);
 
 			if (user.budget >= finalBookPrice) {
 				const updatedBudget = user.budget - finalBookPrice;

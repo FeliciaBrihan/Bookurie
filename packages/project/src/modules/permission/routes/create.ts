@@ -5,7 +5,7 @@ import { Permission, ModelPermission, Models } from '../../../interface';
 
 type ReqBody = Permission;
 
-export async function setPermissions(
+export async function create(
 	req: Request<{}, {}, ReqBody, {}>,
 	res: Response<ModelPermission | object>
 ) {
