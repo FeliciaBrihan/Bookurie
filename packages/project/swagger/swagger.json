@@ -6,7 +6,7 @@
 		"requestBodies": {},
 		"responses": {},
 		"schemas": {
-			"Product": {
+			"Book": {
 				"properties": {
 					"id": {
 						"type": "integer",
@@ -24,14 +24,49 @@
 						"type": "string",
 						"format": "date-time"
 					},
-					"name": {
+					"title": {
 						"type": "string"
+					},
+					"author": {
+						"type": "string"
+					},
+					"publishingHouse": {
+						"type": "string"
+					},
+					"publishedYear": {
+						"type": "integer"
+					},
+					"coverImage": {
+						"type": "string"
+					},
+					"genre": {
+						"type": "string"
+					},
+					"description": {
+						"type": "string"
+					},
+					"typeFormat": {
+						"type": "string"
+					},
+					"pages": {
+						"type": "integer"
 					},
 					"price": {
 						"type": "integer"
+					},
+					"stock": {
+						"type": "integer"
 					}
 				},
-				"required": ["name", "price"],
+				"required": [
+					"title",
+					"author",
+					"publishedYear",
+					"pages",
+					"typeFormat",
+					"price",
+					"stock"
+				],
 				"type": "object",
 				"additionalProperties": false
 			}
@@ -40,7 +75,7 @@
 			"jwt-auth": {
 				"type": "http",
 				"scheme": "bearer",
-				"bearerFormat": "JWT"
+				"bearerFormat": "jwt"
 			}
 		}
 	},
@@ -48,8 +83,8 @@
 	"openapi": "3.0.0",
 
 	"info": {
-		"title": "Product API",
-		"description": "Test Product API",
+		"title": "Book API",
+		"description": "Book API",
 		"version": "1.0.0",
 		"license": {
 			"name": "ISC"
@@ -62,7 +97,7 @@
 	"servers": [{ "url": "http://localhost:3000", "description": "development" }],
 
 	"paths": {
-		"/product": {
+		"/books": {
 			"get": {
 				"operationId": "getAll",
 				"responses": {
@@ -73,7 +108,7 @@
 								"schema": {
 									"type": "array",
 									"items": {
-										"$ref": "#/components/schemas/Product"
+										"$ref": "#/components/schemas/Book"
 									}
 								}
 							}
@@ -86,8 +121,8 @@
 						"description": "Server Error"
 					}
 				},
-				"summary": "Get all Products",
-				"tags": ["Product"],
+				"summary": "Get all Books",
+				"tags": ["Book"],
 				"security": [
 					{
 						"jwt-auth": []
@@ -96,14 +131,14 @@
 				"parameters": []
 			},
 			"post": {
-				"operationId": "CreateProduct",
+				"operationId": "CreateBook",
 				"responses": {
 					"201": {
 						"description": "Success",
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#components/schemas/Product"
+									"$ref": "#components/schemas/Book"
 								}
 							}
 						}
@@ -121,10 +156,32 @@
 						"application/json": {
 							"schema": {
 								"properties": {
-									"name": {
+									"title": {
+										"type": "string"
+									},
+									"author": {
+										"type": "string"
+									},
+
+									"publishedYear": {
+										"type": "number",
+										"format": "double"
+									},
+									"pages": {
+										"type": "number",
+										"format": "double"
+									},
+									"genre": {
+										"type": "string"
+									},
+									"typeFormat": {
 										"type": "string"
 									},
 									"price": {
+										"type": "number",
+										"format": "double"
+									},
+									"stock": {
 										"type": "number",
 										"format": "double"
 									}
@@ -133,11 +190,11 @@
 						}
 					}
 				},
-				"tags": ["Product"],
-				"summary": "Create new product"
+				"tags": ["Book"],
+				"summary": "Create new book"
 			}
 		},
-		"/product/{id}": {
+		"/books/{id}": {
 			"get": {
 				"operationId": "GetById",
 				"responses": {
@@ -146,7 +203,7 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#components/schemas/Product"
+									"$ref": "#components/schemas/Book"
 								}
 							}
 						}
@@ -155,11 +212,11 @@
 						"description": "User Error"
 					}
 				},
-				"summary": "Get product by id",
-				"tags": ["Product"],
+				"summary": "Get book by id",
+				"tags": ["Book"],
 				"parameters": [
 					{
-						"description": "The product identifier",
+						"description": "The book identifier",
 						"in": "path",
 						"name": "id",
 						"required": true,
@@ -170,7 +227,7 @@
 					}
 				]
 			},
-			"put": {
+			"patch": {
 				"operationId": "Update",
 				"responses": {
 					"200": {
@@ -178,7 +235,7 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#components/schemas/Product"
+									"$ref": "#components/schemas/Book"
 								}
 							}
 						}
@@ -190,12 +247,12 @@
 						"description": "Server error"
 					}
 				},
-				"summary": "Update product by id",
-				"tags": ["Product"],
+				"summary": "Update book by id",
+				"tags": ["Book"],
 				"security": [],
 				"parameters": [
 					{
-						"description": "The product identifier",
+						"description": "The book identifier",
 						"in": "path",
 						"name": "id",
 						"required": true,
@@ -211,11 +268,34 @@
 						"application/json": {
 							"schema": {
 								"properties": {
-									"name": {
+									"title": {
+										"type": "string"
+									},
+									"author": {
+										"type": "string"
+									},
+
+									"publishedYear": {
+										"type": "number",
+										"format": "double"
+									},
+									"pages": {
+										"type": "number",
+										"format": "double"
+									},
+									"genre": {
+										"type": "string"
+									},
+									"typeFormat": {
 										"type": "string"
 									},
 									"price": {
-										"type": "number"
+										"type": "number",
+										"format": "double"
+									},
+									"stock": {
+										"type": "number",
+										"format": "double"
 									}
 								}
 							}
@@ -224,14 +304,14 @@
 				}
 			},
 			"delete": {
-				"operationId": "DeleteProduct",
+				"operationId": "DeleteBook",
 				"responses": {
 					"200": {
 						"description": "Success",
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/Product"
+									"$ref": "#/components/schemas/Book"
 								}
 							}
 						}
@@ -243,12 +323,12 @@
 						"description": "Server Error"
 					}
 				},
-				"summary": "Delete product by id",
-				"tags": ["Product"],
+				"summary": "Delete book by id",
+				"tags": ["Book"],
 				"security": [],
 				"parameters": [
 					{
-						"description": "The product identifier",
+						"description": "The book identifier",
 						"in": "path",
 						"name": "id",
 						"required": true,
