@@ -8,6 +8,7 @@ import { ModelPermission } from './Permission';
 import { ModelPurchase } from './Purchase';
 import { ModelSubscription } from './Subscription';
 import { ModelRaffle } from './Raffle';
+import { ModelPrize } from './Prize';
 
 export interface Models {
 	Book: ModelStatic<ModelBook>;
@@ -19,4 +20,5 @@ export interface Models {
 	Purchase: ModelStatic<ModelPurchase>;
 	Subscription: ModelStatic<ModelSubscription>;
 	Raffle: ModelStatic<ModelRaffle>;
+	Prize: ModelStatic<ModelPrize>;
 }

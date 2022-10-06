@@ -4,47 +4,35 @@ import { sequelize } from '../../../global';
 import { Models } from '../../../interface';
 
 cron.schedule(' 0 0 1,15 * *', async () => {
-	const { Raffle, User, Subscription, Book } =
-		sequelize.models as unknown as Models;
+	const { Raffle, User, Prize, Book } = sequelize.models as unknown as Models;
 
-	const users = await User.findAll();
-	const eligibleUsers = [];
+	const users = await User.findAll({ where: { subscriptionId: 2 } });
 
-	for (const user of users) {
-		if (user.subscriptionId) {
-			const subscriptionId = user.subscriptionId;
-			const subscription = await Subscription.findByPk(subscriptionId);
+	const winner = users[Math.floor(Math.random() * users.length)];
 
-			if (subscription.type === 'premium') {
-				eligibleUsers.push(user.id);
-			}
+	const prize = await Prize.findOne();
+
+	if (prize.bookId && !prize.voucher) {
+		const book = await Book.findByPk(prize.bookId);
+		if (book.typeFormat === 'printed' && book.stock > 0) {
+			await book.update({ stock: book.stock - 1 });
 		}
-	}
-	const winner =
-		eligibleUsers[Math.floor(Math.random() * eligibleUsers.length)];
+		await Raffle.create({ BookId: book.id, UserId: winner.id });
+	} else if (prize.voucher && !prize.bookId) {
+		await winner.update({ budget: winner.budget + prize.voucher });
 
-	const premiumSubscription = await Subscription.findOne({
-		where: { type: 'premium' },
-	});
-	const prize = premiumSubscription.rafflePrize;
+		await Raffle.create({ prize: prize.voucher, UserId: winner.id });
+	} else if (prize.bookId && prize.voucher) {
+		const book = await Book.findByPk(prize.bookId);
+		if (book.typeFormat === 'printed' && book.stock > 0) {
+			await book.update({ stock: book.stock - 1 });
+			await winner.update({ budget: winner.budget + prize.voucher });
 
-	if (prize === 'book') {
-		const books = await Book.findAll({
-			where: {
-				typeFormat: 'printed',
-				stock: {
-					[Op.gt]: 0,
-				},
-			},
-		});
-		const book = books[Math.floor(Math.random() * books.length)];
-		await book.update({ stock: book.stock - 1 });
-
-		await Raffle.create({ prize: prize, BookId: book.id, UserId: winner });
-	} else {
-		const user = await User.findByPk(winner);
-		await user.update({ budget: user.budget + +prize });
-
-		await Raffle.create({ prize: prize, UserId: winner });
+			await Raffle.create({
+				prize: prize.voucher,
+				BookId: book.id,
+				UserId: winner.id,
+			});
+		}
 	}
 });

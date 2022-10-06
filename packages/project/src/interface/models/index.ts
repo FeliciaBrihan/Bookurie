@@ -7,4 +7,5 @@ export * from './Permission';
 export * from './Purchase';
 export * from './Subscription';
 export * from './Raffle';
+export * from './Prize';
 export * from './staticModels';

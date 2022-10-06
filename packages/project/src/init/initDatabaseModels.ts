@@ -28,6 +28,8 @@ async function addModels(sequelize: Sequelize) {
 	);
 	const { getModelRaffle } = await import('../modules/raffle/models/index');
 
+	const { getModelPrize } = await import('../modules/prize/models/index');
+
 	getModelLoan(sequelize);
 	getModelBook(sequelize);
 	getModelUser(sequelize);
@@ -37,6 +39,7 @@ async function addModels(sequelize: Sequelize) {
 	getModelPurchase(sequelize);
 	getModelSubscription(sequelize);
 	getModelRaffle(sequelize);
+	getModelPrize(sequelize);
 
 	const {
 		Book,
@@ -48,6 +51,7 @@ async function addModels(sequelize: Sequelize) {
 		Purchase,
 		Subscription,
 		Raffle,
+		Prize,
 	} = sequelize.models as unknown as Models;
 
 	Book.belongsToMany(User, { through: Loan });
@@ -70,7 +74,7 @@ async function addModels(sequelize: Sequelize) {
 async function addModuleProperties(_: Sequelize) {}
 
 async function addDefaultData(sequelize: Sequelize) {
-	const { Role, Action, User, Subscription, Permission } =
+	const { Role, Action, User, Subscription, Permission, Prize } =
 		sequelize.models as unknown as Models;
 	const roles = await Role.findAll();
 	if (roles.length === 0) {
@@ -171,7 +175,6 @@ async function addDefaultData(sequelize: Sequelize) {
 				monthlyFreeBooks: 1000,
 				everyBookDiscount: 40,
 				type: 'premium',
-				rafflePrize: 50,
 			},
 		]);
 	}
@@ -243,5 +246,9 @@ async function addDefaultData(sequelize: Sequelize) {
 				ActionId: 16,
 			},
 		]);
+	}
+	const prizes = await Prize.findAll();
+	if (prizes.length === 0) {
+		await Prize.create();
 	}
 }

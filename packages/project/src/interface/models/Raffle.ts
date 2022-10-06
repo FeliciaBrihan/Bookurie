@@ -2,7 +2,7 @@ import { Model } from 'sequelize';
 import { DefaultParanoidAttributes } from './DefaultParanoidAttributes';
 
 export interface Raffle extends DefaultParanoidAttributes {
-	prize: string | number;
+	prize: number;
 	BookId: number;
 	UserId: number;
 }
