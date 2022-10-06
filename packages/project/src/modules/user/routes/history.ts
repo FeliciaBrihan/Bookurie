@@ -22,9 +22,9 @@ export async function viewHistory(
 
 		res.status(200).json({
 			data: {
-				loans: loans.length > 0 ? loans : 'No loans',
-				purchases: purchases.length > 0 ? purchases : 'No purchases',
-				raffleWins: raffleWins.length > 0 ? raffleWins : 'No prizes won!',
+				loans,
+				purchases,
+				raffleWins,
 			},
 		});
 	} catch (error) {

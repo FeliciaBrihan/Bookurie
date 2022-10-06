@@ -3,7 +3,7 @@ import { sequelize } from '../../../global';
 import { errorMessage } from '../../../helpers/errorMessage';
 import { ExtraRequest, Models } from '../../../interface';
 
-export function checkAuthorization(requiredPermission: string) {
+export function checkAuthorization(requiredAction: string) {
 	return async function (
 		req: Request & ExtraRequest,
 		res: Response,
@@ -15,7 +15,7 @@ export function checkAuthorization(requiredPermission: string) {
 			const roleId = req.currentUserRoleId;
 
 			const action = await Action.findOne({
-				where: { name: requiredPermission },
+				where: { name: requiredAction },
 			});
 			const actionId = action.id;
 

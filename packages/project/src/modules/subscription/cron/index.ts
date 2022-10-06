@@ -15,10 +15,8 @@ cron.schedule('59 23 * * *', async () => {
 		),
 	});
 
-	const date = new Date();
-	const newExpirationDate = date.setDate(
-		date.getDate() + 30
-	) as unknown as Date;
+	const newExpirationDate = new Date();
+	newExpirationDate.setDate(newExpirationDate.getDate() + 30);
 
 	for (const user of users) {
 		if (user.subscriptionId) {

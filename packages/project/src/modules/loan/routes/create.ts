@@ -20,6 +20,15 @@ export async function create(
 		const book = await Book.findByPk(req.params.bookId);
 		const user = await User.findByPk(req.currentUserId);
 
+		const alreadyLoaned = await Loan.findAll({
+			where: {
+				BookId: book.id,
+				UserId: user.id,
+			},
+		});
+		if (alreadyLoaned.length > 0)
+			return res.status(400).send({ error: 'Book already loaned' });
+
 		if (!book) return res.status(400).send({ error: 'Invalid id' });
 
 		if (book.typeFormat === 'online')

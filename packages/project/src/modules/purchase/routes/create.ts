@@ -28,6 +28,18 @@ export async function create(
 		const book = await Book.findByPk(req.params.bookId);
 		const user = await User.findByPk(req.currentUserId);
 
+		const alreadyPurchased = await Purchase.findAll({
+			where: {
+				BookId: book.id,
+				UserId: user.id,
+			},
+		});
+
+		if (alreadyPurchased.length > 0) {
+			if (book.typeFormat === 'online') {
+				return res.status(400).send({ error: 'Online book already bought' });
+			}
+		}
 		if (!book) return res.status(400).send({ error: 'Invalid id' });
 
 		if (book.typeFormat === 'printed') {
@@ -69,7 +81,9 @@ export async function create(
 					}
 				} else if (book.typeFormat === 'online') {
 					if (user.booksReadThisMonth < subscription.monthlyFreeBooks) {
-						user.update({ booksReadThisMonth: user.booksReadThisMonth + 1 });
+						await user.update({
+							booksReadThisMonth: user.booksReadThisMonth + 1,
+						});
 					} else {
 						const discount = subscription.everyBookDiscount / 100;
 						const bookFinalPrice = Math.round(
