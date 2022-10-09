@@ -2,7 +2,6 @@ import './env.ts';
 import { createServer } from 'http';
 import express, { json, Response, Request } from 'express';
 import swaggerUi from 'swagger-ui-express';
-import swaggerDocs from '../swagger/swagger.json';
 import cors from 'cors';
 
 import {
@@ -23,16 +22,11 @@ export default async function server() {
 	const httpServer = createServer(app);
 	app.use(cors());
 
-	// app.use('/docs', swaggerUi.serve, async (req, res) => {
-	// 	return res.send(
-	// 		swaggerUi.generateHTML(
-	// 			await import('../swagger/swagger.json', { assert: { type: 'json' } })
-	// 		)
-	// 	);
-	// });
-
-	app.use('/docs', swaggerUi.serve);
-	app.use('/docs', swaggerUi.setup(swaggerDocs));
+	app.use('/docs', swaggerUi.serve, async (req: Request, res: Response) => {
+		return res.send(
+			swaggerUi.generateHTML(await import('../swagger/swagger.json'))
+		);
+	});
 
 	app.get('/', function (req: Request, res: Response) {
 		res.send('API');

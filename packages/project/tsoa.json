@@ -1,0 +1,32 @@
+{
+	"noImplicitAdditionalProperties": "throw-on-extras",
+	"controllerPathGlobs": ["src/**/doc.ts"],
+	"spec": {
+		"outputDirectory": "swagger",
+		"specVersion": 3,
+		"securityDefinitions": {
+			"jwt-auth": {
+				"type": "http",
+				"scheme": "bearer",
+				"bearerFormat": "JWT"
+			}
+		},
+		"spec": {
+			"servers": [
+				{
+					"url": "http://localhost:3000",
+					"description": "Local development"
+				}
+			]
+		}
+	},
+	"routes": {
+		"routesDir": "swagger"
+	},
+	"compilerOptions": {
+		"baseUrl": "./",
+		"paths": {
+			"exampleLib": "src/*"
+		}
+	}
+}

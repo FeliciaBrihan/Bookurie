@@ -9,7 +9,6 @@ export interface User extends DefaultParanoidAttributes {
 	email: string;
 	roleId: number;
 	budget: number;
-	bookDiscount: number;
 	subscriptionId: number;
 	subscriptionDate: Date;
 	subscriptionExpirationDate: Date;
