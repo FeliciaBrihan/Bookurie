@@ -6,15 +6,242 @@
 		"requestBodies": {},
 		"responses": {},
 		"schemas": {
+			"Pick_User.username-or-password_": {
+				"properties": {
+					"username": {
+						"type": "string"
+					},
+					"password": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"username",
+					"password"
+				],
+				"type": "object",
+				"description": "From T, pick a set of properties whose keys are in the union K"
+			},
+			"ReqBodyAuth": {
+				"$ref": "#/components/schemas/Pick_User.username-or-password_"
+			},
+			"Book": {
+				"properties": {
+					"id": {
+						"type": "number",
+						"format": "double"
+					},
+					"createdAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"updatedAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"deletedAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"title": {
+						"type": "string"
+					},
+					"author": {
+						"type": "string"
+					},
+					"publishingHouse": {
+						"type": "string"
+					},
+					"publishedYear": {
+						"type": "number",
+						"format": "double"
+					},
+					"coverImage": {
+						"type": "string"
+					},
+					"genre": {
+						"type": "string"
+					},
+					"description": {
+						"type": "string"
+					},
+					"typeFormat": {
+						"type": "string"
+					},
+					"pages": {
+						"type": "number",
+						"format": "double"
+					},
+					"price": {
+						"type": "number",
+						"format": "double"
+					},
+					"stock": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"title",
+					"author",
+					"publishingHouse",
+					"publishedYear",
+					"coverImage",
+					"genre",
+					"description",
+					"typeFormat",
+					"pages",
+					"price",
+					"stock"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"Pick_Book.-or-title-or-author-or-publishedYear-or-coverImage-or-genre-or-description-or-typeFormat-or-pages-or-price-or-stock_": {
+				"properties": {
+					"title": {
+						"type": "string"
+					},
+					"author": {
+						"type": "string"
+					},
+					"publishedYear": {
+						"type": "number",
+						"format": "double"
+					},
+					"coverImage": {
+						"type": "string"
+					},
+					"genre": {
+						"type": "string"
+					},
+					"description": {
+						"type": "string"
+					},
+					"typeFormat": {
+						"type": "string"
+					},
+					"pages": {
+						"type": "number",
+						"format": "double"
+					},
+					"price": {
+						"type": "number",
+						"format": "double"
+					},
+					"stock": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"title",
+					"author",
+					"publishedYear",
+					"coverImage",
+					"genre",
+					"description",
+					"typeFormat",
+					"pages",
+					"price",
+					"stock"
+				],
+				"type": "object",
+				"description": "From T, pick a set of properties whose keys are in the union K"
+			},
+			"ReqBodyBook": {
+				"$ref": "#/components/schemas/Pick_Book.-or-title-or-author-or-publishedYear-or-coverImage-or-genre-or-description-or-typeFormat-or-pages-or-price-or-stock_"
+			},
+			"Loan": {
+				"properties": {
+					"id": {
+						"type": "number",
+						"format": "double"
+					},
+					"createdAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"updatedAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"deletedAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"isAccepted": {
+						"type": "boolean"
+					},
+					"isReturned": {
+						"type": "boolean"
+					},
+					"expirationDate": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"BookId": {
+						"type": "number",
+						"format": "double"
+					},
+					"UserId": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"isAccepted",
+					"isReturned",
+					"expirationDate",
+					"BookId",
+					"UserId"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"Pick_Loan.BookId-or-UserId-or-expirationDate-or-isAccepted-or-isReturned_": {
+				"properties": {
+					"BookId": {
+						"type": "number",
+						"format": "double"
+					},
+					"UserId": {
+						"type": "number",
+						"format": "double"
+					},
+					"expirationDate": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"isAccepted": {
+						"type": "boolean"
+					},
+					"isReturned": {
+						"type": "boolean"
+					}
+				},
+				"required": [
+					"BookId",
+					"UserId",
+					"expirationDate",
+					"isAccepted",
+					"isReturned"
+				],
+				"type": "object",
+				"description": "From T, pick a set of properties whose keys are in the union K"
+			},
+			"ReqBodyLoan": {
+				"$ref": "#/components/schemas/Pick_Loan.BookId-or-UserId-or-expirationDate-or-isAccepted-or-isReturned_"
+			},
 			"Pick_User.Exclude_keyofUser.password__": {
 				"properties": {
+					"username": {
+						"type": "string"
+					},
 					"firstName": {
 						"type": "string"
 					},
 					"lastName": {
-						"type": "string"
-					},
-					"username": {
 						"type": "string"
 					},
 					"email": {
@@ -62,9 +289,9 @@
 					}
 				},
 				"required": [
+					"username",
 					"firstName",
 					"lastName",
-					"username",
 					"email",
 					"roleId",
 					"budget",
@@ -156,6 +383,9 @@
 			},
 			"Pick_User.-or-firstName-or-lastName-or-username-or-password-or-email-or-roleId-or-budget-or-subscriptionId-or-subscriptionDate-or-subscriptionExpirationDate-or-booksReadThisMonth_": {
 				"properties": {
+					"username": {
+						"type": "string"
+					},
 					"password": {
 						"type": "string"
 					},
@@ -163,9 +393,6 @@
 						"type": "string"
 					},
 					"lastName": {
-						"type": "string"
-					},
-					"username": {
 						"type": "string"
 					},
 					"email": {
@@ -197,10 +424,10 @@
 					}
 				},
 				"required": [
+					"username",
 					"password",
 					"firstName",
 					"lastName",
-					"username",
 					"email",
 					"roleId",
 					"budget",
@@ -234,6 +461,377 @@
 	},
 	"openapi": "3.0.0",
 	"paths": {
+		"/auth/login": {
+			"post": {
+				"operationId": "Create",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"accessToken": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"accessToken"
+									],
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"summary": "User login",
+				"tags": [
+					"Auth"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/ReqBodyAuth"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/books": {
+			"get": {
+				"operationId": "GetAll",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/Book"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"summary": "Get all Books",
+				"tags": [
+					"Book"
+				],
+				"security": [],
+				"parameters": []
+			},
+			"post": {
+				"operationId": "Create",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Book"
+								}
+							}
+						}
+					}
+				},
+				"summary": "Create new book",
+				"tags": [
+					"Book"
+				],
+				"security": [
+					{
+						"jwt-auth": []
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/ReqBodyBook"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/books/{id}": {
+			"get": {
+				"operationId": "GetById",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Book"
+								}
+							}
+						}
+					}
+				},
+				"summary": "Get book by ID",
+				"tags": [
+					"Book"
+				],
+				"security": [
+					{
+						"jwt-auth": []
+					}
+				],
+				"parameters": [
+					{
+						"description": "The book identifier",
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			},
+			"put": {
+				"operationId": "Update",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Book"
+								}
+							}
+						}
+					}
+				},
+				"summary": "Update book by Id",
+				"tags": [
+					"Book"
+				],
+				"security": [
+					{
+						"jwt-auth": []
+					}
+				],
+				"parameters": [
+					{
+						"description": "The book identifier",
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/ReqBodyBook"
+							}
+						}
+					}
+				}
+			},
+			"delete": {
+				"operationId": "Delete",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Book"
+								}
+							}
+						}
+					}
+				},
+				"summary": "Delete book by Id",
+				"tags": [
+					"Book"
+				],
+				"security": [
+					{
+						"jwt-auth": []
+					}
+				],
+				"parameters": [
+					{
+						"description": "The book identifier",
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			}
+		},
+		"/loan": {
+			"get": {
+				"operationId": "GetAll",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/Loan"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"summary": "Get all Loans",
+				"tags": [
+					"Loan"
+				],
+				"security": [
+					{
+						"jwt-auth": []
+					}
+				],
+				"parameters": []
+			},
+			"post": {
+				"operationId": "Create",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Loan"
+								}
+							}
+						}
+					}
+				},
+				"summary": "Create new loan",
+				"tags": [
+					"Loan"
+				],
+				"security": [
+					{
+						"jwt-auth": []
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/ReqBodyLoan"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/loan/{id}": {
+			"get": {
+				"operationId": "GetById",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Loan"
+								}
+							}
+						}
+					}
+				},
+				"summary": "Get loan by ID",
+				"tags": [
+					"Loan"
+				],
+				"security": [
+					{
+						"jwt-auth": []
+					}
+				],
+				"parameters": [
+					{
+						"description": "The loan identifier",
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			},
+			"put": {
+				"operationId": "Update",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Loan"
+								}
+							}
+						}
+					}
+				},
+				"summary": "Accept loan by Id",
+				"tags": [
+					"Loan"
+				],
+				"security": [
+					{
+						"jwt-auth": []
+					}
+				],
+				"parameters": [
+					{
+						"description": "The loan identifier",
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/ReqBodyLoan"
+							}
+						}
+					}
+				}
+			}
+		},
 		"/user": {
 			"get": {
 				"operationId": "GetAll",

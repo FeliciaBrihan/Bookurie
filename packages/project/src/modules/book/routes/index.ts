@@ -22,7 +22,7 @@ router.get(
 	<any>checkAuthorization('Book: read'),
 	getById
 );
-router.patch(
+router.put(
 	'/:id',
 	<any>verifyToken,
 	<any>checkAuthorization('Book: update'),

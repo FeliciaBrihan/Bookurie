@@ -9,7 +9,6 @@ export interface Book extends DefaultParanoidAttributes {
 	coverImage: string;
 	genre: string;
 	description: string;
-	isAvailable: boolean;
 	typeFormat: string;
 	pages: number;
 	price: number;
