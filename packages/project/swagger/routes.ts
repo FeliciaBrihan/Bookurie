@@ -9,6 +9,8 @@ import { BookController } from './../src/modules/book/doc';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { LoanController } from './../src/modules/loan/doc';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+import { PurchaseController } from './../src/modules/purchase/doc';
+// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { UserController } from './../src/modules/user/doc';
 import type { RequestHandler } from 'express';
 import * as express from 'express';
@@ -82,6 +84,29 @@ const models: TsoaRoute.Models = {
     "ReqBodyLoan": {
         "dataType": "refAlias",
         "type": {"ref":"Pick_Loan.BookId-or-UserId-or-expirationDate-or-isAccepted-or-isReturned_","validators":{}},
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "Purchase": {
+        "dataType": "refObject",
+        "properties": {
+            "id": {"dataType":"double"},
+            "createdAt": {"dataType":"datetime"},
+            "updatedAt": {"dataType":"datetime"},
+            "deletedAt": {"dataType":"datetime"},
+            "BookId": {"dataType":"double","required":true},
+            "UserId": {"dataType":"double","required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "Pick_Purchase.BookId-or-UserId_": {
+        "dataType": "refAlias",
+        "type": {"dataType":"nestedObjectLiteral","nestedProperties":{"BookId":{"dataType":"double","required":true},"UserId":{"dataType":"double","required":true}},"validators":{}},
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "ReqBodyPurchase": {
+        "dataType": "refAlias",
+        "type": {"ref":"Pick_Purchase.BookId-or-UserId_","validators":{}},
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "Pick_User.Exclude_keyofUser.password__": {
@@ -315,14 +340,13 @@ export function RegisterRoutes(app: express.Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        app.get('/loan/:id',
+        app.get('/loan/loans',
             authenticateMiddleware([{"jwt-auth":[]}]),
             ...(fetchMiddlewares<RequestHandler>(LoanController)),
-            ...(fetchMiddlewares<RequestHandler>(LoanController.prototype.getById)),
+            ...(fetchMiddlewares<RequestHandler>(LoanController.prototype.getByUserId)),
 
-            function LoanController_getById(request: any, response: any, next: any) {
+            function LoanController_getByUserId(request: any, response: any, next: any) {
             const args = {
-                    id: {"in":"path","name":"id","required":true,"dataType":"double"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -334,7 +358,7 @@ export function RegisterRoutes(app: express.Router) {
                 const controller = new LoanController();
 
 
-              const promise = controller.getById.apply(controller, validatedArgs as any);
+              const promise = controller.getByUserId.apply(controller, validatedArgs as any);
               promiseHandler(controller, promise, response, undefined, next);
             } catch (err) {
                 return next(err);
@@ -375,7 +399,6 @@ export function RegisterRoutes(app: express.Router) {
             function LoanController_update(request: any, response: any, next: any) {
             const args = {
                     id: {"in":"path","name":"id","required":true,"dataType":"double"},
-                    requestBody: {"in":"body","name":"requestBody","required":true,"ref":"ReqBodyLoan"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -388,6 +411,108 @@ export function RegisterRoutes(app: express.Router) {
 
 
               const promise = controller.update.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, undefined, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.put('/loan/loans/:id',
+            authenticateMiddleware([{"jwt-auth":[]}]),
+            ...(fetchMiddlewares<RequestHandler>(LoanController)),
+            ...(fetchMiddlewares<RequestHandler>(LoanController.prototype.returnLoan)),
+
+            function LoanController_returnLoan(request: any, response: any, next: any) {
+            const args = {
+                    id: {"in":"path","name":"id","required":true,"dataType":"double"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const controller = new LoanController();
+
+
+              const promise = controller.returnLoan.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, undefined, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/purchase/all',
+            authenticateMiddleware([{"jwt-auth":[]}]),
+            ...(fetchMiddlewares<RequestHandler>(PurchaseController)),
+            ...(fetchMiddlewares<RequestHandler>(PurchaseController.prototype.getAll)),
+
+            function PurchaseController_getAll(request: any, response: any, next: any) {
+            const args = {
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const controller = new PurchaseController();
+
+
+              const promise = controller.getAll.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, undefined, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/purchase',
+            authenticateMiddleware([{"jwt-auth":[]}]),
+            ...(fetchMiddlewares<RequestHandler>(PurchaseController)),
+            ...(fetchMiddlewares<RequestHandler>(PurchaseController.prototype.getByUserId)),
+
+            function PurchaseController_getByUserId(request: any, response: any, next: any) {
+            const args = {
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const controller = new PurchaseController();
+
+
+              const promise = controller.getByUserId.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, undefined, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.post('/purchase',
+            authenticateMiddleware([{"jwt-auth":[]}]),
+            ...(fetchMiddlewares<RequestHandler>(PurchaseController)),
+            ...(fetchMiddlewares<RequestHandler>(PurchaseController.prototype.create)),
+
+            function PurchaseController_create(request: any, response: any, next: any) {
+            const args = {
+                    requestBody: {"in":"body","name":"requestBody","required":true,"ref":"ReqBodyPurchase"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const controller = new PurchaseController();
+
+
+              const promise = controller.create.apply(controller, validatedArgs as any);
               promiseHandler(controller, promise, response, undefined, next);
             } catch (err) {
                 return next(err);

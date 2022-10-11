@@ -4,7 +4,6 @@ import { DefaultParanoidAttributes } from './DefaultParanoidAttributes';
 export interface Purchase extends DefaultParanoidAttributes {
 	BookId: number;
 	UserId: number;
-	cost: number;
 }
 
 export interface PurchaseAttributes extends Purchase {

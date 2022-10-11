@@ -233,6 +233,61 @@
 			"ReqBodyLoan": {
 				"$ref": "#/components/schemas/Pick_Loan.BookId-or-UserId-or-expirationDate-or-isAccepted-or-isReturned_"
 			},
+			"Purchase": {
+				"properties": {
+					"id": {
+						"type": "number",
+						"format": "double"
+					},
+					"createdAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"updatedAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"deletedAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"BookId": {
+						"type": "number",
+						"format": "double"
+					},
+					"UserId": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"BookId",
+					"UserId"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"Pick_Purchase.BookId-or-UserId_": {
+				"properties": {
+					"BookId": {
+						"type": "number",
+						"format": "double"
+					},
+					"UserId": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"BookId",
+					"UserId"
+				],
+				"type": "object",
+				"description": "From T, pick a set of properties whose keys are in the union K"
+			},
+			"ReqBodyPurchase": {
+				"$ref": "#/components/schemas/Pick_Purchase.BookId-or-UserId_"
+			},
 			"Pick_User.Exclude_keyofUser.password__": {
 				"properties": {
 					"username": {
@@ -748,9 +803,9 @@
 				}
 			}
 		},
-		"/loan/{id}": {
+		"/loan/loans": {
 			"get": {
-				"operationId": "GetById",
+				"operationId": "GetByUserId",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -763,7 +818,7 @@
 						}
 					}
 				},
-				"summary": "Get loan by ID",
+				"summary": "Get loans by user",
 				"tags": [
 					"Loan"
 				],
@@ -772,19 +827,10 @@
 						"jwt-auth": []
 					}
 				],
-				"parameters": [
-					{
-						"description": "The loan identifier",
-						"in": "path",
-						"name": "id",
-						"required": true,
-						"schema": {
-							"format": "double",
-							"type": "number"
-						}
-					}
-				]
-			},
+				"parameters": []
+			}
+		},
+		"/loan/{id}": {
 			"put": {
 				"operationId": "Update",
 				"responses": {
@@ -819,13 +865,133 @@
 							"type": "number"
 						}
 					}
+				]
+			}
+		},
+		"/loan/loans/{id}": {
+			"put": {
+				"operationId": "ReturnLoan",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Loan"
+								}
+							}
+						}
+					}
+				},
+				"summary": "Return loan by Id",
+				"tags": [
+					"Loan"
 				],
+				"security": [
+					{
+						"jwt-auth": []
+					}
+				],
+				"parameters": [
+					{
+						"description": "The loan identifier",
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			}
+		},
+		"/purchase/all": {
+			"get": {
+				"operationId": "GetAll",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/Purchase"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"summary": "Get all purchases",
+				"tags": [
+					"Purchase"
+				],
+				"security": [
+					{
+						"jwt-auth": []
+					}
+				],
+				"parameters": []
+			}
+		},
+		"/purchase": {
+			"get": {
+				"operationId": "GetByUserId",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Purchase"
+								}
+							}
+						}
+					}
+				},
+				"summary": "Get purchases by user",
+				"tags": [
+					"Purchase"
+				],
+				"security": [
+					{
+						"jwt-auth": []
+					}
+				],
+				"parameters": []
+			},
+			"post": {
+				"operationId": "Create",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Purchase"
+								}
+							}
+						}
+					}
+				},
+				"summary": "Create new purchase",
+				"tags": [
+					"Purchase"
+				],
+				"security": [
+					{
+						"jwt-auth": []
+					}
+				],
+				"parameters": [],
 				"requestBody": {
 					"required": true,
 					"content": {
 						"application/json": {
 							"schema": {
-								"$ref": "#/components/schemas/ReqBodyLoan"
+								"$ref": "#/components/schemas/ReqBodyPurchase"
 							}
 						}
 					}
