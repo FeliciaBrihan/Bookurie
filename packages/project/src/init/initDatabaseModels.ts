@@ -55,7 +55,7 @@ async function addModels(sequelize: Sequelize) {
 	} = sequelize.models as unknown as Models;
 
 	Book.belongsToMany(User, { through: Loan });
-	Book.belongsToMany(User, { through: Purchase });
+	Book.belongsToMany(User, { through: { model: Purchase, unique: false } });
 
 	User.hasOne(Role);
 	Role.belongsTo(User);
