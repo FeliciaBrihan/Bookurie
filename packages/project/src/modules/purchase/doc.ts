@@ -12,17 +12,15 @@ import {
 } from 'tsoa';
 import { Purchase } from '../../interface';
 
-type ReqBodyPurchase = Pick<Purchase, 'BookId' | 'UserId'>;
-
-@Route('purchase')
+@Route('')
 @Tags('Purchase')
 @Security('jwt-auth')
 export class PurchaseController extends Controller {
 	/**
 	 * @summary Get all purchases
 	 */
-	@Get('/all')
-    @Security('jwt-auth')
+	@Get('purchase/all')
+	@Security('jwt-auth')
 	public async getAll(): Promise<Purchase[]> {
 		return [
 			{
@@ -34,9 +32,9 @@ export class PurchaseController extends Controller {
 
 	/**
 	 * @summary Get purchases by user
-	 * @param id The purchase identifier
+
 	 */
-	@Get()
+	@Get('purchase')
 	@Security('jwt-auth')
 	public async getByUserId(): Promise<Purchase> {
 		return {
@@ -46,18 +44,16 @@ export class PurchaseController extends Controller {
 	}
 	/**
 	 * @summary Create new purchase
+	 * @param bookId The book identifier
 	 */
-	@Post()
+	@Post('books/{bookId}/purchase')
 	@Security('jwt-auth')
 	public async create(
-		@Body()
-		requestBody: ReqBodyPurchase
+		@Path() bookId: number,
 	): Promise<Purchase> {
 		return {
 			BookId: 0,
 			UserId: 0,
 		};
 	}
-
-	
 }

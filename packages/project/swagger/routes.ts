@@ -76,16 +76,6 @@ const models: TsoaRoute.Models = {
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "Pick_Loan.BookId-or-UserId-or-expirationDate-or-isAccepted-or-isReturned_": {
-        "dataType": "refAlias",
-        "type": {"dataType":"nestedObjectLiteral","nestedProperties":{"BookId":{"dataType":"double","required":true},"UserId":{"dataType":"double","required":true},"expirationDate":{"dataType":"datetime","required":true},"isAccepted":{"dataType":"boolean","required":true},"isReturned":{"dataType":"boolean","required":true}},"validators":{}},
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "ReqBodyLoan": {
-        "dataType": "refAlias",
-        "type": {"ref":"Pick_Loan.BookId-or-UserId-or-expirationDate-or-isAccepted-or-isReturned_","validators":{}},
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "Purchase": {
         "dataType": "refObject",
         "properties": {
@@ -97,16 +87,6 @@ const models: TsoaRoute.Models = {
             "UserId": {"dataType":"double","required":true},
         },
         "additionalProperties": false,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "Pick_Purchase.BookId-or-UserId_": {
-        "dataType": "refAlias",
-        "type": {"dataType":"nestedObjectLiteral","nestedProperties":{"BookId":{"dataType":"double","required":true},"UserId":{"dataType":"double","required":true}},"validators":{}},
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "ReqBodyPurchase": {
-        "dataType": "refAlias",
-        "type": {"ref":"Pick_Purchase.BookId-or-UserId_","validators":{}},
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "Pick_User.Exclude_keyofUser.password__": {
@@ -365,14 +345,14 @@ export function RegisterRoutes(app: express.Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        app.post('/loan',
+        app.post('/books/:id/loan',
             authenticateMiddleware([{"jwt-auth":[]}]),
             ...(fetchMiddlewares<RequestHandler>(LoanController)),
             ...(fetchMiddlewares<RequestHandler>(LoanController.prototype.create)),
 
             function LoanController_create(request: any, response: any, next: any) {
             const args = {
-                    requestBody: {"in":"body","name":"requestBody","required":true,"ref":"ReqBodyLoan"},
+                    id: {"in":"path","name":"id","required":true,"dataType":"double"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -493,14 +473,14 @@ export function RegisterRoutes(app: express.Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        app.post('/purchase',
+        app.post('/books/:bookId/purchase',
             authenticateMiddleware([{"jwt-auth":[]}]),
             ...(fetchMiddlewares<RequestHandler>(PurchaseController)),
             ...(fetchMiddlewares<RequestHandler>(PurchaseController.prototype.create)),
 
             function PurchaseController_create(request: any, response: any, next: any) {
             const args = {
-                    requestBody: {"in":"body","name":"requestBody","required":true,"ref":"ReqBodyPurchase"},
+                    bookId: {"in":"path","name":"bookId","required":true,"dataType":"double"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa

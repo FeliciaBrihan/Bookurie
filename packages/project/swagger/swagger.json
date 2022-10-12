@@ -199,40 +199,6 @@
 				"type": "object",
 				"additionalProperties": false
 			},
-			"Pick_Loan.BookId-or-UserId-or-expirationDate-or-isAccepted-or-isReturned_": {
-				"properties": {
-					"BookId": {
-						"type": "number",
-						"format": "double"
-					},
-					"UserId": {
-						"type": "number",
-						"format": "double"
-					},
-					"expirationDate": {
-						"type": "string",
-						"format": "date-time"
-					},
-					"isAccepted": {
-						"type": "boolean"
-					},
-					"isReturned": {
-						"type": "boolean"
-					}
-				},
-				"required": [
-					"BookId",
-					"UserId",
-					"expirationDate",
-					"isAccepted",
-					"isReturned"
-				],
-				"type": "object",
-				"description": "From T, pick a set of properties whose keys are in the union K"
-			},
-			"ReqBodyLoan": {
-				"$ref": "#/components/schemas/Pick_Loan.BookId-or-UserId-or-expirationDate-or-isAccepted-or-isReturned_"
-			},
 			"Purchase": {
 				"properties": {
 					"id": {
@@ -266,27 +232,6 @@
 				],
 				"type": "object",
 				"additionalProperties": false
-			},
-			"Pick_Purchase.BookId-or-UserId_": {
-				"properties": {
-					"BookId": {
-						"type": "number",
-						"format": "double"
-					},
-					"UserId": {
-						"type": "number",
-						"format": "double"
-					}
-				},
-				"required": [
-					"BookId",
-					"UserId"
-				],
-				"type": "object",
-				"description": "From T, pick a set of properties whose keys are in the union K"
-			},
-			"ReqBodyPurchase": {
-				"$ref": "#/components/schemas/Pick_Purchase.BookId-or-UserId_"
 			},
 			"Pick_User.Exclude_keyofUser.password__": {
 				"properties": {
@@ -766,41 +711,6 @@
 					}
 				],
 				"parameters": []
-			},
-			"post": {
-				"operationId": "Create",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/Loan"
-								}
-							}
-						}
-					}
-				},
-				"summary": "Create new loan",
-				"tags": [
-					"Loan"
-				],
-				"security": [
-					{
-						"jwt-auth": []
-					}
-				],
-				"parameters": [],
-				"requestBody": {
-					"required": true,
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "#/components/schemas/ReqBodyLoan"
-							}
-						}
-					}
-				}
 			}
 		},
 		"/loan/loans": {
@@ -828,6 +738,44 @@
 					}
 				],
 				"parameters": []
+			}
+		},
+		"/books/{id}/loan": {
+			"post": {
+				"operationId": "Create",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Loan"
+								}
+							}
+						}
+					}
+				},
+				"summary": "Create new loan",
+				"tags": [
+					"Loan"
+				],
+				"security": [
+					{
+						"jwt-auth": []
+					}
+				],
+				"parameters": [
+					{
+						"description": "The book identifier",
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
 			}
 		},
 		"/loan/{id}": {
@@ -961,7 +909,9 @@
 					}
 				],
 				"parameters": []
-			},
+			}
+		},
+		"/books/{bookId}/purchase": {
 			"post": {
 				"operationId": "Create",
 				"responses": {
@@ -985,17 +935,18 @@
 						"jwt-auth": []
 					}
 				],
-				"parameters": [],
-				"requestBody": {
-					"required": true,
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "#/components/schemas/ReqBodyPurchase"
-							}
+				"parameters": [
+					{
+						"description": "The book identifier",
+						"in": "path",
+						"name": "bookId",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
 						}
 					}
-				}
+				]
 			}
 		},
 		"/user": {

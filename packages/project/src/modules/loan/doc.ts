@@ -12,19 +12,14 @@ import {
 } from 'tsoa';
 import { Loan } from '../../interface';
 
-type ReqBodyLoan = Pick<
-	Loan,
-	'BookId' | 'UserId' | 'expirationDate' | 'isAccepted' | 'isReturned'
->;
-
-@Route('loan')
+@Route('')
 @Tags('Loan')
 @Security('jwt-auth')
 export class LoanController extends Controller {
 	/**
 	 * @summary Get all Loans
 	 */
-	@Get()
+	@Get('loan')
 	public async getAll(): Promise<Loan[]> {
 		return [
 			{
@@ -39,9 +34,8 @@ export class LoanController extends Controller {
 
 	/**
 	 * @summary Get loans by user
-	 * @param id The loan identifier
 	 */
-	@Get('/loans')
+	@Get('loan/loans')
 	@Security('jwt-auth')
 	public async getByUserId(): Promise<Loan> {
 		return {
@@ -55,13 +49,11 @@ export class LoanController extends Controller {
 
 	/**
 	 * @summary Create new loan
+	 * @param id The book identifier
 	 */
-	@Post()
+	@Post('books/{id}/loan')
 	@Security('jwt-auth')
-	public async create(
-		@Body()
-		requestBody: ReqBodyLoan
-	): Promise<Loan> {
+	public async create(@Path() id: number): Promise<Loan> {
 		return {
 			isAccepted: false,
 			isReturned: false,
@@ -75,7 +67,7 @@ export class LoanController extends Controller {
 	 * @summary Accept loan by Id
 	 * @param id The loan identifier
 	 */
-	@Put('{id}')
+	@Put('loan/{id}')
 	@Security('jwt-auth')
 	public async update(@Path() id: number): Promise<Loan> {
 		return {
@@ -91,7 +83,7 @@ export class LoanController extends Controller {
 	 * @summary Return loan by Id
 	 * @param id The loan identifier
 	 */
-	@Put('loans/{id}')
+	@Put('loan/loans/{id}')
 	@Security('jwt-auth')
 	public async returnLoan(@Path() id: number): Promise<Loan> {
 		return {
