@@ -10,6 +10,7 @@ import { restrictTo } from '../../auth/routes/restrictTo';
 import { changeUserRole } from './changeUserRole';
 import { viewHistory } from './history';
 import { checkAuthorization } from '../../auth/routes/checkAuthorization';
+import { userSignUp } from './userSignUp';
 
 const router = Router();
 
@@ -40,5 +41,6 @@ router.patch(
 	<any>restrictTo('admin'),
 	changeUserRole
 );
+router.post('/signUp', userSignUp);
 
 export const routes = router;

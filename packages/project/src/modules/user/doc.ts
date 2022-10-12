@@ -42,7 +42,7 @@ export class UserController extends Controller {
 				lastName: '',
 				username: '',
 				email: '',
-				roleId: 0,
+				roleId: 1,
 				budget: 0,
 				subscriptionId: 0,
 				subscriptionDate: '' as unknown as Date,
@@ -74,9 +74,10 @@ export class UserController extends Controller {
 	}
 
 	/**
-	 * @summary Create new user
+	 * @summary Create new user by admin
 	 */
 	@Post()
+	@Security('jwt-auth')
 	public async create(
 		@Body()
 		requestBody: ReqBody
@@ -95,7 +96,16 @@ export class UserController extends Controller {
 			booksReadThisMonth: 0,
 		};
 	}
-
+	/**
+	 * @summary Create new user
+	 */
+	@Post('/signup')
+	public async signUp(
+		@Body()
+		requestBody: ReqBody
+	): Promise<{ accessToken: string }> {
+		return { accessToken: '' };
+	}
 	/**
 	 * @summary Update user by ID
 	 * @param id The user identifier

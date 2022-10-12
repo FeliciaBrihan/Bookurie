@@ -992,11 +992,15 @@
 						}
 					}
 				},
-				"summary": "Create new user",
+				"summary": "Create new user by admin",
 				"tags": [
 					"User"
 				],
-				"security": [],
+				"security": [
+					{
+						"jwt-auth": []
+					}
+				],
 				"parameters": [],
 				"requestBody": {
 					"required": true,
@@ -1116,6 +1120,47 @@
 						}
 					}
 				]
+			}
+		},
+		"/user/signup": {
+			"post": {
+				"operationId": "SignUp",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"accessToken": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"accessToken"
+									],
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"summary": "Create new user",
+				"tags": [
+					"User"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/ReqBody"
+							}
+						}
+					}
+				}
 			}
 		}
 	},

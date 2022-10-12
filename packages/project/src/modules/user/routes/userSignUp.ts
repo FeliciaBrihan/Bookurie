@@ -45,7 +45,7 @@ export async function userSignUp(
 			expiresIn: process.env.JWT_ACCESS_KEY_EXPIRE_TIME,
 		});
 		res.status(200).json({
-			token: accessToken,
+			accessToken: accessToken,
 			data: user,
 		});
 	} catch (err) {
