@@ -17,10 +17,10 @@ export function checkAuthorization(requiredAction: string) {
 			const action = await Action.findOne({
 				where: { name: requiredAction },
 			});
-			const actionId = action.id;
+			const actionId = action?.id;
 
 			if (!roleId || !actionId) {
-				return res.status(401);
+				return res.sendStatus(401);
 			}
 
 			const permission = await Permission.findOne({
