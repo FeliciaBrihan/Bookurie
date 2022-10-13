@@ -11,6 +11,8 @@ import { LoanController } from './../src/modules/loan/doc';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { PurchaseController } from './../src/modules/purchase/doc';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+import { SubscriptionController } from './../src/modules/subscription/doc';
+// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { UserController } from './../src/modules/user/doc';
 import type { RequestHandler } from 'express';
 import * as express from 'express';
@@ -87,6 +89,32 @@ const models: TsoaRoute.Models = {
             "UserId": {"dataType":"double","required":true},
         },
         "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "Subscription": {
+        "dataType": "refObject",
+        "properties": {
+            "id": {"dataType":"double"},
+            "createdAt": {"dataType":"datetime"},
+            "updatedAt": {"dataType":"datetime"},
+            "deletedAt": {"dataType":"datetime"},
+            "name": {"dataType":"string","required":true},
+            "monthlyFee": {"dataType":"double","required":true},
+            "monthlyFreeBooks": {"dataType":"double","required":true},
+            "everyBookDiscount": {"dataType":"double","required":true},
+            "type": {"dataType":"string","required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "Pick_Subscription.name-or-monthlyFee-or-monthlyFreeBooks-or-everyBookDiscount-or-type_": {
+        "dataType": "refAlias",
+        "type": {"dataType":"nestedObjectLiteral","nestedProperties":{"name":{"dataType":"string","required":true},"monthlyFee":{"dataType":"double","required":true},"monthlyFreeBooks":{"dataType":"double","required":true},"everyBookDiscount":{"dataType":"double","required":true},"type":{"dataType":"string","required":true}},"validators":{}},
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "ReqBodySubscription": {
+        "dataType": "refAlias",
+        "type": {"ref":"Pick_Subscription.name-or-monthlyFee-or-monthlyFreeBooks-or-everyBookDiscount-or-type_","validators":{}},
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "Pick_User.Exclude_keyofUser.password__": {
@@ -493,6 +521,162 @@ export function RegisterRoutes(app: express.Router) {
 
 
               const promise = controller.create.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, undefined, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/subscription',
+            authenticateMiddleware([{"jwt-auth":[]}]),
+            ...(fetchMiddlewares<RequestHandler>(SubscriptionController)),
+            ...(fetchMiddlewares<RequestHandler>(SubscriptionController.prototype.getAll)),
+
+            function SubscriptionController_getAll(request: any, response: any, next: any) {
+            const args = {
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const controller = new SubscriptionController();
+
+
+              const promise = controller.getAll.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, undefined, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/subscription/:id',
+            authenticateMiddleware([{"jwt-auth":[]}]),
+            ...(fetchMiddlewares<RequestHandler>(SubscriptionController)),
+            ...(fetchMiddlewares<RequestHandler>(SubscriptionController.prototype.getById)),
+
+            function SubscriptionController_getById(request: any, response: any, next: any) {
+            const args = {
+                    id: {"in":"path","name":"id","required":true,"dataType":"double"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const controller = new SubscriptionController();
+
+
+              const promise = controller.getById.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, undefined, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.post('/subscription',
+            authenticateMiddleware([{"jwt-auth":[]}]),
+            ...(fetchMiddlewares<RequestHandler>(SubscriptionController)),
+            ...(fetchMiddlewares<RequestHandler>(SubscriptionController.prototype.create)),
+
+            function SubscriptionController_create(request: any, response: any, next: any) {
+            const args = {
+                    requestBody: {"in":"body","name":"requestBody","required":true,"ref":"ReqBodySubscription"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const controller = new SubscriptionController();
+
+
+              const promise = controller.create.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, undefined, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.put('/subscription/:id',
+            authenticateMiddleware([{"jwt-auth":[]}]),
+            ...(fetchMiddlewares<RequestHandler>(SubscriptionController)),
+            ...(fetchMiddlewares<RequestHandler>(SubscriptionController.prototype.update)),
+
+            function SubscriptionController_update(request: any, response: any, next: any) {
+            const args = {
+                    id: {"in":"path","name":"id","required":true,"dataType":"double"},
+                    requestBody: {"in":"body","name":"requestBody","required":true,"ref":"ReqBodySubscription"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const controller = new SubscriptionController();
+
+
+              const promise = controller.update.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, undefined, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.delete('/subscription/:id',
+            authenticateMiddleware([{"jwt-auth":[]}]),
+            ...(fetchMiddlewares<RequestHandler>(SubscriptionController)),
+            ...(fetchMiddlewares<RequestHandler>(SubscriptionController.prototype.delete)),
+
+            function SubscriptionController_delete(request: any, response: any, next: any) {
+            const args = {
+                    id: {"in":"path","name":"id","required":true,"dataType":"double"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const controller = new SubscriptionController();
+
+
+              const promise = controller.delete.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, undefined, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.put('/subscription/:id/subscribe',
+            authenticateMiddleware([{"jwt-auth":[]}]),
+            ...(fetchMiddlewares<RequestHandler>(SubscriptionController)),
+            ...(fetchMiddlewares<RequestHandler>(SubscriptionController.prototype.subscribe)),
+
+            function SubscriptionController_subscribe(request: any, response: any, next: any) {
+            const args = {
+                    id: {"in":"path","name":"id","required":true,"dataType":"double"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const controller = new SubscriptionController();
+
+
+              const promise = controller.subscribe.apply(controller, validatedArgs as any);
               promiseHandler(controller, promise, response, undefined, next);
             } catch (err) {
                 return next(err);

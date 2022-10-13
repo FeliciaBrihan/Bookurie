@@ -233,6 +233,87 @@
 				"type": "object",
 				"additionalProperties": false
 			},
+			"Subscription": {
+				"properties": {
+					"id": {
+						"type": "number",
+						"format": "double"
+					},
+					"createdAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"updatedAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"deletedAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"name": {
+						"type": "string"
+					},
+					"monthlyFee": {
+						"type": "number",
+						"format": "double"
+					},
+					"monthlyFreeBooks": {
+						"type": "number",
+						"format": "double"
+					},
+					"everyBookDiscount": {
+						"type": "number",
+						"format": "double"
+					},
+					"type": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"name",
+					"monthlyFee",
+					"monthlyFreeBooks",
+					"everyBookDiscount",
+					"type"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"Pick_Subscription.name-or-monthlyFee-or-monthlyFreeBooks-or-everyBookDiscount-or-type_": {
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"monthlyFee": {
+						"type": "number",
+						"format": "double"
+					},
+					"monthlyFreeBooks": {
+						"type": "number",
+						"format": "double"
+					},
+					"everyBookDiscount": {
+						"type": "number",
+						"format": "double"
+					},
+					"type": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"name",
+					"monthlyFee",
+					"monthlyFreeBooks",
+					"everyBookDiscount",
+					"type"
+				],
+				"type": "object",
+				"description": "From T, pick a set of properties whose keys are in the union K"
+			},
+			"ReqBodySubscription": {
+				"$ref": "#/components/schemas/Pick_Subscription.name-or-monthlyFee-or-monthlyFreeBooks-or-everyBookDiscount-or-type_"
+			},
 			"Pick_User.Exclude_keyofUser.password__": {
 				"properties": {
 					"username": {
@@ -940,6 +1021,228 @@
 						"description": "The book identifier",
 						"in": "path",
 						"name": "bookId",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			}
+		},
+		"/subscription": {
+			"get": {
+				"operationId": "GetAll",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/Subscription"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"summary": "Get all subscriptions",
+				"tags": [
+					"Subscription"
+				],
+				"security": [
+					{
+						"jwt-auth": []
+					}
+				],
+				"parameters": []
+			},
+			"post": {
+				"operationId": "Create",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Subscription"
+								}
+							}
+						}
+					}
+				},
+				"summary": "Create new subscription",
+				"tags": [
+					"Subscription"
+				],
+				"security": [
+					{
+						"jwt-auth": []
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/ReqBodySubscription"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/subscription/{id}": {
+			"get": {
+				"operationId": "GetById",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Subscription"
+								}
+							}
+						}
+					}
+				},
+				"summary": "Get subscription by Id",
+				"tags": [
+					"Subscription"
+				],
+				"security": [
+					{
+						"jwt-auth": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			},
+			"put": {
+				"operationId": "Update",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Subscription"
+								}
+							}
+						}
+					}
+				},
+				"summary": "Update subscription by Id",
+				"tags": [
+					"Subscription"
+				],
+				"security": [
+					{
+						"jwt-auth": []
+					}
+				],
+				"parameters": [
+					{
+						"description": "The subscription identifier",
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/ReqBodySubscription"
+							}
+						}
+					}
+				}
+			},
+			"delete": {
+				"operationId": "Delete",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Subscription"
+								}
+							}
+						}
+					}
+				},
+				"summary": "Delete subscription by Id",
+				"tags": [
+					"Subscription"
+				],
+				"security": [
+					{
+						"jwt-auth": []
+					}
+				],
+				"parameters": [
+					{
+						"description": "The subscription identifier",
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			}
+		},
+		"/subscription/{id}/subscribe": {
+			"put": {
+				"operationId": "Subscribe",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "string"
+								}
+							}
+						}
+					}
+				},
+				"summary": "Subscribe",
+				"tags": [
+					"Subscription"
+				],
+				"security": [
+					{
+						"jwt-auth": []
+					}
+				],
+				"parameters": [
+					{
+						"description": "The subscription identifier",
+						"in": "path",
+						"name": "id",
 						"required": true,
 						"schema": {
 							"format": "double",
