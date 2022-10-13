@@ -199,6 +199,61 @@
 				"type": "object",
 				"additionalProperties": false
 			},
+			"Prize": {
+				"properties": {
+					"id": {
+						"type": "number",
+						"format": "double"
+					},
+					"createdAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"updatedAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"deletedAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"bookId": {
+						"type": "number",
+						"format": "double"
+					},
+					"voucher": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"bookId",
+					"voucher"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"Pick_Prize.bookId-or-voucher_": {
+				"properties": {
+					"bookId": {
+						"type": "number",
+						"format": "double"
+					},
+					"voucher": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"bookId",
+					"voucher"
+				],
+				"type": "object",
+				"description": "From T, pick a set of properties whose keys are in the union K"
+			},
+			"ReqBodyPrize": {
+				"$ref": "#/components/schemas/Pick_Prize.bookId-or-voucher_"
+			},
 			"Purchase": {
 				"properties": {
 					"id": {
@@ -227,6 +282,45 @@
 					}
 				},
 				"required": [
+					"BookId",
+					"UserId"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"Raffle": {
+				"properties": {
+					"id": {
+						"type": "number",
+						"format": "double"
+					},
+					"createdAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"updatedAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"deletedAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"prize": {
+						"type": "number",
+						"format": "double"
+					},
+					"BookId": {
+						"type": "number",
+						"format": "double"
+					},
+					"UserId": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"prize",
 					"BookId",
 					"UserId"
 				],
@@ -522,45 +616,6 @@
 			},
 			"ReqBody": {
 				"$ref": "#/components/schemas/Pick_User.-or-firstName-or-lastName-or-username-or-password-or-email-or-roleId-or-budget-or-subscriptionId-or-subscriptionDate-or-subscriptionExpirationDate-or-booksReadThisMonth_"
-			},
-			"Raffle": {
-				"properties": {
-					"id": {
-						"type": "number",
-						"format": "double"
-					},
-					"createdAt": {
-						"type": "string",
-						"format": "date-time"
-					},
-					"updatedAt": {
-						"type": "string",
-						"format": "date-time"
-					},
-					"deletedAt": {
-						"type": "string",
-						"format": "date-time"
-					},
-					"prize": {
-						"type": "number",
-						"format": "double"
-					},
-					"BookId": {
-						"type": "number",
-						"format": "double"
-					},
-					"UserId": {
-						"type": "number",
-						"format": "double"
-					}
-				},
-				"required": [
-					"prize",
-					"BookId",
-					"UserId"
-				],
-				"type": "object",
-				"additionalProperties": false
 			}
 		},
 		"securitySchemes": {
@@ -974,6 +1029,43 @@
 				]
 			}
 		},
+		"/prize": {
+			"put": {
+				"operationId": "Update",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Prize"
+								}
+							}
+						}
+					}
+				},
+				"summary": "Update prize",
+				"tags": [
+					"Prize"
+				],
+				"security": [
+					{
+						"jwt-auth": []
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/ReqBodyPrize"
+							}
+						}
+					}
+				}
+			}
+		},
 		"/purchase/all": {
 			"get": {
 				"operationId": "GetAll",
@@ -1067,6 +1159,36 @@
 						}
 					}
 				]
+			}
+		},
+		"/raffle": {
+			"get": {
+				"operationId": "GetAll",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/Raffle"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"summary": "Get all raffles",
+				"tags": [
+					"Raffle"
+				],
+				"security": [
+					{
+						"jwt-auth": []
+					}
+				],
+				"parameters": []
 			}
 		},
 		"/subscription": {

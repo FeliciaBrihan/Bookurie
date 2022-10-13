@@ -57,6 +57,7 @@ export class UserController extends Controller {
 	 * @param id The user identifier
 	 */
 	@Get('{id}')
+	@Security('jwt-auth')
 	public async getById(@Path() id: number): Promise<User> {
 		return {
 			firstName: '',
