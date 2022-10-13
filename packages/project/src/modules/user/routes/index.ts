@@ -35,7 +35,7 @@ router.delete(
 	<any>checkAuthorization('User: delete'),
 	deleteUser
 );
-router.patch(
+router.put(
 	'/:userId/changeRole',
 	<any>verifyToken,
 	<any>restrictTo('admin'),

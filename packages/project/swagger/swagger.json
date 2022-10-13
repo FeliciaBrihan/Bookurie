@@ -522,6 +522,45 @@
 			},
 			"ReqBody": {
 				"$ref": "#/components/schemas/Pick_User.-or-firstName-or-lastName-or-username-or-password-or-email-or-roleId-or-budget-or-subscriptionId-or-subscriptionDate-or-subscriptionExpirationDate-or-booksReadThisMonth_"
+			},
+			"Raffle": {
+				"properties": {
+					"id": {
+						"type": "number",
+						"format": "double"
+					},
+					"createdAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"updatedAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"deletedAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"prize": {
+						"type": "number",
+						"format": "double"
+					},
+					"BookId": {
+						"type": "number",
+						"format": "double"
+					},
+					"UserId": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"prize",
+					"BookId",
+					"UserId"
+				],
+				"type": "object",
+				"additionalProperties": false
 			}
 		},
 		"securitySchemes": {
@@ -1464,6 +1503,100 @@
 						}
 					}
 				}
+			}
+		},
+		"/user/{userId}/changeRole": {
+			"put": {
+				"operationId": "ChangeRole",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/User"
+								}
+							}
+						}
+					}
+				},
+				"summary": "Change user role",
+				"tags": [
+					"User"
+				],
+				"security": [
+					{
+						"jwt-auth": []
+					}
+				],
+				"parameters": [
+					{
+						"description": "The user identifier",
+						"in": "path",
+						"name": "userId",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/ReqBody"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/user/history": {
+			"get": {
+				"operationId": "History",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"anyOf": [
+										{
+											"items": {
+												"$ref": "#/components/schemas/Loan"
+											},
+											"type": "array"
+										},
+										{
+											"items": {
+												"$ref": "#/components/schemas/Purchase"
+											},
+											"type": "array"
+										},
+										{
+											"items": {
+												"$ref": "#/components/schemas/Raffle"
+											},
+											"type": "array"
+										}
+									]
+								}
+							}
+						}
+					}
+				},
+				"summary": "User history",
+				"tags": [
+					"User"
+				],
+				"security": [
+					{
+						"jwt-auth": []
+					}
+				],
+				"parameters": []
 			}
 		}
 	},

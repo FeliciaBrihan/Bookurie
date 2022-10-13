@@ -10,7 +10,7 @@ import {
 	Delete,
 	Security,
 } from 'tsoa';
-import { User } from '../../interface';
+import { Loan, Purchase, Raffle, User } from '../../interface';
 
 type ReqBody = Pick<
 	User,
@@ -149,5 +149,39 @@ export class UserController extends Controller {
 			subscriptionExpirationDate: '' as unknown as Date,
 			booksReadThisMonth: 0,
 		};
+	}
+
+	/**
+	 * @summary Change user role
+	 * @param userId The user identifier
+	 */
+	@Put('{userId}/changeRole')
+	@Security('jwt-auth')
+	public async changeRole(
+		@Path() userId: number,
+		@Body() requestBody: ReqBody
+	): Promise<User> {
+		return {
+			firstName: '',
+			lastName: '',
+			username: '',
+			email: '',
+			password: '',
+			roleId: 0,
+			budget: 0,
+			subscriptionId: 0,
+			subscriptionDate: '' as unknown as Date,
+			subscriptionExpirationDate: '' as unknown as Date,
+			booksReadThisMonth: 0,
+		};
+	}
+
+	/**
+	 * @summary User history
+	 */
+	@Get('history')
+	@Security('jwt-auth')
+	public async history(): Promise<Loan[] | Purchase[] | Raffle[]> {
+		return [];
 	}
 }
