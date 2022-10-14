@@ -1,8 +1,9 @@
 import { Request, Response } from 'express';
 import { getCurrentDate } from '../../../helpers/getCurrentDate';
 import { sequelize } from '../../../global';
-import { errorMessage } from '../../../helpers/index';
+import { errorMessage, returnError } from 'src/helpers';
 import { ModelSubscription, Models, ExtraRequest } from '../../../interface';
+import { getSubscriptionExpirationDate } from 'src/modules/subscription/functions';
 
 export async function subscribe(
 	req: Request & ExtraRequest,
@@ -11,31 +12,21 @@ export async function subscribe(
 	const { Subscription, User } = sequelize.models as unknown as Models;
 
 	try {
-		const subscriptionId = req.params.id;
+		const { id: subscriptionId } = req.params;
 		const userId = req.currentUserId;
 
 		const subscription = await Subscription.findByPk(subscriptionId);
 		const user = await User.findByPk(userId);
 
-		if (!subscription) return res.status(400).send({ error: 'Invalid id' });
-		if (user.roleId !== 1)
-			return res.status(400).send({ message: 'Staff cannot subscribe' });
-
+		if (!subscription) return returnError(res, 'Invalid id');
+		if (user.roleId !== 1) return returnError(res, 'Staff cannot subscribe');
 		if (user.budget < subscription.monthlyFee)
-			return res.status(400).send({ message: 'Budget under monthly fee' });
-
+			return returnError(res, 'Budget under monthly fee');
 		if (user.subscriptionId === +subscriptionId)
-			return res
-				.status(400)
-				.send({ message: 'You already have this subscription' });
+			return returnError(res, 'You already have this subscription');
 
 		const updatedBudget = user.budget - subscription.monthlyFee;
-
-		const date = new Date();
-		const subscriptionExpirationDate = date.setDate(
-			date.getDate() + 30
-		) as unknown as Date;
-
+		const subscriptionExpirationDate = getSubscriptionExpirationDate();
 		await user.update({
 			subscriptionId: +subscriptionId,
 			subscriptionDate: getCurrentDate().date as unknown as Date,
