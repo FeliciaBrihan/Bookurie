@@ -12,19 +12,7 @@ import {
 } from 'tsoa';
 import { Book } from '../../interface';
 
-type ReqBodyBook = Pick<
-	Book,
-	| 'title'
-	| 'author'
-	| 'publishedYear'
-	| 'coverImage'
-	| 'genre'
-	| 'description'
-	| 'typeFormat'
-	| 'pages'
-	| 'price'
-	| 'stock'
->;
+type ReqBodyBook = Omit<Book, 'createdAt' | 'updatedAt' | 'deletedAt' | 'id'>;
 
 @Route('books')
 @Tags('Book')
@@ -34,21 +22,7 @@ export class BookController extends Controller {
 	 */
 	@Get()
 	public async getAll(): Promise<Book[]> {
-		return [
-			{
-				title: '',
-				author: '',
-				publishingHouse: '',
-				publishedYear: 0,
-				coverImage: '',
-				genre: '',
-				description: '',
-				typeFormat: '',
-				pages: 0,
-				price: 0,
-				stock: 0,
-			},
-		];
+		return;
 	}
 
 	/**
@@ -58,19 +32,7 @@ export class BookController extends Controller {
 	@Get('{id}')
 	@Security('jwt-auth')
 	public async getById(@Path() id: number): Promise<Book> {
-		return {
-			title: '',
-			author: '',
-			publishingHouse: '',
-			publishedYear: 0,
-			coverImage: '',
-			genre: '',
-			description: '',
-			typeFormat: '',
-			pages: 0,
-			price: 0,
-			stock: 0,
-		};
+		return;
 	}
 
 	/**
@@ -82,19 +44,7 @@ export class BookController extends Controller {
 		@Body()
 		requestBody: ReqBodyBook
 	): Promise<Book> {
-		return {
-			title: '',
-			author: '',
-			publishingHouse: '',
-			publishedYear: 0,
-			coverImage: '',
-			genre: '',
-			description: '',
-			typeFormat: '',
-			pages: 0,
-			price: 0,
-			stock: 0,
-		};
+		return;
 	}
 
 	/**
@@ -107,19 +57,7 @@ export class BookController extends Controller {
 		@Path() id: number,
 		@Body() requestBody: ReqBodyBook
 	): Promise<Book> {
-		return {
-			title: '',
-			author: '',
-			publishingHouse: '',
-			publishedYear: 0,
-			coverImage: '',
-			genre: '',
-			description: '',
-			typeFormat: '',
-			pages: 0,
-			price: 0,
-			stock: 0,
-		};
+		return;
 	}
 
 	/**
@@ -129,18 +67,6 @@ export class BookController extends Controller {
 	@Delete('{id}')
 	@Security('jwt-auth')
 	public async delete(@Path() id: number): Promise<Book> {
-		return {
-			title: '',
-			author: '',
-			publishingHouse: '',
-			publishedYear: 0,
-			coverImage: '',
-			genre: '',
-			description: '',
-			typeFormat: '',
-			pages: 0,
-			price: 0,
-			stock: 0,
-		};
+		return;
 	}
 }

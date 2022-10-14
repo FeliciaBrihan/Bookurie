@@ -22,38 +22,25 @@ export class PurchaseController extends Controller {
 	@Get('purchase/all')
 	@Security('jwt-auth')
 	public async getAll(): Promise<Purchase[]> {
-		return [
-			{
-				BookId: 0,
-				UserId: 0,
-			},
-		];
+		return;
 	}
 
 	/**
 	 * @summary Get purchases by user
-
 	 */
 	@Get('purchase')
 	@Security('jwt-auth')
 	public async getByUserId(): Promise<Purchase> {
-		return {
-			BookId: 0,
-			UserId: 0,
-		};
+		return;
 	}
+
 	/**
 	 * @summary Create new purchase
 	 * @param bookId The book identifier
 	 */
 	@Post('books/{bookId}/purchase')
 	@Security('jwt-auth')
-	public async create(
-		@Path() bookId: number,
-	): Promise<Purchase> {
-		return {
-			BookId: 0,
-			UserId: 0,
-		};
+	public async create(@Path() bookId: number): Promise<Purchase> {
+		return;
 	}
 }

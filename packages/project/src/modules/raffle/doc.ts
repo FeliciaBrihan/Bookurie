@@ -21,12 +21,6 @@ export class BookController extends Controller {
 	@Get()
 	@Security('jwt-auth')
 	public async getAll(): Promise<Raffle[]> {
-		return [
-			{
-				prize: 0,
-				BookId: 0,
-				UserId: 0,
-			},
-		];
+		return;
 	}
 }

@@ -249,6 +249,9 @@ async function addDefaultData(sequelize: Sequelize) {
 	}
 	const prizes = await Prize.findAll();
 	if (prizes.length === 0) {
-		await Prize.create();
+		await Prize.create({
+			voucher: 0,
+			bookId: null,
+		});
 	}
 }

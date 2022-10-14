@@ -23,9 +23,6 @@ export class PrizeController extends Controller {
 	@Put()
 	@Security('jwt-auth')
 	public async update(@Body() requestBody: ReqBodyPrize): Promise<Prize> {
-		return {
-			bookId: 0,
-			voucher: 0,
-		};
+		return;
 	}
 }

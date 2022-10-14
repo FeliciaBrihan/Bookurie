@@ -13,6 +13,6 @@ export class AuthController extends Controller {
 		@Body()
 		requestBody: ReqBodyAuth
 	): Promise<{ accessToken: string }> {
-		return { accessToken: '' };
+		return;
 	}
 }

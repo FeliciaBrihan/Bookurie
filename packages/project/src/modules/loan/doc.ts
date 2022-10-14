@@ -21,15 +21,7 @@ export class LoanController extends Controller {
 	 */
 	@Get('loan')
 	public async getAll(): Promise<Loan[]> {
-		return [
-			{
-				isAccepted: false,
-				isReturned: false,
-				expirationDate: '' as unknown as Date,
-				BookId: 0,
-				UserId: 0,
-			},
-		];
+		return;
 	}
 
 	/**
@@ -38,13 +30,7 @@ export class LoanController extends Controller {
 	@Get('loan/loans')
 	@Security('jwt-auth')
 	public async getByUserId(): Promise<Loan> {
-		return {
-			isAccepted: false,
-			isReturned: false,
-			expirationDate: '' as unknown as Date,
-			BookId: 0,
-			UserId: 0,
-		};
+		return;
 	}
 
 	/**
@@ -54,13 +40,7 @@ export class LoanController extends Controller {
 	@Post('books/{id}/loan')
 	@Security('jwt-auth')
 	public async create(@Path() id: number): Promise<Loan> {
-		return {
-			isAccepted: false,
-			isReturned: false,
-			expirationDate: '' as unknown as Date,
-			BookId: 0,
-			UserId: 0,
-		};
+		return;
 	}
 
 	/**
@@ -70,13 +50,7 @@ export class LoanController extends Controller {
 	@Put('loan/{id}')
 	@Security('jwt-auth')
 	public async update(@Path() id: number): Promise<Loan> {
-		return {
-			isAccepted: true,
-			isReturned: false,
-			expirationDate: '' as unknown as Date,
-			BookId: 0,
-			UserId: 0,
-		};
+		return;
 	}
 
 	/**
@@ -86,12 +60,6 @@ export class LoanController extends Controller {
 	@Put('loan/loans/{id}')
 	@Security('jwt-auth')
 	public async returnLoan(@Path() id: number): Promise<Loan> {
-		return {
-			isAccepted: true,
-			isReturned: false,
-			expirationDate: '' as unknown as Date,
-			BookId: 0,
-			UserId: 0,
-		};
+		return;
 	}
 }

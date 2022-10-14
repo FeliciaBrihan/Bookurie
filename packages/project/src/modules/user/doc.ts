@@ -12,20 +12,7 @@ import {
 } from 'tsoa';
 import { Loan, Purchase, Raffle, User } from '../../interface';
 
-type ReqBody = Pick<
-	User,
-	| 'firstName'
-	| 'lastName'
-	| 'username'
-	| 'password'
-	| 'email'
-	| 'roleId'
-	| 'budget'
-	| 'subscriptionId'
-	| 'subscriptionDate'
-	| 'subscriptionExpirationDate'
-	| 'booksReadThisMonth'
->;
+type ReqBody = Omit<User, 'createdAt' | 'updatedAt' | 'deletedAt' | 'id'>;
 
 @Route('user')
 @Tags('User')
@@ -36,20 +23,7 @@ export class UserController extends Controller {
 	@Get()
 	@Security('jwt-auth')
 	public async getAll(): Promise<Omit<User, 'password'>[]> {
-		return [
-			{
-				firstName: '',
-				lastName: '',
-				username: '',
-				email: '',
-				roleId: 1,
-				budget: 0,
-				subscriptionId: 0,
-				subscriptionDate: '' as unknown as Date,
-				subscriptionExpirationDate: '' as unknown as Date,
-				booksReadThisMonth: 0,
-			},
-		];
+		return;
 	}
 
 	/**
@@ -59,19 +33,7 @@ export class UserController extends Controller {
 	@Get('{id}')
 	@Security('jwt-auth')
 	public async getById(@Path() id: number): Promise<User> {
-		return {
-			firstName: '',
-			lastName: '',
-			username: '',
-			email: '',
-			password: '',
-			roleId: 0,
-			budget: 0,
-			subscriptionId: 0,
-			subscriptionDate: '' as unknown as Date,
-			subscriptionExpirationDate: '' as unknown as Date,
-			booksReadThisMonth: 0,
-		};
+		return;
 	}
 
 	/**
@@ -83,20 +45,9 @@ export class UserController extends Controller {
 		@Body()
 		requestBody: ReqBody
 	): Promise<User> {
-		return {
-			firstName: '',
-			lastName: '',
-			username: '',
-			email: '',
-			password: '',
-			roleId: 0,
-			budget: 0,
-			subscriptionId: 0,
-			subscriptionDate: '' as unknown as Date,
-			subscriptionExpirationDate: '' as unknown as Date,
-			booksReadThisMonth: 0,
-		};
+		return;
 	}
+
 	/**
 	 * @summary Create new user
 	 */
@@ -107,28 +58,18 @@ export class UserController extends Controller {
 	): Promise<{ accessToken: string }> {
 		return { accessToken: '' };
 	}
+
 	/**
 	 * @summary Update user by ID
 	 * @param id The user identifier
 	 */
 	@Put('{id}')
+	@Security('jwt-auth')
 	public async update(
 		@Path() id: number,
 		@Body() requestBody: ReqBody
 	): Promise<User> {
-		return {
-			firstName: '',
-			lastName: '',
-			username: '',
-			email: '',
-			password: '',
-			roleId: 0,
-			budget: 0,
-			subscriptionId: 0,
-			subscriptionDate: '' as unknown as Date,
-			subscriptionExpirationDate: '' as unknown as Date,
-			booksReadThisMonth: 0,
-		};
+		return;
 	}
 
 	/**
@@ -136,20 +77,9 @@ export class UserController extends Controller {
 	 * @param id The user identifier
 	 */
 	@Delete('{id}')
+	@Security('jwt-auth')
 	public async delete(@Path() id: number): Promise<User> {
-		return {
-			firstName: '',
-			lastName: '',
-			username: '',
-			email: '',
-			password: '',
-			roleId: 0,
-			budget: 0,
-			subscriptionId: 0,
-			subscriptionDate: '' as unknown as Date,
-			subscriptionExpirationDate: '' as unknown as Date,
-			booksReadThisMonth: 0,
-		};
+		return;
 	}
 
 	/**
@@ -162,19 +92,7 @@ export class UserController extends Controller {
 		@Path() userId: number,
 		@Body() requestBody: ReqBody
 	): Promise<User> {
-		return {
-			firstName: '',
-			lastName: '',
-			username: '',
-			email: '',
-			password: '',
-			roleId: 0,
-			budget: 0,
-			subscriptionId: 0,
-			subscriptionDate: '' as unknown as Date,
-			subscriptionExpirationDate: '' as unknown as Date,
-			booksReadThisMonth: 0,
-		};
+		return;
 	}
 
 	/**
@@ -182,7 +100,13 @@ export class UserController extends Controller {
 	 */
 	@Get('history')
 	@Security('jwt-auth')
-	public async history(): Promise<Loan[] | Purchase[] | Raffle[]> {
-		return [];
+	public async history(): Promise<{
+		data: {
+			loans: Loan[];
+			purchases: Purchase[];
+			raffleWins: Raffle[];
+		};
+	}> {
+		return;
 	}
 }

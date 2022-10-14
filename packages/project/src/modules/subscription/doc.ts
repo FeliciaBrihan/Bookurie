@@ -12,9 +12,9 @@ import {
 } from 'tsoa';
 import { Subscription } from '../../interface';
 
-type ReqBodySubscription = Pick<
+type ReqBodySubscription = Omit<
 	Subscription,
-	'name' | 'monthlyFee' | 'monthlyFreeBooks' | 'everyBookDiscount' | 'type'
+	'createdAt' | 'updatedAt' | 'deletedAt' | 'id'
 >;
 
 @Route('subscription')
@@ -25,30 +25,17 @@ export class SubscriptionController extends Controller {
 	 * @summary Get all subscriptions
 	 */
 	@Get()
+	@Security('jwt-auth')
 	public async getAll(): Promise<Subscription[]> {
-		return [
-			{
-				name: '',
-				monthlyFee: 0,
-				monthlyFreeBooks: 0,
-				everyBookDiscount: 0,
-				type: '',
-			},
-		];
+		return;
 	}
 	/**
 	 * @summary Get subscription by Id
 	 */
-	@Get('/{id}')
+	@Get('{id}')
 	@Security('jwt-auth')
 	public async getById(@Path() id: number): Promise<Subscription> {
-		return {
-			name: '',
-			monthlyFee: 0,
-			monthlyFreeBooks: 0,
-			everyBookDiscount: 0,
-			type: '',
-		};
+		return;
 	}
 
 	/**
@@ -60,55 +47,37 @@ export class SubscriptionController extends Controller {
 		@Body()
 		requestBody: ReqBodySubscription
 	): Promise<Subscription> {
-		return {
-			name: '',
-			monthlyFee: 0,
-			monthlyFreeBooks: 0,
-			everyBookDiscount: 0,
-			type: '',
-		};
+		return;
 	}
 
 	/**
 	 * @summary Update subscription by Id
 	 * @param id The subscription identifier
 	 */
-	@Put('/{id}')
+	@Put('{id}')
 	@Security('jwt-auth')
 	public async update(
 		@Path() id: number,
 		@Body()
 		requestBody: ReqBodySubscription
 	): Promise<Subscription> {
-		return {
-			name: '',
-			monthlyFee: 0,
-			monthlyFreeBooks: 0,
-			everyBookDiscount: 0,
-			type: '',
-		};
+		return;
 	}
 
 	/**
 	 * @summary Delete subscription by Id
 	 * @param id The subscription identifier
 	 */
-	@Delete('/{id}')
+	@Delete('{id}')
 	@Security('jwt-auth')
 	public async delete(@Path() id: number): Promise<Subscription> {
-		return {
-			name: '',
-			monthlyFee: 0,
-			monthlyFreeBooks: 0,
-			everyBookDiscount: 0,
-			type: '',
-		};
+		return;
 	}
 	/**
 	 * @summary Subscribe
 	 * @param id The subscription identifier
 	 */
-	@Put('/{id}/subscribe')
+	@Put('{id}/subscribe')
 	@Security('jwt-auth')
 	public async subscribe(@Path() id: number): Promise<string> {
 		return 'Subscribed!';
