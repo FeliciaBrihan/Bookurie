@@ -1497,7 +1497,11 @@
 				"tags": [
 					"User"
 				],
-				"security": [],
+				"security": [
+					{
+						"jwt-auth": []
+					}
+				],
 				"parameters": [
 					{
 						"description": "The user identifier",

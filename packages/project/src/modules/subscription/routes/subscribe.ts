@@ -1,9 +1,9 @@
 import { Request, Response } from 'express';
 import { getCurrentDate } from '../../../helpers/getCurrentDate';
 import { sequelize } from '../../../global';
-import { errorMessage, returnError } from 'src/helpers';
+import { errorMessage, returnError } from '../../../helpers';
 import { ModelSubscription, Models, ExtraRequest } from '../../../interface';
-import { getSubscriptionExpirationDate } from 'src/modules/subscription/functions';
+import { getSubscriptionExpirationDate } from '../functions';
 
 export async function subscribe(
 	req: Request & ExtraRequest,

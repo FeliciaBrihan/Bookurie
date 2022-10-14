@@ -1,5 +1,5 @@
-import { ModelUser } from 'src/interface';
-import { getNewExpirationDate } from 'src/modules/subscription/functions/helpers';
+import { ModelUser } from '../../../../interface';
+import { getNewExpirationDate } from '../helpers';
 
 export async function renewSubscription(user: ModelUser, price: number) {
 	const newExpirationDate = getNewExpirationDate();

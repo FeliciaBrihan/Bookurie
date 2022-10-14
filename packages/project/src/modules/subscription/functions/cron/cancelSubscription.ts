@@ -1,4 +1,4 @@
-import { ModelUser } from 'src/interface';
+import { ModelUser } from '../../../../interface';
 
 export async function cancelSubscription(user: ModelUser) {
 	await user.update({

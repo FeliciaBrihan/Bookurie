@@ -1,5 +1,5 @@
-import { sequelize } from 'src/global';
-import { Models } from 'src/interface';
+import { sequelize } from '../../../../global';
+import { Models } from '../../../../interface';
 
 export async function getUserSubscriptionPrice(id: number) {
 	const { Subscription } = sequelize.models as unknown as Models;

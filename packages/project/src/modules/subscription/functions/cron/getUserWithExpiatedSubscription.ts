@@ -1,10 +1,7 @@
 import { Op } from 'sequelize';
-import { sequelize } from 'src/global';
-import { Models } from 'src/interface';
-import {
-	getTomorrow,
-	getYesterday,
-} from 'src/modules/subscription/functions/helpers';
+import { sequelize } from '../../../../global';
+import { Models } from '../../../../interface';
+import { getTomorrow, getYesterday } from '../helpers';
 
 export async function getUserWithExpiatedSubscription() {
 	const { User } = sequelize.models as unknown as Models;
