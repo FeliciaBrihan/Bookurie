@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { sequelize } from '../../../global';
-import { errorMessage } from '../../../helpers/index';
+import { errorMessage } from '../../../helpers';
 import { ExtraRequest, ModelLoan, Models } from '../../../interface';
 
 export async function getLoansByUser(
@@ -10,7 +10,7 @@ export async function getLoansByUser(
 	const { Loan } = sequelize.models as unknown as Models;
 
 	try {
-		const userId = req.currentUserId;
+		const { currentUserId: userId } = req;
 		const loans = await Loan.findAll({ where: { UserId: userId } });
 
 		res.status(200).json({

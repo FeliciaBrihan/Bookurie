@@ -1,12 +1,13 @@
 export const routeName = 'books';
+
 import { Router } from 'express';
 import { create } from './create';
 import { getAll } from './getAll';
 import { getById } from './getById';
 import { update } from './update';
 import { deleteBook } from './delete';
-import { routes as loanRouter } from '../../loan/routes/index';
-import { routes as purchaseRouter } from '../../purchase/routes/index';
+import { routes as loanRouter } from '../../loan/routes';
+import { routes as purchaseRouter } from '../../purchase/routes';
 import { verifyToken } from '../../auth/routes/verifyToken';
 import { checkAuthorization } from '../../auth/routes/checkAuthorization';
 

@@ -7,11 +7,12 @@ export function getModelBook(sequelize: Sequelize) {
 			title: {
 				type: DataTypes.STRING,
 				allowNull: false,
-				unique: true,
+				unique: 'author_title',
 			},
 			author: {
 				type: DataTypes.STRING,
 				allowNull: false,
+				unique: 'author_title',
 			},
 			publishingHouse: DataTypes.STRING,
 			publishedYear: {

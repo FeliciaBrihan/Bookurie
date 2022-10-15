@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { sequelize } from '../../../global';
-import { errorMessage } from '../../../helpers/index';
+import { errorMessage, returnError } from '../../../helpers';
 import { ModelBook, Models } from '../../../interface';
 
 interface ReqParam {
@@ -15,9 +15,8 @@ export async function deleteBook(
 
 	try {
 		const { id } = req.params;
-
 		const book = await Book.findByPk(id);
-		if (!book) return res.status(400).send({ error: 'Invalid id' });
+		if (!book) return returnError(res, 'Invalid id');
 
 		await book.destroy();
 

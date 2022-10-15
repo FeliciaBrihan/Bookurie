@@ -19,3 +19,8 @@ process.env.JWT_LOCAL_KEY_EXPIRE_TIME = '5s';
 
 process.env.MODULES_PATH = join(__dirname, 'modules');
 process.env.EXTRA_COMMAND = '';
+
+//@ts-ignore
+process.env.LOAN_DISCOUNT = 0.15;
+//@ts-ignore
+process.env.LOAN_DAYS_FOR_100PAGES = 7;

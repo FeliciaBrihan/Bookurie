@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { sequelize } from '../../../global';
-import { errorMessage } from '../../../helpers/index';
+import { errorMessage, returnError } from '../../../helpers/index';
 import { ModelLoan, Models } from '../../../interface';
 
 interface ReqParam {
@@ -16,14 +16,9 @@ export async function returnLoan(
 	try {
 		const { id } = req.params;
 		const loan = await Loan.findByPk(id);
-
-		if (!loan) return res.status(400).send({ error: 'Invalid id' });
-
-		if (!loan.isAccepted)
-			return res.status(400).send({ error: 'Loan not accepted' });
-
-		if (loan.isReturned)
-			return res.status(400).send({ message: 'Loan already returned' });
+		if (!loan) return returnError(res, 'Invalid id');
+		if (!loan.isAccepted) return returnError(res, 'Loan not accepted');
+		if (loan.isReturned) return returnError(res, 'Loan already returned');
 
 		const book = await Book.findByPk(loan.BookId);
 		await book.update({ stock: book.stock + 1 });

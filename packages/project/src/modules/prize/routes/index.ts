@@ -1,9 +1,10 @@
 export const routeName = 'prize';
 
 import { Router } from 'express';
+import { update } from './update';
 import { checkAuthorization } from '../../auth/routes/checkAuthorization';
 import { verifyToken } from '../../auth/routes/verifyToken';
-import { update } from './update';
+
 
 const router = Router();
 
