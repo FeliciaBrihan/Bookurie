@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { sequelize } from '../../../global';
-import { errorMessage } from '../../../helpers/index';
+import { errorMessage, returnError } from '../../../helpers';
 import { Role, ModelRole, Models } from '../../../interface';
 
 type ReqBody = Role;
@@ -16,9 +16,9 @@ export async function update(
 
 	try {
 		const { id } = req.params;
-
 		const role = await Role.findByPk(id);
-		if (!role) return res.status(400).send({ error: 'Invalid id' });
+		if (!role) return returnError(res, 'Invalid id');
+
 		await role.update(req.body);
 
 		res.status(200).json({

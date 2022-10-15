@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { sequelize } from '../../../global';
-import { errorMessage } from '../../../helpers/index';
+import { errorMessage, returnError } from '../../../helpers';
 import { Action, ModelAction, Models } from '../../../interface';
 
 type ReqBody = Action;
@@ -16,9 +16,9 @@ export async function update(
 
 	try {
 		const { id } = req.params;
-
 		const action = await Action.findByPk(id);
-		if (!action) return res.status(400).send({ error: 'Invalid id' });
+		if (!action) return returnError(res, 'Invalid id');
+
 		await action.update(req.body);
 
 		res.status(200).json({

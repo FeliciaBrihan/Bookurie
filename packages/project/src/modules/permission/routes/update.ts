@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { sequelize } from '../../../global';
-import { errorMessage } from '../../../helpers/index';
+import { errorMessage, returnError } from '../../../helpers';
 import { Permission, ModelPermission, Models } from '../../../interface';
 
 type ReqBody = Permission;
@@ -16,9 +16,9 @@ export async function update(
 
 	try {
 		const { id } = req.params;
-
 		const permission = await Permission.findByPk(id);
-		if (!permission) return res.status(400).send({ error: 'Invalid id' });
+		if (!permission) return returnError(res, 'Invalid id');
+
 		await permission.update(req.body);
 
 		res.status(200).json({

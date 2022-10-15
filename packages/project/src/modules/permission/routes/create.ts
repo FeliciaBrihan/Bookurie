@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { sequelize } from '../../../global';
-import { errorMessage } from '../../../helpers/errorMessage';
+import { errorMessage, returnError } from '../../../helpers';
 import { Permission, ModelPermission, Models } from '../../../interface';
 
 type ReqBody = Permission;
@@ -9,21 +9,21 @@ export async function create(
 	req: Request<{}, {}, ReqBody, {}>,
 	res: Response<ModelPermission | object>
 ) {
-	const { Permission } = sequelize.models as unknown as Models;
+	const { Role, Action, Permission } = sequelize.models as unknown as Models;
 
 	try {
 		const { RoleId, ActionId } = req.body;
-		if (!RoleId || !ActionId) {
-			return res.status(400).send({ error: 'Incomplete data' });
+		const role = await Role.findByPk(RoleId);
+		const action = await Action.findByPk(ActionId);
+		if (!role || !action) {
+			return returnError(res, 'Invalid data');
 		}
+
 		const newPermission = await Permission.create({
 			RoleId: RoleId,
 			ActionId: ActionId,
 		});
 
-		if (!newPermission) {
-			return res.status(400).send({ error: 'Invalid data' });
-		}
 		res.status(200).json({
 			data: newPermission,
 		});

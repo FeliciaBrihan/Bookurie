@@ -1,11 +1,11 @@
 export const routeName = 'action';
 
 import { Router } from 'express';
-import { verifyToken } from '../../auth/routes/verifyToken';
 import { create } from './create';
 import { getAll } from './getAll';
 import { deleteAction } from './delete';
 import { update } from './update';
+import { verifyToken } from '../../auth/routes/verifyToken';
 import { checkAuthorization } from '../../auth/routes/checkAuthorization';
 import { restrictTo } from '../../auth/routes/restrictTo';
 

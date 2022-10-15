@@ -1,11 +1,11 @@
 export const routeName = 'role';
 
 import { Router } from 'express';
-import { verifyToken } from '../../auth/routes/verifyToken';
 import { create } from './create';
 import { getAll } from './getAll';
 import { deleteRole } from './delete';
 import { update } from './update';
+import { verifyToken } from '../../auth/routes/verifyToken';
 import { checkAuthorization } from '../../auth/routes/checkAuthorization';
 
 const router = Router();

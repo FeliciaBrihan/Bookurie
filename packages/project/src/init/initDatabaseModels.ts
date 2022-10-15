@@ -93,6 +93,46 @@ async function addDefaultData(sequelize: Sequelize) {
 			},
 		]);
 	}
+
+	const users = await User.findAll();
+	if (users.length === 0) {
+		await User.create({
+			firstName: 'admin',
+			lastName: 'admin',
+			username: 'admin',
+			email: 'admin@gmail.com',
+			roleId: 3,
+			password: md5('password123'),
+		});
+	}
+
+	const subscriptions = await Subscription.findAll();
+	if (subscriptions.length === 0) {
+		await Subscription.bulkCreate([
+			{
+				name: 'Basic',
+				monthlyFee: 30,
+				monthlyFreeBooks: 10,
+				everyBookDiscount: 10,
+				type: 'basic',
+			},
+			{
+				name: 'Premium',
+				monthlyFee: 100,
+				monthlyFreeBooks: 1000,
+				everyBookDiscount: 40,
+				type: 'premium',
+			},
+		]);
+	}
+	const prizes = await Prize.findAll();
+	if (prizes.length === 0) {
+		await Prize.create({
+			voucher: 0,
+			bookId: null,
+		});
+	}
+
 	const actions = await Action.findAll();
 	if (actions.length === 0) {
 		await Action.bulkCreate([
@@ -147,37 +187,6 @@ async function addDefaultData(sequelize: Sequelize) {
 		]);
 	}
 
-	const users = await User.findAll();
-	if (users.length === 0) {
-		await User.create({
-			firstName: 'admin',
-			lastName: 'admin',
-			username: 'admin',
-			email: 'admin@gmail.com',
-			roleId: 3,
-			password: md5('password123'),
-		});
-	}
-
-	const subscriptions = await Subscription.findAll();
-	if (subscriptions.length === 0) {
-		await Subscription.bulkCreate([
-			{
-				name: 'Basic',
-				monthlyFee: 30,
-				monthlyFreeBooks: 10,
-				everyBookDiscount: 10,
-				type: 'basic',
-			},
-			{
-				name: 'Premium',
-				monthlyFee: 100,
-				monthlyFreeBooks: 1000,
-				everyBookDiscount: 40,
-				type: 'premium',
-			},
-		]);
-	}
 	const permissions = await Permission.findAll();
 	if (permissions.length === 0) {
 		await Permission.bulkCreate([
@@ -246,12 +255,5 @@ async function addDefaultData(sequelize: Sequelize) {
 				ActionId: 16,
 			},
 		]);
-	}
-	const prizes = await Prize.findAll();
-	if (prizes.length === 0) {
-		await Prize.create({
-			voucher: 0,
-			bookId: null,
-		});
 	}
 }

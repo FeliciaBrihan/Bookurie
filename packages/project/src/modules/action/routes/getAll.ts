@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { sequelize } from '../../../global';
-import { errorMessage } from '../../../helpers/index';
+import { errorMessage } from '../../../helpers';
 import { ModelAction, Models } from '../../../interface';
 
 export async function getAll(
@@ -10,7 +10,7 @@ export async function getAll(
 	const { Action } = sequelize.models as unknown as Models;
 
 	try {
-		const actions = await Action.findAll({ where: req.query });
+		const actions = await Action.findAll();
 		if (actions.length === 0) return res.sendStatus(204);
 
 		return res.status(200).json({

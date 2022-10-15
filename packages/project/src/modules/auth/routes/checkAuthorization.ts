@@ -12,13 +12,11 @@ export function checkAuthorization(requiredAction: string) {
 		const { Action, Permission } = sequelize.models as unknown as Models;
 
 		try {
-			const roleId = req.currentUserRoleId;
-
 			const action = await Action.findOne({
 				where: { name: requiredAction },
 			});
 			const actionId = action?.id;
-
+			const roleId = req.currentUserRoleId;
 			if (!roleId || !actionId) {
 				return res.sendStatus(401);
 			}

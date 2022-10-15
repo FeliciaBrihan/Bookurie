@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { sequelize } from '../../../global';
-import { errorMessage } from '../../../helpers/index';
+import { errorMessage } from '../../../helpers';
 import { ModelRole, Models } from '../../../interface';
 
 export async function getAll(
@@ -10,7 +10,7 @@ export async function getAll(
 	const { Role } = sequelize.models as unknown as Models;
 
 	try {
-		const roles = await Role.findAll({ where: req.query });
+		const roles = await Role.findAll();
 		if (roles.length === 0) return res.sendStatus(204);
 
 		return res.status(200).json({

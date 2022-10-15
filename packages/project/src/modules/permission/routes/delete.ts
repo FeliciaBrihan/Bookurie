@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { sequelize } from '../../../global';
-import { errorMessage } from '../../../helpers/index';
+import { errorMessage, returnError } from '../../../helpers';
 import { ModelPermission, Models } from '../../../interface';
 
 interface ReqParam {
@@ -15,9 +15,8 @@ export async function deletePermission(
 
 	try {
 		const { id } = req.params;
-
 		const permission = await Permission.findByPk(id);
-		if (!permission) return res.status(400).send({ error: 'Invalid id' });
+		if (!permission) return returnError(res, 'Invalid id');
 
 		await permission.destroy();
 

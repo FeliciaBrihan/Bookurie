@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { sequelize } from '../../../global';
-import { errorMessage } from '../../../helpers/index';
+import { errorMessage, returnError } from '../../../helpers';
 import { ModelRole, Models } from '../../../interface';
 
 interface ReqParam {
@@ -15,9 +15,8 @@ export async function deleteRole(
 
 	try {
 		const { id } = req.params;
-
 		const role = await Role.findByPk(id);
-		if (!role) return res.status(400).send({ error: 'Invalid id' });
+		if (!role) return returnError(res, 'Invalid id');
 
 		await role.destroy();
 
