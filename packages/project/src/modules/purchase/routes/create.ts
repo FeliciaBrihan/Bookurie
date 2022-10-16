@@ -6,7 +6,8 @@ import {
 	ExtraRequest,
 } from '../../../interface';
 import { sequelize } from '../../../global';
-import { errorMessage } from '../../../helpers';
+import { errorMessage, returnError } from '../../../helpers';
+import { calculateFinalPrice } from './functions/calculateFinalPrice';
 
 interface ReqParam {
 	bookId: number;
@@ -22,100 +23,64 @@ export async function create(
 		sequelize.models as unknown as Models;
 
 	try {
-		req.body.BookId = req.params.bookId;
-		req.body.UserId = req.currentUserId;
+		const { bookId } = req.params;
+		const { currentUser: user } = req;
 
-		const book = await Book.findByPk(req.params.bookId);
-		const user = await User.findByPk(req.currentUserId);
-
+		const book = await Book.findByPk(bookId);
 		const alreadyPurchased = await Purchase.findAll({
 			where: {
-				BookId: book.id,
+				BookId: bookId,
 				UserId: user.id,
 			},
 		});
-
-		if (alreadyPurchased.length > 0) {
-			if (book.typeFormat === 'online') {
-				return res.status(400).send({ error: 'Online book already bought' });
+		if (alreadyPurchased.length > 0 && book.typeFormat === 'online')
+			return returnError(res, 'Online book already bought');
+		if (!book) return returnError(res, 'Invalid id');
+		if (book.typeFormat === 'printed' && !book.stock)
+			return returnError(res, 'Book out of stock');
+		if (user.subscriptionId) {
+			const subscription = await Subscription.findByPk(user.subscriptionId);
+			const bookFinalPrice = calculateFinalPrice(
+				book.price,
+				subscription.everyBookDiscount
+			);
+			if (subscription.type === 'premium' && book.typeFormat === 'printed') {
+				if (user.budget >= bookFinalPrice)
+					await user.update({ budget: user.budget - bookFinalPrice });
+				else return returnError(res, `Not enough money`);
 			}
-		}
-		if (!book) return res.status(400).send({ error: 'Invalid id' });
-
-		if (book.typeFormat === 'printed') {
-			if (!book.stock)
-				return res.status(400).send({ message: 'Book out of stock' });
-		}
-		const subscriptionId = user.subscriptionId;
-
-		if (subscriptionId) {
-			const subscription = await Subscription.findByPk(subscriptionId);
-			const userSubscriptionType = subscription.type;
-
-			if (userSubscriptionType === 'premium') {
+			if (subscription.type === 'basic') {
 				if (book.typeFormat === 'printed') {
-					const discount = subscription.everyBookDiscount / 100;
-					const bookFinalPrice = Math.round(book.price - book.price * discount);
-
-					if (user.budget >= bookFinalPrice) {
-						const updatedBudget = user.budget - bookFinalPrice;
-						await user.update({ budget: updatedBudget });
-					} else {
-						return res.status(400).send({
-							message: `You don't have enough money to buy this book`,
-						});
-					}
+					if (user.budget >= bookFinalPrice)
+						await user.update({ budget: user.budget - bookFinalPrice });
+					else return returnError(res, 'Not enough money');
 				}
-			} else {
-				if (book.typeFormat === 'printed') {
-					const discount = subscription.everyBookDiscount / 100;
-					const bookFinalPrice = Math.round(book.price - book.price * discount);
-
-					if (user.budget >= bookFinalPrice) {
-						const updatedBudget = user.budget - bookFinalPrice;
-						await user.update({ budget: updatedBudget });
-					} else {
-						return res.status(400).send({
-							message: `You don't have enough money to buy this book`,
-						});
-					}
-				} else if (book.typeFormat === 'online') {
+				if (book.typeFormat === 'online') {
 					if (user.booksReadThisMonth < subscription.monthlyFreeBooks) {
 						await user.update({
 							booksReadThisMonth: user.booksReadThisMonth + 1,
 						});
 					} else {
-						const discount = subscription.everyBookDiscount / 100;
-						const bookFinalPrice = Math.round(
-							book.price - book.price * discount
-						);
 						if (user.budget >= bookFinalPrice) {
-							const updatedBudget = user.budget - bookFinalPrice;
-							await user.update({ budget: updatedBudget });
-						} else {
-							return res.status(400).send({
-								message: `You don't have enough money to buy this book`,
-							});
-						}
+							await user.update({ budget: user.budget - bookFinalPrice });
+						} else return returnError(res, 'Not enough money');
 					}
 				}
 			}
 		}
 		if (!user.subscriptionId) {
 			if (user.budget >= book.price) {
-				const updatedBudget = user.budget - book.price;
-				await user.update({ budget: updatedBudget });
-			} else {
-				return res
-					.status(400)
-					.send({ message: `You don't have enough money to buy this book` });
-			}
+				await user.update({ budget: user.budget - book.price });
+			} else return returnError(res, 'Not enough money');
 		}
-		const purchase = await Purchase.create(req.body);
+
+		const purchase = await Purchase.create({
+			BookId: bookId,
+			UserId: user.id,
+		});
 
 		if (book.typeFormat === 'printed') {
-			const updatedStock = book.stock - 1;
-			await book.update({ stock: updatedStock });
+			await book.update({ stock: book.stock - 1 });
 		}
 
 		return res.status(200).json({

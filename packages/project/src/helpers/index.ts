@@ -1,4 +1,4 @@
-export { errorMessage } from './errorMessage';
-export { getDatabaseModels as getDatabaseModels } from './dbTests';
-export { generateJWT } from './generateJWT';
+export * from './errorMessage';
+export * from './dbTests';
+export * from './generateJWT';
 export * from './returnError';

@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { sequelize } from '../../../global';
-import { errorMessage } from '../../../helpers/errorMessage';
-import { User, ModelUser, Models } from '../../../interface';
+import { errorMessage, returnError } from '../../../helpers';
+import { ModelUser, Models } from '../../../interface';
 
 interface ReqParam {
 	userId: number;
@@ -15,16 +15,21 @@ export async function changeUserRole(
 	req: Request<ReqParam, {}, ReqBody, {}>,
 	res: Response<ModelUser | object>
 ) {
-	const { User } = sequelize.models as unknown as Models;
+	const { User, Role } = sequelize.models as unknown as Models;
 	try {
-		const id = req.params.userId;
-		const roleId = req.body.roleId;
+		const { userId } = req.params;
+		const { roleId } = req.body;
 
-		const user = await User.findByPk(id);
-		await user?.update({ roleId: roleId });
-		await user?.update({ budget: 0 });
+		const user = await User.findByPk(userId);
+		const role = await Role.findByPk(roleId);
 
-		res.status(200).json({
+		if (!user) return returnError(res, 'Invalid id');
+		if (!role) return returnError(res, 'Invalid role id');
+
+		await user.update({ roleId: roleId });
+		await user.update({ budget: 0 });
+
+		return res.status(200).json({
 			data: user,
 		});
 	} catch (error) {

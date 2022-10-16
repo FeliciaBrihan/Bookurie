@@ -24,3 +24,7 @@ process.env.EXTRA_COMMAND = '';
 process.env.LOAN_DISCOUNT = 0.15;
 //@ts-ignore
 process.env.LOAN_DAYS_FOR_100PAGES = 7;
+//@ts-ignore
+process.env.MIN_BUDGET = 100;
+//@ts-ignore
+process.env.MAX_BUDGET = 1000;

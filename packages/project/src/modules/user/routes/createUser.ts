@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { errorMessage } from '../../../helpers/index';
+import { errorMessage } from '../../../helpers';
 import { sequelize } from '../../../global';
 import md5 from 'md5';
 import { User, ModelUser, Models } from '../../../interface';
@@ -10,11 +10,12 @@ export async function createUser(
 	req: Request<{}, {}, ReqBody, {}>,
 	res: Response<ModelUser | object>
 ) {
+	const { User } = sequelize.models as unknown as Models;
+
 	try {
-		const { User } = sequelize.models as unknown as Models;
 		const newUser = await User.create(req.body);
-		const hashPassword = md5(newUser.password);
-		await newUser.update({ password: hashPassword });
+
+		await newUser.update({ password: md5(newUser.password) });
 
 		return res.status(200).json({
 			data: newUser,

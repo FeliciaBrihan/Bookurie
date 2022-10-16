@@ -1,8 +1,9 @@
 import JWT from 'jsonwebtoken';
+import { ModelUser } from '../interface';
 import '../env';
 
-export function generateJWT(currentUserId = 0) {
-	return JWT.sign({ currentUserId }, process.env.JWT_LOCAL_KEY, {
+export function generateJWT(user: ModelUser) {
+	return JWT.sign({ user }, process.env.JWT_LOCAL_KEY, {
 		expiresIn: process.env.JWT_LOCAL_KEY_EXPIRE_TIME,
 	});
 }

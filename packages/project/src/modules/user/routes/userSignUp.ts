@@ -1,9 +1,9 @@
 import { Request, Response } from 'express';
 import md5 from 'md5';
-import JWT from 'jsonwebtoken';
-import { errorMessage } from '../../../helpers/index';
+import { errorMessage, returnError, generateJWT } from '../../../helpers';
 import { sequelize } from '../../../global';
 import { User, Models } from '../../../interface';
+import { generateBudget } from './functions/generateBudget';
 
 type ReqBody = User;
 
@@ -16,37 +16,31 @@ export async function userSignUp(
 		const { firstName, lastName, username, email, password } = req.body;
 
 		if (!(email && password && firstName && lastName && username)) {
-			res.status(400).send({ message: 'All fields are required' });
+			return returnError(res, 'All fields are required');
 		}
+		const user = await User.findOne({ where: { username: username } });
+		if (user) return returnError(res, 'Username already exists');
 
-		const userExists = await User.findOne({ where: { email: email } });
-		if (userExists) {
-			return res
-				.status(409)
-				.send({ message: 'User already exists, please login' });
-		}
+		const budget = generateBudget(
+			+process.env.MIN_BUDGET,
+			+process.env.MAX_BUDGET
+		);
 
-		const user = await User.create({
+		const newUser = await User.create({
 			firstName,
 			lastName,
 			email: email.toLowerCase(),
 			username,
 			password: md5(password),
 			roleId: 1,
+			budget,
 		});
 
-		const min = 100;
-		const max = 1000;
+		const accessToken = generateJWT(newUser);
 
-		const budget = Math.floor(Math.random() * (max - min) + min);
-		await user.update({ budget: budget });
-
-		const accessToken = JWT.sign({ user }, process.env.JWT_ACCESS_KEY, {
-			expiresIn: process.env.JWT_ACCESS_KEY_EXPIRE_TIME,
-		});
-		res.status(200).json({
+		return res.status(200).json({
 			accessToken: accessToken,
-			data: user,
+			data: newUser,
 		});
 	} catch (err) {
 		const message = errorMessage(err);

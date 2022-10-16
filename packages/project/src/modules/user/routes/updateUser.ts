@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { sequelize } from '../../../global';
-import { errorMessage } from '../../../helpers/index';
+import { errorMessage, returnError } from '../../../helpers';
 import { User, ModelUser, Models } from '../../../interface';
 
 type ReqBody = User;
@@ -13,12 +13,12 @@ export async function updateUser(
 	req: Request<ReqParam, {}, ReqBody, {}>,
 	res: Response<ModelUser | object>
 ) {
+	const { User } = sequelize.models as unknown as Models;
 	try {
-		const { User } = sequelize.models as unknown as Models;
 		const { id } = req.params;
 
 		const user = await User.findByPk(id);
-		if (!user) return res.status(404).send({ error: 'Invalid id' });
+		if (!user) return returnError(res, 'Invalid id');
 
 		const updatedUser = await user.update(req.body);
 

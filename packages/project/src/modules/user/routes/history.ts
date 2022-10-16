@@ -1,26 +1,28 @@
 import { Request, Response } from 'express';
 import { sequelize } from '../../../global';
-import { errorMessage } from '../../../helpers/index';
+import { errorMessage } from '../../../helpers';
 import {
 	Models,
 	ExtraRequest,
 	ModelLoan,
 	ModelPurchase,
+	ModelRaffle,
 } from '../../../interface';
 
 export async function viewHistory(
 	req: Request & ExtraRequest,
-	res: Response<ModelLoan | ModelPurchase | object>
+	res: Response<ModelLoan | ModelPurchase | ModelRaffle | object>
 ) {
 	const { Loan, Purchase, Raffle } = sequelize.models as unknown as Models;
 
 	try {
-		const userId = req.currentUserId;
+		const { currentUserId: userId } = req;
+
 		const loans = await Loan.findAll({ where: { UserId: userId } });
 		const purchases = await Purchase.findAll({ where: { UserId: userId } });
 		const raffleWins = await Raffle.findAll({ where: { UserId: userId } });
 
-		res.status(200).json({
+		return res.status(200).json({
 			data: {
 				loans,
 				purchases,
