@@ -8,9 +8,12 @@ export function restrictTo(...roles: string[]) {
 		res: Response,
 		next: NextFunction
 	) {
+		const { currentUserRoleId: roleId } = req;
+
 		const { Role } = sequelize.models as unknown as Models;
 
-		const role = await Role.findByPk(req.currentUserRoleId);
+		const role = await Role.findByPk(roleId);
+
 		if (!roles.includes(role.name)) {
 			return res.sendStatus(401);
 		}

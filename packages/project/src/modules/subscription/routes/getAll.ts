@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { sequelize } from '../../../global';
-import { errorMessage } from '../../../helpers/index';
+import { errorMessage } from '../../../helpers';
 import { ModelSubscription, Models } from '../../../interface';
 
 export async function getAll(

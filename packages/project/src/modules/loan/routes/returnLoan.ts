@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { sequelize } from '../../../global';
-import { errorMessage, returnError } from '../../../helpers/index';
+import { errorMessage, returnError } from '../../../helpers';
 import { ModelLoan, Models } from '../../../interface';
 
 interface ReqParam {

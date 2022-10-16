@@ -2,12 +2,12 @@ import { schedule } from 'node-cron';
 import {
 	cancelSubscription,
 	getUserSubscriptionPrice,
-	getUserWithExpiatedSubscription,
+	getUserWithExpiredSubscription,
 	renewSubscription,
 } from '../functions';
 
 schedule('59 23 * * *', async () => {
-	const users = await getUserWithExpiatedSubscription();
+	const users = await getUserWithExpiredSubscription();
 
 	for (const user of users) {
 		const { subscriptionId } = user;

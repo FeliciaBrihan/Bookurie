@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { ExtraRequest, User, Models } from '../../../interface';
+import { sequelize } from '../../../global';
 import JWT from 'jsonwebtoken';
 import '../../../env';
 
@@ -10,15 +11,11 @@ export async function verifyToken(
 	res: Response,
 	next: NextFunction
 ) {
-	const { sequelize } = await import('../../../global');
-
 	const { User } = sequelize.models as unknown as Models;
-
 	const token = req.headers['authorization'];
 
 	if (typeof token !== 'undefined') {
 		const jwt = token.split(' ')[1];
-
 		try {
 			const decodedJWT = JWT.verify(jwt, process.env.JWT_ACCESS_KEY) as {
 				user: User;
@@ -27,9 +24,10 @@ export async function verifyToken(
 				where: { id: decodedJWT.user.id },
 			});
 
-			req.currentUserId = user.id;
 			req.currentUser = user;
+			req.currentUserId = user.id;
 			req.currentUserRoleId = user.roleId;
+
 			next();
 		} catch (error: any) {
 			res.status(403).send({ error: 'invalid token' });

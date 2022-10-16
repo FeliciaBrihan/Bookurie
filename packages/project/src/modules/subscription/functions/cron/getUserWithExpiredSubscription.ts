@@ -3,7 +3,7 @@ import { sequelize } from '../../../../global';
 import { Models } from '../../../../interface';
 import { getTomorrow, getYesterday } from '../helpers';
 
-export async function getUserWithExpiatedSubscription() {
+export async function getUserWithExpiredSubscription() {
 	const { User } = sequelize.models as unknown as Models;
 	const yesterday = getYesterday();
 	const tomorrow = getTomorrow();

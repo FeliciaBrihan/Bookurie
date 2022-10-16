@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { getCurrentDate } from '../../../helpers/getCurrentDate';
+import { getCurrentDate } from '../../../helpers';
 import { sequelize } from '../../../global';
 import { errorMessage, returnError } from '../../../helpers';
 import { ModelSubscription, Models, ExtraRequest } from '../../../interface';
@@ -34,7 +34,7 @@ export async function subscribe(
 			budget: updatedBudget,
 		});
 
-		res.status(200).send({ message: 'Subscribed!' });
+		return res.status(200).send({ message: 'Subscribed!' });
 	} catch (error) {
 		const message = errorMessage(error);
 		res.status(400).send(message);

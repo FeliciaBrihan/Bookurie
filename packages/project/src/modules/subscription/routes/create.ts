@@ -16,7 +16,7 @@ export async function create(
 
 		const subscription = await Subscription.create(data);
 
-		res.status(201).json({
+		return res.status(201).json({
 			data: subscription,
 		});
 	} catch (error) {

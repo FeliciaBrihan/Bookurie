@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { sequelize } from '../../../global';
-import { errorMessage, returnError } from '../../../helpers/index';
+import { errorMessage, returnError } from '../../../helpers';
 import { Subscription, ModelSubscription, Models } from '../../../interface';
 
 type ReqBody = Subscription;
@@ -19,9 +19,10 @@ export async function update(
 
 		const subscription = await Subscription.findByPk(id);
 		if (!subscription) return returnError(res, 'Invalid id');
+
 		await subscription.update(req.body);
 
-		res.status(200).json({
+		return res.status(200).json({
 			data: subscription,
 		});
 	} catch (error) {

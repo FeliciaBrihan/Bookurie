@@ -1,7 +1,6 @@
 import { Request, Response } from 'express';
-import JWT from 'jsonwebtoken';
 import md5 from 'md5';
-import { errorMessage } from '../../../helpers/index';
+import { errorMessage, generateJWT, returnError } from '../../../helpers';
 import { sequelize } from '../../../global';
 import { Models } from '../../../interface';
 
@@ -22,13 +21,12 @@ export async function userLogin(
 		const user = await User.findOne({
 			where: { username: username, password: md5(password) },
 		});
-		if (!user) return res.status(403).send({ error: 'Invalid user' });
+		if (!user) return returnError(res, 'Invalid user');
 
-		const accessToken = JWT.sign({ user }, process.env.JWT_ACCESS_KEY, {
-			expiresIn: process.env.JWT_ACCESS_KEY_EXPIRE_TIME,
-		});
+		const accessToken = generateJWT(user);
 		res.cookie('jwt', accessToken, { httpOnly: true });
-		res.send({ accessToken });
+
+		return res.send({ accessToken });
 	} catch (err) {
 		const message = errorMessage(err);
 		res.status(400).send(message);
