@@ -1,3 +1,5 @@
+//TODO - refactor?
+
 import { Request, Response } from 'express';
 import {
 	Purchase,
@@ -7,7 +9,7 @@ import {
 } from '../../../interface';
 import { sequelize } from '../../../global';
 import { errorMessage, returnError } from '../../../helpers';
-import { calculateFinalPrice } from './functions/calculateFinalPrice';
+import { calculateFinalPrice } from '../functions/calculateFinalPrice';
 
 interface ReqParam {
 	bookId: number;
