@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
-import { sequelize } from '../../../global';
-import { errorMessage } from '../../../helpers';
-import { ExtraRequest, ModelLoan, Models } from '../../../interface';
+import { sequelize } from 'src/global';
+import { errorMessage } from 'src/helpers';
+import { ExtraRequest, ModelLoan, Models } from 'src/interface';
 
 export async function getLoansByUser(
 	req: Request & ExtraRequest,

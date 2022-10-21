@@ -1,6 +1,6 @@
 import { schedule } from 'node-cron';
-import { sequelize } from '../../../global';
-import { Models } from '../../../interface';
+import { sequelize } from 'src/global';
+import { Models } from 'src/interface';
 
 schedule('0 0 1,15 * *', async () => {
 	const { Raffle, User, Prize, Book, Subscription } =

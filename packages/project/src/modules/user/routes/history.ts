@@ -1,13 +1,13 @@
 import { Request, Response } from 'express';
-import { sequelize } from '../../../global';
-import { errorMessage } from '../../../helpers';
+import { sequelize } from 'src/global';
+import { errorMessage } from 'src/helpers';
 import {
 	Models,
 	ExtraRequest,
 	ModelLoan,
 	ModelPurchase,
 	ModelRaffle,
-} from '../../../interface';
+} from 'src/interface';
 
 export async function viewHistory(
 	req: Request & ExtraRequest,

@@ -2,7 +2,7 @@ import { join, relative } from 'path';
 import { readdirSync, existsSync } from 'fs';
 import { Sequelize, Dialect } from 'sequelize';
 import { Server as SocketServer } from 'socket.io';
-import { loggerOnlyGlobal } from '../logs/index';
+import { loggerOnlyGlobal } from 'src/logs';
 import { Express, Router } from 'express';
 import { Server } from 'http';
 
@@ -137,7 +137,6 @@ function getInstanceOfModule(module: string) {
 
 	async function getExpressRoutes() {
 		return await import(getRelativePath(join(expressRoutesPath, 'index.ts')));
-		// return '../modules/product/routes/index.ts';
 	}
 	async function startCronSchedule() {
 		await import(getRelativePath(cronPath));

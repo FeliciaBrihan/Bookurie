@@ -1,2 +1,2 @@
-export * from './models';
-export * from './routes';
+export * from 'src/modules/action/models';
+export * from 'src/modules/action//routes';

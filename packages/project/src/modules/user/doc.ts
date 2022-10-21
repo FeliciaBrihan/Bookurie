@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import {
 	Controller,
 	Get,
@@ -10,7 +11,7 @@ import {
 	Delete,
 	Security,
 } from 'tsoa';
-import { Loan, Purchase, Raffle, User } from '../../interface';
+import { Loan, Purchase, Raffle, User } from 'src/interface';
 
 type ReqBody = Omit<User, 'createdAt' | 'updatedAt' | 'deletedAt' | 'id'>;
 

@@ -1,14 +1,14 @@
 export const routeName = 'subscription';
 
 import { Router } from 'express';
-import { create } from './create';
-import { deleteSubscription } from './delete';
-import { getAll } from './getAll';
-import { getById } from './getById';
-import { update } from './update';
-import { subscribe } from './subscribe';
-import { verifyToken } from '../../auth/routes/verifyToken';
-import { checkAuthorization } from '../../auth/routes/checkAuthorization';
+import { create } from 'src/modules/subscription/routes/create';
+import { deleteSubscription } from 'src/modules/subscription/routes/delete';
+import { getAll } from 'src/modules/subscription/routes/getAll';
+import { getById } from 'src/modules/subscription/routes/getById';
+import { update } from 'src/modules/subscription/routes/update';
+import { subscribe } from 'src/modules/subscription/routes/subscribe';
+import { verifyToken } from 'src/modules/auth/routes/verifyToken';
+import { checkAuthorization } from 'src/modules/auth/routes/checkAuthorization';
 
 const router = Router();
 

@@ -1,16 +1,6 @@
-import {
-	Controller,
-	Get,
-	Path,
-	Route,
-	Tags,
-	Post,
-	Body,
-	Put,
-	Delete,
-	Security,
-} from 'tsoa';
-import { Loan } from '../../interface';
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { Controller, Get, Path, Route, Tags, Post, Put, Security } from 'tsoa';
+import { Loan } from 'src/interface';
 
 @Route('')
 @Tags('Loan')

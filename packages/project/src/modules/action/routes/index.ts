@@ -1,13 +1,13 @@
 export const routeName = 'action';
 
 import { Router } from 'express';
-import { create } from './create';
-import { getAll } from './getAll';
-import { deleteAction } from './delete';
-import { update } from './update';
-import { verifyToken } from '../../auth/routes/verifyToken';
-import { checkAuthorization } from '../../auth/routes/checkAuthorization';
-import { restrictTo } from '../../auth/routes/restrictTo';
+import { create } from 'src/modules/action/routes/create';
+import { getAll } from 'src/modules/action/routes/getAll';
+import { deleteAction } from 'src/modules/action/routes/delete';
+import { update } from 'src/modules/action/routes/update';
+import { verifyToken } from 'src/modules/auth/routes/verifyToken';
+import { checkAuthorization } from 'src/modules/auth/routes/checkAuthorization';
+import { restrictTo } from 'src/modules/auth/routes/restrictTo';
 
 const router = Router();
 router.post('/', verifyToken, restrictTo('admin'), create);

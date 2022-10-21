@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
-import { sequelize } from '../../../global';
-import { errorMessage, returnError } from '../../../helpers';
-import { ModelBook, Models } from '../../../interface';
+import { sequelize } from 'src/global';
+import { errorMessage, returnError } from 'src/helpers';
+import { ModelBook, Models } from 'src/interface';
 
 interface ReqParam {
 	id: number;

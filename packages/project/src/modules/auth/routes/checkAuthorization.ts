@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
-import { sequelize } from '../../../global';
-import { errorMessage } from '../../../helpers';
-import { ExtraRequest, Models } from '../../../interface';
+import { sequelize } from 'src/global';
+import { errorMessage } from 'src/helpers';
+import { ExtraRequest, Models } from 'src/interface';
 
 export function checkAuthorization(requiredAction: string) {
 	return async function (

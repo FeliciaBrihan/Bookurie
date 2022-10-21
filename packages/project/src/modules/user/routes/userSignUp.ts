@@ -1,9 +1,9 @@
 import { Request, Response } from 'express';
 import md5 from 'md5';
-import { errorMessage, returnError, generateJWT } from '../../../helpers';
-import { sequelize } from '../../../global';
-import { User, Models } from '../../../interface';
-import { generateBudget } from './functions/generateBudget';
+import { errorMessage, returnError, generateJWT } from 'src/helpers';
+import { sequelize } from 'src/global';
+import { User, Models } from 'src/interface';
+import { generateBudget } from 'src/modules/user/functions/generateBudget';
 
 type ReqBody = User;
 

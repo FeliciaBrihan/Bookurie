@@ -1,8 +1,8 @@
 import { Request, Response } from 'express';
-import { errorMessage } from '../../../helpers';
-import { sequelize } from '../../../global';
+import { errorMessage } from 'src/helpers';
+import { sequelize } from 'src/global';
 import md5 from 'md5';
-import { User, ModelUser, Models } from '../../../interface';
+import { User, ModelUser, Models } from 'src/interface';
 
 type ReqBody = User;
 

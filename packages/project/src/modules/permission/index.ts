@@ -1,2 +1,2 @@
-export * from './models';
-export * from './routes';
+export * from 'src/modules/permission/models';
+export * from 'src/modules/permission/routes';

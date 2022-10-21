@@ -1,4 +1,4 @@
-import './env.ts';
+import 'src/env';
 import { createServer } from 'http';
 import express, { json, Response, Request } from 'express';
 import swaggerUi from 'swagger-ui-express';
@@ -10,10 +10,10 @@ import {
 	initSocketServer,
 	initExpressModules,
 	initDatabaseModels,
-} from './init/index';
+} from 'src/init';
 
-import { sequelize } from './global';
-import { loggerOnlyGlobal } from './logs';
+import { sequelize } from 'src/global';
+import { loggerOnlyGlobal } from 'src/logs';
 
 export default async function server() {
 	const logger = loggerOnlyGlobal(__filename);

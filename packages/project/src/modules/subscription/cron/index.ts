@@ -4,7 +4,7 @@ import {
 	getUserSubscriptionPrice,
 	getUserWithExpiredSubscription,
 	renewSubscription,
-} from '../functions';
+} from 'src/modules/subscription/functions';
 
 schedule('59 23 * * *', async () => {
 	const users = await getUserWithExpiredSubscription();

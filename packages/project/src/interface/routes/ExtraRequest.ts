@@ -1,5 +1,5 @@
 import { Sequelize } from 'sequelize';
-import { ModelUser } from '../index';
+import { ModelUser } from 'src/interface';
 
 export type ExtraRequest = {
 	sequelize?: Sequelize;

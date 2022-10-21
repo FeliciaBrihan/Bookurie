@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
-import { Subscription, ModelSubscription, Models } from '../../../interface';
-import { sequelize } from '../../../global';
-import { errorMessage } from '../../../helpers';
+import { Subscription, ModelSubscription, Models } from 'src/interface';
+import { sequelize } from 'src/global';
+import { errorMessage } from 'src/helpers';
 
 type ReqBody = Subscription;
 

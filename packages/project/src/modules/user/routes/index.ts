@@ -1,17 +1,17 @@
 export const routeName = 'user';
 
 import { Router } from 'express';
-import { createUser } from './createUser';
-import { deleteUser } from './deleteUser';
-import { updateUser } from './updateUser';
-import { getAllUsers } from './getAllUsers';
-import { getUserById } from './getUserById';
-import { changeUserRole } from './changeUserRole';
-import { viewHistory } from './history';
-import { userSignUp } from './userSignUp';
-import { verifyToken } from '../../auth/routes/verifyToken';
-import { restrictTo } from '../../auth/routes/restrictTo';
-import { checkAuthorization } from '../../auth/routes/checkAuthorization';
+import { createUser } from 'src/modules/user/routes/createUser';
+import { deleteUser } from 'src/modules/user/routes/deleteUser';
+import { updateUser } from 'src/modules/user/routes/updateUser';
+import { getAllUsers } from 'src/modules/user/routes/getAllUsers';
+import { getUserById } from 'src/modules/user/routes/getUserById';
+import { changeUserRole } from 'src/modules/user/routes/changeUserRole';
+import { viewHistory } from 'src/modules/user/routes/history';
+import { userSignUp } from 'src/modules/user/routes/userSignUp';
+import { verifyToken } from 'src/modules/auth/routes/verifyToken';
+import { restrictTo } from 'src/modules/auth/routes/restrictTo';
+import { checkAuthorization } from 'src/modules/auth/routes/checkAuthorization';
 
 const router = Router();
 

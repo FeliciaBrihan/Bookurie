@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
-import { sequelize } from '../../../global';
-import { errorMessage, returnError } from '../../../helpers';
-import { Book, ModelBook, Models } from '../../../interface';
+import { sequelize } from 'src/global';
+import { errorMessage, returnError } from 'src/helpers';
+import { Book, ModelBook, Models } from 'src/interface';
 
 type ReqBody = Book;
 interface ReqParam {

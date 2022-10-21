@@ -1,8 +1,8 @@
 import { Request, Response } from 'express';
-import { sequelize } from '../../../global';
-import { errorMessage, returnError } from '../../../helpers';
-import { ModelLoan, Models, ExtraRequest } from '../../../interface';
-import { calculatePrice } from './functions/calculatePrice';
+import { sequelize } from 'src/global';
+import { errorMessage, returnError } from 'src/helpers';
+import { ModelLoan, Models, ExtraRequest } from 'src/interface';
+import { calculatePrice } from 'src/modules/loan/functions/calculatePrice';
 
 interface ReqParam {
 	bookId: number;

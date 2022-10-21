@@ -1,7 +1,7 @@
-import { expressModule, ModuleInstance } from '../core/index';
+import { expressModule, ModuleInstance } from 'src/core';
 import { Express } from 'express';
 
-export default async function getExpressRoutesOf(
+export async function getExpressRoutesOf(
 	moduleInstance: ModuleInstance,
 	app: Express
 ) {

@@ -1,12 +1,12 @@
 export const routeName = 'role';
 
 import { Router } from 'express';
-import { create } from './create';
-import { getAll } from './getAll';
-import { deleteRole } from './delete';
-import { update } from './update';
-import { verifyToken } from '../../auth/routes/verifyToken';
-import { checkAuthorization } from '../../auth/routes/checkAuthorization';
+import { create } from 'src/modules/role/routes/create';
+import { getAll } from 'src/modules/role/routes/getAll';
+import { deleteRole } from 'src/modules/role/routes/delete';
+import { update } from 'src/modules/role/routes/update';
+import { verifyToken } from 'src/modules/auth/routes/verifyToken';
+import { checkAuthorization } from 'src/modules/auth/routes/checkAuthorization';
 
 const router = Router();
 router.post('/', verifyToken, checkAuthorization('Role: create'), create);

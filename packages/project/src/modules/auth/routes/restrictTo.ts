@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
-import { ExtraRequest, Models } from '../../../interface';
-import { sequelize } from '../../../global';
+import { ExtraRequest, Models } from 'src/interface';
+import { sequelize } from 'src/global';
 
 export function restrictTo(...roles: string[]) {
 	return async function (

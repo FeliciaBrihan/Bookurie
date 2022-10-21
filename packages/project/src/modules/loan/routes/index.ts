@@ -1,13 +1,13 @@
 export const routeName = 'loan';
 
 import { Router } from 'express';
-import { getAll } from './getAll';
-import { create } from './create';
-import { acceptLoan } from './acceptLoan';
-import { getLoansByUser } from './getLoansByUser';
-import { returnLoan } from './returnLoan';
-import { verifyToken } from '../../auth/routes/verifyToken';
-import { checkAuthorization } from '../../auth/routes/checkAuthorization';
+import { getAll } from 'src/modules/loan/routes/getAll';
+import { create } from 'src/modules/loan/routes/create';
+import { acceptLoan } from 'src/modules/loan/routes/acceptLoan';
+import { getLoansByUser } from 'src/modules/loan/routes/getLoansByUser';
+import { returnLoan } from 'src/modules/loan/routes/returnLoan';
+import { verifyToken } from 'src/modules/auth/routes/verifyToken';
+import { checkAuthorization } from 'src/modules/auth/routes/checkAuthorization';
 
 const router = Router({ mergeParams: true });
 

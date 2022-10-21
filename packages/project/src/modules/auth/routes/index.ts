@@ -1,10 +1,10 @@
 export const routeName = 'auth';
 
 import { Router } from 'express';
-import { userLogin } from './userLogin';
+import { userLogin } from 'src/modules/auth/routes/userLogin';
 
 const router = Router();
 router.post('/login', userLogin);
 
 export const routes = router;
-export { verifyToken } from './verifyToken';
+export { verifyToken } from 'src/modules/auth/routes/verifyToken';

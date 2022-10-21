@@ -1,6 +1,6 @@
 import md5 from 'md5';
 import { Sequelize } from 'sequelize';
-import { Models } from '../interface';
+import { Models } from 'src/interface';
 
 export async function initDatabaseModels(sequelize: Sequelize) {
 	await addModels(sequelize);
@@ -9,26 +9,28 @@ export async function initDatabaseModels(sequelize: Sequelize) {
 }
 
 async function addModels(sequelize: Sequelize) {
-	const { getModelBook } = await import('../modules/book/models/index');
+	const { getModelBook } = await import('src/modules/book/models/index');
 
-	const { getModelUser } = await import('../modules/user/models/index');
+	const { getModelUser } = await import('src/modules/user/models/index');
 
-	const { getModelLoan } = await import('../modules/loan/models/index');
+	const { getModelLoan } = await import('src/modules/loan/models/index');
 
-	const { getModelRole } = await import('../modules/role/models/index');
+	const { getModelRole } = await import('src/modules/role/models/index');
 
-	const { getModelAction } = await import('../modules/action/models/index');
+	const { getModelAction } = await import('src/modules/action/models/index');
 
 	const { getModelPermission } = await import(
-		'../modules/permission/models/index'
+		'src/modules/permission/models/index'
 	);
-	const { getModelPurchase } = await import('../modules/purchase/models/index');
+	const { getModelPurchase } = await import(
+		'src/modules/purchase/models/index'
+	);
 	const { getModelSubscription } = await import(
-		'../modules/subscription/models/index'
+		'src/modules/subscription/models/index'
 	);
-	const { getModelRaffle } = await import('../modules/raffle/models/index');
+	const { getModelRaffle } = await import('src/modules/raffle/models/index');
 
-	const { getModelPrize } = await import('../modules/prize/models/index');
+	const { getModelPrize } = await import('src/modules/prize/models/index');
 
 	getModelLoan(sequelize);
 	getModelBook(sequelize);
@@ -51,7 +53,6 @@ async function addModels(sequelize: Sequelize) {
 		Purchase,
 		Subscription,
 		Raffle,
-		Prize,
 	} = sequelize.models as unknown as Models;
 
 	Book.belongsToMany(User, { through: Loan });
@@ -71,7 +72,9 @@ async function addModels(sequelize: Sequelize) {
 
 	await sequelize.sync();
 }
-async function addModuleProperties(_: Sequelize) {}
+async function addModuleProperties(_: Sequelize) {
+	//
+}
 
 async function addDefaultData(sequelize: Sequelize) {
 	const { Role, Action, User, Subscription, Permission, Prize } =

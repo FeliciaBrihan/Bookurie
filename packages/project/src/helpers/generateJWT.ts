@@ -1,5 +1,5 @@
 import JWT from 'jsonwebtoken';
-import { ModelUser } from '../interface';
+import { ModelUser } from 'src/interface';
 
 export function generateJWT(user: ModelUser) {
 	return JWT.sign({ user }, process.env.JWT_ACCESS_KEY, {

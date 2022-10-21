@@ -1,13 +1,13 @@
 export const routeName = 'permission';
 
 import { Router } from 'express';
-import { verifyToken } from '../../auth/routes/verifyToken';
-import { restrictTo } from '../../auth/routes/restrictTo';
-import { create } from './create';
-import { getAll } from './getAll';
-import { deletePermission } from './delete';
-import { update } from './update';
-import { checkAuthorization } from '../../auth/routes/checkAuthorization';
+import { create } from 'src/modules/permission/routes/create';
+import { getAll } from 'src/modules/permission/routes/getAll';
+import { deletePermission } from 'src/modules/permission/routes/delete';
+import { update } from 'src/modules/permission/routes/update';
+import { verifyToken } from 'src/modules/auth/routes/verifyToken';
+import { restrictTo } from 'src/modules/auth/routes/restrictTo';
+import { checkAuthorization } from 'src/modules/auth/routes/checkAuthorization';
 
 const router = Router();
 router.post('/', verifyToken, restrictTo('admin'), create);

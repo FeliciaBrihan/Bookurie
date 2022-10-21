@@ -1,5 +1,5 @@
-import { expressModule } from '../core/expressModule';
-import { sequelize, setSequelize } from '../global';
+import { expressModule } from 'src/core';
+import { sequelize, setSequelize } from 'src/global';
 
 export async function initDatabase() {
 	const { getDatabaseConnection, checkDatabaseConnection } = expressModule();

@@ -1,5 +1,5 @@
-import { expressModule } from '../core/expressModule';
-import { initEachActiveModule } from './initEachActiveModule';
+import { expressModule } from 'src/core';
+import { initEachActiveModule } from 'src/init';
 import { Express } from 'express';
 
 export function initExpressModules(app: Express) {

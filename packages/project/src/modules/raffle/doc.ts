@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import {
 	Controller,
 	Get,
@@ -10,7 +11,7 @@ import {
 	Delete,
 	Security,
 } from 'tsoa';
-import { Raffle } from '../../interface';
+import { Raffle } from 'src/interface';
 
 @Route('raffle')
 @Tags('Raffle')

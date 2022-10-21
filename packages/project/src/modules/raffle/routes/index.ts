@@ -1,12 +1,12 @@
-export const routeName = 'raffle'
+export const routeName = 'raffle';
 
 import { Router } from 'express';
-import { restrictTo } from '../../auth/routes/restrictTo';
-import { verifyToken } from '../../auth/routes/verifyToken';
-import { getAll } from './getAll';
+import { restrictTo } from 'src/modules/auth/routes/restrictTo';
+import { verifyToken } from 'src/modules/auth/routes/verifyToken';
+import { getAll } from 'src/modules/raffle/routes/getAll';
 
 const router = Router();
 
-router.get('', verifyToken, restrictTo('admin'), getAll)
+router.get('', verifyToken, restrictTo('admin'), getAll);
 
 export const routes = router;

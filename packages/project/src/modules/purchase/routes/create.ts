@@ -1,15 +1,10 @@
 //TODO - refactor?
 
 import { Request, Response } from 'express';
-import {
-	Purchase,
-	ModelPurchase,
-	Models,
-	ExtraRequest,
-} from '../../../interface';
-import { sequelize } from '../../../global';
-import { errorMessage, returnError } from '../../../helpers';
-import { calculateFinalPrice } from '../functions/calculateFinalPrice';
+import { Purchase, ModelPurchase, Models, ExtraRequest } from 'src/interface';
+import { sequelize } from 'src/global';
+import { errorMessage, returnError } from 'src/helpers';
+import { calculateFinalPrice } from 'src/modules/purchase/functions/calculateFinalPrice';
 
 interface ReqParam {
 	bookId: number;
@@ -21,7 +16,7 @@ export async function create(
 	req: ExtraRequest & Request<ReqParam, {}, ReqBody, {}>,
 	res: Response<ModelPurchase | object>
 ) {
-	const { Purchase, Book, User, Subscription } =
+	const { Purchase, Book, Subscription } =
 		sequelize.models as unknown as Models;
 
 	try {

@@ -1,2 +1,2 @@
-export { getModelUser } from './models/index';
-export { routeName, routes } from './routes/index';
+export * from 'src/modules/user/models';
+export * from 'src/modules/user/routes';

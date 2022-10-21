@@ -1,5 +1,5 @@
 import { exec } from 'child_process';
-import { loggerOnlyGlobal } from '../logs/index';
+import { loggerOnlyGlobal } from 'src/logs';
 
 const logger = loggerOnlyGlobal(__filename);
 

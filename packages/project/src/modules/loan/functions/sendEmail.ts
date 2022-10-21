@@ -16,7 +16,7 @@ export function sendEmail(email: string, title: string, days: number) {
 		text: `You will receive the book "${title}" shortly. Enjoy! \n Please return the book in ${days} days.`,
 	};
 
-	transporter.sendMail(mailOptions, function (error, info) {
+	transporter.sendMail(mailOptions, function (error) {
 		if (error) {
 			console.log(error);
 		} else {

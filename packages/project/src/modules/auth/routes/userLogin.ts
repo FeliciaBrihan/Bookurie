@@ -1,8 +1,8 @@
 import { Request, Response } from 'express';
 import md5 from 'md5';
-import { errorMessage, generateJWT, returnError } from '../../../helpers';
-import { sequelize } from '../../../global';
-import { Models } from '../../../interface';
+import { errorMessage, generateJWT, returnError } from 'src/helpers';
+import { sequelize } from 'src/global';
+import { Models } from 'src/interface';
 
 interface ReqBody {
 	username: string;

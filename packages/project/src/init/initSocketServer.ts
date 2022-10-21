@@ -1,6 +1,6 @@
 import { Server } from 'http';
-import { expressModule } from '../core/expressModule';
-import { setSocket } from '../global';
+import { expressModule } from 'src/core';
+import { setSocket } from 'src/global';
 
 export function initSocketServer(httpServer: Server) {
 	const { getServerConnection } = expressModule();

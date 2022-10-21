@@ -1,12 +1,12 @@
 import { Request, Response } from 'express';
-import { sequelize } from '../../../global';
-import { errorMessage, returnError } from '../../../helpers';
-import { Loan, ModelLoan, Models } from '../../../interface';
+import { sequelize } from 'src/global';
+import { errorMessage, returnError } from 'src/helpers';
+import { Loan, ModelLoan, Models } from 'src/interface';
 import {
 	calculateLoanDuration,
 	calculateLoanExpirationDate,
 	sendEmail,
-} from './functions';
+} from 'src/modules/loan/functions';
 
 type ReqBody = Loan;
 interface ReqParam {

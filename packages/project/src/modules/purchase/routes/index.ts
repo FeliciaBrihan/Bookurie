@@ -1,11 +1,11 @@
 export const routeName = 'purchase';
 
 import { Router } from 'express';
-import { getAll } from './getAll';
-import { verifyToken } from '../../auth/routes/verifyToken';
-import { create } from './create';
-import { getByUser } from './getByUser';
-import { checkAuthorization } from '../../auth/routes/checkAuthorization';
+import { getAll } from 'src/modules/purchase/routes/getAll';
+import { create } from 'src/modules/purchase/routes/create';
+import { getByUser } from 'src/modules/purchase/routes/getByUser';
+import { verifyToken } from 'src/modules/auth/routes/verifyToken';
+import { checkAuthorization } from 'src/modules/auth/routes/checkAuthorization';
 
 const router = Router({ mergeParams: true });
 
