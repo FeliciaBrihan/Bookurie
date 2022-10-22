@@ -2,7 +2,6 @@ import { Request, Response, NextFunction } from 'express';
 import { ExtraRequest, User, Models } from 'src/interface';
 import { sequelize } from 'src/global';
 import JWT from 'jsonwebtoken';
-import 'src/env';
 
 type JWTResponse<T> = (string | JWT.JwtPayload) & T;
 

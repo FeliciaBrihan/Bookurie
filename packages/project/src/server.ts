@@ -1,4 +1,6 @@
-import 'src/env';
+import * as dotenv from 'dotenv';
+dotenv.config({ path: __dirname + '/.env' });
+
 import { createServer } from 'http';
 import express, { json, Response, Request } from 'express';
 import swaggerUi from 'swagger-ui-express';
