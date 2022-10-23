@@ -9,28 +9,24 @@ export async function initDatabaseModels(sequelize: Sequelize) {
 }
 
 async function addModels(sequelize: Sequelize) {
-	const { getModelBook } = await import('src/modules/book/models/index');
+	const { getModelBook } = await import('src/modules/book/models');
 
-	const { getModelUser } = await import('src/modules/user/models/index');
+	const { getModelUser } = await import('src/modules/user/models');
 
-	const { getModelLoan } = await import('src/modules/loan/models/index');
+	const { getModelLoan } = await import('src/modules/loan/models');
 
-	const { getModelRole } = await import('src/modules/role/models/index');
+	const { getModelRole } = await import('src/modules/role/models');
 
-	const { getModelAction } = await import('src/modules/action/models/index');
+	const { getModelAction } = await import('src/modules/action/models');
 
-	const { getModelPermission } = await import(
-		'src/modules/permission/models/index'
-	);
-	const { getModelPurchase } = await import(
-		'src/modules/purchase/models/index'
-	);
+	const { getModelPermission } = await import('src/modules/permission/models');
+	const { getModelPurchase } = await import('src/modules/purchase/models');
 	const { getModelSubscription } = await import(
-		'src/modules/subscription/models/index'
+		'src/modules/subscription/models'
 	);
-	const { getModelRaffle } = await import('src/modules/raffle/models/index');
+	const { getModelRaffle } = await import('src/modules/raffle/models');
 
-	const { getModelPrize } = await import('src/modules/prize/models/index');
+	const { getModelPrize } = await import('src/modules/prize/models');
 
 	getModelLoan(sequelize);
 	getModelBook(sequelize);

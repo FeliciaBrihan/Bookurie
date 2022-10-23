@@ -10,7 +10,7 @@ export async function getAll(
 	const { Raffle } = sequelize.models as unknown as Models;
 
 	try {
-		const raffles = await Raffle.findAll({ where: req.query });
+		const raffles = await Raffle.findAll();
 		if (raffles.length === 0) return res.sendStatus(204);
 
 		return res.status(200).json({

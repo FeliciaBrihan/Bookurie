@@ -20,10 +20,10 @@ export async function updateUser(
 		const user = await User.findByPk(id);
 		if (!user) return returnError(res, 'Invalid id');
 
-		const updatedUser = await user.update(req.body);
+		await user.update(req.body);
 
 		return res.status(200).json({
-			data: updatedUser,
+			data: user,
 		});
 	} catch (err) {
 		const message = errorMessage(err);

@@ -21,7 +21,7 @@ export async function update(
 
 		await action.update(req.body);
 
-		res.status(200).json({
+		return res.status(200).json({
 			data: action,
 		});
 	} catch (error) {

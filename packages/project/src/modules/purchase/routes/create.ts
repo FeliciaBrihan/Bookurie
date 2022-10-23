@@ -1,10 +1,8 @@
-//TODO - refactor?
-
 import { Request, Response } from 'express';
 import { Purchase, ModelPurchase, Models, ExtraRequest } from 'src/interface';
 import { sequelize } from 'src/global';
 import { errorMessage, returnError } from 'src/helpers';
-import { calculateFinalPrice } from 'src/modules/purchase/functions/calculateFinalPrice';
+import { getBookDetails } from 'src/modules/purchase/functions';
 
 interface ReqParam {
 	bookId: number;
@@ -16,58 +14,40 @@ export async function create(
 	req: ExtraRequest & Request<ReqParam, {}, ReqBody, {}>,
 	res: Response<ModelPurchase | object>
 ) {
-	const { Purchase, Book, Subscription } =
-		sequelize.models as unknown as Models;
+	const { Purchase, Book } = sequelize.models as unknown as Models;
 
 	try {
 		const { bookId } = req.params;
 		const { currentUser: user } = req;
 
 		const book = await Book.findByPk(bookId);
-		const alreadyPurchased = await Purchase.findAll({
+		const alreadyBought = await Purchase.findAll({
 			where: {
 				BookId: bookId,
 				UserId: user.id,
 			},
 		});
-		if (alreadyPurchased.length > 0 && book.typeFormat === 'online')
+		if (alreadyBought.length > 0 && book.typeFormat === 'online')
 			return returnError(res, 'Online book already bought');
 		if (!book) return returnError(res, 'Invalid id');
 		if (book.typeFormat === 'printed' && !book.stock)
 			return returnError(res, 'Book out of stock');
-		if (user.subscriptionId) {
-			const subscription = await Subscription.findByPk(user.subscriptionId);
-			const bookFinalPrice = calculateFinalPrice(
-				book.price,
-				subscription.everyBookDiscount
-			);
-			if (subscription.type === 'premium' && book.typeFormat === 'printed') {
-				if (user.budget >= bookFinalPrice)
-					await user.update({ budget: user.budget - bookFinalPrice });
-				else return returnError(res, `Not enough money`);
-			}
-			if (subscription.type === 'basic') {
-				if (book.typeFormat === 'printed') {
-					if (user.budget >= bookFinalPrice)
-						await user.update({ budget: user.budget - bookFinalPrice });
-					else return returnError(res, 'Not enough money');
-				}
-				if (book.typeFormat === 'online') {
-					if (user.booksReadThisMonth < subscription.monthlyFreeBooks) {
-						await user.update({
-							booksReadThisMonth: user.booksReadThisMonth + 1,
-						});
-					} else {
-						if (user.budget >= bookFinalPrice) {
-							await user.update({ budget: user.budget - bookFinalPrice });
-						} else return returnError(res, 'Not enough money');
-					}
-				}
-			}
-		}
-		if (!user.subscriptionId) {
-			if (user.budget >= book.price) {
-				await user.update({ budget: user.budget - book.price });
+
+		const { isPremiumSubscription, isFreeBook, price } = await getBookDetails({
+			bookType: book.typeFormat,
+			bookPrice: book.price,
+			subscriptionId: user.subscriptionId,
+			booksReadThisMonth: user.booksReadThisMonth,
+		});
+
+		if (isFreeBook) {
+			if (!isPremiumSubscription)
+				await user.update({ booksReadThisMonth: user.booksReadThisMonth + 1 });
+		} else {
+			if (user.budget >= price) {
+				await user.update({ budget: user.budget - price });
+				if (book.typeFormat === 'printed')
+					await book.update({ stock: book.stock - 1 });
 			} else return returnError(res, 'Not enough money');
 		}
 
@@ -75,10 +55,6 @@ export async function create(
 			BookId: bookId,
 			UserId: user.id,
 		});
-
-		if (book.typeFormat === 'printed') {
-			await book.update({ stock: book.stock - 1 });
-		}
 
 		return res.status(200).json({
 			data: purchase,

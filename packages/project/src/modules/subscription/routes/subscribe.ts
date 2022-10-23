@@ -9,14 +9,13 @@ export async function subscribe(
 	req: Request & ExtraRequest,
 	res: Response<ModelSubscription | object>
 ) {
-	const { Subscription, User } = sequelize.models as unknown as Models;
+	const { Subscription } = sequelize.models as unknown as Models;
 
 	try {
 		const { id: subscriptionId } = req.params;
-		const userId = req.currentUserId;
+		const { currentUser: user } = req;
 
 		const subscription = await Subscription.findByPk(subscriptionId);
-		const user = await User.findByPk(userId);
 
 		if (!subscription) return returnError(res, 'Invalid id');
 		if (user.roleId !== 1) return returnError(res, 'Staff cannot subscribe');
@@ -25,13 +24,12 @@ export async function subscribe(
 		if (user.subscriptionId === +subscriptionId)
 			return returnError(res, 'You already have this subscription');
 
-		const updatedBudget = user.budget - subscription.monthlyFee;
 		const subscriptionExpirationDate = getSubscriptionExpirationDate();
 		await user.update({
 			subscriptionId: +subscriptionId,
 			subscriptionDate: getCurrentDate().date as unknown as Date,
 			subscriptionExpirationDate: subscriptionExpirationDate,
-			budget: updatedBudget,
+			budget: user.budget - subscription.monthlyFee,
 		});
 
 		return res.status(200).send({ message: 'Subscribed!' });

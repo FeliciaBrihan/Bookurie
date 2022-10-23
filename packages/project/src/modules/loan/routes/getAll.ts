@@ -11,8 +11,9 @@ export async function getAll(
 
 	try {
 		const loans = await Loan.findAll();
+		if (loans.length === 0) return res.sendStatus(204);
 
-		res.status(200).json({
+		return res.status(200).json({
 			results: loans.length,
 			data: loans,
 		});

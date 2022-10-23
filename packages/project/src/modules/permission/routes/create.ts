@@ -15,6 +15,7 @@ export async function create(
 		const { RoleId, ActionId } = req.body;
 		const role = await Role.findByPk(RoleId);
 		const action = await Action.findByPk(ActionId);
+		
 		if (!role || !action) {
 			return returnError(res, 'Invalid data');
 		}
@@ -24,7 +25,7 @@ export async function create(
 			ActionId: ActionId,
 		});
 
-		res.status(200).json({
+		return res.status(200).json({
 			data: newPermission,
 		});
 	} catch (error) {

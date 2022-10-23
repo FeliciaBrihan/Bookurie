@@ -1,1 +1,1 @@
-export * from 'src/modules/auth//routes';
+export * from 'src/modules/auth/routes';

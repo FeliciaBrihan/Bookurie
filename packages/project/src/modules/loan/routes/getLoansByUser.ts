@@ -12,8 +12,9 @@ export async function getLoansByUser(
 	try {
 		const { currentUserId: userId } = req;
 		const loans = await Loan.findAll({ where: { UserId: userId } });
+		if (loans.length === 0) return res.sendStatus(204);
 
-		res.status(200).json({
+		return res.status(200).json({
 			results: loans.length,
 			data: loans,
 		});

@@ -6,16 +6,15 @@ schedule('0 0 1,15 * *', async () => {
 	const { Raffle, User, Prize, Book, Subscription } =
 		sequelize.models as unknown as Models;
 
-	const subscription = await Subscription.findOne({
+	const premiumSubscription = await Subscription.findOne({
 		where: { type: 'premium' },
 	});
 	const users = await User.findAll({
-		where: { subscriptionId: subscription.id },
+		where: { subscriptionId: premiumSubscription.id },
 	});
-	const prize = await Prize.findOne();
-
 	const winner = users[Math.floor(Math.random() * users.length)];
 
+	const prize = await Prize.findOne();
 	if (prize.bookId) {
 		const book = await Book.findByPk(prize.bookId);
 		if (book.typeFormat === 'printed' && book.stock > 0) {

@@ -20,7 +20,7 @@ export async function deleteUser(
 		const user = await User.findByPk(id);
 		if (!user) return returnError(res, 'Invalid id');
 
-		await User.destroy({ where: { id: id } });
+		await user.destroy();
 
 		return res.status(200).json({
 			data: null,

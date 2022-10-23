@@ -12,8 +12,9 @@ export async function getByUser(
 	try {
 		const { currentUserId: userId } = req;
 		const purchases = await Purchase.findAll({ where: { UserId: userId } });
+		if (purchases.length === 0) return res.sendStatus(204);
 
-		res.status(200).json({
+		return res.status(200).json({
 			results: purchases.length,
 			data: purchases,
 		});

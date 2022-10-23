@@ -16,6 +16,7 @@ export async function returnLoan(
 	try {
 		const { id } = req.params;
 		const loan = await Loan.findByPk(id);
+
 		if (!loan) return returnError(res, 'Invalid id');
 		if (!loan.isAccepted) return returnError(res, 'Loan not accepted');
 		if (loan.isReturned) return returnError(res, 'Loan already returned');
@@ -24,7 +25,7 @@ export async function returnLoan(
 		await book.update({ stock: book.stock + 1 });
 		await loan.update({ isReturned: true });
 
-		res.status(200).json({
+		return res.status(200).json({
 			message: 'Return book registered',
 		});
 	} catch (error) {

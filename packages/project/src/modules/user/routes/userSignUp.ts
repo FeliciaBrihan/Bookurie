@@ -3,7 +3,7 @@ import md5 from 'md5';
 import { errorMessage, returnError, generateJWT } from 'src/helpers';
 import { sequelize } from 'src/global';
 import { User, Models } from 'src/interface';
-import { generateBudget } from 'src/modules/user/functions/generateBudget';
+import { generateUserBudget } from 'src/modules/user/functions';
 
 type ReqBody = User;
 
@@ -21,7 +21,7 @@ export async function userSignUp(
 		const user = await User.findOne({ where: { username: username } });
 		if (user) return returnError(res, 'Username already exists');
 
-		const budget = generateBudget(
+		const budget = generateUserBudget(
 			+process.env.MIN_BUDGET,
 			+process.env.MAX_BUDGET
 		);

@@ -23,11 +23,10 @@ export async function changeUserRole(
 		const user = await User.findByPk(userId);
 		const role = await Role.findByPk(roleId);
 
-		if (!user) return returnError(res, 'Invalid id');
+		if (!user) return returnError(res, 'Invalid user id');
 		if (!role) return returnError(res, 'Invalid role id');
 
-		await user.update({ roleId: roleId });
-		await user.update({ budget: 0 });
+		await user.update({ roleId: roleId, budget: 0 });
 
 		return res.status(200).json({
 			data: user,

@@ -11,8 +11,9 @@ export async function getAll(
 
 	try {
 		const purchases = await Purchase.findAll();
+		if (purchases.length === 0) return res.sendStatus(204);
 
-		res.status(200).json({
+		return res.status(200).json({
 			results: purchases.length,
 			data: purchases,
 		});

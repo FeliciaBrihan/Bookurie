@@ -4,8 +4,8 @@ export function sendEmail(email: string, title: string, days: number) {
 	const transporter = nodemailer.createTransport({
 		service: 'gmail',
 		auth: {
-			user: 'bookurie0@gmail.com',
-			pass: 'cbljdxoveqqintwx',
+			user: process.env.EMAIL_USER,
+			pass: process.env.EMAIL_PASSWORD,
 		},
 	});
 

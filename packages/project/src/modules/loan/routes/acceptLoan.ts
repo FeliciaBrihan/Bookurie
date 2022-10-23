@@ -21,11 +21,12 @@ export async function acceptLoan(
 	try {
 		const { id } = req.params;
 		const loan = await Loan.findByPk(id);
-		const book = await Book.findByPk(loan.BookId);
-		const user = await User.findByPk(loan.UserId);
 
 		if (!loan) return returnError(res, 'Invalid id');
 		if (loan.isAccepted) return returnError(res, 'Loan already accepted');
+
+		const book = await Book.findByPk(loan.BookId);
+		const user = await User.findByPk(loan.UserId);
 
 		const loanDurationDays = calculateLoanDuration(
 			+process.env.LOAN_DAYS_FOR_100PAGES,
@@ -33,8 +34,7 @@ export async function acceptLoan(
 		);
 		const expirationDate = calculateLoanExpirationDate(loanDurationDays);
 
-		await loan.update({ isAccepted: true });
-		await loan.update({ expirationDate: expirationDate });
+		await loan.update({ isAccepted: true, expirationDate: expirationDate });
 
 		sendEmail(user.email, book.title, loanDurationDays);
 

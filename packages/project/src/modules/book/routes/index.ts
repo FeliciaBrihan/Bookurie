@@ -1,4 +1,4 @@
-export const routeName = 'books';
+export const routeName = 'book';
 
 import { Router } from 'express';
 import { create } from 'src/modules/book/routes/create';

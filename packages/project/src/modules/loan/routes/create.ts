@@ -13,18 +13,18 @@ export async function create(
 	req: Request<ReqParam, {}, ReqBody, {}> & ExtraRequest,
 	res: Response<ModelLoan | object>
 ) {
-	const { Loan, Book, User } = sequelize.models as unknown as Models;
+	const { Loan, Book } = sequelize.models as unknown as Models;
 	try {
-		const { currentUserId: userId } = req;
+		const { currentUser: user } = req;
 		const { bookId } = req.params;
 
-		const user = await User.findByPk(userId);
 		const book = await Book.findByPk(bookId);
 
 		if (!book) return returnError(res, 'Invalid id');
 		if (book.typeFormat === 'online')
 			return returnError(res, 'Online book. Cannot be borrowed!');
 		if (!book.stock) return returnError(res, 'Book out of stock!');
+
 		if (!user.subscriptionId) {
 			const bookFinalPrice = calculatePrice(
 				book.price,
@@ -37,7 +37,7 @@ export async function create(
 
 		const loan = await Loan.create({
 			BookId: bookId,
-			UserId: userId,
+			UserId: user.id,
 		});
 
 		await book.update({ stock: book.stock - 1 });
