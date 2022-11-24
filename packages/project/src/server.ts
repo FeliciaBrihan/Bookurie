@@ -45,7 +45,7 @@ export default async function server() {
 
 	if (process.env.ENVIRONMENT !== 'TEST') {
 		httpServer.listen(process.env.PORT, () => {
-			logger.info(`Server started on server: ${process.env.DOMAIN}`);
+			logger.info(`Server started on: ${process.env.DOMAIN}`);
 		});
 		return httpServer;
 	}

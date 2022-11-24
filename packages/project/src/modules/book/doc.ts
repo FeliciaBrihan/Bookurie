@@ -15,7 +15,7 @@ import { Book } from 'src/interface';
 
 type ReqBodyBook = Omit<Book, 'createdAt' | 'updatedAt' | 'deletedAt' | 'id'>;
 
-@Route('books')
+@Route('book')
 @Tags('Book')
 export class BookController extends Controller {
 	/**

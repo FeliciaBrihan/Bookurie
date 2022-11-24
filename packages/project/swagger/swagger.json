@@ -1005,7 +1005,7 @@
 				}
 			}
 		},
-		"/books": {
+		"/book": {
 			"get": {
 				"operationId": "GetAll",
 				"responses": {
@@ -1066,7 +1066,7 @@
 				}
 			}
 		},
-		"/books/{id}": {
+		"/book/{id}": {
 			"get": {
 				"operationId": "GetById",
 				"responses": {
