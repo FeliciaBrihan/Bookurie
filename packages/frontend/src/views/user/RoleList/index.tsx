@@ -129,7 +129,7 @@ function EnhancedTableHead({
 						checked={rowCount > 0 && numSelected === rowCount}
 						onChange={onSelectAllClick}
 						inputProps={{
-							'aria-label': 'select all desserts',
+							'aria-label': 'select all roles',
 						}}
 					/>
 				</TableCell>
@@ -198,7 +198,7 @@ const EnhancedTableToolbar = ({ numSelected }: EnhancedTableToolbarProps) => (
 			</Typography>
 		) : (
 			<Typography variant="h6" id="tableTitle">
-				Nutrition
+				''
 			</Typography>
 		)}
 		<Box sx={{ flexGrow: 1 }} />
@@ -379,13 +379,13 @@ const RoleList = () => {
 								),
 							}}
 							onChange={handleSearch}
-							placeholder="Search Order"
+							placeholder="Search Role"
 							value={search}
 							size="small"
 						/>
 					</Grid>
 					<Grid item xs={12} sm={6} sx={{ textAlign: 'right' }}>
-						<Tooltip title="Add Product">
+						<Tooltip title="Add Role">
 							<Fab
 								color="primary"
 								size="small"

@@ -41,7 +41,7 @@ const Text = ({ label, value }: { label: string; value: string | number }) => (
 	</Stack>
 );
 
-const BudgetRequestDetails = ({ handleCloseDialog, data }: ProductAddProps) => {
+const RoleDetails = ({ handleCloseDialog, data }: ProductAddProps) => {
 	const dispatch = useDispatch();
 	const [action, setAction] = React.useState<TGetAction[]>([]);
 	const { actions } = useSelector((state) => state.action);
@@ -112,4 +112,4 @@ const BudgetRequestDetails = ({ handleCloseDialog, data }: ProductAddProps) => {
 	);
 };
 
-export default BudgetRequestDetails;
+export default RoleDetails;

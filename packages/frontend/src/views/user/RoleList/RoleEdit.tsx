@@ -39,7 +39,7 @@ const Transition = forwardRef((props: SlideProps, ref) => (
 	<Slide direction="left" ref={ref} {...props} />
 ));
 
-const ActionEdit = ({ handleCloseDialog, data }: ProductAddProps) => {
+const RoleEdit = ({ handleCloseDialog, data }: ProductAddProps) => {
 	const defaultValue = {
 		name: data.name,
 		allowedAction: data.allowedAction,
@@ -64,8 +64,9 @@ const ActionEdit = ({ handleCloseDialog, data }: ProductAddProps) => {
 		});
 	};
 
-	const handleSave = async () => {
-		await roleApi.create(
+	const handleUpdate = async () => {
+		await roleApi.update(
+			data.id,
 			{
 				name: formValue.name,
 				allowedAction: formValue.allowedAction,
@@ -140,7 +141,7 @@ const ActionEdit = ({ handleCloseDialog, data }: ProductAddProps) => {
 			</DialogContent>
 			<DialogActions>
 				<AnimateButton>
-					<Button variant="contained" onClick={handleSave}>
+					<Button variant="contained" onClick={handleUpdate}>
 						Save
 					</Button>
 				</AnimateButton>
@@ -152,4 +153,4 @@ const ActionEdit = ({ handleCloseDialog, data }: ProductAddProps) => {
 	);
 };
 
-export default ActionEdit;
+export default RoleEdit;

@@ -43,7 +43,7 @@ const defaultValue = {
 	allowedAction: [],
 };
 
-const ActionAdd = ({ handleCloseDialog }: ProductAddProps) => {
+const RoleAdd = ({ handleCloseDialog }: ProductAddProps) => {
 	const dispatch = useDispatch();
 	const [action, setAction] = useState<TGetAction[]>([]);
 	const [formValue, setFormValue] = useState<TSetRole>(defaultValue);
@@ -150,4 +150,4 @@ const ActionAdd = ({ handleCloseDialog }: ProductAddProps) => {
 	);
 };
 
-export default ActionAdd;
+export default RoleAdd;

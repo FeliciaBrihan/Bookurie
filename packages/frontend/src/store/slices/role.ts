@@ -39,7 +39,7 @@ export const roleApi = {
 	getAll: () => async () => {
 		try {
 			const response = await axios.get('/role');
-			dispatch(slice.actions.getRolesSuccess(response.data));
+			dispatch(slice.actions.getRolesSuccess(response.data.data));
 		} catch (error) {
 			dispatch(slice.actions.hasError(error));
 		}
