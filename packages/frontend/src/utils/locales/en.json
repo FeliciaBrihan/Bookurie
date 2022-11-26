@@ -1,0 +1,17 @@
+{
+	"app-menu": "Application Menu",
+
+	"budget-request": "Budget Request",
+	"my-requests": "My Requests",
+	"my-approvals": "My Approvals",
+	"all-requests": "All Requests",
+	"rules": "Rules",
+
+	"user": "User",
+	"users": "Users",
+	"roles": "Roles",
+
+	"logout": "Logout",
+	"account-settings": "Account settings",
+	"social-profile": "Social Profile"
+}
