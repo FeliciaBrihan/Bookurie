@@ -9,13 +9,13 @@ export const JWT_API = {
 };
 
 export const FIREBASE_API = {
-	apiKey: 'AIzaSyBP_pL8IikYlRY28mPgNxOZ_trrnBwxWvk',
-	authDomain: 'ekklesia-portal-dev.firebaseapp.com',
-	projectId: 'ekklesia-portal-dev',
-	storageBucket: 'ekklesia-portal-dev.appspot.com',
-	messagingSenderId: '695108061831',
-	appId: '1:695108061831:web:cd8d85673c58fb5d564622',
-	measurementId: 'G-CV00JLX0ZK',
+	apiKey: 'AIzaSyDCq6Vfjqqnz6TxWqJkmDduUgsm0rgDzWU',
+	authDomain: 'bookurie-7c568.firebaseapp.com',
+	projectId: 'bookurie-7c568',
+	storageBucket: 'bookurie-7c568.appspot.com',
+	messagingSenderId: '1010156349012',
+	appId: '1:1010156349012:web:15856c61c4d2ee0c9bafc1',
+	measurementId: 'G-R4L47K11YL',
 };
 
 export const AUTH0_API = {
