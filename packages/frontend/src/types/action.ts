@@ -9,3 +9,7 @@ export interface TGetAction {
 	updatedAt: Date;
 	name: string;
 }
+
+export interface TSetAction {
+	name: string;
+}

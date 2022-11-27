@@ -7,6 +7,7 @@ import { dispatch } from '../index';
 
 // types
 import { DefaultRootStateProps } from 'types';
+import { TGetAction, TSetAction } from 'types/action';
 
 // ----------------------------------------------------------------------
 
@@ -38,9 +39,34 @@ export const actionApi = {
 	getAll: () => async () => {
 		try {
 			const response = await axios.get('/action');
-			dispatch(slice.actions.getActionSuccess(response.data));
+			dispatch(slice.actions.getActionSuccess(response.data.data));
 		} catch (error) {
 			dispatch(slice.actions.hasError(error));
 		}
+	},
+	get create() {
+		return async (data: TSetAction, options: { sync?: boolean }) => {
+			try {
+				const response = await axios.post<TGetAction>(`/action`, data);
+				if (options?.sync === true) this.getAll()();
+				return response.data;
+			} catch (error) {
+				if (options?.sync === true) dispatch(slice.actions.hasError(error));
+			}
+		};
+	},
+	get update() {
+		return async (
+			id: number,
+			data: TSetAction,
+			options: { sync?: boolean }
+		) => {
+			try {
+				await axios.put(`/action/${id}`, data);
+				if (options?.sync === true) this.getAll()();
+			} catch (error) {
+				if (options?.sync === true) dispatch(slice.actions.hasError(error));
+			}
+		};
 	},
 };

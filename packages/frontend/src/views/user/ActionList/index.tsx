@@ -43,11 +43,11 @@ import {
 	HeadCell,
 	EnhancedTableToolbarProps,
 } from 'types';
-import RoleAdd from './RoleAdd';
-import RoleDetails from './RoleDetails';
-import RoleEdit from './RoleEdit';
-import { roleApi } from 'store/slices/role';
-import { TGetRole } from 'types/roles';
+import ActionAdd from './ActionAdd';
+import ActionDetails from './ActionDetails';
+import ActionEdit from './ActionEdit';
+import { actionApi } from 'store/slices/action';
+import { TGetAction } from 'types/action';
 
 // table sort
 function descendingComparator(a: KeyedObject, b: KeyedObject, orderBy: string) {
@@ -65,15 +65,15 @@ const getComparator: GetComparator = (order, orderBy) =>
 		: (a, b) => -descendingComparator(a, b, orderBy);
 
 function stableSort(
-	array: TGetRole[],
-	comparator: (a: TGetRole, b: TGetRole) => number
+	array: TGetAction[],
+	comparator: (a: TGetAction, b: TGetAction) => number
 ) {
-	const stabilizedThis = array.map((el: TGetRole, index: number) => [
+	const stabilizedThis = array.map((el: TGetAction, index: number) => [
 		el,
 		index,
 	]);
 	stabilizedThis.sort((a, b) => {
-		const el = comparator(a[0] as TGetRole, b[0] as TGetRole);
+		const el = comparator(a[0] as TGetAction, b[0] as TGetAction);
 		if (el !== 0) return el;
 		return (a[1] as number) - (b[1] as number);
 	});
@@ -90,7 +90,7 @@ const headCells: HeadCell[] = [
 		align: 'left',
 	},
 	{
-		id: 'name',
+		id: 'Name',
 		numeric: false,
 		label: 'Name',
 		align: 'left',
@@ -129,7 +129,7 @@ function EnhancedTableHead({
 						checked={rowCount > 0 && numSelected === rowCount}
 						onChange={onSelectAllClick}
 						inputProps={{
-							'aria-label': 'select all roles',
+							'aria-label': 'select all actions',
 						}}
 					/>
 				</TableCell>
@@ -214,7 +214,7 @@ const EnhancedTableToolbar = ({ numSelected }: EnhancedTableToolbarProps) => (
 
 // ==============================|| ORDER LIST ||============================== //
 
-const RoleList = () => {
+const ActionList = () => {
 	const theme = useTheme();
 	const dispatch = useDispatch();
 	const [order, setOrder] = React.useState<ArrangementOrder>('asc');
@@ -223,19 +223,21 @@ const RoleList = () => {
 	const [page, setPage] = React.useState<number>(0);
 	const [rowsPerPage, setRowsPerPage] = React.useState<number>(10);
 	const [search, setSearch] = React.useState<string>('');
-	const [rows, setRows] = React.useState<TGetRole[]>([]);
+	const [rows, setRows] = React.useState<TGetAction[]>([]);
 	const [openCreate, setOpenCreate] = React.useState(false);
 	const [openDetails, setOpenDetails] = React.useState(false);
 	const [openEdit, setOpenEdit] = React.useState(false);
-	const [rowData, setRowData] = React.useState<TGetRole | undefined>(undefined);
-	const { roles } = useSelector((state) => state.role);
+	const [rowData, setRowData] = React.useState<TGetAction | undefined>(
+		undefined
+	);
+	const { actions } = useSelector((state) => state.action);
 
 	React.useEffect(() => {
-		dispatch(roleApi.getAll());
+		dispatch(actionApi.getAll());
 	}, [dispatch]);
 	React.useEffect(() => {
-		setRows(roles);
-	}, [roles]);
+		setRows(actions);
+	}, [actions]);
 	const handleSearch = (
 		event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement> | undefined
 	) => {
@@ -267,7 +269,7 @@ const RoleList = () => {
 			});
 			setRows(newRows);
 		} else {
-			setRows(roles);
+			setRows(actions);
 		}
 	};
 
@@ -342,7 +344,7 @@ const RoleList = () => {
 		setOpenDetails(false);
 	};
 
-	const handleOpenDetails = (row: TGetRole) => () => {
+	const handleOpenDetails = (row: TGetAction) => () => {
 		setRowData(row);
 		setOpenDetails(true);
 	};
@@ -351,7 +353,7 @@ const RoleList = () => {
 		setOpenEdit(false);
 	};
 
-	const handleOpenEdit = (row: TGetRole) => () => {
+	const handleOpenEdit = (row: TGetAction) => () => {
 		setRowData(row);
 		setOpenEdit(true);
 	};
@@ -361,7 +363,7 @@ const RoleList = () => {
 		page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
 
 	return (
-		<MainCard title="Role List" content={false}>
+		<MainCard title="Action List" content={false}>
 			<CardContent>
 				<Grid
 					container
@@ -379,13 +381,13 @@ const RoleList = () => {
 								),
 							}}
 							onChange={handleSearch}
-							placeholder="Search Role"
+							placeholder="Search Action"
 							value={search}
 							size="small"
 						/>
 					</Grid>
 					<Grid item xs={12} sm={6} sx={{ textAlign: 'right' }}>
-						<Tooltip title="Add Role">
+						<Tooltip title="Add Action">
 							<Fab
 								color="primary"
 								size="small"
@@ -519,12 +521,15 @@ const RoleList = () => {
 					</TableBody>
 				</Table>
 				{openDetails && (
-					<RoleDetails handleCloseDialog={handleCloseDetails} data={rowData!} />
+					<ActionDetails
+						handleCloseDialog={handleCloseDetails}
+						data={rowData!}
+					/>
 				)}
 				{openEdit && (
-					<RoleEdit handleCloseDialog={handleCloseEdit} data={rowData!} />
+					<ActionEdit handleCloseDialog={handleCloseEdit} data={rowData!} />
 				)}
-				{openCreate && <RoleAdd handleCloseDialog={handleCloseDialog} />}
+				{openCreate && <ActionAdd handleCloseDialog={handleCloseDialog} />}
 			</TableContainer>
 
 			{/* table pagination */}
@@ -541,4 +546,4 @@ const RoleList = () => {
 	);
 };
 
-export default RoleList;
+export default ActionList;

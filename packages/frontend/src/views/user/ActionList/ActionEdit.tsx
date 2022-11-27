@@ -18,12 +18,12 @@ import {
 import { gridSpacing } from 'store/constant';
 import AnimateButton from 'ui-component/extended/AnimateButton';
 
-// assets
-import { TSetRole } from 'types/roles';
-import { roleApi } from 'store/slices/role';
+import { TGetAction, TSetAction } from 'types/action';
+import { actionApi } from 'store/slices/action';
 
 interface ProductAddProps {
 	handleCloseDialog: (e?: any) => void;
+	data: TGetAction;
 }
 
 // animation
@@ -31,12 +31,11 @@ const Transition = forwardRef((props: SlideProps, ref) => (
 	<Slide direction="left" ref={ref} {...props} />
 ));
 
-const defaultValue = {
-	name: '',
-};
-
-const RoleAdd = ({ handleCloseDialog }: ProductAddProps) => {
-	const [formValue, setFormValue] = useState<TSetRole>(defaultValue);
+const ActionEdit = ({ handleCloseDialog, data }: ProductAddProps) => {
+	const defaultValue = {
+		name: data.name,
+	};
+	const [formValue, setFormValue] = useState<TSetAction>(defaultValue);
 
 	const handleValueChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		setFormValue({
@@ -45,8 +44,9 @@ const RoleAdd = ({ handleCloseDialog }: ProductAddProps) => {
 		});
 	};
 
-	const handleSave = async () => {
-		await roleApi.create(
+	const handleUpdate = async () => {
+		await actionApi.update(
+			data.id,
 			{
 				name: formValue.name,
 			},
@@ -73,7 +73,7 @@ const RoleAdd = ({ handleCloseDialog }: ProductAddProps) => {
 				},
 			}}
 		>
-			<DialogTitle>Add New Role</DialogTitle>
+			<DialogTitle>Action #{data.id}</DialogTitle>
 			<DialogContent>
 				<Grid container spacing={gridSpacing} sx={{ mt: 0.25 }}>
 					<Grid item xs={12}>
@@ -81,7 +81,8 @@ const RoleAdd = ({ handleCloseDialog }: ProductAddProps) => {
 							id="name"
 							required
 							fullWidth
-							label="Enter Role Name"
+							defaultValue={formValue.name}
+							label="Enter Action Name"
 							onChange={handleValueChange}
 						/>
 					</Grid>
@@ -89,8 +90,8 @@ const RoleAdd = ({ handleCloseDialog }: ProductAddProps) => {
 			</DialogContent>
 			<DialogActions>
 				<AnimateButton>
-					<Button variant="contained" onClick={handleSave}>
-						Create
+					<Button variant="contained" onClick={handleUpdate}>
+						Save
 					</Button>
 				</AnimateButton>
 				<Button variant="text" color="error" onClick={handleCloseDialog}>
@@ -101,4 +102,4 @@ const RoleAdd = ({ handleCloseDialog }: ProductAddProps) => {
 	);
 };
 
-export default RoleAdd;
+export default ActionEdit;

@@ -58,6 +58,14 @@ const budgetRequest: NavItemType = {
 			icon: icons.SettingsIcon,
 			breadcrumbs: false,
 		},
+		{
+			id: 'actions',
+			title: <FormattedMessage id="actions" />,
+			type: 'item',
+			url: '/actions',
+			icon: icons.SettingsIcon,
+			breadcrumbs: false,
+		},
 	],
 };
 

@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { forwardRef } from 'react';
 
 // material-ui
@@ -16,11 +15,11 @@ import {
 } from '@mui/material';
 
 // assets
-import { TGetRole } from 'types/roles';
+import { TGetAction } from 'types/action';
 
 interface ProductAddProps {
 	handleCloseDialog: (e?: any) => void;
-	data: TGetRole;
+	data: TGetAction;
 }
 
 // animation
@@ -37,7 +36,7 @@ const Text = ({ label, value }: { label: string; value: string | number }) => (
 	</Stack>
 );
 
-const RoleDetails = ({ handleCloseDialog, data }: ProductAddProps) => {
+const ActionDetails = ({ handleCloseDialog, data }: ProductAddProps) => {
 	return (
 		<Dialog
 			open
@@ -85,4 +84,4 @@ const RoleDetails = ({ handleCloseDialog, data }: ProductAddProps) => {
 	);
 };
 
-export default RoleDetails;
+export default ActionDetails;

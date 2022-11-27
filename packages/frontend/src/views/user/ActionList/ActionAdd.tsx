@@ -19,8 +19,8 @@ import { gridSpacing } from 'store/constant';
 import AnimateButton from 'ui-component/extended/AnimateButton';
 
 // assets
-import { TSetRole } from 'types/roles';
-import { roleApi } from 'store/slices/role';
+import { TSetAction } from 'types/action';
+import { actionApi } from 'store/slices/action';
 
 interface ProductAddProps {
 	handleCloseDialog: (e?: any) => void;
@@ -35,8 +35,8 @@ const defaultValue = {
 	name: '',
 };
 
-const RoleAdd = ({ handleCloseDialog }: ProductAddProps) => {
-	const [formValue, setFormValue] = useState<TSetRole>(defaultValue);
+const ActionAdd = ({ handleCloseDialog }: ProductAddProps) => {
+	const [formValue, setFormValue] = useState<TSetAction>(defaultValue);
 
 	const handleValueChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		setFormValue({
@@ -46,7 +46,7 @@ const RoleAdd = ({ handleCloseDialog }: ProductAddProps) => {
 	};
 
 	const handleSave = async () => {
-		await roleApi.create(
+		await actionApi.create(
 			{
 				name: formValue.name,
 			},
@@ -73,7 +73,7 @@ const RoleAdd = ({ handleCloseDialog }: ProductAddProps) => {
 				},
 			}}
 		>
-			<DialogTitle>Add New Role</DialogTitle>
+			<DialogTitle>Add New Action</DialogTitle>
 			<DialogContent>
 				<Grid container spacing={gridSpacing} sx={{ mt: 0.25 }}>
 					<Grid item xs={12}>
@@ -81,7 +81,7 @@ const RoleAdd = ({ handleCloseDialog }: ProductAddProps) => {
 							id="name"
 							required
 							fullWidth
-							label="Enter Role Name"
+							label="Enter Action Name"
 							onChange={handleValueChange}
 						/>
 					</Grid>
@@ -101,4 +101,4 @@ const RoleAdd = ({ handleCloseDialog }: ProductAddProps) => {
 	);
 };
 
-export default RoleAdd;
+export default ActionAdd;
