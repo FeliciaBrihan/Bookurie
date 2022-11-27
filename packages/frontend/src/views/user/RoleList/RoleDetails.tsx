@@ -81,7 +81,7 @@ const RoleDetails = ({ handleCloseDialog, data }: ProductAddProps) => {
 						<Text label="Created At" value={String(data.createdAt)} />
 					</Grid>
 					<Grid item xs={12}>
-						<Text label="Last Update" value={String(data.createdAt)} />
+						<Text label="Last Update" value={String(data.updatedAt)} />
 					</Grid>
 					<Divider sx={{ width: '100%', marginTop: '20px' }}>
 						Permissions
