@@ -246,7 +246,7 @@ const RoleList = () => {
 			const newRows = rows.filter((row: KeyedObject) => {
 				let matches = true;
 
-				const properties = ['name', 'company', 'type', 'qty', 'id'];
+				const properties = ['name', 'id'];
 				let containsQuery = false;
 
 				properties.forEach((property) => {
