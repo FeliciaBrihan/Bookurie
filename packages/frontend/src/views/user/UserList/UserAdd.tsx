@@ -44,7 +44,13 @@ const defaultValue = {
 	lastName: '',
 	email: '',
 	roleId: undefined,
-	active: false,
+	// active: false,
+	username: '',
+	subscriptionId: undefined,
+	subscriptionDate: null,
+	subscriptionExpirationDate: null,
+	booksReadThisMonth: undefined,
+	budget: undefined,
 };
 
 const BudgetRequestAdd = ({ open, handleCloseDialog }: ProductAddProps) => {
@@ -71,6 +77,7 @@ const BudgetRequestAdd = ({ open, handleCloseDialog }: ProductAddProps) => {
 		(field: keyof typeof formValue) =>
 		(event: React.ChangeEvent<HTMLInputElement>) => {
 			setFormValue({ ...formValue, [field]: Number(event?.target.value) });
+			console.log(event?.target.value);
 		};
 
 	const handleSwitchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -82,6 +89,7 @@ const BudgetRequestAdd = ({ open, handleCloseDialog }: ProductAddProps) => {
 
 	const handleSave = async () => {
 		await userApi.create(formValue, { sync: true });
+		console.log(formValue);
 		handleCloseDialog();
 	};
 
@@ -135,6 +143,25 @@ const BudgetRequestAdd = ({ open, handleCloseDialog }: ProductAddProps) => {
 									onChange={handleValueChange}
 								/>
 							</Grid>
+							<Grid item xs={12}>
+								<TextField
+									id="username"
+									required
+									fullWidth
+									label="Enter Username"
+									onChange={handleValueChange}
+								/>
+							</Grid>
+							<Grid item xs={12}>
+								<TextField
+									id="password"
+									required
+									fullWidth
+									label="Enter Password"
+									onChange={handleValueChange}
+								/>
+							</Grid>
+
 							<Grid item xs={12}>
 								<TextField
 									id="roleId"

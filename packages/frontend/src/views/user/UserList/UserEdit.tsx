@@ -38,13 +38,19 @@ const Transition = forwardRef((props: SlideProps, ref) => (
 	<Slide direction="left" ref={ref} {...props} />
 ));
 
-const BudgetRequestEdit = ({ handleCloseDialog, data }: ProductAddProps) => {
+const UserEdit = ({ handleCloseDialog, data }: ProductAddProps) => {
 	const defaultValue = {
 		firstName: data.firstName,
 		lastName: data.lastName,
 		email: data.email,
-		roleId: data.MRole?.id,
-		active: data.active,
+		roleId: data.roleId,
+		// active: false,
+		username: data.username,
+		subscriptionId: data.subscriptionId,
+		subscriptionDate: data.subscriptionDate,
+		subscriptionExpirationDate: data.subscriptionExpirationDate,
+		booksReadThisMonth: data.booksReadThisMonth,
+		budget: data.budget,
 	};
 
 	const dispatch = useDispatch();
@@ -102,7 +108,7 @@ const BudgetRequestEdit = ({ handleCloseDialog, data }: ProductAddProps) => {
 				},
 			}}
 		>
-			<DialogTitle>Add New User</DialogTitle>
+			<DialogTitle>Edit User</DialogTitle>
 			<DialogContent>
 				<Grid container spacing={gridSpacing} sx={{ mt: 0.25 }}>
 					<Grid item xs={12}>
@@ -137,6 +143,16 @@ const BudgetRequestEdit = ({ handleCloseDialog, data }: ProductAddProps) => {
 					</Grid>
 					<Grid item xs={12}>
 						<TextField
+							id="username"
+							required
+							fullWidth
+							defaultValue={formValue.username}
+							label="Enter Username"
+							onChange={handleValueChange}
+						/>
+					</Grid>
+					<Grid item xs={12}>
+						<TextField
 							id="roleId"
 							select
 							required
@@ -151,6 +167,46 @@ const BudgetRequestEdit = ({ handleCloseDialog, data }: ProductAddProps) => {
 								</MenuItem>
 							))}
 						</TextField>
+					</Grid>
+					<Grid item xs={12}>
+						<TextField
+							id="subscriptionId"
+							required
+							fullWidth
+							defaultValue={formValue.subscriptionId}
+							label="Enter Subscription Id"
+							onChange={handleValueChange}
+						/>
+					</Grid>
+					<Grid item xs={12}>
+						<TextField
+							id="subscriptionDate"
+							required
+							fullWidth
+							defaultValue={formValue.subscriptionDate}
+							label="Enter Subscription Date"
+							onChange={handleValueChange}
+						/>
+					</Grid>
+					<Grid item xs={12}>
+						<TextField
+							id="subscriptionExpirationDate"
+							required
+							fullWidth
+							defaultValue={formValue.subscriptionExpirationDate}
+							label="Enter Subscription Expiration Date"
+							onChange={handleValueChange}
+						/>
+					</Grid>
+					<Grid item xs={12}>
+						<TextField
+							id="booksReadThisMonth"
+							required
+							fullWidth
+							defaultValue={formValue.booksReadThisMonth}
+							label="Enter Books Read This Month"
+							onChange={handleValueChange}
+						/>
 					</Grid>
 					<Grid item xs={12}>
 						<FormControlLabel
@@ -179,4 +235,4 @@ const BudgetRequestEdit = ({ handleCloseDialog, data }: ProductAddProps) => {
 	);
 };
 
-export default BudgetRequestEdit;
+export default UserEdit;

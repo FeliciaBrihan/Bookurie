@@ -27,7 +27,7 @@ import { visuallyHidden } from '@mui/utils';
 import AddIcon from '@mui/icons-material/AddTwoTone';
 
 // project imports
-import Chip from 'ui-component/extended/Chip';
+// import Chip from 'ui-component/extended/Chip';
 import MainCard from 'ui-component/cards/MainCard';
 import { useDispatch, useSelector } from 'store';
 
@@ -88,7 +88,7 @@ const headCells: HeadCell[] = [
 		id: 'id',
 		numeric: true,
 		label: 'ID',
-		align: 'center',
+		align: 'left',
 	},
 	{
 		id: 'firstName',
@@ -106,18 +106,12 @@ const headCells: HeadCell[] = [
 		id: 'email',
 		numeric: false,
 		label: 'Email',
-		align: 'left',
+		align: 'center',
 	},
 	{
-		id: 'role',
+		id: 'roleId',
 		numeric: true,
-		label: 'Role',
-		align: 'left',
-	},
-	{
-		id: 'active',
-		numeric: false,
-		label: 'Active',
+		label: 'Role ID',
 		align: 'left',
 	},
 ];
@@ -154,7 +148,7 @@ function EnhancedTableHead({
 						checked={rowCount > 0 && numSelected === rowCount}
 						onChange={onSelectAllClick}
 						inputProps={{
-							'aria-label': 'select all desserts',
+							'aria-label': 'select all users',
 						}}
 					/>
 				</TableCell>
@@ -223,7 +217,7 @@ const EnhancedTableToolbar = ({ numSelected }: EnhancedTableToolbarProps) => (
 			</Typography>
 		) : (
 			<Typography variant="h6" id="tableTitle">
-				Nutrition
+				''
 			</Typography>
 		)}
 		<Box sx={{ flexGrow: 1 }} />
@@ -243,7 +237,7 @@ const UserList = () => {
 	const theme = useTheme();
 	const dispatch = useDispatch();
 	const [order, setOrder] = React.useState<ArrangementOrder>('asc');
-	const [orderBy, setOrderBy] = React.useState<string>('calories');
+	const [orderBy, setOrderBy] = React.useState<string>('id');
 	const [selected, setSelected] = React.useState<string[]>([]);
 	const [page, setPage] = React.useState<number>(0);
 	const [rowsPerPage, setRowsPerPage] = React.useState<number>(5);
@@ -272,7 +266,13 @@ const UserList = () => {
 			const newRows = rows.filter((row: KeyedObject) => {
 				let matches = true;
 
-				const properties = ['name', 'company', 'type', 'qty', 'id'];
+				const properties = [
+					'firstName',
+					'lastName',
+					'username',
+					'email',
+					'roleId',
+				];
 				let containsQuery = false;
 
 				properties.forEach((property) => {
@@ -387,7 +387,7 @@ const UserList = () => {
 		page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
 
 	return (
-		<MainCard title="Order List" content={false}>
+		<MainCard title="User List" content={false}>
 			<CardContent>
 				<Grid
 					container
@@ -405,13 +405,13 @@ const UserList = () => {
 								),
 							}}
 							onChange={handleSearch}
-							placeholder="Search Order"
+							placeholder="Search User"
 							value={search}
 							size="small"
 						/>
 					</Grid>
 					<Grid item xs={12} sm={6} sx={{ textAlign: 'right' }}>
-						<Tooltip title="Add Product">
+						<Tooltip title="Add User">
 							<Fab
 								color="primary"
 								size="small"
@@ -517,14 +517,15 @@ const UserList = () => {
 										</TableCell>
 										<TableCell>{row.lastName}</TableCell>
 										<TableCell>{row.email}</TableCell>
-										<TableCell>{row.MRole?.name || '––'}</TableCell>
-										<TableCell>
+										{/* <TableCell>{row.MRole?.name || '––'}</TableCell> */}
+										<TableCell>{row.roleId}</TableCell>
+										{/* <TableCell>
 											<Chip
-												label={row.active ? 'active' : 'inactive'}
+												// label={row.active ? 'active' : 'inactive'}
 												size="small"
-												chipcolor={row.active ? 'success' : 'error'}
+												// chipcolor={row.active ? 'success' : 'error'}
 											/>
-										</TableCell>
+										</TableCell> */}
 										<TableCell sx={{ pr: 3 }} align="center">
 											<IconButton
 												color="primary"

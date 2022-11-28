@@ -46,10 +46,10 @@ interface ReqQuery {
 export const userApi = {
 	getAll: (query: ReqQuery) => async () => {
 		try {
-			const response = await axios.get('/user', { params: query });
+			const response = await axios.get('/user');
 			if (query.status === 'all')
-				dispatch(slice.actions.getUsersSuccess(response.data));
-			else dispatch(slice.actions.getActiveUsersSuccess(response.data));
+				dispatch(slice.actions.getUsersSuccess(response.data.data));
+			else dispatch(slice.actions.getActiveUsersSuccess(response.data.data));
 		} catch (error) {
 			dispatch(slice.actions.hasError(error));
 		}
@@ -57,11 +57,15 @@ export const userApi = {
 	get create() {
 		return async (data: TSetUser, options: { sync?: boolean }) => {
 			try {
-				await axios.post(`/user`, data);
+				const response = await axios.post(`/user`, data);
 				if (options?.sync === true) this.getAll({ status: 'all' })();
+
+				return response.data;
 			} catch (error) {
 				if (options?.sync === true) dispatch(slice.actions.hasError(error));
+				console.log(error);
 			}
+			console.log(data);
 		};
 	},
 	get update() {

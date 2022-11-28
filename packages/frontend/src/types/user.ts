@@ -12,6 +12,11 @@ export interface TSetUser {
 	email: string;
 	roleId?: number;
 	active?: boolean;
+	username: string;
+	subscriptionId?: number;
+	subscriptionDate?: Date | null;
+	subscriptionExpirationDate?: Date | null;
+	booksReadThisMonth?: number;
 }
 
 export interface TGetUser {
@@ -21,6 +26,13 @@ export interface TGetUser {
 	firstName: string;
 	lastName: string;
 	email: string;
-	MRole?: Pick<TGetRole, 'id' | 'name'>;
+	username: string;
+	subscriptionId: number;
+	subscriptionDate: Date;
+	subscriptionExpirationDate: Date;
+	booksReadThisMonth: number;
+	budget: number;
+	Role?: Pick<TGetRole, 'id' | 'name'>;
+	roleId: number;
 	active: boolean;
 }

@@ -37,7 +37,7 @@ const Text = ({ label, value }: { label: string; value: string | number }) => (
 	</Stack>
 );
 
-const BudgetRequestDetails = ({ handleCloseDialog, data }: ProductAddProps) => {
+const UserRequestDetails = ({ handleCloseDialog, data }: ProductAddProps) => {
 	return (
 		<Dialog
 			open
@@ -74,7 +74,41 @@ const BudgetRequestDetails = ({ handleCloseDialog, data }: ProductAddProps) => {
 						<Text label="Email" value={data.email} />
 					</Grid>
 					<Grid item xs={12}>
-						<Text label="Role" value={data.MRole?.name || '––'} />
+						<Text label="Username" value={data.username} />
+					</Grid>
+					<Grid item xs={12}>
+						{/* <Text label="Role" value={data.MRole?.name || '––'} /> */}
+						<Text label="Role" value={data.roleId} />
+					</Grid>
+					<Grid item xs={12}>
+						<Text label="Subscription Id" value={data.subscriptionId || '--'} />
+					</Grid>
+					<Grid item xs={12}>
+						<Text
+							label="Subscription Date"
+							value={String(data.subscriptionDate || '--')}
+						/>
+					</Grid>
+					<Grid item xs={12}>
+						<Text
+							label="Subscription Expiration Date"
+							value={String(data.subscriptionExpirationDate || '--')}
+						/>
+					</Grid>
+					<Grid item xs={12}>
+						<Text
+							label="Books Read This Month"
+							value={data.booksReadThisMonth}
+						/>
+					</Grid>
+					<Grid item xs={12}>
+						<Text label="Budget" value={data.budget} />
+					</Grid>
+					<Grid item xs={12}>
+						<Text label="Created At" value={String(data.createdAt)} />
+					</Grid>
+					<Grid item xs={12}>
+						<Text label="Updated At" value={String(data.updatedAt)} />
 					</Grid>
 				</Grid>
 			</DialogContent>
@@ -93,4 +127,4 @@ const BudgetRequestDetails = ({ handleCloseDialog, data }: ProductAddProps) => {
 	);
 };
 
-export default BudgetRequestDetails;
+export default UserRequestDetails;
