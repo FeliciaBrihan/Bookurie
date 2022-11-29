@@ -13,6 +13,8 @@ import paymentTypeReducer from './slices/paymentType';
 import userReducer from './slices/user';
 import roleReducer from './slices/role';
 import actionReducer from './slices/action';
+import loanReducer from './slices/loan';
+import bookReducer from './slices/book';
 
 // ==============================|| COMBINE REDUCER ||============================== //
 
@@ -33,6 +35,8 @@ const reducer = combineReducers({
 	user: userReducer,
 	role: roleReducer,
 	action: actionReducer,
+	loan: loanReducer,
+	book: bookReducer,
 });
 
 export default reducer;

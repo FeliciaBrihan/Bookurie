@@ -11,6 +11,8 @@ const BudgetRequest = Loadable(lazy(() => import('views/budgetRequest')));
 const UserList = Loadable(lazy(() => import('views/user/UserList')));
 const RoleList = Loadable(lazy(() => import('views/user/RoleList')));
 const ActionList = Loadable(lazy(() => import('views/user/ActionList')));
+const LoanList = Loadable(lazy(() => import('views/loan/LoanList')));
+const BookList = Loadable(lazy(() => import('views/book/BookList')));
 
 // ==============================|| MAIN ROUTING ||============================== //
 
@@ -29,6 +31,14 @@ const MainRoutes = {
 		{
 			path: '/budget-request',
 			element: <BudgetRequest />,
+		},
+		{
+			path: '/books',
+			element: <BookList />,
+		},
+		{
+			path: '/loans',
+			element: <LoanList />,
 		},
 		{
 			path: '/users',

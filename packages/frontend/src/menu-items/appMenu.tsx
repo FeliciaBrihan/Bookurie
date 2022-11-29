@@ -6,6 +6,8 @@ import SupervisorAccountIcon from '@mui/icons-material/SupervisorAccount';
 import CurrencyExchangeIcon from '@mui/icons-material/CurrencyExchange';
 import SettingsIcon from '@mui/icons-material/Settings';
 import DashboardIcon from '@mui/icons-material/Dashboard';
+import BookIcon from '@mui/icons-material/Book';
+import LibraryBooksTwoToneIcon from '@mui/icons-material/LibraryBooksTwoTone';
 import { IconDashboard } from '@tabler/icons';
 import { NavItemType } from 'types';
 
@@ -15,12 +17,14 @@ const icons = {
 	SupervisorAccountIcon,
 	CurrencyExchangeIcon,
 	SettingsIcon,
-	DashboardIcon
+	DashboardIcon,
+	BookIcon,
+	LibraryBooksTwoToneIcon,
 };
 
 // ==============================|| DASHBOARD MENU ITEMS ||============================== //
 
-const budgetRequest: NavItemType = {
+const appMenu: NavItemType = {
 	id: 'app-menu',
 	title: <FormattedMessage id="app-menu" />,
 	icon: icons.IconDashboard,
@@ -35,10 +39,18 @@ const budgetRequest: NavItemType = {
 			breadcrumbs: false,
 		},
 		{
-			id: 'budget-request',
-			title: <FormattedMessage id="budget-request" />,
+			id: 'books',
+			title: <FormattedMessage id="books" />,
 			type: 'item',
-			url: '/budget-request',
+			url: '/books',
+			icon: icons.LibraryBooksTwoToneIcon,
+			breadcrumbs: false,
+		},
+		{
+			id: 'loans',
+			title: <FormattedMessage id="loans" />,
+			type: 'item',
+			url: '/loans',
 			icon: icons.CurrencyExchangeIcon,
 			breadcrumbs: false,
 		},
@@ -69,4 +81,4 @@ const budgetRequest: NavItemType = {
 	],
 };
 
-export default budgetRequest;
+export default appMenu;

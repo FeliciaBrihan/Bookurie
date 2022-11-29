@@ -13,5 +13,7 @@
 	"actions": "Actions",
 	"logout": "Logout",
 	"account-settings": "Account settings",
-	"social-profile": "Social Profile"
+	"social-profile": "Social Profile",
+	"loans": "Loans",
+	"books": "Books"
 }

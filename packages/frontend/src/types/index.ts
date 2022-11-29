@@ -16,6 +16,8 @@ import { TPaymentTypeStateProps } from './paymentType';
 import { TUserStateProps } from './user';
 import { TRoleStateProps } from './roles';
 import { TActionStateProps } from './action';
+import { TLoanStateProps } from './loan';
+import { TBookStateProps } from './book';
 
 export type ArrangementOrder = 'asc' | 'desc' | undefined;
 
@@ -121,6 +123,8 @@ export interface DefaultRootStateProps {
 	user: TUserStateProps;
 	role: TRoleStateProps;
 	action: TActionStateProps;
+	loan: TLoanStateProps;
+	book: TBookStateProps;
 }
 
 export interface ColorProps {
