@@ -176,7 +176,7 @@ function EnhancedTableHead({
 								color: theme.palette.mode === 'dark' ? 'grey.600' : 'grey.900',
 							}}
 						>
-							Action
+							Permission
 						</Typography>
 					</TableCell>
 				)}
@@ -369,7 +369,7 @@ const PermissionList = () => {
 		page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
 
 	return (
-		<MainCard title="Action List" content={false}>
+		<MainCard title="Permission List" content={false}>
 			<CardContent>
 				<Grid
 					container
@@ -477,8 +477,8 @@ const PermissionList = () => {
 												#{row.id}
 											</Typography>
 										</TableCell>
-										<TableCell>{row.ActionId}</TableCell>
 										<TableCell>{row.RoleId}</TableCell>
+										<TableCell>{row.ActionId}</TableCell>
 										<TableCell sx={{ pr: 3 }} align="center">
 											<IconButton
 												color="primary"

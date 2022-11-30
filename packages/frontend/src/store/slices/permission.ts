@@ -39,7 +39,6 @@ export const permissionApi = {
 	getAll: () => async () => {
 		try {
 			const response = await axios.get('/permission');
-			console.log('test');
 			dispatch(slice.actions.getPermissionsSuccess(response.data.data));
 		} catch (error) {
 			dispatch(slice.actions.hasError(error));
@@ -66,6 +65,7 @@ export const permissionApi = {
 				await axios.put(`/permission/${id}`, data);
 				if (options?.sync === true) this.getAll()();
 			} catch (error) {
+				console.log(error);
 				if (options?.sync === true) dispatch(slice.actions.hasError(error));
 			}
 		};
