@@ -6,23 +6,18 @@ import { getAll } from 'src/modules/permission/routes/getAll';
 import { deletePermission } from 'src/modules/permission/routes/delete';
 import { update } from 'src/modules/permission/routes/update';
 import { verifyToken } from 'src/modules/auth/routes/verifyToken';
-import { restrictTo } from 'src/modules/auth/routes/restrictTo';
+// import { restrictTo } from 'src/modules/auth/routes/restrictTo';
 import { checkAuthorization } from 'src/modules/auth/routes/checkAuthorization';
 
 const router = Router();
-router.post('/', verifyToken, restrictTo('admin'), create);
-router.get('/', verifyToken, checkAuthorization('Permission: read'), getAll);
+router.post('/', create);
+router.get('/', getAll);
 router.delete(
 	'/:id',
 	<any>verifyToken,
 	<any>checkAuthorization('Permission: read'),
 	deletePermission
 );
-router.put(
-	'/:id',
-	<any>verifyToken,
-	<any>checkAuthorization('Permission: update'),
-	update
-);
+router.put('/:id', update);
 
 export const routes = router;

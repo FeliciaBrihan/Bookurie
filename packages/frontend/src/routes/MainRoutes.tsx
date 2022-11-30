@@ -13,6 +13,9 @@ const RoleList = Loadable(lazy(() => import('views/user/RoleList')));
 const ActionList = Loadable(lazy(() => import('views/user/ActionList')));
 const LoanList = Loadable(lazy(() => import('views/loan/LoanList')));
 const BookList = Loadable(lazy(() => import('views/book/BookList')));
+const PermissionList = Loadable(
+	lazy(() => import('views/user/PermissionList'))
+);
 
 // ==============================|| MAIN ROUTING ||============================== //
 
@@ -51,6 +54,10 @@ const MainRoutes = {
 		{
 			path: '/actions',
 			element: <ActionList />,
+		},
+		{
+			path: '/permissions',
+			element: <PermissionList />,
 		},
 	],
 };

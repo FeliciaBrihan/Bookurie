@@ -15,6 +15,7 @@ import roleReducer from './slices/role';
 import actionReducer from './slices/action';
 import loanReducer from './slices/loan';
 import bookReducer from './slices/book';
+import permissionReducer from './slices/permission';
 
 // ==============================|| COMBINE REDUCER ||============================== //
 
@@ -37,6 +38,7 @@ const reducer = combineReducers({
 	action: actionReducer,
 	loan: loanReducer,
 	book: bookReducer,
+	permission: permissionReducer,
 });
 
 export default reducer;

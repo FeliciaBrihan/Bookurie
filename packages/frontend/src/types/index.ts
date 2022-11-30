@@ -18,6 +18,7 @@ import { TRoleStateProps } from './roles';
 import { TActionStateProps } from './action';
 import { TLoanStateProps } from './loan';
 import { TBookStateProps } from './book';
+import { TPermissionStateProps } from './permission';
 
 export type ArrangementOrder = 'asc' | 'desc' | undefined;
 
@@ -125,6 +126,7 @@ export interface DefaultRootStateProps {
 	action: TActionStateProps;
 	loan: TLoanStateProps;
 	book: TBookStateProps;
+	permission: TPermissionStateProps;
 }
 
 export interface ColorProps {

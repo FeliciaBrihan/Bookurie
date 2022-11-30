@@ -21,12 +21,14 @@ import {
 	Toolbar,
 	Tooltip,
 	Typography,
+	Fab,
 } from '@mui/material';
 import { visuallyHidden } from '@mui/utils';
+import AddIcon from '@mui/icons-material/AddTwoTone';
 
 // project imports
 import MainCard from 'ui-component/cards/MainCard';
-import { useDispatch, useSelector } from 'store';
+import { dispatch, useSelector } from 'store';
 
 // assets
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -41,10 +43,11 @@ import {
 	HeadCell,
 	EnhancedTableToolbarProps,
 } from 'types';
-import LoanDetails from './LoanDetails';
-import LoanAccept from './LoanAccept';
-import { TGetLoan } from 'types/loan';
-import { loanApi } from 'store/slices/loan';
+import PermissionAdd from './PermissionAdd';
+import PermissionDetails from './PermissionDetails';
+import PermissionEdit from './PermissionEdit';
+import { permissionApi } from 'store/slices/permission';
+import { TGetPermission } from 'types/permission';
 
 // table sort
 function descendingComparator(a: KeyedObject, b: KeyedObject, orderBy: string) {
@@ -62,15 +65,15 @@ const getComparator: GetComparator = (order, orderBy) =>
 		: (a, b) => -descendingComparator(a, b, orderBy);
 
 function stableSort(
-	array: TGetLoan[],
-	comparator: (a: TGetLoan, b: TGetLoan) => number
+	array: TGetPermission[],
+	comparator: (a: TGetPermission, b: TGetPermission) => number
 ) {
-	const stabilizedThis = array.map((el: TGetLoan, index: number) => [
+	const stabilizedThis = array.map((el: TGetPermission, index: number) => [
 		el,
 		index,
 	]);
 	stabilizedThis.sort((a, b) => {
-		const el = comparator(a[0] as TGetLoan, b[0] as TGetLoan);
+		const el = comparator(a[0] as TGetPermission, b[0] as TGetPermission);
 		if (el !== 0) return el;
 		return (a[1] as number) - (b[1] as number);
 	});
@@ -87,33 +90,15 @@ const headCells: HeadCell[] = [
 		align: 'left',
 	},
 	{
-		id: 'isAccepted',
+		id: 'RoleId',
 		numeric: false,
-		label: 'Is Accepted',
+		label: 'Role Id',
 		align: 'left',
 	},
 	{
-		id: 'expirationDate',
+		id: 'ActionId',
 		numeric: false,
-		label: 'Expiration Date',
-		align: 'left',
-	},
-	{
-		id: 'isReturned',
-		numeric: false,
-		label: 'is Returned',
-		align: 'left',
-	},
-	{
-		id: 'BookId',
-		numeric: false,
-		label: 'Book Id',
-		align: 'left',
-	},
-	{
-		id: 'UserId',
-		numeric: false,
-		label: 'User Id',
+		label: 'Action Id',
 		align: 'left',
 	},
 ];
@@ -150,7 +135,7 @@ function EnhancedTableHead({
 						checked={rowCount > 0 && numSelected === rowCount}
 						onChange={onSelectAllClick}
 						inputProps={{
-							'aria-label': 'select all roles',
+							'aria-label': 'select all permissions',
 						}}
 					/>
 				</TableCell>
@@ -235,27 +220,30 @@ const EnhancedTableToolbar = ({ numSelected }: EnhancedTableToolbarProps) => (
 
 // ==============================|| ORDER LIST ||============================== //
 
-const LoanList = () => {
+const PermissionList = () => {
 	const theme = useTheme();
-	const dispatch = useDispatch();
 	const [order, setOrder] = React.useState<ArrangementOrder>('asc');
 	const [orderBy, setOrderBy] = React.useState<string>('id');
 	const [selected, setSelected] = React.useState<string[]>([]);
 	const [page, setPage] = React.useState<number>(0);
 	const [rowsPerPage, setRowsPerPage] = React.useState<number>(10);
 	const [search, setSearch] = React.useState<string>('');
-	const [rows, setRows] = React.useState<TGetLoan[]>([]);
+	const [rows, setRows] = React.useState<TGetPermission[]>([]);
+	const [openCreate, setOpenCreate] = React.useState(false);
 	const [openDetails, setOpenDetails] = React.useState(false);
 	const [openEdit, setOpenEdit] = React.useState(false);
-	const [rowData, setRowData] = React.useState<TGetLoan | undefined>(undefined);
-	const { loans } = useSelector((state) => state.loan);
+	const [rowData, setRowData] = React.useState<TGetPermission | undefined>(
+		undefined
+	);
+	const { permissions } = useSelector((state) => state.permission);
 
 	React.useEffect(() => {
-		dispatch(loanApi.getAll());
+		dispatch(permissionApi.getAll());
 	}, [dispatch]);
 	React.useEffect(() => {
-		setRows(loans);
-	}, [loans]);
+		setRows(permissions);
+	}, [permissions]);
+
 	const handleSearch = (
 		event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement> | undefined
 	) => {
@@ -266,7 +254,7 @@ const LoanList = () => {
 			const newRows = rows.filter((row: KeyedObject) => {
 				let matches = true;
 
-				const properties = ['id', 'isAccepted', 'isReturned', 'expirationDate'];
+				const properties = ['id'];
 				let containsQuery = false;
 
 				properties.forEach((property) => {
@@ -287,7 +275,7 @@ const LoanList = () => {
 			});
 			setRows(newRows);
 		} else {
-			setRows(loans);
+			setRows(permissions);
 		}
 	};
 
@@ -315,13 +303,13 @@ const LoanList = () => {
 
 	const handleClick = (
 		event: React.MouseEvent<HTMLTableHeaderCellElement, MouseEvent>,
-		id: string
+		name: string
 	) => {
-		const selectedIndex = selected.indexOf(String(id));
+		const selectedIndex = selected.indexOf(name);
 		let newSelected: string[] = [];
 
 		if (selectedIndex === -1) {
-			newSelected = newSelected.concat(selected, String(id));
+			newSelected = newSelected.concat(selected, name);
 		} else if (selectedIndex === 0) {
 			newSelected = newSelected.concat(selected.slice(1));
 		} else if (selectedIndex === selected.length - 1) {
@@ -350,11 +338,19 @@ const LoanList = () => {
 		setPage(0);
 	};
 
+	const handleCloseDialog = () => {
+		setOpenCreate(false);
+	};
+
+	const handleClickOpenDialog = () => {
+		setOpenCreate(true);
+	};
+
 	const handleCloseDetails = () => {
 		setOpenDetails(false);
 	};
 
-	const handleOpenDetails = (row: TGetLoan) => () => {
+	const handleOpenDetails = (row: TGetPermission) => () => {
 		setRowData(row);
 		setOpenDetails(true);
 	};
@@ -363,7 +359,7 @@ const LoanList = () => {
 		setOpenEdit(false);
 	};
 
-	const handleOpenEdit = (row: TGetLoan) => () => {
+	const handleOpenEdit = (row: TGetPermission) => () => {
 		setRowData(row);
 		setOpenEdit(true);
 	};
@@ -373,7 +369,7 @@ const LoanList = () => {
 		page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
 
 	return (
-		<MainCard title="Loan List" content={false}>
+		<MainCard title="Action List" content={false}>
 			<CardContent>
 				<Grid
 					container
@@ -391,10 +387,28 @@ const LoanList = () => {
 								),
 							}}
 							onChange={handleSearch}
-							placeholder="Search Loan"
+							placeholder="Search Permission"
 							value={search}
 							size="small"
 						/>
+					</Grid>
+					<Grid item xs={12} sm={6} sx={{ textAlign: 'right' }}>
+						<Tooltip title="Add Permission">
+							<Fab
+								color="primary"
+								size="small"
+								onClick={handleClickOpenDialog}
+								sx={{
+									boxShadow: 'none',
+									ml: 1,
+									width: 32,
+									height: 32,
+									minHeight: 32,
+								}}
+							>
+								<AddIcon fontSize="small" />
+							</Fab>
+						</Tooltip>
 					</Grid>
 				</Grid>
 			</CardContent>
@@ -463,12 +477,8 @@ const LoanList = () => {
 												#{row.id}
 											</Typography>
 										</TableCell>
-										<TableCell>{row.isAccepted ? 'true' : 'false'}</TableCell>
-										<TableCell>{row.expirationDate.toString()}</TableCell>
-										<TableCell>{row.isReturned ? 'true' : 'false'}</TableCell>
-										<TableCell>{row.BookId}</TableCell>
-										<TableCell>{row.UserId}</TableCell>
-
+										<TableCell>{row.ActionId}</TableCell>
+										<TableCell>{row.RoleId}</TableCell>
 										<TableCell sx={{ pr: 3 }} align="center">
 											<IconButton
 												color="primary"
@@ -500,11 +510,15 @@ const LoanList = () => {
 					</TableBody>
 				</Table>
 				{openDetails && (
-					<LoanDetails handleCloseDialog={handleCloseDetails} data={rowData!} />
+					<PermissionDetails
+						handleCloseDialog={handleCloseDetails}
+						data={rowData!}
+					/>
 				)}
 				{openEdit && (
-					<LoanAccept handleCloseDialog={handleCloseEdit} data={rowData!} />
+					<PermissionEdit handleCloseDialog={handleCloseEdit} data={rowData!} />
 				)}
+				{openCreate && <PermissionAdd handleCloseDialog={handleCloseDialog} />}
 			</TableContainer>
 
 			{/* table pagination */}
@@ -521,4 +535,4 @@ const LoanList = () => {
 	);
 };
 
-export default LoanList;
+export default PermissionList;
