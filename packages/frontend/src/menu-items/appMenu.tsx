@@ -7,9 +7,14 @@ import CurrencyExchangeIcon from '@mui/icons-material/CurrencyExchange';
 import SettingsIcon from '@mui/icons-material/Settings';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import BookIcon from '@mui/icons-material/Book';
-import LibraryBooksTwoToneIcon from '@mui/icons-material/LibraryBooksTwoTone';
+// import LibraryBooksTwoToneIcon from '@mui/icons-material/LibraryBooksTwoTone';
 import { IconDashboard } from '@tabler/icons';
+import EngineeringTwoToneIcon from '@mui/icons-material/EngineeringTwoTone';
 import { NavItemType } from 'types';
+// import CoPresentIcon from '@mui/icons-material/CoPresent';
+// import SwitchAccessShortcutIcon from '@mui/icons-material/SwitchAccessShortcut';
+import AutoStoriesTwoToneIcon from '@mui/icons-material/AutoStoriesTwoTone';
+import HowToRegIcon from '@mui/icons-material/HowToReg';
 
 // constant
 const icons = {
@@ -19,7 +24,11 @@ const icons = {
 	SettingsIcon,
 	DashboardIcon,
 	BookIcon,
-	LibraryBooksTwoToneIcon,
+	// LibraryBooksTwoToneIcon,
+	// CoPresentIcon,
+	EngineeringTwoToneIcon,
+	AutoStoriesTwoToneIcon,
+	HowToRegIcon,
 };
 
 // ==============================|| DASHBOARD MENU ITEMS ||============================== //
@@ -43,7 +52,7 @@ const appMenu: NavItemType = {
 			title: <FormattedMessage id="books" />,
 			type: 'item',
 			url: '/books',
-			icon: icons.LibraryBooksTwoToneIcon,
+			icon: icons.AutoStoriesTwoToneIcon,
 			breadcrumbs: false,
 		},
 		{
@@ -67,7 +76,7 @@ const appMenu: NavItemType = {
 			title: <FormattedMessage id="roles" />,
 			type: 'item',
 			url: '/roles',
-			icon: icons.SettingsIcon,
+			icon: icons.EngineeringTwoToneIcon,
 			breadcrumbs: false,
 		},
 		{
@@ -76,6 +85,14 @@ const appMenu: NavItemType = {
 			type: 'item',
 			url: '/actions',
 			icon: icons.SettingsIcon,
+			breadcrumbs: false,
+		},
+		{
+			id: 'permissions',
+			title: <FormattedMessage id="permissions" />,
+			type: 'item',
+			url: '/permissions',
+			icon: icons.HowToRegIcon,
 			breadcrumbs: false,
 		},
 	],
