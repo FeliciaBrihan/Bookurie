@@ -35,24 +35,10 @@ const Transition = forwardRef((props: SlideProps, ref) => (
 
 const LoanAccept = ({ handleCloseDialog, data }: ProductAddProps) => {
 	const defaultValue = {
-		id: data.id,
-		createdAt: data.createdAt,
-		updatedAt: data.updatedAt,
 		isAccepted: data.isAccepted,
-		expirationDate: data.expirationDate,
-		isReturned: data.isReturned,
-		BookId: data.BookId,
-		UserId: data.UserId,
 	};
 
 	const [formValue, setFormValue] = useState<TSetLoan>(defaultValue);
-
-	// const handleValueChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-	// 	setFormValue({
-	// 		...formValue,
-	// 		name: event?.target.value,
-	// 	});
-	// };
 
 	const handleUpdate = async () => {
 		await loanApi.update(

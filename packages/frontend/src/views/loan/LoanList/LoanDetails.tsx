@@ -56,11 +56,29 @@ const LoanDetails = ({ handleCloseDialog, data }: ProductAddProps) => {
 				},
 			}}
 		>
-			<DialogTitle>{data.id}</DialogTitle>
+			<DialogTitle>Loan #{data.id}</DialogTitle>
 			<DialogContent>
 				<Grid container spacing={1} sx={{ mt: 0.25 }}>
 					<Grid item xs={12}>
 						<Text label="ID" value={data.id} />
+					</Grid>
+					<Grid item xs={12}>
+						<Text label="Accepted" value={data.isAccepted ? 'Yes' : 'No'} />
+					</Grid>
+					<Grid item xs={12}>
+						<Text label="Expiration Date" value={String(data.expirationDate)} />
+					</Grid>
+					<Grid item xs={12}>
+						<Text
+							label="Returned"
+							value={String(data.isReturned ? 'Yes' : 'No')}
+						/>
+					</Grid>
+					<Grid item xs={12}>
+						<Text label="Book Id" value={data.BookId} />
+					</Grid>
+					<Grid item xs={12}>
+						<Text label="User Id" value={data.UserId} />
 					</Grid>
 					<Grid item xs={12}>
 						<Text label="Created At" value={String(data.createdAt)} />

@@ -89,19 +89,13 @@ const headCells: HeadCell[] = [
 	{
 		id: 'isAccepted',
 		numeric: false,
-		label: 'Is Accepted',
+		label: 'Accepted',
 		align: 'left',
 	},
 	{
 		id: 'expirationDate',
 		numeric: false,
 		label: 'Expiration Date',
-		align: 'left',
-	},
-	{
-		id: 'isReturned',
-		numeric: false,
-		label: 'is Returned',
 		align: 'left',
 	},
 	{
@@ -266,7 +260,7 @@ const LoanList = () => {
 			const newRows = rows.filter((row: KeyedObject) => {
 				let matches = true;
 
-				const properties = ['id', 'isAccepted', 'isReturned', 'expirationDate'];
+				const properties = ['id', 'isAccepted', 'isReturned'];
 				let containsQuery = false;
 
 				properties.forEach((property) => {
@@ -463,9 +457,10 @@ const LoanList = () => {
 												#{row.id}
 											</Typography>
 										</TableCell>
-										<TableCell>{row.isAccepted ? 'true' : 'false'}</TableCell>
-										<TableCell>{row.expirationDate.toString()}</TableCell>
-										<TableCell>{row.isReturned ? 'true' : 'false'}</TableCell>
+										<TableCell>{row.isAccepted ? 'Yes' : 'No'}</TableCell>
+										<TableCell>
+											{row.expirationDate ? String(row.expirationDate) : '--'}
+										</TableCell>
 										<TableCell>{row.BookId}</TableCell>
 										<TableCell>{row.UserId}</TableCell>
 

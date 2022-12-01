@@ -5,6 +5,8 @@ export interface TLoanStateProps {
 
 export interface TSetLoan {
 	isAccepted: boolean;
+	expirationDate?: Date;
+	isReturned?: boolean;
 }
 export interface TGetLoan {
 	id: number;
@@ -12,7 +14,7 @@ export interface TGetLoan {
 	updatedAt: Date;
 	isAccepted: boolean;
 	expirationDate: Date;
-	isReturned: boolean;
+	isReturned?: boolean;
 	BookId: number;
 	UserId: number;
 }
