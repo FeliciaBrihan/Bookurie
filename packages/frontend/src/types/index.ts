@@ -19,6 +19,7 @@ import { TActionStateProps } from './action';
 import { TLoanStateProps } from './loan';
 import { TBookStateProps } from './book';
 import { TPermissionStateProps } from './permission';
+import { ProductStateProps } from './e-commerce';
 
 export type ArrangementOrder = 'asc' | 'desc' | undefined;
 
@@ -127,6 +128,7 @@ export interface DefaultRootStateProps {
 	loan: TLoanStateProps;
 	book: TBookStateProps;
 	permission: TPermissionStateProps;
+	product: ProductStateProps;
 }
 
 export interface ColorProps {

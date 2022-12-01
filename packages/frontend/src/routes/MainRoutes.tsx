@@ -4,9 +4,13 @@ import MainLayout from 'layout/MainLayout';
 import Loadable from 'ui-component/Loadable';
 import AuthGuard from 'utils/route-guard/AuthGuard';
 
-const Dashboard = Loadable(lazy(() => import('views/dashboard')));
-
-const BudgetRequest = Loadable(lazy(() => import('views/budgetRequest')));
+const Products = Loadable(lazy(() => import('views/e-commerce/Products')));
+const ProductDetails = Loadable(
+	lazy(() => import('views/e-commerce/ProductDetails/'))
+);
+const ProductCheckout = Loadable(
+	lazy(() => import('views/e-commerce/Checkout'))
+);
 
 const UserList = Loadable(lazy(() => import('views/user/UserList')));
 const RoleList = Loadable(lazy(() => import('views/user/RoleList')));
@@ -29,11 +33,15 @@ const MainRoutes = {
 	children: [
 		{
 			path: '/dashboard',
-			element: <Dashboard />,
+			element: <Products />,
 		},
 		{
-			path: '/budget-request',
-			element: <BudgetRequest />,
+			path: '/e-commerce/product-details/:id',
+			element: <ProductDetails />,
+		},
+		{
+			path: '/e-commerce/checkout',
+			element: <ProductCheckout />,
 		},
 		{
 			path: '/books',
