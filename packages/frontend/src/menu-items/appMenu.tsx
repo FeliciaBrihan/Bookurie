@@ -3,12 +3,14 @@ import { FormattedMessage } from 'react-intl';
 
 // assets
 import SupervisorAccountIcon from '@mui/icons-material/SupervisorAccount';
-import CurrencyExchangeIcon from '@mui/icons-material/CurrencyExchange';
+// import CurrencyExchangeIcon from '@mui/icons-material/CurrencyExchange';
 import SettingsIcon from '@mui/icons-material/Settings';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import BookIcon from '@mui/icons-material/Book';
 // import LibraryBooksTwoToneIcon from '@mui/icons-material/LibraryBooksTwoTone';
 import { IconDashboard } from '@tabler/icons';
+import CollectionsIcon from '@mui/icons-material/Collections';
+import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
 import EngineeringTwoToneIcon from '@mui/icons-material/EngineeringTwoTone';
 import { NavItemType } from 'types';
 // import CoPresentIcon from '@mui/icons-material/CoPresent';
@@ -20,7 +22,7 @@ import HowToRegIcon from '@mui/icons-material/HowToReg';
 const icons = {
 	IconDashboard,
 	SupervisorAccountIcon,
-	CurrencyExchangeIcon,
+	// CurrencyExchangeIcon,
 	SettingsIcon,
 	DashboardIcon,
 	BookIcon,
@@ -29,6 +31,8 @@ const icons = {
 	EngineeringTwoToneIcon,
 	AutoStoriesTwoToneIcon,
 	HowToRegIcon,
+	ShoppingBagIcon,
+	CollectionsIcon,
 };
 
 // ==============================|| DASHBOARD MENU ITEMS ||============================== //
@@ -60,7 +64,15 @@ const appMenu: NavItemType = {
 			title: <FormattedMessage id="loans" />,
 			type: 'item',
 			url: '/loans',
-			icon: icons.CurrencyExchangeIcon,
+			icon: icons.CollectionsIcon,
+			breadcrumbs: false,
+		},
+		{
+			id: 'purchases',
+			title: <FormattedMessage id="purchases" />,
+			type: 'item',
+			url: '/purchases',
+			icon: icons.ShoppingBagIcon,
 			breadcrumbs: false,
 		},
 		{

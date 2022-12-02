@@ -17,6 +17,7 @@ import loanReducer from './slices/loan';
 import bookReducer from './slices/book';
 import permissionReducer from './slices/permission';
 import productReducer from './slices/product';
+import purchaseReducer from './slices/purchase';
 
 // ==============================|| COMBINE REDUCER ||============================== //
 
@@ -41,6 +42,7 @@ const reducer = combineReducers({
 	book: bookReducer,
 	permission: permissionReducer,
 	product: productReducer,
+	purchase: purchaseReducer,
 });
 
 export default reducer;
