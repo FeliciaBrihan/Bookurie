@@ -10,8 +10,6 @@ import {
 	Grid,
 	IconButton,
 	InputAdornment,
-	Menu,
-	MenuItem,
 	Table,
 	TableBody,
 	TableCell,
@@ -43,13 +41,18 @@ import {
 	KeyedObject,
 } from 'types';
 import { useDispatch, useSelector } from 'store';
+import BookAdd from './BookAdd';
+import BookDetails from './BookDetails';
+import BookEdit from './BookEdit';
 import { bookApi } from 'store/slices/book';
 
 // assets
 import DeleteIcon from '@mui/icons-material/Delete';
 import SearchIcon from '@mui/icons-material/Search';
 import AddIcon from '@mui/icons-material/AddTwoTone';
-import MoreHorizOutlinedIcon from '@mui/icons-material/MoreHorizOutlined';
+// import MoreHorizOutlinedIcon from '@mui/icons-material/MoreHorizOutlined';
+import VisibilityTwoToneIcon from '@mui/icons-material/VisibilityTwoTone';
+import EditTwoToneIcon from '@mui/icons-material/EditTwoTone';
 
 const prodImage = require.context('assets/images/e-commerce', true);
 
@@ -255,29 +258,19 @@ const ProductList = () => {
 	const [rowsPerPage, setRowsPerPage] = React.useState<number>(5);
 	const [search, setSearch] = React.useState<string>('');
 	const [rows, setRows] = React.useState<TGetBook[]>([]);
+	const [openCreate, setOpenCreate] = React.useState(false);
+	const [openDetails, setOpenDetails] = React.useState(false);
+	const [openEdit, setOpenEdit] = React.useState(false);
+	const [rowData, setRowData] = React.useState<TGetBook | undefined>(undefined);
 	const { books } = useSelector((state) => state.book);
-
-	const [anchorEl, setAnchorEl] = React.useState<
-		Element | ((element: Element) => Element) | null | undefined
-	>(null);
-
-	const handleMenuClick = (
-		event: React.MouseEvent<HTMLButtonElement> | undefined
-	) => {
-		setAnchorEl(event?.currentTarget);
-	};
-
-	const handleClose = () => {
-		setAnchorEl(null);
-	};
-
-	React.useEffect(() => {
-		setRows(books);
-	}, [books]);
 
 	React.useEffect(() => {
 		dispatch(bookApi.getAll());
 	}, []);
+
+	React.useEffect(() => {
+		setRows(books);
+	}, [books]);
 
 	const handleSearch = (
 		event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement> | undefined
@@ -310,7 +303,7 @@ const ProductList = () => {
 			});
 			setRows(newRows);
 		} else {
-			bookApi.getAll();
+			setRows(books);
 		}
 	};
 
@@ -368,6 +361,31 @@ const ProductList = () => {
 		event?.target.value && setRowsPerPage(parseInt(event?.target.value, 10));
 		setPage(0);
 	};
+	const handleCloseDialog = () => {
+		setOpenCreate(false);
+	};
+
+	const handleClickOpenDialog = () => {
+		setOpenCreate(true);
+	};
+
+	const handleCloseDetails = () => {
+		setOpenDetails(false);
+	};
+
+	const handleOpenDetails = (row: TGetBook) => () => {
+		setRowData(row);
+		setOpenDetails(true);
+	};
+
+	const handleCloseEdit = () => {
+		setOpenEdit(false);
+	};
+
+	const handleOpenEdit = (row: TGetBook) => () => {
+		setRowData(row);
+		setOpenEdit(true);
+	};
 
 	const isSelected = (name: string) => selected.indexOf(name) !== -1;
 	const emptyRows =
@@ -403,6 +421,7 @@ const ProductList = () => {
 							<Fab
 								color="primary"
 								size="small"
+								onClick={handleClickOpenDialog}
 								sx={{
 									boxShadow: 'none',
 									ml: 1,
@@ -511,39 +530,21 @@ const ProductList = () => {
 												}}
 											/>
 										</TableCell>
-										<TableCell align="center" sx={{ pr: 3 }}>
-											<IconButton onClick={handleMenuClick} size="large">
-												<MoreHorizOutlinedIcon
-													fontSize="small"
-													aria-controls="menu-popular-card-1"
-													aria-haspopup="true"
-													sx={{ color: 'grey.500' }}
-												/>
-											</IconButton>
-											<Menu
-												id="menu-popular-card-1"
-												anchorEl={anchorEl}
-												keepMounted
-												open={Boolean(anchorEl)}
-												onClose={handleClose}
-												variant="selectedMenu"
-												anchorOrigin={{
-													vertical: 'bottom',
-													horizontal: 'right',
-												}}
-												transformOrigin={{
-													vertical: 'top',
-													horizontal: 'right',
-												}}
-												sx={{
-													'& .MuiMenu-paper': {
-														boxShadow: theme.customShadows.z1,
-													},
-												}}
+										<TableCell sx={{ pr: 3 }} align="center">
+											<IconButton
+												color="primary"
+												size="large"
+												onClick={handleOpenDetails(row)}
 											>
-												<MenuItem onClick={handleClose}> Edit</MenuItem>
-												<MenuItem onClick={handleClose}> Delete</MenuItem>
-											</Menu>
+												<VisibilityTwoToneIcon sx={{ fontSize: '1.3rem' }} />
+											</IconButton>
+											<IconButton
+												color="secondary"
+												size="large"
+												onClick={handleOpenEdit(row)}
+											>
+												<EditTwoToneIcon sx={{ fontSize: '1.3rem' }} />
+											</IconButton>
 										</TableCell>
 									</TableRow>
 								);
@@ -559,6 +560,13 @@ const ProductList = () => {
 						)}
 					</TableBody>
 				</Table>
+				{openDetails && (
+					<BookDetails handleCloseDialog={handleCloseDetails} data={rowData!} />
+				)}
+				{openEdit && (
+					<BookEdit handleCloseDialog={handleCloseEdit} data={rowData!} />
+				)}
+				{openCreate && <BookAdd handleCloseDialog={handleCloseDialog} />}
 			</TableContainer>
 
 			{/* table pagination */}
