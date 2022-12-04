@@ -578,7 +578,9 @@ const ProductList = () => {
 				{openEdit && (
 					<BookEdit handleCloseDialog={handleCloseEdit} data={rowData!} />
 				)}
-				{openCreate && <BookAdd handleCloseDialog={handleCloseDialog} />}
+				{openCreate && (
+					<BookAdd open={true} handleCloseDialog={handleCloseDialog} />
+				)}
 			</TableContainer>
 
 			{/* table pagination */}

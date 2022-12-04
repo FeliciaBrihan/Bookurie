@@ -47,10 +47,11 @@ export const bookApi = {
 	get create() {
 		return async (data: TSetBook, options: { sync?: boolean }) => {
 			try {
-				const response = await axios.post<TGetBook>(`/role`, data);
+				const response = await axios.post<TGetBook>(`/book`, data);
 				if (options?.sync === true) this.getAll()();
 				return response.data;
 			} catch (error) {
+				console.log(error);
 				if (options?.sync === true) dispatch(slice.actions.hasError(error));
 			}
 		};
