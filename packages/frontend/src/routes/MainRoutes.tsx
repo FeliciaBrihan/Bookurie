@@ -19,7 +19,7 @@ const LoanList = Loadable(lazy(() => import('views/loan/LoanList')));
 const PurchaseList = Loadable(
 	lazy(() => import('views/purchase/PurchaseList'))
 );
-const BookList = Loadable(lazy(() => import('views/book/BookList')));
+const BookList = Loadable(lazy(() => import('views/e-commerce/ProductList')));
 const PermissionList = Loadable(
 	lazy(() => import('views/user/PermissionList'))
 );
