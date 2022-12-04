@@ -16,18 +16,12 @@ const router = Router();
 router.use('/:bookId/loan', verifyToken, loanRouter);
 router.use('/:bookId/purchase', verifyToken, purchaseRouter);
 
-router.post('/', verifyToken, checkAuthorization('Book: create'), create);
+router.post('/', create);
 router.get('/', getAll);
-router.get(
-	'/:id',
-	<any>verifyToken,
-	<any>checkAuthorization('Book: read'),
-	getById
-);
+router.get('/:id', getById);
 router.put(
 	'/:id',
-	<any>verifyToken,
-	<any>checkAuthorization('Book: update'),
+
 	update
 );
 router.delete(

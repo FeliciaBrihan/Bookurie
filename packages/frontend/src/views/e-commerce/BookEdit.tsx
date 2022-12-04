@@ -9,6 +9,7 @@ import {
 	DialogContent,
 	DialogTitle,
 	Grid,
+	MenuItem,
 	Slide,
 	SlideProps,
 	TextField,
@@ -32,7 +33,18 @@ const Transition = forwardRef((props: SlideProps, ref) => (
 	<Slide direction="left" ref={ref} {...props} />
 ));
 
+// type format options
+const type = [
+	{
+		value: 'printed',
+	},
+	{
+		value: 'online',
+	},
+];
+
 const BookEdit = ({ handleCloseDialog, data }: ProductAddProps) => {
+	const [currentType, setCurrentType] = useState(data.typeFormat);
 	const defaultValue = {
 		title: data.title,
 		author: data.author,
@@ -52,8 +64,12 @@ const BookEdit = ({ handleCloseDialog, data }: ProductAddProps) => {
 	const handleValueChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		setFormValue({
 			...formValue,
+
 			[event?.target.id]: event?.target.value,
 		});
+	};
+	const handleSelectChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+		setCurrentType(event.target.value);
 	};
 
 	const handleUpdate = async () => {
@@ -68,7 +84,7 @@ const BookEdit = ({ handleCloseDialog, data }: ProductAddProps) => {
 				genre: formValue.genre,
 				description: formValue.description,
 				pages: formValue.pages,
-				typeFormat: formValue.typeFormat,
+				typeFormat: currentType,
 				price: formValue.price,
 				stock: formValue.stock,
 			},
@@ -95,7 +111,7 @@ const BookEdit = ({ handleCloseDialog, data }: ProductAddProps) => {
 				},
 			}}
 		>
-			<DialogTitle>Role #{data.id}</DialogTitle>
+			<DialogTitle>Book #{data.id}</DialogTitle>
 			<DialogContent>
 				<Grid container spacing={gridSpacing} sx={{ mt: 0.25 }}>
 					<Grid item xs={12}>
@@ -105,6 +121,92 @@ const BookEdit = ({ handleCloseDialog, data }: ProductAddProps) => {
 							fullWidth
 							defaultValue={formValue.title}
 							label="Enter Book Title"
+							onChange={handleValueChange}
+						/>
+					</Grid>
+					<Grid item xs={12}>
+						<TextField
+							id="author"
+							required
+							fullWidth
+							defaultValue={formValue.author}
+							label="Enter Book Author"
+							onChange={handleValueChange}
+						/>
+					</Grid>
+					<Grid item xs={12}>
+						<TextField
+							id="price"
+							required
+							fullWidth
+							defaultValue={formValue.price}
+							label="Enter Book Price"
+							onChange={handleValueChange}
+						/>
+					</Grid>
+					<Grid item xs={12}>
+						<TextField
+							id="typeFormat"
+							select
+							label="Select Book Format"
+							defaultValue={formValue.typeFormat}
+							fullWidth
+							onChange={handleSelectChange}
+						>
+							{type.map((option) => (
+								<MenuItem key={option.value} value={option.value}>
+									{option.value}
+								</MenuItem>
+							))}
+						</TextField>
+					</Grid>
+					<Grid item xs={12}>
+						<TextField
+							id="stock"
+							required
+							fullWidth
+							defaultValue={formValue.stock}
+							label="Enter Book Stock"
+							onChange={handleValueChange}
+						/>
+					</Grid>
+					<Grid item xs={12}>
+						<TextField
+							id="publishedYear"
+							required
+							fullWidth
+							defaultValue={formValue.publishedYear}
+							label="Enter Book Published Year"
+							onChange={handleValueChange}
+						/>
+					</Grid>
+					<Grid item xs={12}>
+						<TextField
+							id="publishingHouse"
+							required
+							fullWidth
+							defaultValue={formValue.publishingHouse}
+							label="Enter Book Publishing House"
+							onChange={handleValueChange}
+						/>
+					</Grid>
+					<Grid item xs={12}>
+						<TextField
+							id="genre"
+							required
+							fullWidth
+							defaultValue={formValue.genre}
+							label="Enter Book Genre"
+							onChange={handleValueChange}
+						/>
+					</Grid>
+					<Grid item xs={12}>
+						<TextField
+							id="image"
+							required
+							fullWidth
+							defaultValue={formValue.coverImage}
+							label="Enter Book Image Name"
 							onChange={handleValueChange}
 						/>
 					</Grid>

@@ -252,7 +252,7 @@ const ProductList = () => {
 	const dispatch = useDispatch();
 
 	const [order, setOrder] = React.useState<ArrangementOrder>('asc');
-	const [orderBy, setOrderBy] = React.useState<string>('calories');
+	const [orderBy, setOrderBy] = React.useState<string>('id');
 	const [selected, setSelected] = React.useState<string[]>([]);
 	const [page, setPage] = React.useState<number>(0);
 	const [rowsPerPage, setRowsPerPage] = React.useState<number>(5);
