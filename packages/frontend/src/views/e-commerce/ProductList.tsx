@@ -518,17 +518,29 @@ const ProductList = () => {
 										<TableCell align="left">{row.author}</TableCell>
 										<TableCell align="left">{row.price} RON</TableCell>
 										<TableCell align="center">
-											<Chip
-												size="small"
-												label={
-													row.stock ? `In Stock ${row.stock}` : 'Out of Stock'
-												}
-												chipcolor={row.stock ? 'success' : 'error'}
-												sx={{
-													borderRadius: '4px',
-													textTransform: 'capitalize',
-												}}
-											/>
+											{row.typeFormat === 'printed' ? (
+												<Chip
+													size="small"
+													label={
+														row.stock ? `In Stock ${row.stock}` : 'Out of Stock'
+													}
+													chipcolor={row.stock ? 'success' : 'error'}
+													sx={{
+														borderRadius: '4px',
+														textTransform: 'capitalize',
+													}}
+												/>
+											) : (
+												<Chip
+													size="small"
+													label={`In Stock`}
+													chipcolor={'success'}
+													sx={{
+														borderRadius: '4px',
+														textTransform: 'capitalize',
+													}}
+												/>
+											)}
 										</TableCell>
 										<TableCell sx={{ pr: 3 }} align="center">
 											<IconButton
