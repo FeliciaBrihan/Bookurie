@@ -39,16 +39,16 @@ const MainRoutes = {
 			element: <Products />,
 		},
 		{
-			path: '/e-commerce/product-details/:id',
-			element: <ProductDetails />,
-		},
-		{
 			path: '/e-commerce/checkout',
 			element: <ProductCheckout />,
 		},
 		{
 			path: '/books',
 			element: <BookList />,
+		},
+		{
+			path: '/books/:id',
+			element: <ProductDetails />,
 		},
 		{
 			path: '/loans',

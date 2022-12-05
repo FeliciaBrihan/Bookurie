@@ -1,5 +1,6 @@
 export interface TBookStateProps {
 	books: TGetBook[];
+	book: TGetBook | null;
 	error: object | string | null;
 }
 

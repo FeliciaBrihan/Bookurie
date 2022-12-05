@@ -85,16 +85,16 @@ const ProductCard = ({
 					<CardMedia
 						sx={{ height: 220 }}
 						image={prodProfile}
-						title="Contemplative Reptile"
+						title={title}
 						component={Link}
-						to={`/e-commerce/product-details/${id}`}
+						to={`/books/${id}`}
 					/>
 					<CardContent sx={{ p: 2 }}>
 						<Grid container spacing={2}>
 							<Grid item xs={12}>
 								<Typography
 									component={Link}
-									to={`/e-commerce/product-details/${id}`}
+									to={`/books/${id}`}
 									variant="subtitle1"
 									sx={{ textDecoration: 'none' }}
 								>
@@ -104,7 +104,7 @@ const ProductCard = ({
 							<Grid item xs={12}>
 								<Typography
 									component={Link}
-									to={`/e-commerce/product-details/${id}`}
+									to={`/books/${id}`}
 									variant="subtitle1"
 									sx={{ textDecoration: 'none' }}
 								>

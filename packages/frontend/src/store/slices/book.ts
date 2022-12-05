@@ -13,6 +13,7 @@ import { TGetBook, TSetBook } from 'types/book';
 
 const initialState: DefaultRootStateProps['book'] = {
 	error: null,
+	book: null,
 	books: [],
 };
 
@@ -26,6 +27,9 @@ const slice = createSlice({
 
 		getBooksSuccess(state, action) {
 			state.books = action.payload;
+		},
+		getBookSuccess(state, action) {
+			state.book = action.payload;
 		},
 	},
 });
@@ -44,6 +48,7 @@ export const bookApi = {
 			dispatch(slice.actions.hasError(error));
 		}
 	},
+
 	get create() {
 		return async (data: TSetBook, options: { sync?: boolean }) => {
 			try {
@@ -67,3 +72,15 @@ export const bookApi = {
 		};
 	},
 };
+
+export function getProduct(id: string | undefined) {
+	return async () => {
+		try {
+			const response = await axios.get(`/book/${id}`);
+			console.log(response);
+			dispatch(slice.actions.getBookSuccess(response.data.data));
+		} catch (error) {
+			dispatch(slice.actions.hasError(error));
+		}
+	};
+}
