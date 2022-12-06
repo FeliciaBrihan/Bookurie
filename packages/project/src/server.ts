@@ -16,6 +16,7 @@ import {
 
 import { sequelize } from 'src/global';
 import { loggerOnlyGlobal } from 'src/logs';
+import { authorization } from 'src/middleware/authorization';
 
 export default async function server() {
 	const logger = loggerOnlyGlobal(__filename);
@@ -23,6 +24,7 @@ export default async function server() {
 	const app = express();
 	const httpServer = createServer(app);
 	app.use(cors());
+	app.use(authorization);
 
 	app.use('/docs', swaggerUi.serve, async (req: Request, res: Response) => {
 		return res.send(

@@ -30,6 +30,7 @@ import { TGetBook } from 'types/book';
 import { openSnackbar } from 'store/slices/snackbar';
 import { useDispatch, useSelector } from 'store';
 import { addProduct } from 'store/slices/cart';
+import { create } from 'store/slices/loan';
 
 // assets
 ('@mui/icons-material/StarBorderTwoTone');
@@ -83,6 +84,10 @@ const Increment = (props: string | FieldHookConfig<any>) => {
 const ProductInfo = ({ product }: { product: TGetBook }) => {
 	const dispatch = useDispatch();
 	const history = useNavigate();
+
+	const createLoan = async () => {
+		await dispatch(create(product.id));
+	};
 
 	const cart = useSelector((state) => state.cart);
 
@@ -246,6 +251,7 @@ const ProductInfo = ({ product }: { product: TGetBook }) => {
 											color="secondary"
 											variant="contained"
 											size="large"
+											onClick={createLoan}
 										>
 											Loan
 										</Button>

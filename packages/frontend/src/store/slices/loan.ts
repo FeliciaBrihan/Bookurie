@@ -56,3 +56,15 @@ export const loanApi = {
 		};
 	},
 };
+
+export function create(id: number) {
+	return async () => {
+		try {
+			const response = await axios.post(`/book/${id}/loan`);
+			console.log(response);
+		} catch (error) {
+			dispatch(slice.actions.hasError(error));
+			console.log(error);
+		}
+	};
+}

@@ -11,9 +11,10 @@ import { routes as loanRouter } from 'src/modules/loan/routes/';
 import { routes as purchaseRouter } from 'src/modules/purchase/routes/';
 import { verifyToken } from 'src/modules/auth/routes/verifyToken';
 import { checkAuthorization } from 'src/modules/auth/routes/checkAuthorization';
+import { googleAuth } from 'src/modules/auth';
 
 const router = Router();
-router.use('/:bookId/loan', verifyToken, loanRouter);
+router.use('/:bookId/loan', <any>googleAuth, loanRouter);
 router.use('/:bookId/purchase', verifyToken, purchaseRouter);
 
 router.post('/', create);
