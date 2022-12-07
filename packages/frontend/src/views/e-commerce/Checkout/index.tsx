@@ -12,7 +12,6 @@ import Payment from './Payment';
 import MainCard from 'ui-component/cards/MainCard';
 import { openSnackbar } from 'store/slices/snackbar';
 import { gridSpacing } from 'store/constant';
-import { DefaultRootStateProps, TabsProps } from 'types';
 import { CartStateProps } from 'types/cart';
 import { Address } from 'types/e-commerce';
 import { useDispatch, useSelector } from 'store';
@@ -126,7 +125,7 @@ function TabPanel({ children, value, index, ...other }: TabsProps) {
 
 const Checkout = () => {
 	const theme = useTheme();
-	const cart = useSelector((state: DefaultRootStateProps) => state.cart);
+	const cart = useSelector((state) => state.cart);
 	const { borderRadius } = useConfig();
 	const dispatch = useDispatch();
 
@@ -137,7 +136,7 @@ const Checkout = () => {
 	);
 	const [billing, setBilling] = useState(cart.checkout.billing);
 	const [address, setAddress] = useState<Address[]>([]);
-	const { addresses } = useSelector((state) => state.product);
+	const { addresses } = useSelector((state) => state.book);
 
 	useEffect(() => {
 		setAddress(addresses);

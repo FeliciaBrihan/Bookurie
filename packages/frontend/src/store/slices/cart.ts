@@ -142,6 +142,7 @@ export function addProduct(
 	return async () => {
 		try {
 			const response = await axios.post('/api/cart/add', { product, products });
+			console.log(response.data);
 			dispatch(slice.actions.addProductSuccess(response.data));
 		} catch (error) {
 			dispatch(slice.actions.hasError(error));
