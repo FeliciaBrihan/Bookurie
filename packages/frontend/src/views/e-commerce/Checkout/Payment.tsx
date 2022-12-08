@@ -41,6 +41,7 @@ import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
 import { CartCheckoutStateProps } from 'types/cart';
 import { PaymentOptionsProps } from 'types/e-commerce';
 import { setPaymentCard, setPaymentMethod } from 'store/slices/cart';
+import { create } from 'store/slices/purchase';
 
 const prodImage = require.context('assets/images/e-commerce', true);
 
@@ -99,6 +100,10 @@ const Payment = ({
 		dispatch(setPaymentMethod(value));
 	};
 
+	const createPurchase = async (id: number) => {
+		await dispatch(create(id));
+	};
+
 	const completeHandler = () => {
 		if (payment === 'card' && (cards === '' || cards === null)) {
 			dispatch(
@@ -115,6 +120,7 @@ const Payment = ({
 		} else {
 			onNext();
 			setComplete(true);
+			checkout.products.forEach((product) => createPurchase(product.id));
 		}
 	};
 

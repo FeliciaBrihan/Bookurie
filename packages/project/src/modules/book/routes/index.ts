@@ -15,7 +15,7 @@ import { googleAuth } from 'src/modules/auth';
 
 const router = Router();
 router.use('/:bookId/loan', <any>googleAuth, loanRouter);
-router.use('/:bookId/purchase', verifyToken, purchaseRouter);
+router.use('/:bookId/purchase', <any>googleAuth, purchaseRouter);
 
 router.post('/', create);
 router.get('/', getAll);

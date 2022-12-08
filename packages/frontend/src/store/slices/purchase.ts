@@ -44,3 +44,14 @@ export const purchaseApi = {
 		}
 	},
 };
+
+export function create(id: number) {
+	return async () => {
+		try {
+			await axios.post(`/book/${id}/purchase`);
+		} catch (error) {
+			dispatch(slice.actions.hasError(error));
+			console.log(error);
+		}
+	};
+}

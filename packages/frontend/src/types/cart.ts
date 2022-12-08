@@ -18,7 +18,7 @@ export interface CartCheckoutStateProps {
 
 export interface CartProductStateProps {
 	itemId?: string | number;
-	id: string | number;
+	id: number;
 	title: string;
 	author: string;
 	image: string;

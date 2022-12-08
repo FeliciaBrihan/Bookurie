@@ -502,7 +502,7 @@ const ProductList = () => {
 										>
 											<Typography
 												component={Link}
-												to={`/book/${row.id}`}
+												to={`/books/${row.id}`}
 												variant="subtitle1"
 												sx={{
 													color:

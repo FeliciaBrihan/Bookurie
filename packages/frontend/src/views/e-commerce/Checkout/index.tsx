@@ -203,19 +203,20 @@ const Checkout = () => {
 				setBillingAddress(addressBilling !== null ? addressBilling : billing)
 			);
 			onNext();
-		} else {
-			dispatch(
-				openSnackbar({
-					open: true,
-					message: 'Please select delivery address',
-					variant: 'alert',
-					alert: {
-						color: 'error',
-					},
-					close: false,
-				})
-			);
+			// } else {
+			// 	dispatch(
+			// 		openSnackbar({
+			// 			open: true,
+			// 			message: 'Please select delivery address',
+			// 			variant: 'alert',
+			// 			alert: {
+			// 				color: 'error',
+			// 			},
+			// 			close: false,
+			// 		})
+			// 	);
 		}
+		onNext(); //
 	};
 
 	const handleShippingCharge = (type: string) => {

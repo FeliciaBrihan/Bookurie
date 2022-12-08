@@ -9,7 +9,7 @@ import { verifyToken } from 'src/modules/auth/routes/verifyToken';
 
 const router = Router({ mergeParams: true });
 
-router.post('/', <any>verifyToken, create);
+router.post('/', create);
 router.get('/all', getAll);
 router.get('/', verifyToken, getByUser);
 
