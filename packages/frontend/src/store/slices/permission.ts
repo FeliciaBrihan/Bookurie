@@ -71,3 +71,15 @@ export const permissionApi = {
 		};
 	},
 };
+export function deletePermission(id: number, options: { sync?: boolean }) {
+	return async () => {
+		try {
+			const response = await axios.delete(`/permission/${id}`);
+			console.log(response);
+			if (options?.sync === true) permissionApi.getAll()();
+		} catch (error) {
+			dispatch(slice.actions.hasError(error));
+			console.log(error);
+		}
+	};
+}

@@ -80,10 +80,19 @@ const ActionAdd = ({ handleCloseDialog }: ProductAddProps) => {
 				<Grid container spacing={gridSpacing} sx={{ mt: 0.25 }}>
 					<Grid item xs={12}>
 						<TextField
-							id="name"
+							id="RoleId"
 							required
 							fullWidth
-							label="Enter Permission Name"
+							label="Enter Role Id"
+							onChange={handleValueChange}
+						/>
+					</Grid>
+					<Grid item xs={12}>
+						<TextField
+							id="ActionId"
+							required
+							fullWidth
+							label="Enter Action Id"
 							onChange={handleValueChange}
 						/>
 					</Grid>
