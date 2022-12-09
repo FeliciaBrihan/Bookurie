@@ -247,20 +247,23 @@ const ProductInfo = ({ product }: { product: TGetBook }) => {
 												Add to Cart
 											</Button>
 										</Grid>
-										<Grid item xs={6}>
-											<Button
-												type="submit"
-												fullWidth
-												color="secondary"
-												variant="contained"
-												size="large"
-												onClick={createLoan}
-											>
-												Loan
-											</Button>
-										</Grid>
+										{product.typeFormat === 'printed' ? (
+											<Grid item xs={6}>
+												<Button
+													type="submit"
+													fullWidth
+													color="secondary"
+													variant="contained"
+													size="large"
+													onClick={createLoan}
+												>
+													Loan
+												</Button>
+											</Grid>
+										) : (
+											''
+										)}
 									</Grid>
-									)
 								</Grid>
 							</Grid>
 						) : (
