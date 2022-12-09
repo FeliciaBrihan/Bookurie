@@ -66,3 +66,16 @@ export const roleApi = {
 		};
 	},
 };
+
+export function deleteRole(id: number, options: { sync?: boolean }) {
+	return async () => {
+		try {
+			const response = await axios.delete(`/role/${id}`);
+			console.log(response);
+			if (options?.sync === true) roleApi.getAll()();
+		} catch (error) {
+			dispatch(slice.actions.hasError(error));
+			console.log(error);
+		}
+	};
+}

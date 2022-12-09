@@ -99,43 +99,26 @@ const ProductDetails = () => {
 										to="#"
 										label={
 											<Stack direction="row" alignItems="center">
-												Publishing House
+												Details
 											</Stack>
 										}
 										{...a11yProps(1)}
-									/>
-									<Tab
-										component={Link}
-										to="#"
-										label={
-											<Stack direction="row" alignItems="center">
-												Published Year
-											</Stack>
-										}
-										{...a11yProps(2)}
-									/>
-									<Tab
-										component={Link}
-										to="#"
-										label={
-											<Stack direction="row" alignItems="center">
-												Pages
-											</Stack>
-										}
-										{...a11yProps(3)}
 									/>
 								</Tabs>
 								<TabPanel value={value} index={0}>
 									{book.description}
 								</TabPanel>
 								<TabPanel value={value} index={1}>
-									{book.publishingHouse}
+									Genre: {book.publishingHouse}
 								</TabPanel>
-								<TabPanel value={value} index={2}>
-									{book.publishedYear}
+								<TabPanel value={value} index={1}>
+									Publishing House: {book.publishingHouse}
 								</TabPanel>
-								<TabPanel value={value} index={3}>
-									{book.pages}
+								<TabPanel value={value} index={1}>
+									Published Year: {book.publishedYear}
+								</TabPanel>
+								<TabPanel value={value} index={1}>
+									Pages: {book.pages}
 								</TabPanel>
 							</Grid>
 						</Grid>

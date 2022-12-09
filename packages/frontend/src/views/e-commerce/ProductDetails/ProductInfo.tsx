@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 // material-ui
 import {
 	Button,
-	ButtonGroup,
+	// ButtonGroup,
 	Divider,
 	Grid,
 	Stack,
@@ -19,8 +19,8 @@ import {
 	useFormik,
 	Form,
 	FormikProvider,
-	useField,
-	FieldHookConfig,
+	// useField,
+	// FieldHookConfig,
 } from 'formik';
 import * as yup from 'yup';
 
@@ -34,8 +34,8 @@ import { create } from 'store/slices/loan';
 
 // assets
 ('@mui/icons-material/StarBorderTwoTone');
-import AddIcon from '@mui/icons-material/Add';
-import RemoveIcon from '@mui/icons-material/Remove';
+// import AddIcon from '@mui/icons-material/Add';
+// import RemoveIcon from '@mui/icons-material/Remove';
 import ShoppingCartTwoToneIcon from '@mui/icons-material/ShoppingCartTwoTone';
 
 const validationSchema = yup.object({
@@ -45,39 +45,39 @@ const validationSchema = yup.object({
 
 // ==============================|| COLORS OPTION ||============================== //
 
-const Increment = (props: string | FieldHookConfig<any>) => {
-	const [field, , helpers] = useField(props);
+// const Increment = (props: string | FieldHookConfig<any>) => {
+// 	const [field, , helpers] = useField(props);
 
-	const { value } = field;
-	const { setValue } = helpers;
-	return (
-		<ButtonGroup
-			size="large"
-			variant="text"
-			color="inherit"
-			sx={{ border: '1px solid', borderColor: 'grey.400' }}
-		>
-			<Button
-				key="three"
-				disabled={value <= 1}
-				onClick={() => setValue(value - 1)}
-				sx={{ pr: 0.75, pl: 0.75, minWidth: '0px !important' }}
-			>
-				<RemoveIcon fontSize="inherit" />
-			</Button>
-			<Button key="two" sx={{ pl: 0.5, pr: 0.5 }}>
-				{value}
-			</Button>
-			<Button
-				key="one"
-				onClick={() => setValue(value + 1)}
-				sx={{ pl: 0.75, pr: 0.75, minWidth: '0px !important' }}
-			>
-				<AddIcon fontSize="inherit" />
-			</Button>
-		</ButtonGroup>
-	);
-};
+// 	const { value } = field;
+// 	const { setValue } = helpers;
+// 	return (
+// 		<ButtonGroup
+// 			size="large"
+// 			variant="text"
+// 			color="inherit"
+// 			sx={{ border: '1px solid', borderColor: 'grey.400' }}
+// 		>
+// 			<Button
+// 				key="three"
+// 				disabled={value <= 1}
+// 				onClick={() => setValue(value - 1)}
+// 				sx={{ pr: 0.75, pl: 0.75, minWidth: '0px !important' }}
+// 			>
+// 				<RemoveIcon fontSize="inherit" />
+// 			</Button>
+// 			<Button key="two" sx={{ pl: 0.5, pr: 0.5 }}>
+// 				{value}
+// 			</Button>
+// 			<Button
+// 				key="one"
+// 				onClick={() => setValue(value + 1)}
+// 				sx={{ pl: 0.75, pr: 0.75, minWidth: '0px !important' }}
+// 			>
+// 				<AddIcon fontSize="inherit" />
+// 			</Button>
+// 		</ButtonGroup>
+// 	);
+// };
 
 // ==============================|| PRODUCT DETAILS - INFORMATION ||============================== //
 
@@ -206,26 +206,13 @@ const ProductInfo = ({ product }: { product: TGetBook }) => {
 											sx={{ '& .MuiTableCell-root': { borderBottom: 'none' } }}
 										>
 											<TableRow>
-												<TableCell>
-													<Typography variant="body2">
-														<Typography
-															color="error"
-															component="span"
-														></Typography>
-													</Typography>
-												</TableCell>
+												<TableCell></TableCell>
 											</TableRow>
 											<TableRow>
 												<TableCell></TableCell>
-												<TableCell align="left"></TableCell>
 											</TableRow>
 											<TableRow>
-												<TableCell>
-													<Typography variant="body2">Quantity</Typography>
-												</TableCell>
-												<TableCell align="left">
-													<Increment name="quantity" />
-												</TableCell>
+												<TableCell></TableCell>
 											</TableRow>
 										</TableBody>
 									</Table>

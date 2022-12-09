@@ -70,6 +70,7 @@ export interface EnhancedTableHeadProps extends TableCellProps {
 
 export interface EnhancedTableToolbarProps {
 	numSelected: number;
+	selected: number[];
 }
 
 export type HeadCell = {

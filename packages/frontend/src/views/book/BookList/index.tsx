@@ -119,7 +119,7 @@ const headCells: HeadCell[] = [
 
 interface OrderListEnhancedTableHeadProps extends EnhancedTableHeadProps {
 	theme: Theme;
-	selected: string[];
+	selected: number[];
 }
 
 function EnhancedTableHead({
