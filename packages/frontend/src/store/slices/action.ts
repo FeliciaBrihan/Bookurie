@@ -70,3 +70,16 @@ export const actionApi = {
 		};
 	},
 };
+
+export function deleteAction(id: number, options: { sync?: boolean }) {
+	return async () => {
+		try {
+			const response = await axios.delete(`/action/${id}`);
+			console.log(response);
+			if (options?.sync === true) actionApi.getAll()();
+		} catch (error) {
+			dispatch(slice.actions.hasError(error));
+			console.log(error);
+		}
+	};
+}

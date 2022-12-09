@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 // material-ui
-import { useTheme, Theme } from '@mui/material/styles';
+import { useTheme } from '@mui/material/styles';
 import {
 	Box,
 	CardContent,
@@ -35,18 +35,11 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import SearchIcon from '@mui/icons-material/Search';
 import VisibilityTwoToneIcon from '@mui/icons-material/VisibilityTwoTone';
 import EditTwoToneIcon from '@mui/icons-material/EditTwoTone';
-import {
-	ArrangementOrder,
-	EnhancedTableHeadProps,
-	KeyedObject,
-	GetComparator,
-	HeadCell,
-	EnhancedTableToolbarProps,
-} from 'types';
+import { ArrangementOrder, KeyedObject, GetComparator, HeadCell } from 'types';
 import ActionAdd from './ActionAdd';
 import ActionDetails from './ActionDetails';
 import ActionEdit from './ActionEdit';
-import { actionApi } from 'store/slices/action';
+import { actionApi, deleteAction } from 'store/slices/action';
 import { TGetAction } from 'types/action';
 
 // table sort
@@ -90,127 +83,12 @@ const headCells: HeadCell[] = [
 		align: 'left',
 	},
 	{
-		id: 'Name',
+		id: 'name',
 		numeric: false,
 		label: 'Name',
 		align: 'left',
 	},
 ];
-
-// ==============================|| TABLE HEADER ||============================== //
-
-interface OrderListEnhancedTableHeadProps extends EnhancedTableHeadProps {
-	theme: Theme;
-	selected: string[];
-}
-
-function EnhancedTableHead({
-	onSelectAllClick,
-	order,
-	orderBy,
-	numSelected,
-	rowCount,
-	onRequestSort,
-	theme,
-	selected,
-}: OrderListEnhancedTableHeadProps) {
-	const createSortHandler =
-		(property: string) => (event: React.SyntheticEvent<Element, Event>) => {
-			onRequestSort(event, property);
-		};
-
-	return (
-		<TableHead>
-			<TableRow>
-				<TableCell padding="checkbox" sx={{ pl: 3 }}>
-					<Checkbox
-						color="primary"
-						indeterminate={numSelected > 0 && numSelected < rowCount}
-						checked={rowCount > 0 && numSelected === rowCount}
-						onChange={onSelectAllClick}
-						inputProps={{
-							'aria-label': 'select all actions',
-						}}
-					/>
-				</TableCell>
-				{numSelected > 0 && (
-					<TableCell padding="none" colSpan={8}>
-						<EnhancedTableToolbar numSelected={selected.length} />
-					</TableCell>
-				)}
-				{numSelected <= 0 &&
-					headCells.map((headCell) => (
-						<TableCell
-							key={headCell.id}
-							align={headCell.align}
-							padding={headCell.disablePadding ? 'none' : 'normal'}
-							sortDirection={orderBy === headCell.id ? order : false}
-						>
-							<TableSortLabel
-								active={orderBy === headCell.id}
-								direction={orderBy === headCell.id ? order : 'asc'}
-								onClick={createSortHandler(headCell.id)}
-							>
-								{headCell.label}
-								{orderBy === headCell.id ? (
-									<Box component="span" sx={visuallyHidden}>
-										{order === 'desc'
-											? 'sorted descending'
-											: 'sorted ascending'}
-									</Box>
-								) : null}
-							</TableSortLabel>
-						</TableCell>
-					))}
-				{numSelected <= 0 && (
-					<TableCell sortDirection={false} align="center" sx={{ pr: 3 }}>
-						<Typography
-							variant="subtitle1"
-							sx={{
-								color: theme.palette.mode === 'dark' ? 'grey.600' : 'grey.900',
-							}}
-						>
-							Action
-						</Typography>
-					</TableCell>
-				)}
-			</TableRow>
-		</TableHead>
-	);
-}
-
-// ==============================|| TABLE HEADER TOOLBAR ||============================== //
-
-const EnhancedTableToolbar = ({ numSelected }: EnhancedTableToolbarProps) => (
-	<Toolbar
-		sx={{
-			p: 0,
-			pl: 1,
-			pr: 1,
-			...(numSelected > 0 && {
-				color: (theme) => theme.palette.secondary.main,
-			}),
-		}}
-	>
-		{numSelected > 0 ? (
-			<Typography color="inherit" variant="h4">
-				{numSelected} Selected
-			</Typography>
-		) : (
-			<Typography variant="h6" id="tableTitle">
-				''
-			</Typography>
-		)}
-		<Box sx={{ flexGrow: 1 }} />
-		{numSelected > 0 && (
-			<Tooltip title="Delete">
-				<IconButton size="large">
-					<DeleteIcon fontSize="small" />
-				</IconButton>
-			</Tooltip>
-		)}
-	</Toolbar>
-);
 
 // ==============================|| ORDER LIST ||============================== //
 
@@ -219,7 +97,7 @@ const ActionList = () => {
 	const dispatch = useDispatch();
 	const [order, setOrder] = React.useState<ArrangementOrder>('asc');
 	const [orderBy, setOrderBy] = React.useState<string>('id');
-	const [selected, setSelected] = React.useState<string[]>([]);
+	const [selected, setSelected] = React.useState<number[]>([]);
 	const [page, setPage] = React.useState<number>(0);
 	const [rowsPerPage, setRowsPerPage] = React.useState<number>(10);
 	const [search, setSearch] = React.useState<string>('');
@@ -287,7 +165,7 @@ const ActionList = () => {
 			if (selected.length > 0) {
 				setSelected([]);
 			} else {
-				const newSelectedId = rows.map((n) => n.name);
+				const newSelectedId = rows.map((n) => n.id);
 				setSelected(newSelectedId);
 			}
 			return;
@@ -297,13 +175,13 @@ const ActionList = () => {
 
 	const handleClick = (
 		event: React.MouseEvent<HTMLTableHeaderCellElement, MouseEvent>,
-		name: string
+		id: number
 	) => {
-		const selectedIndex = selected.indexOf(name);
-		let newSelected: string[] = [];
+		const selectedIndex = selected.indexOf(id);
+		let newSelected: number[] = [];
 
 		if (selectedIndex === -1) {
-			newSelected = newSelected.concat(selected, name);
+			newSelected = newSelected.concat(selected, id);
 		} else if (selectedIndex === 0) {
 			newSelected = newSelected.concat(selected.slice(1));
 		} else if (selectedIndex === selected.length - 1) {
@@ -358,7 +236,18 @@ const ActionList = () => {
 		setOpenEdit(true);
 	};
 
-	const isSelected = (name: string) => selected.indexOf(name) !== -1;
+	const createSortHandler =
+		(property: string) => (event: React.SyntheticEvent<Element, Event>) => {
+			handleRequestSort(event, property);
+		};
+	const handleDelete = (selectedItemsArray: number[]) => {
+		selectedItemsArray.forEach((item) => {
+			dispatch(deleteAction(item, { sync: true }));
+			setSelected([]);
+		});
+	};
+
+	const isSelected = (id: number) => selected.indexOf(id) !== -1;
 	const emptyRows =
 		page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
 
@@ -410,16 +299,96 @@ const ActionList = () => {
 			{/* table */}
 			<TableContainer>
 				<Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle">
-					<EnhancedTableHead
-						numSelected={selected.length}
-						order={order}
-						orderBy={orderBy}
-						onSelectAllClick={handleSelectAllClick}
-						onRequestSort={handleRequestSort}
-						rowCount={rows.length}
-						theme={theme}
-						selected={selected}
-					/>
+					<TableHead>
+						<TableRow>
+							<TableCell padding="checkbox" sx={{ pl: 3 }}>
+								<Checkbox
+									color="primary"
+									indeterminate={
+										selected.length > 0 && selected.length < rows.length
+									}
+									checked={rows.length > 0 && selected.length === rows.length}
+									onChange={handleSelectAllClick}
+									inputProps={{
+										'aria-label': 'select all actions',
+									}}
+								/>
+							</TableCell>
+							{selected.length > 0 && (
+								<TableCell padding="none" colSpan={8}>
+									<Toolbar
+										sx={{
+											p: 0,
+											pl: 1,
+											pr: 1,
+											...(selected.length > 0 && {
+												color: (theme) => theme.palette.secondary.main,
+											}),
+										}}
+									>
+										{selected.length > 0 ? (
+											<Typography color="inherit" variant="h4">
+												{selected.length} Selected
+											</Typography>
+										) : (
+											<Typography variant="h6" id="tableTitle">
+												''
+											</Typography>
+										)}
+										<Box sx={{ flexGrow: 1 }} />
+										{selected.length > 0 && (
+											<Tooltip title="Delete">
+												<IconButton
+													size="large"
+													onClick={() => handleDelete(selected)}
+												>
+													<DeleteIcon fontSize="small" />
+												</IconButton>
+											</Tooltip>
+										)}
+									</Toolbar>
+								</TableCell>
+							)}
+							{selected.length <= 0 &&
+								headCells.map((headCell) => (
+									<TableCell
+										key={headCell.id}
+										align={headCell.align}
+										padding={headCell.disablePadding ? 'none' : 'normal'}
+										sortDirection={orderBy === headCell.id ? order : false}
+									>
+										<TableSortLabel
+											active={orderBy === headCell.id}
+											direction={orderBy === headCell.id ? order : 'asc'}
+											onClick={createSortHandler(headCell.id)}
+										>
+											{headCell.label}
+											{orderBy === headCell.id ? (
+												<Box component="span" sx={visuallyHidden}>
+													{order === 'desc'
+														? 'sorted descending'
+														: 'sorted ascending'}
+												</Box>
+											) : null}
+										</TableSortLabel>
+									</TableCell>
+								))}
+							{selected.length <= 0 && (
+								<TableCell sortDirection={false} align="center" sx={{ pr: 3 }}>
+									<Typography
+										variant="subtitle1"
+										sx={{
+											color:
+												theme.palette.mode === 'dark' ? 'grey.600' : 'grey.900',
+										}}
+									>
+										Action
+									</Typography>
+								</TableCell>
+							)}
+						</TableRow>
+					</TableHead>
+
 					<TableBody>
 						{stableSort(rows, getComparator(order, orderBy))
 							.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
@@ -427,7 +396,7 @@ const ActionList = () => {
 								/** Make sure no display bugs if row isn't an OrderData object */
 								if (typeof row === 'number') return null;
 
-								const isItemSelected = isSelected(row.name);
+								const isItemSelected = isSelected(row.id);
 								const labelId = `enhanced-table-checkbox-${index}`;
 
 								return (
@@ -442,7 +411,7 @@ const ActionList = () => {
 										<TableCell
 											padding="checkbox"
 											sx={{ pl: 3 }}
-											onClick={(event) => handleClick(event, row.name)}
+											onClick={(event) => handleClick(event, row.id)}
 										>
 											<Checkbox
 												color="primary"
@@ -456,7 +425,7 @@ const ActionList = () => {
 											component="th"
 											id={labelId}
 											scope="row"
-											onClick={(event) => handleClick(event, row.name)}
+											onClick={(event) => handleClick(event, row.id)}
 											sx={{ cursor: 'pointer' }}
 										>
 											<Typography
@@ -475,7 +444,7 @@ const ActionList = () => {
 											component="th"
 											id={labelId}
 											scope="row"
-											onClick={(event) => handleClick(event, row.name)}
+											onClick={(event) => handleClick(event, row.id)}
 											sx={{ cursor: 'pointer' }}
 										>
 											<Typography
