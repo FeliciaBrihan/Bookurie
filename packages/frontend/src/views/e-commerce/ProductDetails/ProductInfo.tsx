@@ -99,6 +99,7 @@ const ProductInfo = ({ product }: { product: TGetBook }) => {
 			author: product.author,
 			image: product.coverImage,
 			price: product.price,
+			stock: product.stock,
 			quantity: 1,
 		},
 		validationSchema,
@@ -196,69 +197,75 @@ const ProductInfo = ({ product }: { product: TGetBook }) => {
 			<Grid item xs={12}>
 				<FormikProvider value={formik}>
 					<Form autoComplete="off" noValidate onSubmit={handleSubmit}>
-						<Grid container spacing={2}>
-							<Grid item xs={12} lg={10}>
-								<Table>
-									<TableBody
-										sx={{ '& .MuiTableCell-root': { borderBottom: 'none' } }}
-									>
-										<TableRow>
-											<TableCell>
-												<Typography variant="body2">
-													<Typography
-														color="error"
-														component="span"
-													></Typography>
-												</Typography>
-											</TableCell>
-										</TableRow>
-										<TableRow>
-											<TableCell></TableCell>
-											<TableCell align="left"></TableCell>
-										</TableRow>
-										<TableRow>
-											<TableCell>
-												<Typography variant="body2">Quantity</Typography>
-											</TableCell>
-											<TableCell align="left">
-												<Increment name="quantity" />
-											</TableCell>
-										</TableRow>
-									</TableBody>
-								</Table>
-							</Grid>
-							<Grid item xs={12}>
-								<Divider />
-							</Grid>
-							<Grid item xs={12}>
-								<Grid container spacing={1}>
-									<Grid item xs={6}>
-										<Button
-											fullWidth
-											color="primary"
-											variant="contained"
-											size="large"
-											startIcon={<ShoppingCartTwoToneIcon />}
-											onClick={addCart}
+						{(product.typeFormat === 'printed' && product.stock) ||
+						product.typeFormat === 'online' ? (
+							<Grid container spacing={2}>
+								<Grid item xs={12} lg={10}>
+									<Table>
+										<TableBody
+											sx={{ '& .MuiTableCell-root': { borderBottom: 'none' } }}
 										>
-											Add to Cart
-										</Button>
+											<TableRow>
+												<TableCell>
+													<Typography variant="body2">
+														<Typography
+															color="error"
+															component="span"
+														></Typography>
+													</Typography>
+												</TableCell>
+											</TableRow>
+											<TableRow>
+												<TableCell></TableCell>
+												<TableCell align="left"></TableCell>
+											</TableRow>
+											<TableRow>
+												<TableCell>
+													<Typography variant="body2">Quantity</Typography>
+												</TableCell>
+												<TableCell align="left">
+													<Increment name="quantity" />
+												</TableCell>
+											</TableRow>
+										</TableBody>
+									</Table>
+								</Grid>
+								<Grid item xs={12}>
+									<Divider />
+								</Grid>
+								<Grid item xs={12}>
+									<Grid container spacing={1}>
+										<Grid item xs={6}>
+											<Button
+												fullWidth
+												color="primary"
+												variant="contained"
+												size="large"
+												startIcon={<ShoppingCartTwoToneIcon />}
+												onClick={addCart}
+											>
+												Add to Cart
+											</Button>
+										</Grid>
+										<Grid item xs={6}>
+											<Button
+												type="submit"
+												fullWidth
+												color="secondary"
+												variant="contained"
+												size="large"
+												onClick={createLoan}
+											>
+												Loan
+											</Button>
+										</Grid>
 									</Grid>
-									<Grid item xs={6}>
-										<Button
-											type="submit"
-											fullWidth
-											color="secondary"
-											variant="contained"
-											size="large"
-											onClick={createLoan}
-										>
-											Loan
-										</Button>
-									</Grid>
+									)
 								</Grid>
 							</Grid>
-						</Grid>
+						) : (
+							''
+						)}
 					</Form>
 				</FormikProvider>
 			</Grid>
