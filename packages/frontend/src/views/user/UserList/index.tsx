@@ -158,7 +158,6 @@ function EnhancedTableHead({
 					<TableCell padding="none" colSpan={8}>
 						<EnhancedTableToolbar
 							numSelected={selected.length}
-							selected={selected}
 							onDeleteClick={deleteHandler}
 						/>
 					</TableCell>
