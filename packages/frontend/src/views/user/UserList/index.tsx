@@ -47,7 +47,7 @@ import {
 import UserAdd from './UserAdd';
 import UserDetails from './UserDetails';
 import UserEdit from './UserEdit';
-import { userApi } from 'store/slices/user';
+import { userApi, deleteUser } from 'store/slices/user';
 import { TGetUser } from 'types/user';
 
 // table sort
@@ -120,7 +120,8 @@ const headCells: HeadCell[] = [
 
 interface OrderListEnhancedTableHeadProps extends EnhancedTableHeadProps {
 	theme: Theme;
-	selected: string[];
+	selected: number[];
+	deleteHandler: () => void;
 }
 
 function EnhancedTableHead({
@@ -132,6 +133,7 @@ function EnhancedTableHead({
 	onRequestSort,
 	theme,
 	selected,
+	deleteHandler,
 }: OrderListEnhancedTableHeadProps) {
 	const createSortHandler =
 		(property: string) => (event: React.SyntheticEvent<Element, Event>) => {
@@ -154,7 +156,11 @@ function EnhancedTableHead({
 				</TableCell>
 				{numSelected > 0 && (
 					<TableCell padding="none" colSpan={8}>
-						<EnhancedTableToolbar numSelected={selected.length} />
+						<EnhancedTableToolbar
+							numSelected={selected.length}
+							selected={selected}
+							onDeleteClick={deleteHandler}
+						/>
 					</TableCell>
 				)}
 				{numSelected <= 0 &&
@@ -200,7 +206,10 @@ function EnhancedTableHead({
 
 // ==============================|| TABLE HEADER TOOLBAR ||============================== //
 
-const EnhancedTableToolbar = ({ numSelected }: EnhancedTableToolbarProps) => (
+const EnhancedTableToolbar = ({
+	numSelected,
+	onDeleteClick,
+}: EnhancedTableToolbarProps) => (
 	<Toolbar
 		sx={{
 			p: 0,
@@ -223,7 +232,7 @@ const EnhancedTableToolbar = ({ numSelected }: EnhancedTableToolbarProps) => (
 		<Box sx={{ flexGrow: 1 }} />
 		{numSelected > 0 && (
 			<Tooltip title="Delete">
-				<IconButton size="large">
+				<IconButton size="large" onClick={() => onDeleteClick()}>
 					<DeleteIcon fontSize="small" />
 				</IconButton>
 			</Tooltip>
@@ -238,7 +247,7 @@ const UserList = () => {
 	const dispatch = useDispatch();
 	const [order, setOrder] = React.useState<ArrangementOrder>('asc');
 	const [orderBy, setOrderBy] = React.useState<string>('id');
-	const [selected, setSelected] = React.useState<string[]>([]);
+	const [selected, setSelected] = React.useState<number[]>([]);
 	const [page, setPage] = React.useState<number>(0);
 	const [rowsPerPage, setRowsPerPage] = React.useState<number>(5);
 	const [search, setSearch] = React.useState<string>('');
@@ -311,7 +320,7 @@ const UserList = () => {
 			if (selected.length > 0) {
 				setSelected([]);
 			} else {
-				const newSelectedId = rows.map((n) => n.firstName);
+				const newSelectedId = rows.map((n) => n.id);
 				setSelected(newSelectedId);
 			}
 			return;
@@ -321,13 +330,13 @@ const UserList = () => {
 
 	const handleClick = (
 		event: React.MouseEvent<HTMLTableHeaderCellElement, MouseEvent>,
-		name: string
+		id: number
 	) => {
-		const selectedIndex = selected.indexOf(name);
-		let newSelected: string[] = [];
+		const selectedIndex = selected.indexOf(id);
+		let newSelected: number[] = [];
 
 		if (selectedIndex === -1) {
-			newSelected = newSelected.concat(selected, name);
+			newSelected = newSelected.concat(selected, id);
 		} else if (selectedIndex === 0) {
 			newSelected = newSelected.concat(selected.slice(1));
 		} else if (selectedIndex === selected.length - 1) {
@@ -381,8 +390,14 @@ const UserList = () => {
 		setRowData(row);
 		setOpenEdit(true);
 	};
+	const handleDelete = (selectedItemsArray: number[]) => {
+		selectedItemsArray.forEach((item) => {
+			dispatch(deleteUser(item, { sync: true }));
+			setSelected([]);
+		});
+	};
 
-	const isSelected = (name: string) => selected.indexOf(name) !== -1;
+	const isSelected = (id: number) => selected.indexOf(id) !== -1;
 	const emptyRows =
 		page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
 
@@ -444,6 +459,7 @@ const UserList = () => {
 						rowCount={rows.length}
 						theme={theme}
 						selected={selected}
+						deleteHandler={() => handleDelete(selected)}
 					/>
 					<TableBody>
 						{stableSort(rows, getComparator(order, orderBy))
@@ -452,7 +468,7 @@ const UserList = () => {
 								/** Make sure no display bugs if row isn't an OrderData object */
 								if (typeof row === 'number') return null;
 
-								const isItemSelected = isSelected(row.firstName);
+								const isItemSelected = isSelected(row.id);
 								const labelId = `enhanced-table-checkbox-${index}`;
 
 								return (
@@ -467,7 +483,7 @@ const UserList = () => {
 										<TableCell
 											padding="checkbox"
 											sx={{ pl: 3 }}
-											onClick={(event) => handleClick(event, row.firstName)}
+											onClick={(event) => handleClick(event, row.id)}
 										>
 											<Checkbox
 												color="primary"
@@ -481,7 +497,7 @@ const UserList = () => {
 											component="th"
 											id={labelId}
 											scope="row"
-											onClick={(event) => handleClick(event, row.firstName)}
+											onClick={(event) => handleClick(event, row.id)}
 											sx={{ cursor: 'pointer' }}
 										>
 											<Typography
@@ -500,7 +516,7 @@ const UserList = () => {
 											component="th"
 											id={labelId}
 											scope="row"
-											onClick={(event) => handleClick(event, row.firstName)}
+											onClick={(event) => handleClick(event, row.id)}
 											sx={{ cursor: 'pointer' }}
 										>
 											<Typography

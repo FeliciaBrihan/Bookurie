@@ -79,3 +79,16 @@ export const userApi = {
 		};
 	},
 };
+
+export function deleteUser(id: number, options: { sync?: boolean }) {
+	return async () => {
+		try {
+			const response = await axios.delete(`/user/${id}`);
+			console.log(response);
+			if (options?.sync === true) userApi.getAll({ status: 'all' })();
+		} catch (error) {
+			dispatch(slice.actions.hasError(error));
+			console.log(error);
+		}
+	};
+}

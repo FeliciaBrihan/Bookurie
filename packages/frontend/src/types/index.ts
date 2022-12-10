@@ -71,6 +71,7 @@ export interface EnhancedTableHeadProps extends TableCellProps {
 export interface EnhancedTableToolbarProps {
 	numSelected: number;
 	selected: number[];
+	onDeleteClick: () => void;
 }
 
 export type HeadCell = {
