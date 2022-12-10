@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 // material-ui
-import { useTheme } from '@mui/material/styles';
+import { useTheme, Theme } from '@mui/material/styles';
 import {
 	Box,
 	CardContent,
@@ -35,7 +35,14 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import SearchIcon from '@mui/icons-material/Search';
 import VisibilityTwoToneIcon from '@mui/icons-material/VisibilityTwoTone';
 import EditTwoToneIcon from '@mui/icons-material/EditTwoTone';
-import { ArrangementOrder, KeyedObject, GetComparator, HeadCell } from 'types';
+import {
+	ArrangementOrder,
+	EnhancedTableHeadProps,
+	KeyedObject,
+	GetComparator,
+	HeadCell,
+	EnhancedTableToolbarProps,
+} from 'types';
 import PermissionAdd from './PermissionAdd';
 import PermissionDetails from './PermissionDetails';
 import PermissionEdit from './PermissionEdit';
@@ -96,6 +103,128 @@ const headCells: HeadCell[] = [
 	},
 ];
 
+// ==============================|| TABLE HEADER ||============================== //
+
+interface OrderListEnhancedTableHeadProps extends EnhancedTableHeadProps {
+	theme: Theme;
+	selected: number[];
+	deleteHandler: () => void;
+}
+
+function EnhancedTableHead({
+	onSelectAllClick,
+	order,
+	orderBy,
+	numSelected,
+	rowCount,
+	onRequestSort,
+	theme,
+	selected,
+	deleteHandler,
+}: OrderListEnhancedTableHeadProps) {
+	const createSortHandler =
+		(property: string) => (event: React.SyntheticEvent<Element, Event>) => {
+			onRequestSort(event, property);
+		};
+
+	return (
+		<TableHead>
+			<TableRow>
+				<TableCell padding="checkbox" sx={{ pl: 3 }}>
+					<Checkbox
+						color="primary"
+						indeterminate={numSelected > 0 && numSelected < rowCount}
+						checked={rowCount > 0 && numSelected === rowCount}
+						onChange={onSelectAllClick}
+						inputProps={{
+							'aria-label': 'select all users',
+						}}
+					/>
+				</TableCell>
+				{numSelected > 0 && (
+					<TableCell padding="none" colSpan={8}>
+						<EnhancedTableToolbar
+							numSelected={selected.length}
+							onDeleteClick={deleteHandler}
+						/>
+					</TableCell>
+				)}
+				{numSelected <= 0 &&
+					headCells.map((headCell) => (
+						<TableCell
+							key={headCell.id}
+							align={headCell.align}
+							padding={headCell.disablePadding ? 'none' : 'normal'}
+							sortDirection={orderBy === headCell.id ? order : false}
+						>
+							<TableSortLabel
+								active={orderBy === headCell.id}
+								direction={orderBy === headCell.id ? order : 'asc'}
+								onClick={createSortHandler(headCell.id)}
+							>
+								{headCell.label}
+								{orderBy === headCell.id ? (
+									<Box component="span" sx={visuallyHidden}>
+										{order === 'desc'
+											? 'sorted descending'
+											: 'sorted ascending'}
+									</Box>
+								) : null}
+							</TableSortLabel>
+						</TableCell>
+					))}
+				{numSelected <= 0 && (
+					<TableCell sortDirection={false} align="center" sx={{ pr: 3 }}>
+						<Typography
+							variant="subtitle1"
+							sx={{
+								color: theme.palette.mode === 'dark' ? 'grey.600' : 'grey.900',
+							}}
+						>
+							Action
+						</Typography>
+					</TableCell>
+				)}
+			</TableRow>
+		</TableHead>
+	);
+}
+
+// ==============================|| TABLE HEADER TOOLBAR ||============================== //
+
+const EnhancedTableToolbar = ({
+	numSelected,
+	onDeleteClick,
+}: EnhancedTableToolbarProps) => (
+	<Toolbar
+		sx={{
+			p: 0,
+			pl: 1,
+			pr: 1,
+			...(numSelected > 0 && {
+				color: (theme) => theme.palette.secondary.main,
+			}),
+		}}
+	>
+		{numSelected > 0 ? (
+			<Typography color="inherit" variant="h4">
+				{numSelected} Selected
+			</Typography>
+		) : (
+			<Typography variant="h6" id="tableTitle">
+				''
+			</Typography>
+		)}
+		<Box sx={{ flexGrow: 1 }} />
+		{numSelected > 0 && (
+			<Tooltip title="Delete">
+				<IconButton size="large" onClick={() => onDeleteClick()}>
+					<DeleteIcon fontSize="small" />
+				</IconButton>
+			</Tooltip>
+		)}
+	</Toolbar>
+);
 // ==============================|| ORDER LIST ||============================== //
 
 const PermissionList = () => {
@@ -242,10 +371,6 @@ const PermissionList = () => {
 		setOpenEdit(true);
 	};
 
-	const createSortHandler =
-		(property: string) => (event: React.SyntheticEvent<Element, Event>) => {
-			handleRequestSort(event, property);
-		};
 	const handleDelete = (selectedItemsArray: number[]) => {
 		selectedItemsArray.forEach((item) => {
 			dispatch(deletePermission(item, { sync: true }));
@@ -305,96 +430,17 @@ const PermissionList = () => {
 			{/* table */}
 			<TableContainer>
 				<Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle">
-					<TableHead>
-						<TableRow>
-							<TableCell padding="checkbox" sx={{ pl: 3 }}>
-								<Checkbox
-									color="primary"
-									indeterminate={
-										selected.length > 0 && selected.length < rows.length
-									}
-									checked={rows.length > 0 && selected.length === rows.length}
-									onChange={handleSelectAllClick}
-									inputProps={{
-										'aria-label': 'select all roles',
-									}}
-								/>
-							</TableCell>
-							{selected.length > 0 && (
-								<TableCell padding="none" colSpan={8}>
-									<Toolbar
-										sx={{
-											p: 0,
-											pl: 1,
-											pr: 1,
-											...(selected.length > 0 && {
-												color: (theme) => theme.palette.secondary.main,
-											}),
-										}}
-									>
-										{selected.length > 0 ? (
-											<Typography color="inherit" variant="h4">
-												{selected.length} Selected
-											</Typography>
-										) : (
-											<Typography variant="h6" id="tableTitle">
-												''
-											</Typography>
-										)}
-										<Box sx={{ flexGrow: 1 }} />
-										{selected.length > 0 && (
-											<Tooltip title="Delete">
-												<IconButton
-													size="large"
-													onClick={() => handleDelete(selected)}
-												>
-													<DeleteIcon fontSize="small" />
-												</IconButton>
-											</Tooltip>
-										)}
-									</Toolbar>
-								</TableCell>
-							)}
-							{selected.length <= 0 &&
-								headCells.map((headCell) => (
-									<TableCell
-										key={headCell.id}
-										align={headCell.align}
-										padding={headCell.disablePadding ? 'none' : 'normal'}
-										sortDirection={orderBy === headCell.id ? order : false}
-									>
-										<TableSortLabel
-											active={orderBy === headCell.id}
-											direction={orderBy === headCell.id ? order : 'asc'}
-											onClick={createSortHandler(headCell.id)}
-										>
-											{headCell.label}
-											{orderBy === headCell.id ? (
-												<Box component="span" sx={visuallyHidden}>
-													{order === 'desc'
-														? 'sorted descending'
-														: 'sorted ascending'}
-												</Box>
-											) : null}
-										</TableSortLabel>
-									</TableCell>
-								))}
-							{selected.length <= 0 && (
-								<TableCell sortDirection={false} align="center" sx={{ pr: 3 }}>
-									<Typography
-										variant="subtitle1"
-										sx={{
-											color:
-												theme.palette.mode === 'dark' ? 'grey.600' : 'grey.900',
-										}}
-									>
-										Action
-									</Typography>
-								</TableCell>
-							)}
-						</TableRow>
-					</TableHead>
-
+					<EnhancedTableHead
+						numSelected={selected.length}
+						order={order}
+						orderBy={orderBy}
+						onSelectAllClick={handleSelectAllClick}
+						onRequestSort={handleRequestSort}
+						rowCount={rows.length}
+						theme={theme}
+						selected={selected}
+						deleteHandler={() => handleDelete(selected)}
+					/>
 					<TableBody>
 						{stableSort(rows, getComparator(order, orderBy))
 							.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
@@ -448,6 +494,13 @@ const PermissionList = () => {
 										</TableCell>
 										<TableCell>{row.RoleId}</TableCell>
 										<TableCell>{row.ActionId}</TableCell>
+										<TableCell
+											component="th"
+											id={labelId}
+											scope="row"
+											onClick={(event) => handleClick(event, row.id)}
+											sx={{ cursor: 'pointer' }}
+										></TableCell>
 										<TableCell sx={{ pr: 3 }} align="center">
 											<IconButton
 												color="primary"
