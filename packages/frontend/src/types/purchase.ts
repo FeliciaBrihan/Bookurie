@@ -6,6 +6,7 @@ export interface TPurchaseStateProps {
 export interface TSetPurchase {
 	BookId: number;
 	UserId: number;
+	price: number;
 }
 export interface TGetPurchase {
 	id: number;
@@ -13,4 +14,5 @@ export interface TGetPurchase {
 	updatedAt: Date;
 	BookId: number;
 	UserId: number;
+	price: number;
 }

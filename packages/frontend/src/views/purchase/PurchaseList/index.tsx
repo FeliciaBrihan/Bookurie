@@ -92,14 +92,20 @@ const headCells: HeadCell[] = [
 	},
 	{
 		id: 'BookId',
-		numeric: false,
+		numeric: true,
 		label: 'Book Id',
 		align: 'left',
 	},
 	{
 		id: 'UserId',
-		numeric: false,
+		numeric: true,
 		label: 'User Id',
+		align: 'left',
+	},
+	{
+		id: 'price',
+		numeric: true,
+		label: 'Price',
 		align: 'left',
 	},
 ];
@@ -434,6 +440,7 @@ const PurchaseList = () => {
 										</TableCell>
 										<TableCell>{row.BookId}</TableCell>
 										<TableCell>{row.UserId}</TableCell>
+										<TableCell>{row.price}</TableCell>
 									</TableRow>
 								);
 							})}

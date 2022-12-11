@@ -10,6 +10,7 @@ export function getModelPurchase(sequelize: Sequelize) {
 				allowNull: false,
 				primaryKey: true,
 			},
+			price: DataTypes.INTEGER,
 		},
 		{ paranoid: true, tableName: 'purchase' }
 	);

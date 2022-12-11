@@ -231,7 +231,7 @@ const EnhancedTableToolbar = ({
 		<Box sx={{ flexGrow: 1 }} />
 		{numSelected > 0 && (
 			<Tooltip title="Delete">
-				<IconButton size="large" onClick={() => onDeleteClick()}>
+				<IconButton size="large" onClick={() => onDeleteClick?.()}>
 					<DeleteIcon fontSize="small" />
 				</IconButton>
 			</Tooltip>
