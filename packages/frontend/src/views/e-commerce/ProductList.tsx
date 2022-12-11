@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 // material-ui
 import { useTheme, Theme } from '@mui/material/styles';
 import {
+	Box,
 	CardContent,
 	Checkbox,
 	Fab,
@@ -44,7 +45,7 @@ import { useDispatch, useSelector } from 'store';
 import BookAdd from './BookAdd';
 import BookDetails from './BookDetails';
 import BookEdit from './BookEdit';
-import { bookApi } from 'store/slices/book';
+import { bookApi, deleteBook } from 'store/slices/book';
 
 // assets
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -53,6 +54,7 @@ import AddIcon from '@mui/icons-material/AddTwoTone';
 // import MoreHorizOutlinedIcon from '@mui/icons-material/MoreHorizOutlined';
 import VisibilityTwoToneIcon from '@mui/icons-material/VisibilityTwoTone';
 import EditTwoToneIcon from '@mui/icons-material/EditTwoTone';
+import { visuallyHidden } from '@mui/utils';
 
 const prodImage = require.context('assets/images/e-commerce', true);
 
@@ -121,9 +123,10 @@ const headCells: HeadCell[] = [
 
 // ==============================|| TABLE HEADER ||============================== //
 
-interface ProEnhancedTableHeadProps extends EnhancedTableHeadProps {
+interface OrderListEnhancedTableHeadProps extends EnhancedTableHeadProps {
 	theme: Theme;
-	selected: string[];
+	selected: number[];
+	deleteHandler: () => void;
 }
 
 function EnhancedTableHead({
@@ -135,7 +138,8 @@ function EnhancedTableHead({
 	onRequestSort,
 	theme,
 	selected,
-}: ProEnhancedTableHeadProps) {
+	deleteHandler,
+}: OrderListEnhancedTableHeadProps) {
 	const createSortHandler =
 		(property: string) => (event: React.SyntheticEvent<Element, Event>) => {
 			onRequestSort(event, property);
@@ -156,8 +160,11 @@ function EnhancedTableHead({
 					/>
 				</TableCell>
 				{numSelected > 0 && (
-					<TableCell padding="none" colSpan={7}>
-						<EnhancedTableToolbar numSelected={selected.length} />
+					<TableCell padding="none" colSpan={8}>
+						<EnhancedTableToolbar
+							numSelected={selected.length}
+							onDeleteClick={deleteHandler}
+						/>
 					</TableCell>
 				)}
 				{numSelected <= 0 &&
@@ -175,11 +182,11 @@ function EnhancedTableHead({
 							>
 								{headCell.label}
 								{orderBy === headCell.id ? (
-									<Typography component="span" sx={{ display: 'none' }}>
+									<Box component="span" sx={visuallyHidden}>
 										{order === 'desc'
 											? 'sorted descending'
 											: 'sorted ascending'}
-									</Typography>
+									</Box>
 								) : null}
 							</TableSortLabel>
 						</TableCell>
@@ -189,10 +196,7 @@ function EnhancedTableHead({
 						<Typography
 							variant="subtitle1"
 							sx={{
-								color:
-									theme.palette.mode === 'dark'
-										? theme.palette.grey[600]
-										: 'grey.900',
+								color: theme.palette.mode === 'dark' ? 'grey.600' : 'grey.900',
 							}}
 						>
 							Action
@@ -206,38 +210,33 @@ function EnhancedTableHead({
 
 // ==============================|| TABLE HEADER TOOLBAR ||============================== //
 
-const EnhancedTableToolbar = ({ numSelected }: EnhancedTableToolbarProps) => (
+const EnhancedTableToolbar = ({
+	numSelected,
+	onDeleteClick,
+}: EnhancedTableToolbarProps) => (
 	<Toolbar
 		sx={{
 			p: 0,
-			pl: 2,
+			pl: 1,
 			pr: 1,
-			color: numSelected > 0 ? 'secondary.main' : 'inherit',
+			...(numSelected > 0 && {
+				color: (theme) => theme.palette.secondary.main,
+			}),
 		}}
 	>
 		{numSelected > 0 ? (
-			<Typography
-				sx={{ flex: '1 1 100%' }}
-				color="inherit"
-				variant="h4"
-				component="div"
-			>
+			<Typography color="inherit" variant="h4">
 				{numSelected} Selected
 			</Typography>
 		) : (
-			<Typography
-				sx={{ flex: '1 1 100%' }}
-				variant="h6"
-				id="tableTitle"
-				component="div"
-			>
-				Nutrition
+			<Typography variant="h6" id="tableTitle">
+				''
 			</Typography>
 		)}
-
+		<Box sx={{ flexGrow: 1 }} />
 		{numSelected > 0 && (
 			<Tooltip title="Delete">
-				<IconButton size="large">
+				<IconButton size="large" onClick={() => onDeleteClick?.()}>
 					<DeleteIcon fontSize="small" />
 				</IconButton>
 			</Tooltip>
@@ -253,7 +252,7 @@ const ProductList = () => {
 
 	const [order, setOrder] = React.useState<ArrangementOrder>('asc');
 	const [orderBy, setOrderBy] = React.useState<string>('id');
-	const [selected, setSelected] = React.useState<string[]>([]);
+	const [selected, setSelected] = React.useState<number[]>([]);
 	const [page, setPage] = React.useState<number>(0);
 	const [rowsPerPage, setRowsPerPage] = React.useState<number>(5);
 	const [search, setSearch] = React.useState<string>('');
@@ -282,7 +281,7 @@ const ProductList = () => {
 			const newRows = rows?.filter((row: KeyedObject) => {
 				let matches = true;
 
-				const properties = ['title', 'author'];
+				const properties = ['title', 'author', 'price'];
 				let containsQuery = false;
 
 				properties.forEach((property) => {
@@ -318,7 +317,7 @@ const ProductList = () => {
 
 	const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
 		if (event.target.checked) {
-			const newSelectedId = rows?.map((n) => n.title);
+			const newSelectedId = rows?.map((n) => n.id);
 			setSelected(newSelectedId!);
 			return;
 		}
@@ -327,13 +326,13 @@ const ProductList = () => {
 
 	const handleClick = (
 		event: React.MouseEvent<HTMLTableHeaderCellElement, MouseEvent>,
-		name: string
+		id: number
 	) => {
-		const selectedIndex = selected.indexOf(name);
-		let newSelected: string[] = [];
+		const selectedIndex = selected.indexOf(id);
+		let newSelected: number[] = [];
 
 		if (selectedIndex === -1) {
-			newSelected = newSelected.concat(selected, name);
+			newSelected = newSelected.concat(selected, id);
 		} else if (selectedIndex === 0) {
 			newSelected = newSelected.concat(selected.slice(1));
 		} else if (selectedIndex === selected.length - 1) {
@@ -386,8 +385,14 @@ const ProductList = () => {
 		setRowData(row);
 		setOpenEdit(true);
 	};
+	const handleDelete = (selectedItemsArray: number[]) => {
+		selectedItemsArray.forEach((item) => {
+			dispatch(deleteBook(item, { sync: true }));
+			setSelected([]);
+		});
+	};
 
-	const isSelected = (name: string) => selected.indexOf(name) !== -1;
+	const isSelected = (id: number) => selected.indexOf(id) !== -1;
 	const emptyRows =
 		page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
 
@@ -449,13 +454,14 @@ const ProductList = () => {
 						rowCount={rows.length}
 						theme={theme}
 						selected={selected}
+						deleteHandler={() => handleDelete(selected)}
 					/>
 					<TableBody>
 						{stableSort(rows, getComparator(order, orderBy))
 							.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
 							.map((row, index) => {
 								if (typeof row === 'number') return null;
-								const isItemSelected = isSelected(row.title);
+								const isItemSelected = isSelected(row.id);
 								const labelId = `enhanced-table-checkbox-${index}`;
 
 								return (
@@ -470,7 +476,7 @@ const ProductList = () => {
 										<TableCell
 											padding="checkbox"
 											sx={{ pl: 3 }}
-											onClick={(event) => handleClick(event, row.title)}
+											onClick={(event) => handleClick(event, row.id)}
 										>
 											<Checkbox
 												color="primary"
@@ -485,7 +491,7 @@ const ProductList = () => {
 											component="th"
 											id={labelId}
 											scope="row"
-											onClick={(event) => handleClick(event, row.title)}
+											onClick={(event) => handleClick(event, row.id)}
 											sx={{ cursor: 'pointer' }}
 										>
 											<Avatar

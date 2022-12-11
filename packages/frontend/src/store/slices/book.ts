@@ -84,3 +84,16 @@ export function getProduct(id: string | undefined) {
 		}
 	};
 }
+
+export function deleteBook(id: number, options: { sync?: boolean }) {
+	return async () => {
+		try {
+			const response = await axios.delete(`/book/${id}`);
+			console.log(response);
+			if (options?.sync === true) bookApi.getAll()();
+		} catch (error) {
+			dispatch(slice.actions.hasError(error));
+			console.log(error);
+		}
+	};
+}

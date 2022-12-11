@@ -9,8 +9,8 @@ import { deleteBook } from 'src/modules/book/routes/delete';
 import { search } from 'src/modules/book/routes/search';
 import { routes as loanRouter } from 'src/modules/loan/routes/';
 import { routes as purchaseRouter } from 'src/modules/purchase/routes/';
-import { verifyToken } from 'src/modules/auth/routes/verifyToken';
-import { checkAuthorization } from 'src/modules/auth/routes/checkAuthorization';
+// import { verifyToken } from 'src/modules/auth/routes/verifyToken';
+// import { checkAuthorization } from 'src/modules/auth/routes/checkAuthorization';
 import { googleAuth } from 'src/modules/auth';
 
 const router = Router();
@@ -25,12 +25,7 @@ router.put(
 
 	update
 );
-router.delete(
-	'/:id',
-	<any>verifyToken,
-	<any>checkAuthorization('Book: delete'),
-	deleteBook
-);
+router.delete('/:id', deleteBook);
 router.get('/search/:query', search);
 
 export const routes = router;
