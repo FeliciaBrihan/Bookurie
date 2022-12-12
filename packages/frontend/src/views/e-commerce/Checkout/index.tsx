@@ -12,6 +12,7 @@ import Payment from './Payment';
 import MainCard from 'ui-component/cards/MainCard';
 import { openSnackbar } from 'store/slices/snackbar';
 import { gridSpacing } from 'store/constant';
+import { TabsProps } from 'types';
 import { CartStateProps } from 'types/cart';
 import { Address } from 'types/e-commerce';
 import { useDispatch, useSelector } from 'store';

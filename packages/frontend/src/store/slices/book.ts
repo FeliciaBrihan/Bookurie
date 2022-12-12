@@ -15,6 +15,7 @@ const initialState: DefaultRootStateProps['book'] = {
 	error: null,
 	book: null,
 	books: [],
+	addresses: [],
 };
 
 const slice = createSlice({
