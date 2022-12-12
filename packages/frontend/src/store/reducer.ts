@@ -17,6 +17,7 @@ import loanReducer from './slices/loan';
 import bookReducer from './slices/book';
 import permissionReducer from './slices/permission';
 import purchaseReducer from './slices/purchase';
+import raffleReducer from './slices/raffle';
 
 // ==============================|| COMBINE REDUCER ||============================== //
 
@@ -41,6 +42,7 @@ const reducer = combineReducers({
 	book: bookReducer,
 	permission: permissionReducer,
 	purchase: purchaseReducer,
+	raffle: raffleReducer,
 });
 
 export default reducer;

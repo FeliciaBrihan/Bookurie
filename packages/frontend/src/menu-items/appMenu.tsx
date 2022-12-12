@@ -17,6 +17,7 @@ import { NavItemType } from 'types';
 // import SwitchAccessShortcutIcon from '@mui/icons-material/SwitchAccessShortcut';
 import AutoStoriesTwoToneIcon from '@mui/icons-material/AutoStoriesTwoTone';
 import HowToRegIcon from '@mui/icons-material/HowToReg';
+import ShuffleOnIcon from '@mui/icons-material/ShuffleOn';
 
 // constant
 const icons = {
@@ -33,6 +34,7 @@ const icons = {
 	HowToRegIcon,
 	ShoppingBagIcon,
 	CollectionsIcon,
+	ShuffleOnIcon,
 };
 
 // ==============================|| DASHBOARD MENU ITEMS ||============================== //
@@ -105,6 +107,14 @@ const appMenu: NavItemType = {
 			type: 'item',
 			url: '/permissions',
 			icon: icons.HowToRegIcon,
+			breadcrumbs: false,
+		},
+		{
+			id: 'raffles',
+			title: <FormattedMessage id="raffles" />,
+			type: 'item',
+			url: '/raffles',
+			icon: icons.ShuffleOnIcon,
 			breadcrumbs: false,
 		},
 	],
