@@ -57,4 +57,5 @@ export interface ProductCardProps extends KeyedObject {
 	price?: number;
 	pages?: number;
 	typeFormat?: string;
+	genre?: string;
 }

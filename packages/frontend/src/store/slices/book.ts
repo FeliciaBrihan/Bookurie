@@ -8,6 +8,7 @@ import { dispatch } from '../index';
 // types
 import { DefaultRootStateProps } from 'types';
 import { TGetBook, TSetBook } from 'types/book';
+import { ProductsFilter } from 'types/e-commerce';
 
 // ----------------------------------------------------------------------
 
@@ -31,6 +32,10 @@ const slice = createSlice({
 		},
 		getBookSuccess(state, action) {
 			state.book = action.payload;
+		},
+		// FILTER PRODUCTS
+		filterProductsSuccess(state, action) {
+			state.books = action.payload;
 		},
 	},
 });
@@ -95,6 +100,21 @@ export function deleteBook(id: number, options: { sync?: boolean }) {
 		} catch (error) {
 			dispatch(slice.actions.hasError(error));
 			console.log(error);
+		}
+	};
+}
+
+export function filterProducts({ genre }: ProductsFilter) {
+	const filterBy = genre.some((item) => item === 'all' || item === 'reset')
+		? ''
+		: { genre };
+	return async () => {
+		try {
+			const response = await axios.get('/book', { params: filterBy });
+			console.log(response);
+			dispatch(slice.actions.filterProductsSuccess(response.data.data));
+		} catch (error) {
+			dispatch(slice.actions.hasError(error));
 		}
 	};
 }

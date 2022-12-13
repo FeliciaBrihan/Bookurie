@@ -24,8 +24,8 @@ import PerfectScrollbar from 'react-perfect-scrollbar';
 // project imports
 import SortOptions from './SortOptions';
 import ProductEmpty from './ProductEmpty';
-// import ProductFilter from './ProductFilter';
-// import ProductFilterView from './ProductFilterView';
+import ProductFilter from './ProductFilter';
+import ProductFilterView from './ProductFilterView';
 import ProductCard from 'ui-component/cards/ProductCard';
 import FloatingCart from 'ui-component/cards/FloatingCart';
 import SkeletonProductPlaceholder from 'ui-component/cards/Skeleton/ProductPlaceholder';
@@ -34,7 +34,7 @@ import { resetCart } from 'store/slices/cart';
 import { openDrawer } from 'store/slices/menu';
 import { useDispatch, useSelector } from 'store';
 import { appDrawerWidth, gridSpacing } from 'store/constant';
-import { bookApi } from 'store/slices/book';
+import { bookApi, filterProducts } from 'store/slices/book';
 
 // assets
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
@@ -44,6 +44,7 @@ import SearchIcon from '@mui/icons-material/Search';
 
 // types
 import { TGetBook } from 'types/book';
+import { ProductsFilter } from 'types/e-commerce';
 
 // product list container
 const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })<{
@@ -113,25 +114,21 @@ const BooksList = () => {
 		}
 	}, []);
 
-	// // filter
-	// const initialState: ProductsFilter = {
-	// 	search: '',
-	// 	sort: 'low',
-	// 	gender: [],
-	// 	categories: ['all'],
-	// 	colors: [],
-	// 	price: '',
-	// 	rating: 0,
-	// };
-	// const [filter, setFilter] = useState(initialState);
+	// filter
+	const initialState: ProductsFilter = {
+		search: '',
+		sort: 'low',
+		genre: ['all'],
+	};
+	const [filter, setFilter] = useState(initialState);
 
-	// // search filter
-	// const handleSearch = async (
-	// 	event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement> | undefined
-	// ) => {
-	// 	const newString = event?.target.value;
-	// 	setFilter({ ...filter, search: newString! });
-	// };
+	// search filter
+	const handleSearch = async (
+		event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement> | undefined
+	) => {
+		const newString = event?.target.value;
+		setFilter({ ...filter, search: newString! });
+	};
 
 	// sort options
 	const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -144,98 +141,69 @@ const BooksList = () => {
 		setAnchorEl(null);
 	};
 
-	// const filterIsEqual = (a1: ProductsFilter, a2: ProductsFilter) =>
-	// 	a1 === a2 ||
-	// 	(a1.length === a2.length &&
-	// 		a1.search === a2.search &&
-	// 		a1.sort === a2.sort &&
-	// 		a1.price === a2.price &&
-	// 		a1.rating === a2.rating &&
-	// 		JSON.stringify(a1.gender) === JSON.stringify(a2.gender) &&
-	// 		JSON.stringify(a1.categories) === JSON.stringify(a2.categories) &&
-	// 		JSON.stringify(a1.colors) === JSON.stringify(a2.colors));
+	const filterIsEqual = (a1: ProductsFilter, a2: ProductsFilter) =>
+		a1 === a2 ||
+		(a1.length === a2.length &&
+			a1.search === a2.search &&
+			a1.sort === a2.sort &&
+			JSON.stringify(a1.genre) === JSON.stringify(a2.genre));
 
-	// const handelFilter = (type: string, params: string, rating?: number) => {
-	// 	setLoading(true);
-	// 	switch (type) {
-	// 		case 'gender':
-	// 			if (filter.gender.some((item) => item === params)) {
-	// 				setFilter({
-	// 					...filter,
-	// 					gender: filter.gender.filter((item) => item !== params),
-	// 				});
-	// 			} else {
-	// 				setFilter({ ...filter, gender: [...filter.gender, params] });
-	// 			}
-	// 			break;
-	// 		case 'categories':
-	// 			if (filter.categories.some((item) => item === params)) {
-	// 				setFilter({
-	// 					...filter,
-	// 					categories: filter.categories.filter((item) => item !== params),
-	// 				});
-	// 			} else if (
-	// 				filter.categories.some((item) => item === 'all') ||
-	// 				params === 'all'
-	// 			) {
-	// 				setFilter({ ...filter, categories: [params] });
-	// 			} else {
-	// 				setFilter({ ...filter, categories: [...filter.categories, params] });
-	// 			}
+	const handelFilter = (type: string, params: string) => {
+		setLoading(true);
+		switch (type) {
+			case 'genre':
+				if (filter.genre.some((item) => item === params)) {
+					setFilter({
+						...filter,
+						genre: filter.genre.filter((item) => item !== params),
+					});
+				} else if (
+					filter.genre.some((item) => item === 'all') ||
+					params === 'all'
+				) {
+					setFilter({ ...filter, genre: [params] });
+				} else {
+					setFilter({ ...filter, genre: [...filter.genre, params] });
+				}
 
-	// 			break;
-	// 		case 'colors':
-	// 			if (filter.colors.some((item) => item === params)) {
-	// 				setFilter({
-	// 					...filter,
-	// 					colors: filter.colors.filter((item) => item !== params),
-	// 				});
-	// 			} else {
-	// 				setFilter({ ...filter, colors: [...filter.colors, params] });
-	// 			}
-	// 			break;
-	// 		case 'price':
-	// 			setFilter({ ...filter, price: params });
-	// 			break;
-	// 		case 'search':
-	// 			setFilter({ ...filter, search: params });
-	// 			break;
-	// 		case 'sort':
-	// 			setFilter({ ...filter, sort: params });
-	// 			break;
-	// 		case 'rating':
-	// 			setFilter({ ...filter, rating: rating! });
-	// 			break;
-	// 		case 'reset':
-	// 			setFilter(initialState);
-	// 			break;
-	// 		default:
-	// 		// no options
-	// 	}
-	// };
+				break;
+			case 'search':
+				setFilter({ ...filter, search: params });
+				break;
+			case 'sort':
+				setFilter({ ...filter, sort: params });
+				break;
+			case 'reset':
+				setFilter(initialState);
+				break;
+			default:
+			// no options
+		}
+	};
 
-	// const filterData = async () => {
-	// 	await dispatch(filterProducts(filter));
-	// 	setLoading(false);
-	// };
+	const filterData = async () => {
+		await dispatch(filterProducts(filter));
+		setLoading(false);
+	};
 
-	// useEffect(() => {
-	// 	filterData();
-	// }, [filter]);
+	useEffect(() => {
+		filterData();
+	}, [filter]);
 
 	useEffect(() => {
 		setOpen(!matchDownLG);
 	}, [matchDownLG]);
 
-	// // sort filter
-	// const handleMenuItemClick = (
-	// 	event: React.MouseEvent<HTMLElement>,
-	// 	index: string
-	// ) => {
-	// 	setAnchorEl(null);
-	// };
+	// sort filter
+	const handleMenuItemClick = (
+		event: React.MouseEvent<HTMLElement>,
+		index: string
+	) => {
+		setFilter({ ...filter, sort: index });
+		setAnchorEl(null);
+	};
 
-	// const sortLabel = SortOptions.filter((items) => items.value === filter.sort);
+	const sortLabel = SortOptions.filter((items) => items.value === filter.sort);
 
 	let bookResult: ReactElement | ReactElement[] = <></>;
 	if (books && books.length > 0) {
@@ -249,6 +217,7 @@ const BooksList = () => {
 					description={book.description}
 					price={book.price}
 					pages={book.pages}
+					genre={book.genre}
 				/>
 			</Grid>
 		));
@@ -302,10 +271,10 @@ const BooksList = () => {
 										</InputAdornment>
 									),
 								}}
-								// value={filter.search}
+								value={filter.search}
 								placeholder="Search Product"
 								size="small"
-								// onChange={handleSearch}
+								onChange={handleSearch}
 							/>
 
 							<Typography
@@ -358,7 +327,7 @@ const BooksList = () => {
 									sx={{ color: 'grey.500', fontWeight: 400 }}
 									endIcon={<KeyboardArrowDownIcon />}
 								>
-									{/* {sortLabel.length > 0 && sortLabel[0].label} */}
+									{sortLabel.length > 0 && sortLabel[0].label}
 								</Button>
 								<Menu
 									id="demo-positioned-menu"
@@ -379,10 +348,10 @@ const BooksList = () => {
 										<MenuItem
 											sx={{ p: 1.5 }}
 											key={index}
-											// selected={option.value === filter.sort}
-											// onClick={(event) =>
-											// handleMenuItemClick(event, option.value)
-											// }
+											selected={option.value === filter.sort}
+											onClick={(event) =>
+												handleMenuItemClick(event, option.value)
+											}
 										>
 											{option.label}
 										</MenuItem>
@@ -399,12 +368,12 @@ const BooksList = () => {
 			<Grid item xs={12}>
 				<Box sx={{ display: 'flex' }}>
 					<Main open={open}>
-						{/* <ProductFilterView
+						<ProductFilterView
 							filter={filter}
 							filterIsEqual={filterIsEqual}
 							handelFilter={handelFilter}
 							initialState={initialState}
-						/> */}
+						/>
 						<Grid container spacing={gridSpacing}>
 							{isLoading
 								? [1, 2, 3, 4, 5, 6, 7, 8].map((item) => (
@@ -439,8 +408,7 @@ const BooksList = () => {
 					>
 						{open && (
 							<PerfectScrollbar component="div">
-								<div></div>
-								{/* <ProductFilter filter={filter} handelFilter={handelFilter} /> */}
+								<ProductFilter filter={filter} handelFilter={handelFilter} />
 							</PerfectScrollbar>
 						)}
 					</Drawer>

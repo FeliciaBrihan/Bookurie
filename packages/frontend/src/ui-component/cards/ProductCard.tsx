@@ -31,7 +31,7 @@ const ProductCard = ({
 	id,
 	title,
 	image,
-	description,
+	genre,
 	author,
 	price,
 	typeFormat,
@@ -45,7 +45,7 @@ const ProductCard = ({
 	const addCart = () => {
 		dispatch(
 			addProduct(
-				{ id, title, image, author, typeFormat, price, quantity: 1 },
+				{ id, title, image, genre, author, typeFormat, price, quantity: 1 },
 				cart.checkout.products
 			)
 		);
@@ -111,7 +111,7 @@ const ProductCard = ({
 									{author}
 								</Typography>
 							</Grid>
-							{description && (
+							{genre && (
 								<Grid item xs={12}>
 									<Typography
 										variant="body2"
@@ -120,7 +120,7 @@ const ProductCard = ({
 											height: 45,
 										}}
 									>
-										{description}
+										{genre}
 									</Typography>
 								</Grid>
 							)}
