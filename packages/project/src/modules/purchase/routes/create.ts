@@ -54,7 +54,7 @@ export async function create(
 		const purchase = await Purchase.create({
 			BookId: bookId,
 			UserId: user.id,
-			price: book.price,
+			price: price,
 		});
 
 		return res.status(200).json({
