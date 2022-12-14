@@ -22,6 +22,7 @@ import { TPermissionStateProps } from './permission';
 import { ProductStateProps } from './e-commerce';
 import { TPurchaseStateProps } from './purchase';
 import { TRaffleStateProps } from './raffle';
+import { TPrizeStateProps } from './prize';
 
 export type ArrangementOrder = 'asc' | 'desc' | undefined;
 
@@ -134,6 +135,7 @@ export interface DefaultRootStateProps {
 	product: ProductStateProps;
 	purchase: TPurchaseStateProps;
 	raffle: TRaffleStateProps;
+	prize: TPrizeStateProps;
 }
 
 export interface ColorProps {

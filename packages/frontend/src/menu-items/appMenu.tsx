@@ -18,6 +18,7 @@ import { NavItemType } from 'types';
 import AutoStoriesTwoToneIcon from '@mui/icons-material/AutoStoriesTwoTone';
 import HowToRegIcon from '@mui/icons-material/HowToReg';
 import ShuffleOnIcon from '@mui/icons-material/ShuffleOn';
+import CardGiftcardIcon from '@mui/icons-material/CardGiftcard';
 
 // constant
 const icons = {
@@ -35,6 +36,7 @@ const icons = {
 	ShoppingBagIcon,
 	CollectionsIcon,
 	ShuffleOnIcon,
+	CardGiftcardIcon,
 };
 
 // ==============================|| DASHBOARD MENU ITEMS ||============================== //
@@ -115,6 +117,14 @@ const appMenu: NavItemType = {
 			type: 'item',
 			url: '/raffles',
 			icon: icons.ShuffleOnIcon,
+			breadcrumbs: false,
+		},
+		{
+			id: 'prize',
+			title: <FormattedMessage id="prize" />,
+			type: 'item',
+			url: '/prize',
+			icon: icons.CardGiftcardIcon,
 			breadcrumbs: false,
 		},
 	],

@@ -24,6 +24,7 @@ const PermissionList = Loadable(
 	lazy(() => import('views/user/PermissionList'))
 );
 const RaffleList = Loadable(lazy(() => import('views/raffle/RaffleList')));
+const PrizeList = Loadable(lazy(() => import('views/prize')));
 
 // ==============================|| MAIN ROUTING ||============================== //
 
@@ -78,6 +79,10 @@ const MainRoutes = {
 		{
 			path: '/raffles',
 			element: <RaffleList />,
+		},
+		{
+			path: '/prize',
+			element: <PrizeList />,
 		},
 	],
 };
