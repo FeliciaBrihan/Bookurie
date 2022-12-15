@@ -35,6 +35,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import SearchIcon from '@mui/icons-material/Search';
 import VisibilityTwoToneIcon from '@mui/icons-material/VisibilityTwoTone';
 import EditTwoToneIcon from '@mui/icons-material/EditTwoTone';
+import AppRegistrationIcon from '@mui/icons-material/AppRegistration';
 import {
 	ArrangementOrder,
 	EnhancedTableHeadProps,
@@ -46,7 +47,11 @@ import {
 import SubscriptionAdd from './SubscriptionAdd';
 import SubscriptionDetails from './SubscriptionDetails';
 import SubscriptionEdit from './SubscriptionEdit';
-import { subscriptionApi, deleteSubscription } from 'store/slices/subscription';
+import {
+	subscriptionApi,
+	deleteSubscription,
+	subscribe,
+} from 'store/slices/subscription';
 import { TGetSubscription } from 'types/subscription';
 
 // table sort
@@ -529,6 +534,13 @@ const RoleList = () => {
 												onClick={handleOpenEdit(row)}
 											>
 												<EditTwoToneIcon sx={{ fontSize: '1.3rem' }} />
+											</IconButton>
+											<IconButton
+												color="success"
+												size="large"
+												onClick={() => dispatch(subscribe(row.id))}
+											>
+												<AppRegistrationIcon sx={{ fontSize: '1.3rem' }} />
 											</IconButton>
 										</TableCell>
 									</TableRow>

@@ -86,3 +86,14 @@ export function deleteSubscription(id: number, options: { sync?: boolean }) {
 		}
 	};
 }
+export function subscribe(id: number) {
+	return async () => {
+		try {
+			const response = await axios.put(`/subscription/${id}/subscribe`);
+			console.log(response);
+		} catch (error) {
+			dispatch(slice.actions.hasError(error));
+			console.log(error);
+		}
+	};
+}

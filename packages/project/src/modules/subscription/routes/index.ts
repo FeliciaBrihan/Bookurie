@@ -37,6 +37,6 @@ router.delete(
 	// <any>checkAuthorization('Subscription: delete'),
 	deleteSubscription
 );
-router.put('/:id/subscribe', verifyToken, subscribe);
+router.put('/:id/subscribe', subscribe);
 
 export const routes = router;
