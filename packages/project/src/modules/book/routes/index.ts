@@ -9,13 +9,14 @@ import { deleteBook } from 'src/modules/book/routes/delete';
 import { search } from 'src/modules/book/routes/search';
 import { routes as loanRouter } from 'src/modules/loan/routes/';
 import { routes as purchaseRouter } from 'src/modules/purchase/routes/';
+// import { authorization } from 'src/middleware/authorization';
 // import { verifyToken } from 'src/modules/auth/routes/verifyToken';
 // import { checkAuthorization } from 'src/modules/auth/routes/checkAuthorization';
-import { googleAuth } from 'src/modules/auth';
+// import { googleAuth } from 'src/modules/auth';
 
 const router = Router();
-router.use('/:bookId/loan', <any>googleAuth, loanRouter);
-router.use('/:bookId/purchase', <any>googleAuth, purchaseRouter);
+router.use('/:bookId/loan', loanRouter);
+router.use('/:bookId/purchase', purchaseRouter);
 
 router.post('/', create);
 router.get('/', getAll);

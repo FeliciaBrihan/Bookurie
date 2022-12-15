@@ -16,6 +16,7 @@ import { FirebaseContextType, InitialLoginContextProps } from 'types/auth';
 import { getIdToken } from 'firebase/auth';
 import { axiosSetAuthorization } from 'utils/live-axios';
 import { Snackbar, Alert } from '@mui/material';
+// import axios from 'axios';
 
 // firebase initialize
 if (!firebase.apps.length) {
@@ -49,7 +50,7 @@ export const FirebaseProvider = ({
 					const token = await getIdToken(user!);
 					console.log(user);
 					try {
-						// await axios.get('/user/allowed', {
+						// await axios.get('/', {
 						// 	headers: { authorization: token },
 						// });
 						localStorage.setItem('email', user?.email!);
@@ -65,6 +66,7 @@ export const FirebaseProvider = ({
 								},
 							},
 						});
+						console.log('context')
 					} catch (error) {
 						dispatch({
 							type: LOGOUT,

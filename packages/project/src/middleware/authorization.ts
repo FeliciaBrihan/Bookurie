@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import { Models, ModelUser } from 'src/interface';
 import { auth, sequelize } from 'src/global';
+import { generateUserBudget } from 'src/modules/user/functions';
 
 export async function authorization(
 	req: Request<{}, {}, {}, {}> & { currentUser?: ModelUser },
@@ -9,8 +10,8 @@ export async function authorization(
 ) {
 	try {
 		const { User } = sequelize.models as unknown as Models;
-
 		const idToken = req.headers['authorization'] as string;
+
 		if (!idToken) return next();
 
 		const firebaseUser = await auth().verifyIdToken(idToken);
@@ -18,8 +19,20 @@ export async function authorization(
 		const user = await User.findOne({
 			where: { email: firebaseUser.email },
 		});
-		if (user === null) return next();
-
+		if (user === null) {
+			console.log('check');
+			await User.create({
+				email: firebaseUser.email,
+				firstName: firebaseUser.name.split(' ')[0],
+				lastName: firebaseUser.name.split(' ')[1],
+				username: firebaseUser.name,
+				password: 'password123', // to be deleted in model
+				budget: generateUserBudget(
+					+process.env.MIN_BUDGET,
+					+process.env.MAX_BUDGET
+				),
+			});
+		}
 		req.currentUser = user;
 		next();
 	} catch (error) {
