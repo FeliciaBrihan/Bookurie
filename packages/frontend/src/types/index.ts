@@ -23,6 +23,7 @@ import { ProductStateProps } from './e-commerce';
 import { TPurchaseStateProps } from './purchase';
 import { TRaffleStateProps } from './raffle';
 import { TPrizeStateProps } from './prize';
+import { TSubscriptionStateProps } from './subscription';
 
 export type ArrangementOrder = 'asc' | 'desc' | undefined;
 
@@ -136,6 +137,7 @@ export interface DefaultRootStateProps {
 	purchase: TPurchaseStateProps;
 	raffle: TRaffleStateProps;
 	prize: TPrizeStateProps;
+	subscription: TSubscriptionStateProps;
 }
 
 export interface ColorProps {

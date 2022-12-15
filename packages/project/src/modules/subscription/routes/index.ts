@@ -14,11 +14,11 @@ const router = Router();
 
 router.post(
 	`/`,
-	verifyToken,
-	checkAuthorization('Subscription: create'),
+	// verifyToken,
+	// checkAuthorization('Subscription: create'),
 	create
 );
-router.get('/', verifyToken, checkAuthorization('Subscription: read'), getAll);
+router.get('/', getAll);
 router.get(
 	'/:id',
 	<any>verifyToken,
@@ -27,14 +27,14 @@ router.get(
 );
 router.put(
 	'/:id',
-	<any>verifyToken,
-	<any>checkAuthorization('Subscription: update'),
+	// <any>verifyToken,
+	// <any>checkAuthorization('Subscription: update'),
 	update
 );
 router.delete(
 	'/:id',
-	<any>verifyToken,
-	<any>checkAuthorization('Subscription: delete'),
+	// <any>verifyToken,
+	// <any>checkAuthorization('Subscription: delete'),
 	deleteSubscription
 );
 router.put('/:id/subscribe', verifyToken, subscribe);

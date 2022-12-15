@@ -19,6 +19,7 @@ import AutoStoriesTwoToneIcon from '@mui/icons-material/AutoStoriesTwoTone';
 import HowToRegIcon from '@mui/icons-material/HowToReg';
 import ShuffleOnIcon from '@mui/icons-material/ShuffleOn';
 import CardGiftcardIcon from '@mui/icons-material/CardGiftcard';
+import SubscriptionsIcon from '@mui/icons-material/Subscriptions';
 
 // constant
 const icons = {
@@ -37,6 +38,7 @@ const icons = {
 	CollectionsIcon,
 	ShuffleOnIcon,
 	CardGiftcardIcon,
+	SubscriptionsIcon
 };
 
 // ==============================|| DASHBOARD MENU ITEMS ||============================== //
@@ -125,6 +127,14 @@ const appMenu: NavItemType = {
 			type: 'item',
 			url: '/prize',
 			icon: icons.CardGiftcardIcon,
+			breadcrumbs: false,
+		},
+		{
+			id: 'subscriptions',
+			title: <FormattedMessage id="subscriptions" />,
+			type: 'item',
+			url: '/subscriptions',
+			icon: icons.SubscriptionsIcon,
 			breadcrumbs: false,
 		},
 	],
