@@ -10,12 +10,15 @@ import { changeUserRole } from 'src/modules/user/routes/changeUserRole';
 import { viewHistory } from 'src/modules/user/routes/history';
 import { userSignUp } from 'src/modules/user/routes/userSignUp';
 import { verifyToken } from 'src/modules/auth/routes/verifyToken';
+import { isAllowed } from 'src/modules/user/routes/isAllowed';
 // import { restrictTo } from 'src/modules/auth/routes/restrictTo';
 // import { checkAuthorization } from 'src/modules/auth/routes/checkAuthorization';
+// import { googleAuth } from 'src/modules/auth';
 
 const router = Router();
 
 router.get('/', getAllUsers);
+router.get('/allowed', isAllowed);
 router.get('/history', <any>verifyToken, viewHistory);
 router.get('/:id', getUserById);
 router.post('/', createUser);

@@ -14,6 +14,7 @@ import { TGetSubscription, TSetSubscription } from 'types/subscription';
 const initialState: DefaultRootStateProps['subscription'] = {
 	error: null,
 	subscriptions: [],
+	subscriptionId: undefined,
 };
 
 const slice = createSlice({
@@ -26,6 +27,10 @@ const slice = createSlice({
 
 		getSubscriptionsSuccess(state, action) {
 			state.subscriptions = action.payload;
+		},
+		getSubscriptionId(state, action) {
+			state.subscriptionId = action.payload;
+			console.log(state.subscriptionId);
 		},
 	},
 });
@@ -90,6 +95,7 @@ export function subscribe(id: number) {
 	return async () => {
 		try {
 			const response = await axios.put(`/subscription/${id}/subscribe`);
+			dispatch(slice.actions.getSubscriptionId(id));
 			console.log(response);
 		} catch (error) {
 			dispatch(slice.actions.hasError(error));

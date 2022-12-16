@@ -2,7 +2,7 @@ import axios from 'axios';
 import useAuth from 'hooks/useAuth';
 
 const axiosServices = axios.create({
-	baseURL: 'http://localhost:3001',
+	baseURL: 'http://localhost:3000',
 });
 
 export function axiosSetAuthorization(token: string) {

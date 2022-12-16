@@ -48,7 +48,7 @@ export default slice.reducer;
 export const bookApi = {
 	getAll: () => async () => {
 		try {
-			const response = await axios.get('/book');
+			const response = await axios.get('http://localhost:5000/book');
 			dispatch(slice.actions.getBooksSuccess(response.data.data));
 		} catch (error) {
 			dispatch(slice.actions.hasError(error));
