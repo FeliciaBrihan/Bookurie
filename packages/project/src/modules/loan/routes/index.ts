@@ -7,6 +7,7 @@ import { acceptLoan } from 'src/modules/loan/routes/acceptLoan';
 import { getLoansByUser } from 'src/modules/loan/routes/getLoansByUser';
 import { returnLoan } from 'src/modules/loan/routes/returnLoan';
 import { verifyToken } from 'src/modules/auth/routes/verifyToken';
+import { deleteLoan } from 'src/modules/loan/routes/delete';
 // import { checkAuthorization } from 'src/modules/auth/routes/checkAuthorization';
 
 const router = Router({ mergeParams: true });
@@ -14,6 +15,7 @@ const router = Router({ mergeParams: true });
 router.post('/', create);
 router.get('/', getAll);
 router.put('/:id', acceptLoan);
+router.delete('/:id', deleteLoan);
 router.get('/loans', <any>verifyToken, getLoansByUser);
 router.put('/loans/:id', <any>verifyToken, returnLoan);
 

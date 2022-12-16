@@ -68,3 +68,16 @@ export function create(id: number) {
 		}
 	};
 }
+
+export function deleteLoan(id: number, options: { sync?: boolean }) {
+	return async () => {
+		try {
+			const response = await axios.delete(`/loan/${id}`);
+			console.log(response);
+			if (options?.sync === true) loanApi.getAll()();
+		} catch (error) {
+			dispatch(slice.actions.hasError(error));
+			console.log(error);
+		}
+	};
+}

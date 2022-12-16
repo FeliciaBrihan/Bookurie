@@ -44,7 +44,7 @@ import {
 import LoanDetails from './LoanDetails';
 import LoanAccept from './LoanAccept';
 import { TGetLoan } from 'types/loan';
-import { loanApi } from 'store/slices/loan';
+import { loanApi, deleteLoan } from 'store/slices/loan';
 
 // table sort
 function descendingComparator(a: KeyedObject, b: KeyedObject, orderBy: string) {
@@ -116,7 +116,8 @@ const headCells: HeadCell[] = [
 
 interface OrderListEnhancedTableHeadProps extends EnhancedTableHeadProps {
 	theme: Theme;
-	selected: string[];
+	selected: number[];
+	deleteHandler: () => void;
 }
 
 function EnhancedTableHead({
@@ -128,6 +129,7 @@ function EnhancedTableHead({
 	onRequestSort,
 	theme,
 	selected,
+	deleteHandler,
 }: OrderListEnhancedTableHeadProps) {
 	const createSortHandler =
 		(property: string) => (event: React.SyntheticEvent<Element, Event>) => {
@@ -150,7 +152,10 @@ function EnhancedTableHead({
 				</TableCell>
 				{numSelected > 0 && (
 					<TableCell padding="none" colSpan={8}>
-						<EnhancedTableToolbar numSelected={selected.length} />
+						<EnhancedTableToolbar
+							numSelected={selected.length}
+							onDeleteClick={deleteHandler}
+						/>
 					</TableCell>
 				)}
 				{numSelected <= 0 &&
@@ -196,7 +201,10 @@ function EnhancedTableHead({
 
 // ==============================|| TABLE HEADER TOOLBAR ||============================== //
 
-const EnhancedTableToolbar = ({ numSelected }: EnhancedTableToolbarProps) => (
+const EnhancedTableToolbar = ({
+	numSelected,
+	onDeleteClick,
+}: EnhancedTableToolbarProps) => (
 	<Toolbar
 		sx={{
 			p: 0,
@@ -219,7 +227,7 @@ const EnhancedTableToolbar = ({ numSelected }: EnhancedTableToolbarProps) => (
 		<Box sx={{ flexGrow: 1 }} />
 		{numSelected > 0 && (
 			<Tooltip title="Delete">
-				<IconButton size="large">
+				<IconButton size="large" onClick={onDeleteClick}>
 					<DeleteIcon fontSize="small" />
 				</IconButton>
 			</Tooltip>
@@ -234,7 +242,7 @@ const LoanList = () => {
 	const dispatch = useDispatch();
 	const [order, setOrder] = React.useState<ArrangementOrder>('asc');
 	const [orderBy, setOrderBy] = React.useState<string>('id');
-	const [selected, setSelected] = React.useState<string[]>([]);
+	const [selected, setSelected] = React.useState<number[]>([]);
 	const [page, setPage] = React.useState<number>(0);
 	const [rowsPerPage, setRowsPerPage] = React.useState<number>(10);
 	const [search, setSearch] = React.useState<string>('');
@@ -299,7 +307,7 @@ const LoanList = () => {
 			if (selected.length > 0) {
 				setSelected([]);
 			} else {
-				const newSelectedId = rows.map((n) => String(n.id));
+				const newSelectedId = rows.map((n) => n.id);
 				setSelected(newSelectedId);
 			}
 			return;
@@ -309,13 +317,13 @@ const LoanList = () => {
 
 	const handleClick = (
 		event: React.MouseEvent<HTMLTableHeaderCellElement, MouseEvent>,
-		id: string
+		id: number
 	) => {
-		const selectedIndex = selected.indexOf(String(id));
-		let newSelected: string[] = [];
+		const selectedIndex = selected.indexOf(id);
+		let newSelected: number[] = [];
 
 		if (selectedIndex === -1) {
-			newSelected = newSelected.concat(selected, String(id));
+			newSelected = newSelected.concat(selected, id);
 		} else if (selectedIndex === 0) {
 			newSelected = newSelected.concat(selected.slice(1));
 		} else if (selectedIndex === selected.length - 1) {
@@ -361,8 +369,14 @@ const LoanList = () => {
 		setRowData(row);
 		setOpenEdit(true);
 	};
+	const handleDelete = (selectedItemsArray: number[]) => {
+		selectedItemsArray.forEach((item) => {
+			dispatch(deleteLoan(item, { sync: true }));
+			setSelected([]);
+		});
+	};
 
-	const isSelected = (name: string) => selected.indexOf(name) !== -1;
+	const isSelected = (id: number) => selected.indexOf(id) !== -1;
 	const emptyRows =
 		page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
 
@@ -405,6 +419,7 @@ const LoanList = () => {
 						rowCount={rows.length}
 						theme={theme}
 						selected={selected}
+						deleteHandler={() => handleDelete(selected)}
 					/>
 					<TableBody>
 						{stableSort(rows, getComparator(order, orderBy))
@@ -413,7 +428,7 @@ const LoanList = () => {
 								/** Make sure no display bugs if row isn't an OrderData object */
 								if (typeof row === 'number') return null;
 
-								const isItemSelected = isSelected(String(row.id));
+								const isItemSelected = isSelected(row.id);
 								const labelId = `enhanced-table-checkbox-${index}`;
 
 								return (
@@ -428,7 +443,7 @@ const LoanList = () => {
 										<TableCell
 											padding="checkbox"
 											sx={{ pl: 3 }}
-											onClick={(event) => handleClick(event, String(row.id))}
+											onClick={(event) => handleClick(event, row.id)}
 										>
 											<Checkbox
 												color="primary"
@@ -442,7 +457,7 @@ const LoanList = () => {
 											component="th"
 											id={labelId}
 											scope="row"
-											onClick={(event) => handleClick(event, String(row.id))}
+											onClick={(event) => handleClick(event, row.id)}
 											sx={{ cursor: 'pointer' }}
 										>
 											<Typography
