@@ -4,6 +4,7 @@ export interface TUserStateProps {
 	users: TGetUser[];
 	activeUsers: TGetUser[];
 	error: object | string | null;
+	loggedUser?: object;
 }
 
 export interface TSetUser {

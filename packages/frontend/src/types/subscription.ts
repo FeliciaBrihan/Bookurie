@@ -1,7 +1,7 @@
 export interface TSubscriptionStateProps {
 	subscriptions: TGetSubscription[];
 	error: object | string | null;
-	subscriptionId?: number;
+	subscription?: TGetSubscription;
 }
 
 export interface TSetSubscription {

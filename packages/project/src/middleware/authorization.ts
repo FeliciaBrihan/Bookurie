@@ -20,8 +20,7 @@ export async function authorization(
 			where: { email: firebaseUser.email },
 		});
 		if (user === null) {
-			console.log('check');
-			await User.create({
+			const newUser = await User.create({
 				email: firebaseUser.email,
 				firstName: firebaseUser.name.split(' ')[0],
 				lastName: firebaseUser.name.split(' ')[1],
@@ -32,6 +31,8 @@ export async function authorization(
 					+process.env.MAX_BUDGET
 				),
 			});
+			req.currentUser = newUser;
+			next();
 		}
 		req.currentUser = user;
 		next();

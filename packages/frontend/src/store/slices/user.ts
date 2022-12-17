@@ -2,7 +2,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 // project imports
-import axios from 'utils/live-axios';
+import axios from 'axios';
 import { dispatch } from '../index';
 
 // types
@@ -15,6 +15,7 @@ const initialState: DefaultRootStateProps['user'] = {
 	error: null,
 	users: [],
 	activeUsers: [],
+	loggedUser: undefined,
 };
 
 const slice = createSlice({
@@ -31,6 +32,9 @@ const slice = createSlice({
 
 		getActiveUsersSuccess(state, action) {
 			state.activeUsers = action.payload;
+		},
+		getLoggedUserSuccess(state, action) {
+			state.loggedUser = action.payload;
 		},
 	},
 });
@@ -86,6 +90,18 @@ export function deleteUser(id: number, options: { sync?: boolean }) {
 			const response = await axios.delete(`/user/${id}`);
 			console.log(response);
 			if (options?.sync === true) userApi.getAll({ status: 'all' })();
+		} catch (error) {
+			dispatch(slice.actions.hasError(error));
+			console.log(error);
+		}
+	};
+}
+
+export function getLoggedUser(response: any) {
+	return async () => {
+		try {
+			console.log('userApi', response);
+			dispatch(slice.actions.getLoggedUserSuccess(response));
 		} catch (error) {
 			dispatch(slice.actions.hasError(error));
 			console.log(error);

@@ -8,12 +8,15 @@ import 'firebase/compat/auth';
 // action - state management
 import { LOGIN, LOGOUT } from 'store/actions';
 import accountReducer from 'store/accountReducer';
+import { useDispatch } from 'store';
 
 // project imports
 import Loader from 'ui-component/Loader';
 import { FIREBASE_API } from 'config';
 import { FirebaseContextType, InitialLoginContextProps } from 'types/auth';
 import { getIdToken } from 'firebase/auth';
+import { getLoggedUser } from 'store/slices/user';
+import { getLoggedUserSubscription } from 'store/slices/subscription';
 import axios, { axiosSetAuthorization } from 'utils/live-axios';
 import { Snackbar, Alert } from '@mui/material';
 
@@ -38,8 +41,9 @@ export const FirebaseProvider = ({
 }: {
 	children: React.ReactElement;
 }) => {
-	const [state, dispatch] = useReducer(accountReducer, initialState);
+	const [state, setState] = useReducer(accountReducer, initialState);
 	const [open, setOpen] = React.useState(false);
+	const dispatch = useDispatch();
 
 	useEffect(
 		() =>
@@ -55,10 +59,10 @@ export const FirebaseProvider = ({
 								headers: { authorization: token },
 							}
 						);
-						console.log('response', response.data.loggedUser);
+						console.log('response', response.data);
 						localStorage.setItem('email', user?.email!);
 						axiosSetAuthorization(token);
-						dispatch({
+						setState({
 							type: LOGIN,
 							payload: {
 								isLoggedIn: true,
@@ -69,21 +73,22 @@ export const FirebaseProvider = ({
 								},
 							},
 						});
-						console.log('context');
+						dispatch(getLoggedUser(response.data.loggedUser));
+						dispatch(getLoggedUserSubscription(response.data.subscription));
 					} catch (error) {
-						dispatch({
+						setState({
 							type: LOGOUT,
 						});
 						setOpen(true);
 					}
 				} else {
-					dispatch({
+					setState({
 						type: LOGOUT,
 					});
 					localStorage.removeItem('email');
 				}
 			}),
-		[dispatch]
+		[setState]
 	);
 
 	firebase.auth().onIdTokenChanged(async (user) => {
