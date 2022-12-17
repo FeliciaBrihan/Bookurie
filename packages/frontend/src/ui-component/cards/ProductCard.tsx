@@ -41,6 +41,10 @@ const ProductCard = ({
 	const prodProfile = image && prodImage(`./${image}`);
 	// const [productRating] = useState<number | undefined>(rating);
 	const cart = useSelector((state) => state.cart);
+	const { subscription } = useSelector((state) => state.subscription);
+	const discount = subscription?.everyBookDiscount
+		? subscription?.everyBookDiscount / 100
+		: 0;
 
 	const addCart = () => {
 		dispatch(
@@ -131,9 +135,31 @@ const ProductCard = ({
 									alignItems="center"
 								>
 									<Grid container spacing={1}>
-										<Grid item>
-											<Typography variant="h4">{price} RON</Typography>
-										</Grid>
+										{subscription && (
+											<Grid>
+												<Grid item>
+													<Typography variant="h4">
+														{price! - price! * discount} RON
+													</Typography>
+												</Grid>
+												<Grid item>
+													<Typography
+														variant="h6"
+														sx={{
+															color: 'grey.500',
+															textDecoration: 'line-through',
+														}}
+													>
+														{price} RON
+													</Typography>
+												</Grid>
+											</Grid>
+										)}
+										{!subscription && (
+											<Grid item>
+												<Typography variant="h4">{price} RON</Typography>
+											</Grid>
+										)}
 										<Grid item>
 											<Typography variant="h6" sx={{ color: 'grey.500' }}>
 												{typeFormat}

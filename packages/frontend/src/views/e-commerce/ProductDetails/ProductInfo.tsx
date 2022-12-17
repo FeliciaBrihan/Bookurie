@@ -90,6 +90,8 @@ const ProductInfo = ({ product }: { product: TGetBook }) => {
 	};
 
 	const cart = useSelector((state) => state.cart);
+	const { subscription } = useSelector((state) => state.subscription);
+	const discount = subscription ? subscription.everyBookDiscount / 100 : 0;
 
 	const formik = useFormik({
 		enableReinitialize: true,
@@ -98,7 +100,9 @@ const ProductInfo = ({ product }: { product: TGetBook }) => {
 			title: product.title,
 			author: product.author,
 			image: product.coverImage,
-			price: product.price,
+			price: subscription
+				? product.price - product.price * discount
+				: product.price,
 			stock: product.stock,
 			quantity: 1,
 		},
@@ -185,11 +189,23 @@ const ProductInfo = ({ product }: { product: TGetBook }) => {
 			</Grid>
 			<Grid item xs={12}></Grid>
 			<Grid item xs={12}>
-				<Stack direction="row" alignItems="center" spacing={1}>
-					<Typography variant="h2" color="primary">
-						{product.price} RON
-					</Typography>
-				</Stack>
+				{subscription && (
+					<Stack direction="row" alignItems="center" spacing={1}>
+						<Typography variant="h2" color="primary">
+							{product.price - product.price * discount} RON
+						</Typography>
+						<Typography variant="body1" sx={{ textDecoration: 'line-through' }}>
+							{product.price} RON
+						</Typography>
+					</Stack>
+				)}
+				{!subscription && (
+					<Stack direction="row" alignItems="center" spacing={1}>
+						<Typography variant="h2" color="primary">
+							{product.price} RON
+						</Typography>
+					</Stack>
+				)}
 			</Grid>
 			<Grid item xs={12}>
 				<Divider />
