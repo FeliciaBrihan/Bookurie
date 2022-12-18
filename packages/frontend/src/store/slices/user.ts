@@ -2,7 +2,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 // project imports
-import axios from 'axios';
+import axios from 'utils/live-axios';
 import { dispatch } from '../index';
 
 // types
@@ -30,9 +30,6 @@ const slice = createSlice({
 			state.users = action.payload;
 		},
 
-		getActiveUsersSuccess(state, action) {
-			state.activeUsers = action.payload;
-		},
 		getLoggedUserSuccess(state, action) {
 			state.loggedUser = action.payload;
 		},
@@ -43,17 +40,13 @@ const slice = createSlice({
 export default slice.reducer;
 
 // ----------------------------------------------------------------------
-interface ReqQuery {
-	status: 'all' | 'active';
-}
 
 export const userApi = {
-	getAll: (query: ReqQuery) => async () => {
+	getAll: () => async () => {
 		try {
 			const response = await axios.get('/user');
-			if (query.status === 'all')
-				dispatch(slice.actions.getUsersSuccess(response.data.data));
-			else dispatch(slice.actions.getActiveUsersSuccess(response.data.data));
+			dispatch(slice.actions.getUsersSuccess(response.data.data));
+			console.log(response);
 		} catch (error) {
 			dispatch(slice.actions.hasError(error));
 		}
@@ -62,7 +55,7 @@ export const userApi = {
 		return async (data: TSetUser, options: { sync?: boolean }) => {
 			try {
 				const response = await axios.post(`/user`, data);
-				if (options?.sync === true) this.getAll({ status: 'all' })();
+				if (options?.sync === true) this.getAll()();
 
 				return response.data;
 			} catch (error) {
@@ -76,7 +69,7 @@ export const userApi = {
 		return async (id: number, data: TSetUser, options: { sync?: boolean }) => {
 			try {
 				await axios.put(`/user/${id}`, data);
-				if (options?.sync === true) this.getAll({ status: 'all' })();
+				if (options?.sync === true) this.getAll()();
 			} catch (error) {
 				if (options?.sync === true) dispatch(slice.actions.hasError(error));
 			}
@@ -89,7 +82,7 @@ export function deleteUser(id: number, options: { sync?: boolean }) {
 		try {
 			const response = await axios.delete(`/user/${id}`);
 			console.log(response);
-			if (options?.sync === true) userApi.getAll({ status: 'all' })();
+			if (options?.sync === true) userApi.getAll()();
 		} catch (error) {
 			dispatch(slice.actions.hasError(error));
 			console.log(error);

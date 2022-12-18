@@ -258,7 +258,7 @@ const UserList = () => {
 	const { users } = useSelector((state) => state.user);
 
 	React.useEffect(() => {
-		dispatch(userApi.getAll({ status: 'all' }));
+		dispatch(userApi.getAll());
 	}, [dispatch]);
 	React.useEffect(() => {
 		setRows(users);
