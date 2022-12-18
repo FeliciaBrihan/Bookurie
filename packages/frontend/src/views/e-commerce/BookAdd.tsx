@@ -1,15 +1,12 @@
 import { forwardRef, useEffect, useRef, useState } from 'react';
 
 // material-ui
-import { useTheme, styled } from '@mui/material/styles';
 import {
 	Button,
-	CircularProgress,
 	Dialog,
 	DialogActions,
 	DialogContent,
 	DialogTitle,
-	Fab,
 	Grid,
 	InputLabel,
 	MenuItem,
@@ -24,28 +21,9 @@ import { gridSpacing } from 'store/constant';
 import AnimateButton from 'ui-component/extended/AnimateButton';
 
 // assets
-import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-import CloseIcon from '@mui/icons-material/Close';
 import { bookApi } from 'store/slices/book';
 import { TSetBook } from 'types/book';
-
-// styles
-const ImageWrapper = styled('div')(({ theme }) => ({
-	position: 'relative',
-	overflow: 'hidden',
-	borderRadius: '4px',
-	cursor: 'pointer',
-	width: 55,
-	height: 55,
-	display: 'flex',
-	alignItems: 'center',
-	justifyContent: 'center',
-	background: theme.palette.background.default,
-	'& > svg': {
-		verticalAlign: 'sub',
-		marginRight: 6,
-	},
-}));
+import axios from 'axios';
 
 // book type options
 const types = [
@@ -87,7 +65,7 @@ const defaultValue = {
 
 const BookAdd = ({ open, handleCloseDialog }: ProductAddProps) => {
 	const [formValue, setFormValue] = useState<TSetBook>(defaultValue);
-	const theme = useTheme();
+	const [file, setFile] = useState<File | undefined>();
 
 	// handle category change dropdown
 	const [typeFormat, setTypeFormat] = useState('printed');
@@ -127,7 +105,40 @@ const BookAdd = ({ open, handleCloseDialog }: ProductAddProps) => {
 			[event?.target.id]: event?.target.value,
 		});
 	};
+
+	const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+		console.log('name', event.target.files![0].name);
+		setFormValue({
+			...formValue,
+			coverImage: event.target.files![0].name,
+		});
+		setFile(event.target.files![0]);
+	};
+
+	const uploadFile = async () => {
+		const formData: any = new FormData();
+		console.log('file', file);
+		console.log('formData1', formData);
+		formData.append('file', file);
+		console.log('formData2', formData);
+
+		try {
+			const result = await axios.post(
+				'http://localhost:5000/upload',
+				formData,
+				{
+					headers: { 'Content-Type': 'multipart/form-data' },
+				}
+			);
+			console.log('formData3', formData);
+			console.log(result.data);
+		} catch (err) {
+			console.log(err);
+		}
+	};
+
 	const handleSave = async () => {
+		await uploadFile();
 		await bookApi.create(
 			{
 				title: formValue.title,
@@ -269,75 +280,22 @@ const BookAdd = ({ open, handleCloseDialog }: ProductAddProps) => {
 								/>
 							</Grid>
 							<Grid item xs={12}>
-								<TextField
-									id="coverImage"
-									fullWidth
-									label="Enter Book Image Name"
-									onChange={handleValueChange}
-								/>
-							</Grid>
-							<Grid item xs={12}>
 								<Grid container spacing={1}>
 									<Grid item xs={12}>
 										<Typography variant="subtitle1" align="left">
-											Product Images*
+											Book Image
 										</Typography>
 									</Grid>
 									<Grid item xs={12}>
 										<div>
-											<TextField
-												type="file"
-												id="file-upload"
-												fullWidth
-												label="Enter SKU"
-												sx={{ display: 'none' }}
-											/>
-											<InputLabel
-												htmlFor="file-upload"
-												sx={{
-													background: theme.palette.background.default,
-													py: 3.75,
-													px: 0,
-													textAlign: 'center',
-													borderRadius: '4px',
-													cursor: 'pointer',
-													mb: 3,
-													'& > svg': {
-														verticalAlign: 'sub',
-														mr: 0.5,
-													},
-												}}
-											>
-												<CloudUploadIcon /> Drop file here to upload
+											<InputLabel>
+												<input
+													id="coverImage"
+													type="file"
+													onChange={handleImageUpload}
+												/>
 											</InputLabel>
 										</div>
-										<Grid container spacing={1}>
-											<Grid item>
-												<ImageWrapper>
-													<CircularProgress
-														variant="determinate"
-														value={progress}
-														color="secondary"
-														sx={{
-															position: 'absolute',
-															left: '0',
-															top: '0',
-															background: 'rgba(255, 255, 255, .8)',
-															width: '100% !important',
-															height: '100% !important',
-															p: 1.5,
-														}}
-													/>
-												</ImageWrapper>
-											</Grid>
-											<Grid item>
-												<ImageWrapper>
-													<Fab color="secondary" size="small">
-														<CloseIcon />
-													</Fab>
-												</ImageWrapper>
-											</Grid>
-										</Grid>
 									</Grid>
 								</Grid>
 							</Grid>

@@ -5,6 +5,7 @@ import { createServer } from 'http';
 import express, { json, Response, Request } from 'express';
 import swaggerUi from 'swagger-ui-express';
 import cors from 'cors';
+import multer from 'multer';
 
 import {
 	initDatabase,
@@ -37,6 +38,25 @@ export default async function server() {
 	});
 
 	app.use(json());
+
+	const storageEngine = multer.diskStorage({
+		destination: (req, file, cb) => {
+			cb(null, '../frontend/src/assets/images/e-commerce');
+		},
+		filename: (req, file, cb) => {
+			cb(null, file.originalname);
+		},
+	});
+
+	const upload = multer({ storage: storageEngine });
+
+	app.post('/upload', upload.single('file'), (req, res) => {
+		if (req.file) {
+			res.send({ 'File uploaded successfully': req.file });
+		} else {
+			res.status(400).send('Please upload a valid image');
+		}
+	});
 
 	await initDatabase();
 	// initDatabaseMigration();

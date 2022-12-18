@@ -202,7 +202,7 @@ const BookEdit = ({ handleCloseDialog, data }: ProductAddProps) => {
 					</Grid>
 					<Grid item xs={12}>
 						<TextField
-							id="image"
+							id="coverImage"
 							required
 							fullWidth
 							defaultValue={formValue.coverImage}
