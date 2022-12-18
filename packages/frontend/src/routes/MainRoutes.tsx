@@ -25,7 +25,10 @@ const PermissionList = Loadable(
 );
 const RaffleList = Loadable(lazy(() => import('views/raffle/RaffleList')));
 const PrizeList = Loadable(lazy(() => import('views/prize')));
-const SubscriptionList = Loadable(lazy(() => import('views/subscription/SubscriptionList')));
+const SubscriptionList = Loadable(
+	lazy(() => import('views/subscription/SubscriptionList'))
+);
+const Account = Loadable(lazy(() => import('views/account')));
 
 // ==============================|| MAIN ROUTING ||============================== //
 
@@ -88,6 +91,10 @@ const MainRoutes = {
 		{
 			path: '/subscriptions',
 			element: <SubscriptionList />,
+		},
+		{
+			path: '/account',
+			element: <Account />,
 		},
 	],
 };

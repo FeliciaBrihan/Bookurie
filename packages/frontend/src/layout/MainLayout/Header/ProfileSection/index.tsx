@@ -12,12 +12,10 @@ import {
 	ClickAwayListener,
 	Divider,
 	Grid,
-	InputAdornment,
 	List,
 	ListItemButton,
 	ListItemIcon,
 	ListItemText,
-	OutlinedInput,
 	Paper,
 	Popper,
 	Stack,
@@ -32,12 +30,11 @@ import PerfectScrollbar from 'react-perfect-scrollbar';
 // project imports
 import MainCard from 'ui-component/cards/MainCard';
 import Transitions from 'ui-component/extended/Transitions';
-import UpgradePlanCard from './UpgradePlanCard';
 import useAuth from 'hooks/useAuth';
-import User1 from 'assets/images/users/user-round.svg';
+import User1 from 'assets/images/users/User1.png';
 
 // assets
-import { IconLogout, IconSearch, IconSettings, IconUser } from '@tabler/icons';
+import { IconLogout, IconSettings } from '@tabler/icons';
 import useConfig from 'hooks/useConfig';
 
 // ==============================|| PROFILE MENU ||============================== //
@@ -48,7 +45,6 @@ const ProfileSection = () => {
 	const navigate = useNavigate();
 
 	const [sdm, setSdm] = useState(true);
-	const [value, setValue] = useState('');
 	const [notification, setNotification] = useState(false);
 	const [selectedIndex, setSelectedIndex] = useState(-1);
 	const { logout, user } = useAuth();
@@ -203,26 +199,6 @@ const ProfileSection = () => {
 													Project Admin
 												</Typography>
 											</Stack>
-											<OutlinedInput
-												sx={{ width: '100%', pr: 1, pl: 2, my: 2 }}
-												id="input-search-profile"
-												value={value}
-												onChange={(e) => setValue(e.target.value)}
-												placeholder="Search profile options"
-												startAdornment={
-													<InputAdornment position="start">
-														<IconSearch
-															stroke={1.5}
-															size="16px"
-															color={theme.palette.grey[500]}
-														/>
-													</InputAdornment>
-												}
-												aria-describedby="search-helper-text"
-												inputProps={{
-													'aria-label': 'weight',
-												}}
-											/>
 											<Divider />
 										</Box>
 										<PerfectScrollbar
@@ -233,7 +209,7 @@ const ProfileSection = () => {
 											}}
 										>
 											<Box sx={{ p: 2, pt: 0 }}>
-												<UpgradePlanCard />
+												<></>
 												<Divider />
 												<Card
 													sx={{
@@ -318,13 +294,7 @@ const ProfileSection = () => {
 														selected={selectedIndex === 0}
 														onClick={(
 															event: React.MouseEvent<HTMLDivElement>
-														) =>
-															handleListItemClick(
-																event,
-																0,
-																'/user/account-profile/profile1'
-															)
-														}
+														) => handleListItemClick(event, 0, '/account')}
 													>
 														<ListItemIcon>
 															<IconSettings stroke={1.5} size="20px" />
@@ -332,56 +302,12 @@ const ProfileSection = () => {
 														<ListItemText
 															primary={
 																<Typography variant="body2">
-																	<FormattedMessage id="account-settings" />
+																	<FormattedMessage id="my-account" />
 																</Typography>
 															}
 														/>
 													</ListItemButton>
-													<ListItemButton
-														sx={{ borderRadius: `${borderRadius}px` }}
-														selected={selectedIndex === 1}
-														onClick={(
-															event: React.MouseEvent<HTMLDivElement>
-														) =>
-															handleListItemClick(
-																event,
-																1,
-																'/user/social-profile/posts'
-															)
-														}
-													>
-														<ListItemIcon>
-															<IconUser stroke={1.5} size="20px" />
-														</ListItemIcon>
-														<ListItemText
-															primary={
-																<Grid
-																	container
-																	spacing={1}
-																	justifyContent="space-between"
-																>
-																	<Grid item>
-																		<Typography variant="body2">
-																			<FormattedMessage id="social-profile" />
-																		</Typography>
-																	</Grid>
-																	<Grid item>
-																		<Chip
-																			label="02"
-																			size="small"
-																			sx={{
-																				bgcolor:
-																					theme.palette.mode === 'dark'
-																						? theme.palette.dark.dark
-																						: theme.palette.warning.dark,
-																				color: theme.palette.background.default,
-																			}}
-																		/>
-																	</Grid>
-																</Grid>
-															}
-														/>
-													</ListItemButton>
+
 													<ListItemButton
 														sx={{ borderRadius: `${borderRadius}px` }}
 														selected={selectedIndex === 4}
