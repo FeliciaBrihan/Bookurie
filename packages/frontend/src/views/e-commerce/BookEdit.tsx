@@ -22,6 +22,7 @@ import AnimateButton from 'ui-component/extended/AnimateButton';
 // assets
 import { TGetBook, TSetBook } from 'types/book';
 import { bookApi } from 'store/slices/book';
+import axios from 'axios';
 
 interface ProductAddProps {
 	handleCloseDialog: (e?: any) => void;
@@ -45,6 +46,8 @@ const type = [
 
 const BookEdit = ({ handleCloseDialog, data }: ProductAddProps) => {
 	const [currentType, setCurrentType] = useState(data.typeFormat);
+	const [file, setFile] = useState<File | undefined>();
+
 	const defaultValue = {
 		title: data.title,
 		author: data.author,
@@ -72,7 +75,34 @@ const BookEdit = ({ handleCloseDialog, data }: ProductAddProps) => {
 		setCurrentType(event.target.value);
 	};
 
+	const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+		setFormValue({
+			...formValue,
+			coverImage: event.target.files![0].name,
+		});
+		setFile(event.target.files![0]);
+	};
+
+	const uploadFile = async () => {
+		const formData: any = new FormData();
+		formData.append('file', file);
+
+		try {
+			const result = await axios.post(
+				'http://localhost:5000/upload',
+				formData,
+				{
+					headers: { 'Content-Type': 'multipart/form-data' },
+				}
+			);
+			console.log(result.data);
+		} catch (err) {
+			console.log(err);
+		}
+	};
+
 	const handleUpdate = async () => {
+		await uploadFile();
 		await bookApi.update(
 			data.id,
 			{
@@ -202,13 +232,11 @@ const BookEdit = ({ handleCloseDialog, data }: ProductAddProps) => {
 					</Grid>
 					<Grid item xs={12}>
 						<TextField
-							id="coverImage"
-							required
 							fullWidth
 							defaultValue={formValue.coverImage}
-							label="Enter Book Image Name"
-							onChange={handleValueChange}
+							label="Book Image Name"
 						/>
+						<input id="coverImage" type="file" onChange={handleImageUpload} />
 					</Grid>
 				</Grid>
 			</DialogContent>

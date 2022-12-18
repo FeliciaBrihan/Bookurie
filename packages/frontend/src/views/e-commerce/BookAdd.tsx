@@ -117,10 +117,7 @@ const BookAdd = ({ open, handleCloseDialog }: ProductAddProps) => {
 
 	const uploadFile = async () => {
 		const formData: any = new FormData();
-		console.log('file', file);
-		console.log('formData1', formData);
 		formData.append('file', file);
-		console.log('formData2', formData);
 
 		try {
 			const result = await axios.post(
@@ -130,7 +127,6 @@ const BookAdd = ({ open, handleCloseDialog }: ProductAddProps) => {
 					headers: { 'Content-Type': 'multipart/form-data' },
 				}
 			);
-			console.log('formData3', formData);
 			console.log(result.data);
 		} catch (err) {
 			console.log(err);
