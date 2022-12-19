@@ -8,6 +8,7 @@ import { dispatch } from '../index';
 // types
 import { DefaultRootStateProps } from 'types';
 import { TGetSubscription, TSetSubscription } from 'types/subscription';
+import { getLoggedUser } from './user';
 
 // ----------------------------------------------------------------------
 
@@ -95,7 +96,10 @@ export function subscribe(id: number) {
 	return async () => {
 		try {
 			const response = await axios.put(`/subscription/${id}/subscribe`);
-				console.log(response);
+			console.log(response);
+			const res = await axios.get('http://localhost:5000/user/allowed');
+			dispatch(getLoggedUser(res.data.loggedUser));
+			dispatch(getLoggedUserSubscription(res.data.subscription));
 		} catch (error) {
 			dispatch(slice.actions.hasError(error));
 			console.log(error);
