@@ -7,6 +7,8 @@ import { dispatch } from '../index';
 
 // types
 import { DefaultRootStateProps } from 'types';
+import { getLoggedUser } from './user';
+import { getLoggedUserSubscription } from './subscription';
 
 // ----------------------------------------------------------------------
 
@@ -49,6 +51,9 @@ export function create(id: number) {
 	return async () => {
 		try {
 			await axios.post(`/book/${id}/purchase`);
+			const res = await axios.get('http://localhost:5000/user/allowed');
+			dispatch(getLoggedUser(res.data.loggedUser));
+			dispatch(getLoggedUserSubscription(res.data.loggedUser));
 		} catch (error) {
 			dispatch(slice.actions.hasError(error));
 			console.log(error);

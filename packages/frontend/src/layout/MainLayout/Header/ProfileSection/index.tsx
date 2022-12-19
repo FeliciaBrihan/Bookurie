@@ -302,7 +302,7 @@ const ProfileSection = () => {
 														<ListItemText
 															primary={
 																<Typography variant="body2">
-																	<FormattedMessage id="my-account" />
+																	<FormattedMessage id="account-settings" />
 																</Typography>
 															}
 														/>
