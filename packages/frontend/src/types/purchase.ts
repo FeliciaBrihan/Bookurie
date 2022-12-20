@@ -1,6 +1,7 @@
 export interface TPurchaseStateProps {
 	purchases: TGetPurchase[];
 	error: object | string | null;
+	userPurchases: TGetPurchase[];
 }
 
 export interface TSetPurchase {

@@ -15,6 +15,7 @@ import { getLoggedUserSubscription } from './subscription';
 const initialState: DefaultRootStateProps['purchase'] = {
 	error: null,
 	purchases: [],
+	userPurchases: [],
 };
 
 const slice = createSlice({
@@ -27,6 +28,9 @@ const slice = createSlice({
 
 		getPurchasesSuccess(state, action) {
 			state.purchases = action.payload;
+		},
+		getUserPurchasesSuccess(state, action) {
+			state.userPurchases = action.payload;
 		},
 	},
 });
@@ -54,6 +58,19 @@ export function create(id: number) {
 			const res = await axios.get('http://localhost:5000/user/allowed');
 			dispatch(getLoggedUser(res.data.loggedUser));
 			dispatch(getLoggedUserSubscription(res.data.loggedUser));
+		} catch (error) {
+			dispatch(slice.actions.hasError(error));
+			console.log(error);
+		}
+	};
+}
+
+export function getUserPurchases() {
+	return async () => {
+		try {
+			const response = await axios.get(`/purchase`);
+			dispatch(slice.actions.getUserPurchasesSuccess(response.data.data));
+			console.log(response);
 		} catch (error) {
 			dispatch(slice.actions.hasError(error));
 			console.log(error);

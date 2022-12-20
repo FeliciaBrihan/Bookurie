@@ -8,7 +8,7 @@ import { Box, Grid, Tab, Tabs } from '@mui/material';
 // project imports
 import Profile from './Profile';
 import AccountLoans from './AccountLoans';
-import MyAccount from './MyAccount';
+import AccountPurchases from './AccountPurchases';
 import ChangePassword from './ChangePassword';
 import MainCard from 'ui-component/cards/MainCard';
 import { gridSpacing } from 'store/constant';
@@ -129,7 +129,7 @@ const Profile1 = () => {
 						<AccountLoans />
 					</TabPanel>
 					<TabPanel value={value} index={2}>
-						<MyAccount />
+						<AccountPurchases />
 					</TabPanel>
 					<TabPanel value={value} index={3}>
 						<ChangePassword />
