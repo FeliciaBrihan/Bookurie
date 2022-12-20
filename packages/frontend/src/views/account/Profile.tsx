@@ -157,7 +157,7 @@ const Profile = () => {
 										{subscription?.monthlyFreeBooks}
 									</Typography>
 									<Typography align="center" variant="subtitle2">
-										Online Books Left
+										Free Online Books
 									</Typography>
 								</Grid>
 							</Grid>

@@ -16,7 +16,7 @@ router.post('/', create);
 router.get('/', getAll);
 router.put('/:id', acceptLoan);
 router.delete('/:id', deleteLoan);
-router.get('/loans', <any>verifyToken, getLoansByUser);
+router.get('/loans', getLoansByUser);
 router.put('/loans/:id', <any>verifyToken, returnLoan);
 
 export const routes = router;

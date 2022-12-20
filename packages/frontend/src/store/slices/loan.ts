@@ -14,6 +14,7 @@ import { TSetLoan } from 'types/loan';
 const initialState: DefaultRootStateProps['loan'] = {
 	error: null,
 	loans: [],
+	userLoans: [],
 };
 
 const slice = createSlice({
@@ -26,6 +27,9 @@ const slice = createSlice({
 
 		getLoansSuccess(state, action) {
 			state.loans = action.payload;
+		},
+		getUserLoansSuccess(state, action) {
+			state.userLoans = action.payload;
 		},
 	},
 });
@@ -61,6 +65,7 @@ export function create(id: number) {
 	return async () => {
 		try {
 			const response = await axios.post(`/book/${id}/loan`);
+
 			console.log(response);
 		} catch (error) {
 			dispatch(slice.actions.hasError(error));
@@ -75,6 +80,18 @@ export function deleteLoan(id: number, options: { sync?: boolean }) {
 			const response = await axios.delete(`/loan/${id}`);
 			console.log(response);
 			if (options?.sync === true) loanApi.getAll()();
+		} catch (error) {
+			dispatch(slice.actions.hasError(error));
+			console.log(error);
+		}
+	};
+}
+export function getUserLoans() {
+	return async () => {
+		try {
+			const response = await axios.get(`loan/loans`);
+			dispatch(slice.actions.getUserLoansSuccess(response.data.data));
+			console.log(response);
 		} catch (error) {
 			dispatch(slice.actions.hasError(error));
 			console.log(error);

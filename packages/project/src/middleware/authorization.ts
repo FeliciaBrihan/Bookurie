@@ -4,7 +4,10 @@ import { auth, sequelize } from 'src/global';
 import { generateUserBudget } from 'src/modules/user/functions';
 
 export async function authorization(
-	req: Request<{}, {}, {}, {}> & { currentUser?: ModelUser },
+	req: Request<{}, {}, {}, {}> & {
+		currentUser?: ModelUser;
+		currentUserId?: number;
+	},
 	res: Response,
 	next: NextFunction
 ) {
@@ -32,9 +35,11 @@ export async function authorization(
 				),
 			});
 			req.currentUser = newUser;
+			req.currentUserId = newUser.id;
 			next();
 		}
 		req.currentUser = user;
+		req.currentUserId = user.id;
 		next();
 	} catch (error) {
 		next();

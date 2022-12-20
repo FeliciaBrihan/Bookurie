@@ -1,6 +1,7 @@
 export interface TLoanStateProps {
 	loans: TGetLoan[];
 	error: object | string | null;
+	userLoans: TGetLoan[];
 }
 
 export interface TSetLoan {

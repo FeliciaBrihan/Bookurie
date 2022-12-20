@@ -7,19 +7,17 @@ import { Box, Grid, Tab, Tabs } from '@mui/material';
 
 // project imports
 import Profile from './Profile';
-import PersonalAccount from './PersonalAccount';
+import AccountLoans from './AccountLoans';
 import MyAccount from './MyAccount';
 import ChangePassword from './ChangePassword';
-import Settings from './Settings';
 import MainCard from 'ui-component/cards/MainCard';
 import { gridSpacing } from 'store/constant';
 
 // assets
 import AccountCircleTwoToneIcon from '@mui/icons-material/AccountCircleTwoTone';
-import DescriptionTwoToneIcon from '@mui/icons-material/DescriptionTwoTone';
-import LibraryBooksTwoToneIcon from '@mui/icons-material/LibraryBooksTwoTone';
-import LockTwoToneIcon from '@mui/icons-material/LockTwoTone';
-import MailTwoToneIcon from '@mui/icons-material/MailTwoTone';
+import CardGiftcardIcon from '@mui/icons-material/CardGiftcard';
+import AssignmentIcon from '@mui/icons-material/Assignment';
+import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
 
 // types
 import { TabsProps } from 'types';
@@ -54,19 +52,15 @@ const tabsOption = [
 	},
 	{
 		label: 'Loans',
-		icon: <DescriptionTwoToneIcon sx={{ fontSize: '1.3rem' }} />,
+		icon: <AssignmentIcon sx={{ fontSize: '1.3rem' }} />,
 	},
 	{
 		label: 'Purchases',
-		icon: <LibraryBooksTwoToneIcon sx={{ fontSize: '1.3rem' }} />,
+		icon: <ShoppingBagIcon sx={{ fontSize: '1.3rem' }} />,
 	},
 	{
 		label: 'Prizes won',
-		icon: <LockTwoToneIcon sx={{ fontSize: '1.3rem' }} />,
-	},
-	{
-		label: 'Settings',
-		icon: <MailTwoToneIcon sx={{ fontSize: '1.3rem' }} />,
+		icon: <CardGiftcardIcon sx={{ fontSize: '1.3rem' }} />,
 	},
 ];
 
@@ -132,16 +126,13 @@ const Profile1 = () => {
 						<Profile />
 					</TabPanel>
 					<TabPanel value={value} index={1}>
-						<PersonalAccount />
+						<AccountLoans />
 					</TabPanel>
 					<TabPanel value={value} index={2}>
 						<MyAccount />
 					</TabPanel>
 					<TabPanel value={value} index={3}>
 						<ChangePassword />
-					</TabPanel>
-					<TabPanel value={value} index={4}>
-						<Settings />
 					</TabPanel>
 				</Grid>
 			</Grid>
