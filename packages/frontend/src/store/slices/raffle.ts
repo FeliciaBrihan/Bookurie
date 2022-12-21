@@ -13,6 +13,7 @@ import { DefaultRootStateProps } from 'types';
 const initialState: DefaultRootStateProps['raffle'] = {
 	error: null,
 	raffles: [],
+	userRaffles: [],
 };
 
 const slice = createSlice({
@@ -25,6 +26,9 @@ const slice = createSlice({
 
 		getRafflesSuccess(state, action) {
 			state.raffles = action.payload;
+		},
+		getUserRaffles(state, action) {
+			state.userRaffles = action.payload;
 		},
 	},
 });
@@ -51,6 +55,18 @@ export function deleteRaffle(id: number, options: { sync?: boolean }) {
 			const response = await axios.delete(`/raffle/${id}`);
 			console.log(response);
 			if (options?.sync === true) raffleApi.getAll()();
+		} catch (error) {
+			dispatch(slice.actions.hasError(error));
+			console.log(error);
+		}
+	};
+}
+export function getUserRaffles() {
+	return async () => {
+		try {
+			const response = await axios.get(`/raffle/won`);
+			dispatch(slice.actions.getUserRaffles(response.data.data));
+			console.log(response);
 		} catch (error) {
 			dispatch(slice.actions.hasError(error));
 			console.log(error);

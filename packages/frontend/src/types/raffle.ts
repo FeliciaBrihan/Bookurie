@@ -1,6 +1,7 @@
 export interface TRaffleStateProps {
 	raffles: TGetRaffle[];
 	error: object | string | null;
+	userRaffles: TGetRaffle[];
 }
 
 export interface TGetRaffle {
