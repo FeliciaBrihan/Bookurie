@@ -49,6 +49,7 @@ import UserDetails from './UserDetails';
 import UserEdit from './UserEdit';
 import { userApi, deleteUser } from 'store/slices/user';
 import { TGetUser } from 'types/user';
+import { roleApi } from 'store/slices/role';
 
 // table sort
 function descendingComparator(a: KeyedObject, b: KeyedObject, orderBy: string) {
@@ -111,7 +112,7 @@ const headCells: HeadCell[] = [
 	{
 		id: 'roleId',
 		numeric: true,
-		label: 'Role ID',
+		label: 'Role',
 		align: 'left',
 	},
 ];
@@ -256,10 +257,16 @@ const UserList = () => {
 	const [openDetails, setOpenDetails] = React.useState(false);
 	const [openEdit, setOpenEdit] = React.useState(false);
 	const { users } = useSelector((state) => state.user);
+	const { roles } = useSelector((state) => state.role);
 
 	React.useEffect(() => {
 		dispatch(userApi.getAll());
 	}, [dispatch]);
+
+	React.useEffect(() => {
+		dispatch(roleApi.getAll());
+	}, [dispatch]);
+
 	React.useEffect(() => {
 		setRows(users);
 	}, [users]);
@@ -394,6 +401,9 @@ const UserList = () => {
 			dispatch(deleteUser(item, { sync: true }));
 			setSelected([]);
 		});
+	};
+	const getRoleName = (id: number) => {
+		return roles.filter((role) => role.id === id)[0].name;
 	};
 
 	const isSelected = (id: number) => selected.indexOf(id) !== -1;
@@ -533,14 +543,7 @@ const UserList = () => {
 										<TableCell>{row.lastName}</TableCell>
 										<TableCell>{row.email}</TableCell>
 										{/* <TableCell>{row.MRole?.name || '––'}</TableCell> */}
-										<TableCell>{row.roleId}</TableCell>
-										{/* <TableCell>
-											<Chip
-												// label={row.active ? 'active' : 'inactive'}
-												size="small"
-												// chipcolor={row.active ? 'success' : 'error'}
-											/>
-										</TableCell> */}
+										<TableCell>{getRoleName(row.roleId)}</TableCell>
 										<TableCell sx={{ pr: 3 }} align="center">
 											<IconButton
 												color="primary"
