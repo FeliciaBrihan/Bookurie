@@ -100,9 +100,7 @@ const ProductInfo = ({ product }: { product: TGetBook }) => {
 			title: product.title,
 			author: product.author,
 			image: product.coverImage,
-			price: subscription
-				? product.price - product.price * discount
-				: product.price,
+			price: product.price,
 			stock: product.stock,
 			quantity: 1,
 		},

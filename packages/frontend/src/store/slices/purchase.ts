@@ -55,9 +55,9 @@ export function create(id: number) {
 	return async () => {
 		try {
 			await axios.post(`/book/${id}/purchase`);
-			const res = await axios.get('http://localhost:5000/user/allowed');
+			const res = await axios.get('/user/allowed');
 			dispatch(getLoggedUser(res.data.loggedUser));
-			dispatch(getLoggedUserSubscription(res.data.loggedUser));
+			dispatch(getLoggedUserSubscription(res.data.subscription));
 		} catch (error) {
 			dispatch(slice.actions.hasError(error));
 			console.log(error);
