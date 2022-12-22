@@ -86,7 +86,7 @@ const LoanAccept = ({ handleCloseDialog, data }: ProductAddProps) => {
 									onChange={handleSwitchChange}
 								/>
 							}
-							label="Accepted"
+							label="Approve"
 						/>
 					</Grid>
 				</Grid>

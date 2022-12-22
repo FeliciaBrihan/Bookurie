@@ -89,7 +89,7 @@ const headCells: HeadCell[] = [
 	{
 		id: 'isAccepted',
 		numeric: false,
-		label: 'Accepted',
+		label: 'Status',
 		align: 'left',
 	},
 	{
@@ -472,7 +472,13 @@ const LoanList = () => {
 												#{row.id}
 											</Typography>
 										</TableCell>
-										<TableCell>{row.isAccepted ? 'Yes' : 'No'}</TableCell>
+										<TableCell>
+											{row.isAccepted
+												? row.isReturned
+													? 'Returned'
+													: 'Approved'
+												: 'Pending'}
+										</TableCell>
 										<TableCell>
 											{row.expirationDate ? String(row.expirationDate) : '--'}
 										</TableCell>
