@@ -21,9 +21,11 @@ import { gridSpacing } from 'store/constant';
 import AnimateButton from 'ui-component/extended/AnimateButton';
 
 // assets
-import { bookApi } from 'store/slices/book';
+import { bookApi, hasError } from 'store/slices/book';
 import { TSetBook } from 'types/book';
 import axios from 'axios';
+import { openSnackbar } from 'store/slices/snackbar';
+import { dispatch, useSelector } from 'store';
 
 // book type options
 const types = [
@@ -66,6 +68,8 @@ const defaultValue = {
 const BookAdd = ({ open, handleCloseDialog }: ProductAddProps) => {
 	const [formValue, setFormValue] = useState<TSetBook>(defaultValue);
 	const [file, setFile] = useState<File | undefined>();
+	const { error } = useSelector((state) => state.book);
+	console.log('Book Add', error);
 
 	// handle category change dropdown
 	const [typeFormat, setTypeFormat] = useState('printed');
@@ -129,13 +133,13 @@ const BookAdd = ({ open, handleCloseDialog }: ProductAddProps) => {
 			);
 			console.log(result.data);
 		} catch (err) {
-			console.log(err);
+			dispatch(hasError(err));
 		}
 	};
 
 	const handleSave = async () => {
 		await uploadFile();
-		await bookApi.create(
+		const response = await bookApi.create(
 			{
 				title: formValue.title,
 				author: formValue.author,
@@ -151,6 +155,38 @@ const BookAdd = ({ open, handleCloseDialog }: ProductAddProps) => {
 			},
 			{ sync: true }
 		);
+		!response &&
+			dispatch(
+				openSnackbar({
+					open: true,
+					anchorOrigin: {
+						vertical: 'top',
+						horizontal: 'right',
+					},
+					message: 'Something went wrong',
+					variant: 'alert',
+					alert: {
+						color: 'error',
+					},
+					close: false,
+				})
+			);
+		response &&
+			dispatch(
+				openSnackbar({
+					open: true,
+					anchorOrigin: {
+						vertical: 'top',
+						horizontal: 'right',
+					},
+					message: 'Book Add Success',
+					variant: 'alert',
+					alert: {
+						color: 'success',
+					},
+					close: false,
+				})
+			);
 		handleCloseDialog();
 	};
 

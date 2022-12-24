@@ -42,6 +42,7 @@ const slice = createSlice({
 
 // Reducer
 export default slice.reducer;
+export const { hasError } = slice.actions;
 
 // ----------------------------------------------------------------------
 
