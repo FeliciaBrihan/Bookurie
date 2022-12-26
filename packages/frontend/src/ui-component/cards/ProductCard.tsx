@@ -22,6 +22,7 @@ import { ProductCardProps } from 'types/cart';
 
 // assets
 import ShoppingCartTwoToneIcon from '@mui/icons-material/ShoppingCartTwoTone';
+import Chip from 'ui-component/extended/Chip';
 
 const prodImage = require.context('assets/images/e-commerce', true);
 
@@ -34,6 +35,7 @@ const ProductCard = ({
 	genre,
 	author,
 	price,
+	stock,
 	typeFormat,
 }: ProductCardProps) => {
 	const dispatch = useDispatch();
@@ -100,7 +102,7 @@ const ProductCard = ({
 									component={Link}
 									to={`/books/${id}`}
 									variant="subtitle1"
-									sx={{ textDecoration: 'none' }}
+									sx={{ textDecoration: 'none', fontWeight: 'bold' }}
 								>
 									{title}
 								</Typography>
@@ -160,19 +162,28 @@ const ProductCard = ({
 												<Typography variant="h4">{price} RON</Typography>
 											</Grid>
 										)}
-										<Grid item>
-											<Typography variant="h6" sx={{ color: 'grey.500' }}>
-												{typeFormat}
-											</Typography>
-										</Grid>
 									</Grid>
-									<Button
-										variant="contained"
-										sx={{ minWidth: 0 }}
-										onClick={addCart}
-									>
-										<ShoppingCartTwoToneIcon fontSize="small" />
-									</Button>
+									{stock ? (
+										<Button
+											variant="contained"
+											sx={{ minWidth: 0 }}
+											onClick={addCart}
+										>
+											<ShoppingCartTwoToneIcon fontSize="small" />
+										</Button>
+									) : (
+										<Chip
+											size="small"
+											label={
+												typeFormat === 'printed' ? `Out of stock` : 'Online'
+											}
+											chipcolor={typeFormat === 'printed' ? 'error' : 'primary'}
+											sx={{
+												borderRadius: '4px',
+												textTransform: 'capitalize',
+											}}
+										/>
+									)}
 								</Stack>
 							</Grid>
 						</Grid>

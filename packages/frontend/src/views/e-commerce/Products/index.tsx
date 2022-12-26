@@ -218,6 +218,8 @@ const BooksList = () => {
 					price={book.price}
 					pages={book.pages}
 					genre={book.genre}
+					stock={book.stock}
+					typeFormat={book.typeFormat}
 				/>
 			</Grid>
 		));
