@@ -1,4 +1,4 @@
-import { forwardRef, useEffect, useRef, useState } from 'react';
+import { forwardRef, useState } from 'react';
 
 // material-ui
 import {
@@ -73,35 +73,12 @@ const BookAdd = ({ open, handleCloseDialog }: ProductAddProps) => {
 
 	// handle category change dropdown
 	const [typeFormat, setTypeFormat] = useState('printed');
+
 	const handleSelectChange = (
 		event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | undefined
 	) => {
 		event?.target.value && setTypeFormat(event?.target.value);
 	};
-	// set image upload progress
-	const [progress, setProgress] = useState(0);
-	// eslint-disable-next-line @typescript-eslint/no-empty-function
-	const progressRef = useRef(() => {});
-	useEffect(() => {
-		progressRef.current = () => {
-			if (progress > 100) {
-				setProgress(0);
-			} else {
-				const diff = Math.random() * 10;
-				setProgress(progress + diff);
-			}
-		};
-	});
-
-	useEffect(() => {
-		const timer = setInterval(() => {
-			progressRef.current();
-		}, 500);
-
-		return () => {
-			clearInterval(timer);
-		};
-	}, []);
 
 	const handleValueChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		setFormValue({
@@ -138,7 +115,7 @@ const BookAdd = ({ open, handleCloseDialog }: ProductAddProps) => {
 	};
 
 	const handleSave = async () => {
-		await uploadFile();
+		uploadFile();
 		const response = await bookApi.create(
 			{
 				title: formValue.title,
