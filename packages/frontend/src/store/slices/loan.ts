@@ -4,10 +4,16 @@ import { createSlice } from '@reduxjs/toolkit';
 // project imports
 import axios from 'utils/live-axios';
 import { dispatch } from '../index';
+import { openSnackbar } from 'store/slices/snackbar';
 
 // types
 import { DefaultRootStateProps } from 'types';
 import { TSetLoan } from 'types/loan';
+
+type objectError = {
+	details?: string;
+	error?: string;
+};
 
 // ----------------------------------------------------------------------
 
@@ -65,11 +71,33 @@ export function create(id: number) {
 	return async () => {
 		try {
 			const response = await axios.post(`/book/${id}/loan`);
-
 			console.log(response);
+			dispatch(
+				openSnackbar({
+					open: true,
+					message: 'Loan Request Success',
+					variant: 'alert',
+					alert: {
+						color: 'success',
+					},
+					close: true,
+				})
+			);
 		} catch (error) {
 			dispatch(slice.actions.hasError(error));
 			console.log(error);
+			const err = error as objectError;
+			dispatch(
+				openSnackbar({
+					open: true,
+					message: err.details || err.error,
+					variant: 'alert',
+					alert: {
+						color: 'error',
+					},
+					close: true,
+				})
+			);
 		}
 	};
 }
