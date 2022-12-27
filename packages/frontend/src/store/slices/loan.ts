@@ -65,6 +65,17 @@ export const loanApi = {
 			}
 		};
 	},
+	get returnLoan() {
+		return async (id: number, options: { sync?: boolean }) => {
+			try {
+				const response = await axios.put(`loan/loans/${id}`);
+				if (options?.sync === true) this.getAll()();
+				console.log(response);
+			} catch (error) {
+				console.log(error);
+			}
+		};
+	},
 };
 
 export function create(id: number) {

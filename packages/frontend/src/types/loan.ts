@@ -5,7 +5,7 @@ export interface TLoanStateProps {
 }
 
 export interface TSetLoan {
-	isAccepted: boolean;
+	isAccepted?: boolean;
 	expirationDate?: Date;
 	isReturned?: boolean;
 }

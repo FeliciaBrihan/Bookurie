@@ -23,6 +23,7 @@ import {
 	Typography,
 } from '@mui/material';
 import { visuallyHidden } from '@mui/utils';
+import Chip from 'ui-component/extended/Chip';
 
 // project imports
 import MainCard from 'ui-component/cards/MainCard';
@@ -33,6 +34,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import SearchIcon from '@mui/icons-material/Search';
 import VisibilityTwoToneIcon from '@mui/icons-material/VisibilityTwoTone';
 import EditTwoToneIcon from '@mui/icons-material/EditTwoTone';
+import DoneIcon from '@mui/icons-material/Done';
 import {
 	ArrangementOrder,
 	EnhancedTableHeadProps,
@@ -45,6 +47,7 @@ import LoanDetails from './LoanDetails';
 import LoanAccept from './LoanAccept';
 import { TGetLoan } from 'types/loan';
 import { loanApi, deleteLoan } from 'store/slices/loan';
+import LoanReturn from './LoanReturn';
 
 // table sort
 function descendingComparator(a: KeyedObject, b: KeyedObject, orderBy: string) {
@@ -249,15 +252,18 @@ const LoanList = () => {
 	const [rows, setRows] = React.useState<TGetLoan[]>([]);
 	const [openDetails, setOpenDetails] = React.useState(false);
 	const [openEdit, setOpenEdit] = React.useState(false);
+	const [openReturn, setOpenReturn] = React.useState(false);
 	const [rowData, setRowData] = React.useState<TGetLoan | undefined>(undefined);
 	const { loans } = useSelector((state) => state.loan);
 
 	React.useEffect(() => {
 		dispatch(loanApi.getAll());
 	}, [dispatch]);
+
 	React.useEffect(() => {
 		setRows(loans);
 	}, [loans]);
+
 	const handleSearch = (
 		event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement> | undefined
 	) => {
@@ -359,6 +365,13 @@ const LoanList = () => {
 	const handleOpenDetails = (row: TGetLoan) => () => {
 		setRowData(row);
 		setOpenDetails(true);
+	};
+	const handleCloseReturn = () => {
+		setOpenReturn(false);
+	};
+	const handleOpenReturn = (row: TGetLoan) => () => {
+		setRowData(row);
+		setOpenReturn(true);
 	};
 
 	const handleCloseEdit = () => {
@@ -473,20 +486,46 @@ const LoanList = () => {
 											</Typography>
 										</TableCell>
 										<TableCell>
-											{row.isAccepted
-												? row.isReturned
-													? 'Returned'
-													: 'Approved'
-												: 'Pending'}
+											<Chip
+												size="small"
+												label={
+													row.isAccepted
+														? row.isReturned
+															? 'Returned'
+															: 'Approved'
+														: 'Pending'
+												}
+												chipcolor={
+													row.isAccepted
+														? row.isReturned
+															? 'secondary'
+															: 'success'
+														: 'error'
+												}
+												sx={{
+													borderRadius: '4px',
+													textTransform: 'capitalize',
+												}}
+											/>
 										</TableCell>
 										<TableCell>
-											{row.expirationDate ? String(row.expirationDate) : '--'}
+											{row.expirationDate
+												? new Intl.DateTimeFormat('en-US', {
+														year: 'numeric',
+														month: '2-digit',
+														day: '2-digit',
+														hour: '2-digit',
+														minute: '2-digit',
+														second: '2-digit',
+												  }).format(new Date(row.expirationDate))
+												: '--'}
 										</TableCell>
 										<TableCell>{row.BookId}</TableCell>
 										<TableCell>{row.UserId}</TableCell>
 
 										<TableCell sx={{ pr: 3 }} align="center">
 											<IconButton
+												title="Details"
 												color="primary"
 												size="large"
 												onClick={handleOpenDetails(row)}
@@ -494,9 +533,18 @@ const LoanList = () => {
 												<VisibilityTwoToneIcon sx={{ fontSize: '1.3rem' }} />
 											</IconButton>
 											<IconButton
-												color="secondary"
+												title="Approve"
+												color="success"
 												size="large"
 												onClick={handleOpenEdit(row)}
+											>
+												<DoneIcon sx={{ fontSize: '1.3rem' }} />
+											</IconButton>
+											<IconButton
+												title="Return"
+												color="secondary"
+												size="large"
+												onClick={handleOpenReturn(row)}
 											>
 												<EditTwoToneIcon sx={{ fontSize: '1.3rem' }} />
 											</IconButton>
@@ -520,6 +568,9 @@ const LoanList = () => {
 				)}
 				{openEdit && (
 					<LoanAccept handleCloseDialog={handleCloseEdit} data={rowData!} />
+				)}
+				{openReturn && (
+					<LoanReturn handleCloseDialog={handleCloseReturn} data={rowData!} />
 				)}
 			</TableContainer>
 

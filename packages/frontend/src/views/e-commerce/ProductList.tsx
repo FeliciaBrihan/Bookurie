@@ -92,7 +92,13 @@ const headCells: HeadCell[] = [
 	{
 		id: 'id',
 		numeric: true,
-		label: '#',
+		label: 'ID',
+		align: 'left',
+	},
+	{
+		id: '#',
+		numeric: true,
+		label: 'Image',
 		align: 'center',
 	},
 	{
@@ -111,6 +117,12 @@ const headCells: HeadCell[] = [
 		id: 'price',
 		numeric: true,
 		label: 'Price',
+		align: 'left',
+	},
+	{
+		id: 'typeFormat',
+		numeric: true,
+		label: 'Type',
 		align: 'left',
 	},
 	{
@@ -415,7 +427,7 @@ const ProductList = () => {
 								),
 							}}
 							onChange={handleSearch}
-							placeholder="Search Book"
+							placeholder="Search Title or Author"
 							value={search}
 							size="small"
 						/>
@@ -487,7 +499,29 @@ const ProductList = () => {
 											/>
 										</TableCell>
 										<TableCell
-											align="center"
+											component="th"
+											id={labelId}
+											scope="row"
+											sx={{ cursor: 'pointer' }}
+										>
+											<Typography
+												component={Link}
+												to={`/books/${row.id}`}
+												variant="subtitle1"
+												sx={{
+													color:
+														theme.palette.mode === 'dark'
+															? theme.palette.grey[600]
+															: 'grey.900',
+													textDecoration: 'none',
+												}}
+											>
+												#{row.id}
+											</Typography>
+										</TableCell>
+
+										<TableCell
+											align="left"
 											component="th"
 											id={labelId}
 											scope="row"
@@ -523,6 +557,7 @@ const ProductList = () => {
 										</TableCell>
 										<TableCell align="left">{row.author}</TableCell>
 										<TableCell align="left">{row.price} RON</TableCell>
+										<TableCell align="left">{row.typeFormat}</TableCell>
 										<TableCell align="center">
 											{row.typeFormat === 'printed' ? (
 												<Chip
