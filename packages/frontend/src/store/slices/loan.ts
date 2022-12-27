@@ -5,6 +5,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import axios from 'utils/live-axios';
 import { dispatch } from '../index';
 import { openSnackbar } from 'store/slices/snackbar';
+import { getLoggedUser } from './user';
 
 // types
 import { DefaultRootStateProps } from 'types';
@@ -82,6 +83,8 @@ export function create(id: number) {
 	return async () => {
 		try {
 			const response = await axios.post(`/book/${id}/loan`);
+			const res = await axios.get('/user/allowed');
+			dispatch(getLoggedUser(res.data.loggedUser));
 			console.log(response);
 			dispatch(
 				openSnackbar({
