@@ -521,27 +521,33 @@ const RoleList = () => {
 										<TableCell>{row.everyBookDiscount} %</TableCell>
 										<TableCell>{row.type}</TableCell>
 										<TableCell sx={{ pr: 3 }} align="center">
-											<IconButton
-												color="primary"
-												size="large"
-												onClick={handleOpenDetails(row)}
-											>
-												<VisibilityTwoToneIcon sx={{ fontSize: '1.3rem' }} />
-											</IconButton>
-											<IconButton
-												color="secondary"
-												size="large"
-												onClick={handleOpenEdit(row)}
-											>
-												<EditTwoToneIcon sx={{ fontSize: '1.3rem' }} />
-											</IconButton>
-											<IconButton
-												color="success"
-												size="large"
-												onClick={() => dispatch(subscribe(row.id))}
-											>
-												<AppRegistrationIcon sx={{ fontSize: '1.3rem' }} />
-											</IconButton>
+											<Tooltip title="Details">
+												<IconButton
+													color="primary"
+													size="large"
+													onClick={handleOpenDetails(row)}
+												>
+													<VisibilityTwoToneIcon sx={{ fontSize: '1.3rem' }} />
+												</IconButton>
+											</Tooltip>
+											<Tooltip title="Edit">
+												<IconButton
+													color="secondary"
+													size="large"
+													onClick={handleOpenEdit(row)}
+												>
+													<EditTwoToneIcon sx={{ fontSize: '1.3rem' }} />
+												</IconButton>
+											</Tooltip>
+											<Tooltip title="Subscribe">
+												<IconButton
+													color="success"
+													size="large"
+													onClick={() => dispatch(subscribe(row.id))}
+												>
+													<AppRegistrationIcon sx={{ fontSize: '1.3rem' }} />
+												</IconButton>
+											</Tooltip>
 										</TableCell>
 									</TableRow>
 								);

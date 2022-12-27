@@ -530,20 +530,24 @@ const PermissionList = () => {
 										<TableCell>{row.ActionId}</TableCell>
 										<TableCell>{getActionName(row.ActionId)}</TableCell>
 										<TableCell sx={{ pr: 3 }} align="center">
-											<IconButton
-												color="primary"
-												size="large"
-												onClick={handleOpenDetails(row)}
-											>
-												<VisibilityTwoToneIcon sx={{ fontSize: '1.3rem' }} />
-											</IconButton>
-											<IconButton
-												color="secondary"
-												size="large"
-												onClick={handleOpenEdit(row)}
-											>
-												<EditTwoToneIcon sx={{ fontSize: '1.3rem' }} />
-											</IconButton>
+											<Tooltip title="Details">
+												<IconButton
+													color="primary"
+													size="large"
+													onClick={handleOpenDetails(row)}
+												>
+													<VisibilityTwoToneIcon sx={{ fontSize: '1.3rem' }} />
+												</IconButton>
+											</Tooltip>
+											<Tooltip title="Edit">
+												<IconButton
+													color="secondary"
+													size="large"
+													onClick={handleOpenEdit(row)}
+												>
+													<EditTwoToneIcon sx={{ fontSize: '1.3rem' }} />
+												</IconButton>
+											</Tooltip>
 										</TableCell>
 									</TableRow>
 								);

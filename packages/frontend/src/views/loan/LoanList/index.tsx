@@ -524,30 +524,33 @@ const LoanList = () => {
 										<TableCell>{row.UserId}</TableCell>
 
 										<TableCell sx={{ pr: 3 }} align="center">
-											<IconButton
-												title="Details"
-												color="primary"
-												size="large"
-												onClick={handleOpenDetails(row)}
-											>
-												<VisibilityTwoToneIcon sx={{ fontSize: '1.3rem' }} />
-											</IconButton>
-											<IconButton
-												title="Approve"
-												color="success"
-												size="large"
-												onClick={handleOpenEdit(row)}
-											>
-												<DoneIcon sx={{ fontSize: '1.3rem' }} />
-											</IconButton>
-											<IconButton
-												title="Return"
-												color="secondary"
-												size="large"
-												onClick={handleOpenReturn(row)}
-											>
-												<EditTwoToneIcon sx={{ fontSize: '1.3rem' }} />
-											</IconButton>
+											<Tooltip title="Details">
+												<IconButton
+													color="primary"
+													size="large"
+													onClick={handleOpenDetails(row)}
+												>
+													<VisibilityTwoToneIcon sx={{ fontSize: '1.3rem' }} />
+												</IconButton>
+											</Tooltip>
+											<Tooltip title="Approve">
+												<IconButton
+													color="success"
+													size="large"
+													onClick={handleOpenEdit(row)}
+												>
+													<DoneIcon sx={{ fontSize: '1.3rem' }} />
+												</IconButton>
+											</Tooltip>
+											<Tooltip title="Return">
+												<IconButton
+													color="secondary"
+													size="large"
+													onClick={handleOpenReturn(row)}
+												>
+													<EditTwoToneIcon sx={{ fontSize: '1.3rem' }} />
+												</IconButton>
+											</Tooltip>
 										</TableCell>
 									</TableRow>
 								);

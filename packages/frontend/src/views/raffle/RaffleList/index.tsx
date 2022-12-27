@@ -447,7 +447,7 @@ const RaffleList = () => {
 										</TableCell>
 										<TableCell>{row.BookId}</TableCell>
 										<TableCell>{row.UserId}</TableCell>
-										<TableCell>{row.prize}</TableCell>
+										<TableCell>{row.prize} RON</TableCell>
 
 										<TableCell sx={{ pr: 3 }} align="center"></TableCell>
 									</TableRow>

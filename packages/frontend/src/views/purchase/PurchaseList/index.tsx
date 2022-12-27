@@ -141,7 +141,7 @@ function EnhancedTableHead({
 						checked={rowCount > 0 && numSelected === rowCount}
 						onChange={onSelectAllClick}
 						inputProps={{
-							'aria-label': 'select all roles',
+							'aria-label': 'select all purchases',
 						}}
 					/>
 				</TableCell>
@@ -249,7 +249,7 @@ const PurchaseList = () => {
 			const newRows = rows.filter((row: KeyedObject) => {
 				let matches = true;
 
-				const properties = ['id', 'createdAt'];
+				const properties = ['BookId'];
 				let containsQuery = false;
 
 				properties.forEach((property) => {
@@ -356,7 +356,7 @@ const PurchaseList = () => {
 								),
 							}}
 							onChange={handleSearch}
-							placeholder="Search Purchase"
+							placeholder="Search Book ID"
 							value={search}
 							size="small"
 						/>
@@ -440,7 +440,7 @@ const PurchaseList = () => {
 										</TableCell>
 										<TableCell>{row.BookId}</TableCell>
 										<TableCell>{row.UserId}</TableCell>
-										<TableCell>{row.price}</TableCell>
+										<TableCell>{row.price} RON</TableCell>
 									</TableRow>
 								);
 							})}

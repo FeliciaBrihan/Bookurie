@@ -585,6 +585,7 @@ const ProductList = () => {
 										</TableCell>
 										<TableCell sx={{ pr: 3 }} align="center">
 											<IconButton
+												title="Details"
 												color="primary"
 												size="large"
 												onClick={handleOpenDetails(row)}
@@ -592,6 +593,7 @@ const ProductList = () => {
 												<VisibilityTwoToneIcon sx={{ fontSize: '1.3rem' }} />
 											</IconButton>
 											<IconButton
+												title="Edit"
 												color="secondary"
 												size="large"
 												onClick={handleOpenEdit(row)}

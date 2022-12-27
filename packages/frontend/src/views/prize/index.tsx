@@ -552,13 +552,15 @@ const PrizeList = () => {
 											>
 												<VisibilityTwoToneIcon sx={{ fontSize: '1.3rem' }} />
 											</IconButton> */}
-											<IconButton
-												color="secondary"
-												size="large"
-												onClick={handleOpenEdit(row)}
-											>
-												<EditTwoToneIcon sx={{ fontSize: '1.3rem' }} />
-											</IconButton>
+											<Tooltip title="Edit">
+												<IconButton
+													color="secondary"
+													size="large"
+													onClick={handleOpenEdit(row)}
+												>
+													<EditTwoToneIcon sx={{ fontSize: '1.3rem' }} />
+												</IconButton>
+											</Tooltip>
 										</TableCell>
 									</TableRow>
 								);
