@@ -31,6 +31,7 @@ import { openSnackbar } from 'store/slices/snackbar';
 import { useDispatch, useSelector } from 'store';
 import { addProduct } from 'store/slices/cart';
 import { create } from 'store/slices/loan';
+import { getProduct } from 'store/slices/book';
 
 // assets
 ('@mui/icons-material/StarBorderTwoTone');
@@ -87,6 +88,7 @@ const ProductInfo = ({ product }: { product: TGetBook }) => {
 
 	const createLoan = async () => {
 		await dispatch(create(product.id));
+		await dispatch(getProduct(String(product.id)));
 	};
 
 	const cart = useSelector((state) => state.cart);

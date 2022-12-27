@@ -208,7 +208,7 @@ const BooksList = () => {
 	let bookResult: ReactElement | ReactElement[] = <></>;
 	if (books && books.length > 0) {
 		bookResult = books.map((book: TGetBook, index) => (
-			<Grid key={index} item xs={12} sm={6} md={4} lg={3}>
+			<Grid key={index} item xs={12} sm={6} md={4} lg={3} order={book.id}>
 				<ProductCard
 					id={book.id}
 					image={book.coverImage}
@@ -274,7 +274,7 @@ const BooksList = () => {
 									),
 								}}
 								value={filter.search}
-								placeholder="Search Product"
+								placeholder="Search Book"
 								size="small"
 								onChange={handleSearch}
 							/>
