@@ -4,7 +4,6 @@ import {
 	Button,
 	CardContent,
 	Grid,
-
 	Typography,
 	useMediaQuery,
 } from '@mui/material';
@@ -48,28 +47,6 @@ const ProductFilterView = ({
 					sx={{ pb: gridSpacing }}
 					alignItems="center"
 				>
-					{!(initialState.search === filter.search) && (
-						<Grid item>
-							<SubCard content={false}>
-								<CardContent sx={{ pb: '12px !important', p: 1.5 }}>
-									<Grid container spacing={1} alignItems="center">
-										<Grid item>
-											<Chip
-												size={matchDownMD ? 'small' : undefined}
-												label={filter.search}
-												chipcolor="secondary"
-												onDelete={() => handelFilter('search', '')}
-												sx={{
-													borderRadius: '4px',
-													textTransform: 'capitalize',
-												}}
-											/>
-										</Grid>
-									</Grid>
-								</CardContent>
-							</SubCard>
-						</Grid>
-					)}
 					{!(initialState.sort === filter.sort) && (
 						<Grid item>
 							<SubCard content={false}>

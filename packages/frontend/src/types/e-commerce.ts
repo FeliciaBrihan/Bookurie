@@ -49,7 +49,6 @@ export type Reviews = {
 // product shop filter
 export type ProductsFilter = {
 	length?: number;
-	search: string;
 	sort: string;
 	genre: string[];
 	price?: string;

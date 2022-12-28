@@ -45,6 +45,7 @@ import SearchIcon from '@mui/icons-material/Search';
 // types
 import { TGetBook } from 'types/book';
 import { ProductsFilter } from 'types/e-commerce';
+import { KeyedObject } from 'types';
 
 // product list container
 const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })<{
@@ -77,15 +78,16 @@ const BooksList = () => {
 	const { borderRadius } = useConfig();
 	const dispatch = useDispatch();
 	const cart = useSelector((state) => state.cart);
+	const [search, setSearch] = useState<string>('');
 
 	const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
 	const matchDownMD = useMediaQuery(theme.breakpoints.down('lg'));
 	const matchDownLG = useMediaQuery(theme.breakpoints.down('xl'));
 
-	const [isLoading, setLoading] = useState(true);
-	useEffect(() => {
-		setLoading(false);
-	}, []);
+	const [isLoading, setLoading] = useState(false);
+	// useEffect(() => {
+	// 	setLoading(false);
+	// }, []);
 
 	// drawer
 	const [open, setOpen] = useState(isLoading);
@@ -116,20 +118,45 @@ const BooksList = () => {
 
 	// filter
 	const initialState: ProductsFilter = {
-		search: '',
 		sort: 'low',
 		genre: ['all'],
 	};
 	const [filter, setFilter] = useState(initialState);
 
-	// search filter
-	const handleSearch = async (
+	const handleSearch = (
 		event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement> | undefined
 	) => {
 		const newString = event?.target.value;
-		setFilter({ ...filter, search: newString! });
-	};
+		setSearch(newString || '');
 
+		if (newString) {
+			const filteredBooks = books?.filter((book: KeyedObject) => {
+				let matches = true;
+
+				const properties = ['title', 'author'];
+				let containsQuery = false;
+
+				properties.forEach((property) => {
+					if (
+						book[property]
+							.toString()
+							.toLowerCase()
+							.includes(newString.toString().toLowerCase())
+					) {
+						containsQuery = true;
+					}
+				});
+
+				if (!containsQuery) {
+					matches = false;
+				}
+				return matches;
+			});
+			setBooks(filteredBooks);
+		} else {
+			setBooks(bookState.books);
+		}
+	};
 	// sort options
 	const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 	const openSort = Boolean(anchorEl);
@@ -144,7 +171,6 @@ const BooksList = () => {
 	const filterIsEqual = (a1: ProductsFilter, a2: ProductsFilter) =>
 		a1 === a2 ||
 		(a1.length === a2.length &&
-			a1.search === a2.search &&
 			a1.sort === a2.sort &&
 			JSON.stringify(a1.genre) === JSON.stringify(a2.genre));
 
@@ -166,9 +192,6 @@ const BooksList = () => {
 					setFilter({ ...filter, genre: [...filter.genre, params] });
 				}
 
-				break;
-			case 'search':
-				setFilter({ ...filter, search: params });
 				break;
 			case 'sort':
 				setFilter({ ...filter, sort: params });
@@ -273,7 +296,7 @@ const BooksList = () => {
 										</InputAdornment>
 									),
 								}}
-								value={filter.search}
+								value={search}
 								placeholder="Search Book"
 								size="small"
 								onChange={handleSearch}
