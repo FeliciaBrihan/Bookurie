@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 // material-ui
 import { useTheme, Theme } from '@mui/material/styles';
@@ -267,6 +268,7 @@ const RoleList = () => {
 		undefined
 	);
 	const { subscriptions } = useSelector((state) => state.subscription);
+	const navigate = useNavigate();
 
 	React.useEffect(() => {
 		dispatch(subscriptionApi.getAll());
@@ -543,7 +545,10 @@ const RoleList = () => {
 												<IconButton
 													color="success"
 													size="large"
-													onClick={() => dispatch(subscribe(row.id))}
+													onClick={() => {
+														dispatch(subscribe(row.id));
+														navigate('/account');
+													}}
 												>
 													<AppRegistrationIcon sx={{ fontSize: '1.3rem' }} />
 												</IconButton>

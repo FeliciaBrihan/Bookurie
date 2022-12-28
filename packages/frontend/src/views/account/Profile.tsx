@@ -9,6 +9,7 @@ import {
 	ListItemIcon,
 	ListItemSecondaryAction,
 	ListItemText,
+	Tooltip,
 	Typography,
 } from '@mui/material';
 
@@ -94,15 +95,19 @@ const Profile = () => {
 							<ListItemSecondaryAction>
 								<Typography variant="subtitle2" align="right">
 									{user?.subscriptionId ? (
-										user?.subscriptionId === 1 ? (
-											<Grid item>
-												<Chip size="small" label="Basic" color="primary" />
-											</Grid>
-										) : (
-											<Grid item>
-												<Chip size="small" label="Premium" color="primary" />
-											</Grid>
-										)
+										<Grid item>
+											<Tooltip title="Change subscription">
+												<Link to="/subscriptions">
+													<Chip
+														size="small"
+														label={
+															user.subscriptionId === 1 ? 'Basic' : 'Premium'
+														}
+														color="primary"
+													/>
+												</Link>
+											</Tooltip>
+										</Grid>
 									) : (
 										<Link to="/subscriptions">Get subscription</Link>
 									)}
