@@ -111,28 +111,34 @@ const Profile = () => {
 						</ListItemButton>
 					</List>
 					<Divider />
-					<ListItemButton>
-						<ListItemIcon>
-							<AccessTimeIcon sx={{ fontSize: '1.3rem' }} />
-						</ListItemIcon>
-						<ListItemText
-							primary={
-								<Typography variant="subtitle1">Subscription Renew</Typography>
-							}
-						/>
-						<ListItemSecondaryAction>
-							<Typography variant="subtitle2" align="right">
-								{new Intl.DateTimeFormat('en-US', {
-									year: 'numeric',
-									month: '2-digit',
-									day: '2-digit',
-									hour: '2-digit',
-									minute: '2-digit',
-									second: '2-digit',
-								}).format(new Date(user!.subscriptionExpirationDate))}
-							</Typography>
-						</ListItemSecondaryAction>
-					</ListItemButton>
+					{subscription && (
+						<>
+							<ListItemButton>
+								<ListItemIcon>
+									<AccessTimeIcon sx={{ fontSize: '1.3rem' }} />
+								</ListItemIcon>
+								<ListItemText
+									primary={
+										<Typography variant="subtitle1">
+											Subscription Renew
+										</Typography>
+									}
+								/>
+								<ListItemSecondaryAction>
+									<Typography variant="subtitle2" align="right">
+										{new Intl.DateTimeFormat('en-US', {
+											year: 'numeric',
+											month: '2-digit',
+											day: '2-digit',
+											hour: '2-digit',
+											minute: '2-digit',
+											second: '2-digit',
+										}).format(new Date(user!.subscriptionExpirationDate))}
+									</Typography>
+								</ListItemSecondaryAction>
+							</ListItemButton>
+						</>
+					)}
 					{user?.subscriptionId === 1 && (
 						<CardContent>
 							<Grid container spacing={0}>

@@ -9,8 +9,13 @@ import { dispatch } from '../index';
 import { DefaultRootStateProps } from 'types';
 import { TGetSubscription, TSetSubscription } from 'types/subscription';
 import { getLoggedUser } from './user';
+import { openSnackbar } from './snackbar';
 
 // ----------------------------------------------------------------------
+type objectError = {
+	details?: string;
+	error?: string;
+};
 
 const initialState: DefaultRootStateProps['subscription'] = {
 	error: null,
@@ -100,9 +105,32 @@ export function subscribe(id: number) {
 			const res = await axios.get('http://localhost:5000/user/allowed');
 			dispatch(getLoggedUser(res.data.loggedUser));
 			dispatch(getLoggedUserSubscription(res.data.subscription));
+			dispatch(
+				openSnackbar({
+					open: true,
+					message: 'Subscribe Success',
+					variant: 'alert',
+					alert: {
+						color: 'success',
+					},
+					close: true,
+				})
+			);
 		} catch (error) {
 			dispatch(slice.actions.hasError(error));
+			const err = error as objectError;
 			console.log(error);
+			dispatch(
+				openSnackbar({
+					open: true,
+					message: err.details || err.error,
+					variant: 'alert',
+					alert: {
+						color: 'error',
+					},
+					close: true,
+				})
+			);
 		}
 	};
 }
