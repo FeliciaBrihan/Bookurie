@@ -105,6 +105,7 @@ const ProductInfo = ({ product }: { product: TGetBook }) => {
 			image: product.coverImage,
 			price: product.price,
 			stock: product.stock,
+			typeFormat: product.typeFormat,
 			quantity: 1,
 		},
 		validationSchema,

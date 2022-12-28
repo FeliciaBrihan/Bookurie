@@ -51,7 +51,17 @@ const ProductCard = ({
 	const addCart = () => {
 		dispatch(
 			addProduct(
-				{ id, title, image, genre, author, typeFormat, price, quantity: 1 },
+				{
+					id,
+					title,
+					image,
+					genre,
+					author,
+					typeFormat,
+					stock,
+					price,
+					quantity: 1,
+				},
 				cart.checkout.products
 			)
 		);

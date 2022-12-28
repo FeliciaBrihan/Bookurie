@@ -8,9 +8,6 @@ import {
 	Typography,
 } from '@mui/material';
 
-// third-party
-import currency from 'currency.js';
-
 // project imports
 import SubCard from 'ui-component/cards/SubCard';
 import { CartCheckoutStateProps } from 'types/cart';
@@ -33,7 +30,7 @@ const OrderSummary = ({ checkout }: { checkout: CartCheckoutStateProps }) => (
 						<TableCell align="right">
 							{checkout.subtotal && (
 								<Typography variant="subtitle1">
-									{currency(checkout.subtotal).format()}
+									{checkout.subtotal} RON
 								</Typography>
 							)}
 						</TableCell>
@@ -43,9 +40,7 @@ const OrderSummary = ({ checkout }: { checkout: CartCheckoutStateProps }) => (
 						<TableCell align="right">
 							{checkout.discount && (
 								<Typography variant="subtitle1">
-									{checkout.discount <= 0
-										? '-'
-										: currency(checkout.discount).format()}
+									{checkout.discount <= 0 ? '-' : checkout.discount} RON
 								</Typography>
 							)}
 						</TableCell>
@@ -55,9 +50,7 @@ const OrderSummary = ({ checkout }: { checkout: CartCheckoutStateProps }) => (
 						<TableCell align="right">
 							{checkout.shipping && (
 								<Typography variant="subtitle1">
-									{checkout.shipping <= 0
-										? '-'
-										: currency(checkout.shipping).format()}
+									{checkout.shipping <= 0 ? '-' : checkout.shipping}
 								</Typography>
 							)}
 						</TableCell>
@@ -69,7 +62,7 @@ const OrderSummary = ({ checkout }: { checkout: CartCheckoutStateProps }) => (
 						<TableCell align="right" sx={{ borderBottom: 'none' }}>
 							{checkout.total && (
 								<Typography variant="subtitle1">
-									{currency(checkout.total).format()}
+									{checkout.total} RON
 								</Typography>
 							)}
 						</TableCell>

@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
+import { dispatch } from 'store';
 import {
 	Button,
 	ButtonGroup,
@@ -21,10 +22,8 @@ import {
 
 // third-party
 import { sum } from 'lodash';
-import currency from 'currency.js';
 
 // project imports
-import CartDiscount from './CartDiscount';
 import OrderSummary from './OrderSummary';
 import { CartCheckoutStateProps, CartProductStateProps } from 'types/cart';
 import Avatar from 'ui-component/extended/Avatar';
@@ -35,18 +34,28 @@ import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
 import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
+import { openSnackbar } from 'store/slices/snackbar';
 
 const prodImage = require.context('assets/images/e-commerce', true);
 
 // ==============================|| CART - INCREMENT QUANTITY ||============================== //
 
 interface IncrementProps {
+	stock: number;
+	typeFormat: string;
 	itemId: string | number | undefined;
 	quantity: number;
 	updateQuantity: (id: string | number | undefined, quantity: number) => void;
 }
 
-const Increment = ({ itemId, quantity, updateQuantity }: IncrementProps) => {
+const Increment = ({
+	itemId,
+	quantity,
+	updateQuantity,
+	stock,
+	typeFormat,
+}: IncrementProps) => {
+	console.log(typeFormat);
 	const [value, setValue] = useState(quantity);
 
 	const incrementHandler = () => {
@@ -55,8 +64,36 @@ const Increment = ({ itemId, quantity, updateQuantity }: IncrementProps) => {
 	};
 
 	const decrementHandler = () => {
-		setValue(value + 1);
-		updateQuantity(itemId, value + 1);
+		if (typeFormat === 'online') {
+			dispatch(
+				openSnackbar({
+					open: true,
+					message: 'Online Book! You can only buy one.',
+					variant: 'alert',
+					alert: {
+						color: 'error',
+					},
+					close: true,
+				})
+			);
+		} else {
+			if (stock < value + 1) {
+				dispatch(
+					openSnackbar({
+						open: true,
+						message: 'No more stock',
+						variant: 'alert',
+						alert: {
+							color: 'error',
+						},
+						close: true,
+					})
+				);
+			} else {
+				setValue(value + 1);
+				updateQuantity(itemId, value + 1);
+			}
+		}
 	};
 
 	return (
@@ -144,6 +181,7 @@ const Cart = ({
 						</TableHead>
 						<TableBody>
 							{rows.map((row: CartProductStateProps, index: number) => {
+								console.log(row);
 								return (
 									<TableRow
 										key={index}
@@ -183,21 +221,15 @@ const Cart = ({
 											<Stack>
 												{row.price && (
 													<Typography variant="subtitle1">
-														{currency(row.price).format()}
-													</Typography>
-												)}
-												{row.price && (
-													<Typography
-														variant="caption"
-														sx={{ textDecoration: 'line-through' }}
-													>
-														{currency(row.price).format()}
+														{row.price} RON
 													</Typography>
 												)}
 											</Stack>
 										</TableCell>
 										<TableCell align="right">
 											<Increment
+												stock={row.stock}
+												typeFormat={row.typeFormat}
 												quantity={row.quantity}
 												itemId={row.itemId}
 												updateQuantity={updateQuantity}
@@ -206,7 +238,7 @@ const Cart = ({
 										<TableCell align="right">
 											{row.price && row.quantity && (
 												<Typography variant="subtitle1">
-													{currency(row.price * row.quantity).format()}
+													{row.price * row.quantity} RON
 												</Typography>
 											)}
 										</TableCell>
@@ -247,7 +279,6 @@ const Cart = ({
 					</Grid>
 					<Grid item xs={12} md={5} lg={4}>
 						<Stack spacing={gridSpacing}>
-							<CartDiscount />
 							<Button variant="contained" fullWidth onClick={onNext}>
 								Check Out
 							</Button>

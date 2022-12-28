@@ -19,9 +19,6 @@ import {
 	Typography,
 } from '@mui/material';
 
-// third-party
-import currency from 'currency.js';
-
 // project imports
 import OrderSummary from './OrderSummary';
 import AddressCard from './AddressCard';
@@ -130,7 +127,7 @@ const Payment = ({
 				<Grid container spacing={gridSpacing}>
 					<Grid item xs={12}>
 						<Stack>
-							<Typography variant="subtitle1">Delivery Options</Typography>
+							<Typography variant="subtitle1">Delivery</Typography>
 							<FormControl>
 								<RadioGroup
 									row
@@ -158,30 +155,6 @@ const Payment = ({
 															<Stack spacing={0.25}>
 																<Typography variant="subtitle1">
 																	Standard Delivery (Free)
-																</Typography>
-																<Typography variant="caption">
-																	Delivered on Monday 8 Jun
-																</Typography>
-															</Stack>
-														}
-														sx={{ '& .MuiSvgIcon-root': { fontSize: 32 } }}
-													/>
-												</Box>
-											</SubCard>
-										</Grid>
-										<Grid item xs={12} sm={6} md={12} lg={6}>
-											<SubCard content={false}>
-												<Box sx={{ p: 2 }}>
-													<FormControlLabel
-														value="fast"
-														control={<Radio />}
-														label={
-															<Stack spacing={0.25}>
-																<Typography variant="subtitle1">
-																	Fast Delivery ($5.00)
-																</Typography>
-																<Typography variant="caption">
-																	Delivered on Friday 5 Jun
 																</Typography>
 															</Stack>
 														}
@@ -335,7 +308,7 @@ const Payment = ({
 													<TableCell align="right">
 														{row.price && row.quantity && (
 															<Typography variant="subtitle1">
-																{currency(row.price * row.quantity).format()}
+																{row.price * row.quantity} RON
 															</Typography>
 														)}
 													</TableCell>
