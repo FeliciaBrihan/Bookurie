@@ -27,15 +27,18 @@ const ProductImages = ({ product }: { product: TGetBook }) => {
 				alignItems="center"
 				justifyContent="center"
 				spacing={gridSpacing}
+				sx={{ marginTop: '5px' }}
 			>
-				<Grid item xs={12}>
+				<Grid>
 					<MainCard content={false} sx={{ m: '0 auto' }}>
 						<CardMedia
 							component="img"
 							image={initialImage}
 							sx={{
 								borderRadius: `${borderRadius}px`,
-								overflow: 'hidden',
+								height: 450,
+								width: '100%',
+								objectFit: 'cover',
 							}}
 						/>
 					</MainCard>

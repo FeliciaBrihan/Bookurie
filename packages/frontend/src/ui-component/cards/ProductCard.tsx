@@ -141,7 +141,7 @@ const ProductCard = ({
 											<Grid>
 												<Grid item>
 													<Typography variant="h4">
-														{price! - price! * discount} RON
+														{Math.round(price! - price! * discount)} RON
 													</Typography>
 												</Grid>
 												<Grid item>

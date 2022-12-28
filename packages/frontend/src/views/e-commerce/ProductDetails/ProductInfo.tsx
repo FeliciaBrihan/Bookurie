@@ -38,6 +38,7 @@ import { getProduct } from 'store/slices/book';
 // import AddIcon from '@mui/icons-material/Add';
 // import RemoveIcon from '@mui/icons-material/Remove';
 import ShoppingCartTwoToneIcon from '@mui/icons-material/ShoppingCartTwoTone';
+import { LOAN_DISCOUNT } from 'constant';
 
 const validationSchema = yup.object({
 	color: yup.string().required('Color selection is required'),
@@ -188,23 +189,53 @@ const ProductInfo = ({ product }: { product: TGetBook }) => {
 				<Typography variant="body2"> by {product.author}</Typography>
 			</Grid>
 			<Grid item xs={12}></Grid>
+			<Grid item xs={12}></Grid>
 			<Grid item xs={12}>
 				{subscription && (
-					<Stack direction="row" alignItems="center" spacing={1}>
-						<Typography variant="h2" color="primary">
-							{product.price - product.price * discount} RON
-						</Typography>
-						<Typography variant="body1" sx={{ textDecoration: 'line-through' }}>
-							{product.price} RON
-						</Typography>
-					</Stack>
+					<>
+						<Stack direction="row" alignItems="center" spacing={1}>
+							<Typography variant="body1">Buy for</Typography>
+							<Typography variant="h3" color="primary">
+								{Math.round(product.price - product.price * discount)} RON
+							</Typography>
+							<Typography
+								variant="body1"
+								sx={{ textDecoration: 'line-through' }}
+							>
+								{product.price} RON
+							</Typography>
+						</Stack>
+						<Stack
+							direction="row"
+							alignItems="center"
+							spacing={1}
+							sx={{ marginTop: '50px' }}
+						>
+							<Typography variant="h5" color="secondary">
+								* Loan for free
+							</Typography>
+						</Stack>
+					</>
 				)}
 				{!subscription && (
-					<Stack direction="row" alignItems="center" spacing={1}>
-						<Typography variant="h2" color="primary">
-							{product.price} RON
-						</Typography>
-					</Stack>
+					<>
+						<Stack direction="row" alignItems="center" spacing={1}>
+							<Typography variant="h2" color="primary">
+								{product.price} RON
+							</Typography>
+						</Stack>
+						<Stack
+							direction="row"
+							alignItems="center"
+							spacing={1}
+							sx={{ marginTop: '50px' }}
+						>
+							<Typography variant="h5" color="secondary">
+								* Loan for{' '}
+								{Math.round(product.price - product.price * LOAN_DISCOUNT)} RON
+							</Typography>
+						</Stack>
+					</>
 				)}
 			</Grid>
 			<Grid item xs={12}>
@@ -230,12 +261,13 @@ const ProductInfo = ({ product }: { product: TGetBook }) => {
 											<TableRow>
 												<TableCell></TableCell>
 											</TableRow>
+											<TableRow>
+												<TableCell></TableCell>
+											</TableRow>
 										</TableBody>
 									</Table>
 								</Grid>
-								<Grid item xs={12}>
-									<Divider />
-								</Grid>
+								<Divider />
 								<Grid item xs={12}>
 									<Grid container spacing={1}>
 										<Grid item xs={6}>
