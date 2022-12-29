@@ -96,6 +96,10 @@ const ProductInfo = ({ product }: { product: TGetBook }) => {
 	const { subscription } = useSelector((state) => state.subscription);
 	const discount = subscription ? subscription.everyBookDiscount / 100 : 0;
 
+	const bookFinalPrice = subscription
+		? Math.round(product.price - product.price * discount)
+		: product.price;
+
 	const formik = useFormik({
 		enableReinitialize: true,
 		initialValues: {
@@ -103,7 +107,7 @@ const ProductInfo = ({ product }: { product: TGetBook }) => {
 			title: product.title,
 			author: product.author,
 			image: product.coverImage,
-			price: product.price,
+			price: bookFinalPrice,
 			stock: product.stock,
 			typeFormat: product.typeFormat,
 			quantity: 1,

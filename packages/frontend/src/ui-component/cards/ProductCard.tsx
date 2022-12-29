@@ -48,6 +48,10 @@ const ProductCard = ({
 		? subscription?.everyBookDiscount / 100
 		: 0;
 
+	const bookFinalPrice = subscription
+		? Math.round(price! - price! * discount)
+		: price;
+
 	const addCart = () => {
 		dispatch(
 			addProduct(
@@ -59,7 +63,7 @@ const ProductCard = ({
 					author,
 					typeFormat,
 					stock,
-					price,
+					price: bookFinalPrice,
 					quantity: 1,
 				},
 				cart.checkout.products
