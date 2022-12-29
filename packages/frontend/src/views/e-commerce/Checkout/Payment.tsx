@@ -112,8 +112,7 @@ const Payment = ({
 				})
 			);
 		} else {
-			if (loggedUser!.budget < checkout.total) {
-				console.log('hey');
+			if (loggedUser!.budget <= checkout.total) {
 				dispatch(
 					openSnackbar({
 						open: true,
@@ -126,14 +125,17 @@ const Payment = ({
 					})
 				);
 			} else {
-				onNext();
-				setComplete(true);
-				checkout.products.forEach(async (product) => {
-					for (let i = 0; i < product.quantity; i++) {
-						console.log(i);
+				for (const product of checkout.products) {
+					if (product.quantity > 1) {
+						for (let i = 0; i < product.quantity; i++) {
+							await dispatch(create(product.id));
+						}
+					} else {
 						await dispatch(create(product.id));
 					}
-				});
+				}
+				onNext();
+				setComplete(true);
 			}
 		}
 	};
