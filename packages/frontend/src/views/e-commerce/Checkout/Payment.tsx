@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useDispatch } from 'store';
+import { useDispatch, useSelector } from 'store';
 
 // material-ui
 import {
@@ -63,6 +63,7 @@ const Payment = ({
 	const [payment, setPayment] = useState(checkout.payment.method);
 	const [rows, setRows] = useState(checkout.products);
 	const [cards, setCards] = useState(checkout.payment.card);
+	const { loggedUser } = useSelector((state) => state.user);
 
 	const [open, setOpen] = useState(false);
 	const handleClickOpen = () => {
@@ -97,11 +98,7 @@ const Payment = ({
 		dispatch(setPaymentMethod(value));
 	};
 
-	const createPurchase = async (id: number) => {
-		await dispatch(create(id));
-	};
-
-	const completeHandler = () => {
+	const completeHandler = async () => {
 		if (payment === 'card' && (cards === '' || cards === null)) {
 			dispatch(
 				openSnackbar({
@@ -115,9 +112,29 @@ const Payment = ({
 				})
 			);
 		} else {
-			onNext();
-			setComplete(true);
-			checkout.products.forEach((product) => createPurchase(product.id));
+			if (loggedUser!.budget < checkout.total) {
+				console.log('hey');
+				dispatch(
+					openSnackbar({
+						open: true,
+						message: 'Not enough money',
+						variant: 'alert',
+						alert: {
+							color: 'error',
+						},
+						close: true,
+					})
+				);
+			} else {
+				onNext();
+				setComplete(true);
+				checkout.products.forEach(async (product) => {
+					for (let i = 0; i < product.quantity; i++) {
+						console.log(i);
+						await dispatch(create(product.id));
+					}
+				});
+			}
 		}
 	};
 
