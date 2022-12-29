@@ -94,10 +94,23 @@ const ProductInfo = ({ product }: { product: TGetBook }) => {
 
 	const cart = useSelector((state) => state.cart);
 	const { subscription } = useSelector((state) => state.subscription);
+	const { loggedUser } = useSelector((state) => state.user);
 	const discount = subscription ? subscription.everyBookDiscount / 100 : 0;
 
+	const bookWithDiscount = Math.round(product.price - product.price * discount);
+
+	const isPremium = subscription?.type === 'premium';
+	const isOnline = product.typeFormat === 'online';
+
 	const bookFinalPrice = subscription
-		? Math.round(product.price - product.price * discount)
+		? isPremium
+			? isOnline
+				? 0
+				: bookWithDiscount
+			: isOnline &&
+			  loggedUser!.booksReadThisMonth < subscription.monthlyFreeBooks
+			? 0
+			: bookWithDiscount
 		: product.price;
 
 	const formik = useFormik({
@@ -196,51 +209,35 @@ const ProductInfo = ({ product }: { product: TGetBook }) => {
 			<Grid item xs={12}></Grid>
 			<Grid item xs={12}></Grid>
 			<Grid item xs={12}>
-				{subscription && (
-					<>
-						<Stack direction="row" alignItems="center" spacing={1}>
-							<Typography variant="body1">Buy for</Typography>
-							<Typography variant="h3" color="primary">
-								{Math.round(product.price - product.price * discount)} RON
-							</Typography>
-							<Typography
-								variant="body1"
-								sx={{ textDecoration: 'line-through' }}
-							>
-								{product.price} RON
-							</Typography>
-						</Stack>
-						<Stack
-							direction="row"
-							alignItems="center"
-							spacing={1}
-							sx={{ marginTop: '50px' }}
-						>
+				<Stack direction="row" alignItems="center" spacing={1}>
+					<Typography variant="body1">Buy for</Typography>
+					<Typography variant="h3" color="primary">
+						{bookFinalPrice} RON
+					</Typography>
+					{subscription && (
+						<Typography variant="body1" sx={{ textDecoration: 'line-through' }}>
+							{product.price} RON
+						</Typography>
+					)}
+				</Stack>
+				{product.typeFormat === 'printed' && (
+					<Stack
+						direction="row"
+						alignItems="center"
+						spacing={1}
+						sx={{ marginTop: '50px' }}
+					>
+						{subscription ? (
 							<Typography variant="h5" color="secondary">
 								* Loan for free
 							</Typography>
-						</Stack>
-					</>
-				)}
-				{!subscription && (
-					<>
-						<Stack direction="row" alignItems="center" spacing={1}>
-							<Typography variant="h2" color="primary">
-								{product.price} RON
-							</Typography>
-						</Stack>
-						<Stack
-							direction="row"
-							alignItems="center"
-							spacing={1}
-							sx={{ marginTop: '50px' }}
-						>
+						) : (
 							<Typography variant="h5" color="secondary">
 								* Loan for{' '}
 								{Math.round(product.price - product.price * LOAN_DISCOUNT)} RON
 							</Typography>
-						</Stack>
-					</>
+						)}
+					</Stack>
 				)}
 			</Grid>
 			<Grid item xs={12}>

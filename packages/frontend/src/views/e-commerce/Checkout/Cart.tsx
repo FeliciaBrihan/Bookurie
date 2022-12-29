@@ -219,11 +219,9 @@ const Cart = ({
 										</TableCell>
 										<TableCell align="right">
 											<Stack>
-												{row.price && (
-													<Typography variant="subtitle1">
-														{row.price} RON
-													</Typography>
-												)}
+												<Typography variant="subtitle1">
+													{row.price} RON
+												</Typography>
 											</Stack>
 										</TableCell>
 										<TableCell align="right">
@@ -236,7 +234,7 @@ const Cart = ({
 											/>
 										</TableCell>
 										<TableCell align="right">
-											{row.price && row.quantity && (
+											{row.quantity && (
 												<Typography variant="subtitle1">
 													{row.price * row.quantity} RON
 												</Typography>

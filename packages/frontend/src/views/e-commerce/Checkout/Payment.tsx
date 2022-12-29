@@ -323,7 +323,7 @@ const Payment = ({
 														</Grid>
 													</TableCell>
 													<TableCell align="right">
-														{row.price && row.quantity && (
+														{row.quantity && (
 															<Typography variant="subtitle1">
 																{row.price * row.quantity} RON
 															</Typography>

@@ -43,13 +43,24 @@ const ProductCard = ({
 	const prodProfile = image && prodImage(`./${image}`);
 	// const [productRating] = useState<number | undefined>(rating);
 	const cart = useSelector((state) => state.cart);
+	const { loggedUser } = useSelector((state) => state.user);
 	const { subscription } = useSelector((state) => state.subscription);
-	const discount = subscription?.everyBookDiscount
-		? subscription?.everyBookDiscount / 100
-		: 0;
+
+	const discount = subscription ? subscription.everyBookDiscount / 100 : 0;
+	const bookWithDiscount = Math.round(price! - price! * discount);
+
+	const isPremium = subscription?.type === 'premium';
+	const isOnline = typeFormat === 'online';
 
 	const bookFinalPrice = subscription
-		? Math.round(price! - price! * discount)
+		? isPremium
+			? isOnline
+				? 0
+				: bookWithDiscount
+			: isOnline &&
+			  loggedUser!.booksReadThisMonth < subscription.monthlyFreeBooks
+			? 0
+			: bookWithDiscount
 		: price;
 
 	const addCart = () => {
@@ -151,13 +162,13 @@ const ProductCard = ({
 									alignItems="center"
 								>
 									<Grid container spacing={1}>
-										{subscription && (
-											<Grid>
-												<Grid item>
-													<Typography variant="h4">
-														{Math.round(price! - price! * discount)} RON
-													</Typography>
-												</Grid>
+										<Grid>
+											<Grid item>
+												<Typography variant="h4">
+													{bookFinalPrice} RON
+												</Typography>
+											</Grid>
+											{subscription && (
 												<Grid item>
 													<Typography
 														variant="h6"
@@ -169,13 +180,8 @@ const ProductCard = ({
 														{price} RON
 													</Typography>
 												</Grid>
-											</Grid>
-										)}
-										{!subscription && (
-											<Grid item>
-												<Typography variant="h4">{price} RON</Typography>
-											</Grid>
-										)}
+											)}
+										</Grid>
 									</Grid>
 									{stock ? (
 										<Button

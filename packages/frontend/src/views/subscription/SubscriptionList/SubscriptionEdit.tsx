@@ -48,6 +48,7 @@ const SubscriptionEdit = ({ handleCloseDialog, data }: ProductAddProps) => {
 		name: data.name,
 		monthlyFee: data.monthlyFee,
 		monthlyFreeBooks: data.monthlyFreeBooks,
+		everyBookDiscount: data.everyBookDiscount,
 		type: data.type,
 	};
 
@@ -71,6 +72,7 @@ const SubscriptionEdit = ({ handleCloseDialog, data }: ProductAddProps) => {
 				name: formValue.name,
 				monthlyFee: formValue.monthlyFee,
 				monthlyFreeBooks: formValue.monthlyFreeBooks,
+				everyBookDiscount: formValue.everyBookDiscount,
 				type: formValue.type,
 			},
 			{ sync: true }
@@ -124,7 +126,7 @@ const SubscriptionEdit = ({ handleCloseDialog, data }: ProductAddProps) => {
 							id="monthlyFreeBooks"
 							required
 							fullWidth
-							defaultValue={formValue.monthlyFee}
+							defaultValue={formValue.monthlyFreeBooks}
 							label="Enter Monthly Free Books Number"
 							onChange={handleValueChange}
 						/>
@@ -134,7 +136,7 @@ const SubscriptionEdit = ({ handleCloseDialog, data }: ProductAddProps) => {
 							id="everyBookDiscount"
 							required
 							fullWidth
-							defaultValue={formValue.monthlyFee}
+							defaultValue={formValue.everyBookDiscount}
 							label="Enter Book Discount"
 							onChange={handleValueChange}
 						/>
