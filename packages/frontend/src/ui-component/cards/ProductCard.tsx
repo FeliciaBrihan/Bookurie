@@ -64,33 +64,50 @@ const ProductCard = ({
 		: price;
 
 	const addCart = () => {
-		dispatch(
-			addProduct(
-				{
-					id,
-					title,
-					image,
-					genre,
-					author,
-					typeFormat,
-					stock,
-					price: bookFinalPrice,
-					quantity: 1,
-				},
-				cart.checkout.products
-			)
+		const filteredProducts = cart.checkout.products.filter(
+			(prod) => prod.id === id
 		);
-		dispatch(
-			openSnackbar({
-				open: true,
-				message: 'Add To Cart Success',
-				variant: 'alert',
-				alert: {
-					color: 'success',
-				},
-				close: false,
-			})
-		);
+		if (filteredProducts.length === 0) {
+			dispatch(
+				addProduct(
+					{
+						id,
+						title,
+						image,
+						genre,
+						author,
+						typeFormat,
+						stock,
+						price: bookFinalPrice,
+						quantity: 1,
+					},
+					cart.checkout.products
+				)
+			);
+			dispatch(
+				openSnackbar({
+					open: true,
+					message: 'Add To Cart Success',
+					variant: 'alert',
+					alert: {
+						color: 'success',
+					},
+					close: true,
+				})
+			);
+		} else {
+			dispatch(
+				openSnackbar({
+					open: true,
+					message: 'Book Already In Cart!',
+					variant: 'alert',
+					alert: {
+						color: 'warning',
+					},
+					close: true,
+				})
+			);
+		}
 	};
 
 	const [isLoading, setLoading] = useState(true);

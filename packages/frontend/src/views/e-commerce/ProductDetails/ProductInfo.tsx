@@ -147,18 +147,35 @@ const ProductInfo = ({ product }: { product: TGetBook }) => {
 	const { values, handleSubmit } = formik;
 
 	const addCart = () => {
-		dispatch(addProduct(values, cart.checkout.products));
-		dispatch(
-			openSnackbar({
-				open: true,
-				message: 'Add To Cart Success',
-				variant: 'alert',
-				alert: {
-					color: 'success',
-				},
-				close: false,
-			})
+		const filteredProducts = cart.checkout.products.filter(
+			(prod) => prod.id === product.id
 		);
+		if (filteredProducts.length === 0) {
+			dispatch(addProduct(values, cart.checkout.products));
+			dispatch(
+				openSnackbar({
+					open: true,
+					message: 'Add To Cart Success',
+					variant: 'alert',
+					alert: {
+						color: 'success',
+					},
+					close: true,
+				})
+			);
+		} else {
+			dispatch(
+				openSnackbar({
+					open: true,
+					message: 'Book Already In Cart!',
+					variant: 'alert',
+					alert: {
+						color: 'warning',
+					},
+					close: true,
+				})
+			);
+		}
 	};
 
 	return (
