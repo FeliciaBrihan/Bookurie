@@ -224,7 +224,7 @@ const Cart = ({
 												</Typography>
 											</Stack>
 										</TableCell>
-										<TableCell align="right">
+										<TableCell align="center">
 											<Increment
 												stock={row.stock}
 												typeFormat={row.typeFormat}

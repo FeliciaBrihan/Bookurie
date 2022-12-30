@@ -316,9 +316,7 @@ const Payment = ({
 																		<Typography
 																			variant="caption"
 																			sx={{ fontSize: '1rem' }}
-																		>
-																			|
-																		</Typography>
+																		></Typography>
 																	</Stack>
 																</Stack>
 															</Grid>

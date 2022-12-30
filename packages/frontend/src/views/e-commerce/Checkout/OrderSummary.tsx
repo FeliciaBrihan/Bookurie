@@ -28,31 +28,17 @@ const OrderSummary = ({ checkout }: { checkout: CartCheckoutStateProps }) => (
 					<TableRow>
 						<TableCell>Sub Total</TableCell>
 						<TableCell align="right">
-							{checkout.subtotal && (
-								<Typography variant="subtitle1">
-									{checkout.subtotal} RON
-								</Typography>
-							)}
-						</TableCell>
-					</TableRow>
-					<TableRow>
-						<TableCell>Coupon Discount</TableCell>
-						<TableCell align="right">
-							{checkout.discount && (
-								<Typography variant="subtitle1">
-									{checkout.discount <= 0 ? '-' : checkout.discount} RON
-								</Typography>
-							)}
+							<Typography variant="subtitle1">
+								{checkout.subtotal} RON
+							</Typography>
 						</TableCell>
 					</TableRow>
 					<TableRow>
 						<TableCell>Shipping Charges</TableCell>
 						<TableCell align="right">
-							{checkout.shipping && (
-								<Typography variant="subtitle1">
-									{checkout.shipping <= 0 ? '-' : checkout.shipping}
-								</Typography>
-							)}
+							<Typography variant="subtitle1">
+								{checkout.shipping <= 0 ? 0 : checkout.shipping} RON
+							</Typography>
 						</TableCell>
 					</TableRow>
 					<TableRow>
@@ -60,11 +46,7 @@ const OrderSummary = ({ checkout }: { checkout: CartCheckoutStateProps }) => (
 							<Typography variant="subtitle1">Total</Typography>
 						</TableCell>
 						<TableCell align="right" sx={{ borderBottom: 'none' }}>
-							{checkout.total && (
-								<Typography variant="subtitle1">
-									{checkout.total} RON
-								</Typography>
-							)}
+							<Typography variant="subtitle1">{checkout.total} RON</Typography>
 						</TableCell>
 					</TableRow>
 				</TableBody>
