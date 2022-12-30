@@ -39,6 +39,9 @@ import { getProduct } from 'store/slices/book';
 // import RemoveIcon from '@mui/icons-material/Remove';
 import ShoppingCartTwoToneIcon from '@mui/icons-material/ShoppingCartTwoTone';
 import { LOAN_DISCOUNT } from 'constant';
+import { useEffect, useState } from 'react';
+import { TGetPurchase } from 'types/purchase';
+import { getUserPurchases } from 'store/slices/purchase';
 
 const validationSchema = yup.object({
 	color: yup.string().required('Color selection is required'),
@@ -95,6 +98,9 @@ const ProductInfo = ({ product }: { product: TGetBook }) => {
 	const cart = useSelector((state) => state.cart);
 	const { subscription } = useSelector((state) => state.subscription);
 	const { loggedUser } = useSelector((state) => state.user);
+	const [purchases, setPurchases] = useState<TGetPurchase[]>([]);
+	const purchasesState = useSelector((state) => state.purchase);
+
 	const discount = subscription ? subscription.everyBookDiscount / 100 : 0;
 
 	const bookWithDiscount = Math.round(product.price - product.price * discount);
@@ -112,6 +118,14 @@ const ProductInfo = ({ product }: { product: TGetBook }) => {
 			? 0
 			: bookWithDiscount
 		: product.price;
+
+	useEffect(() => {
+		dispatch(getUserPurchases());
+	}, []);
+
+	useEffect(() => {
+		setPurchases(purchasesState.userPurchases);
+	}, [purchasesState]);
 
 	const formik = useFormik({
 		enableReinitialize: true,
@@ -150,7 +164,14 @@ const ProductInfo = ({ product }: { product: TGetBook }) => {
 		const filteredProducts = cart.checkout.products.filter(
 			(prod) => prod.id === product.id
 		);
-		if (filteredProducts.length === 0) {
+		const filteredPurchases = purchases
+			? purchases.filter((purchase) => {
+					if (product.typeFormat === 'online')
+						return purchase.BookId === product.id;
+			  })
+			: [];
+
+		if (filteredProducts.length === 0 && filteredPurchases.length === 0) {
 			dispatch(addProduct(values, cart.checkout.products));
 			dispatch(
 				openSnackbar({
@@ -167,7 +188,10 @@ const ProductInfo = ({ product }: { product: TGetBook }) => {
 			dispatch(
 				openSnackbar({
 					open: true,
-					message: 'Book Already In Cart!',
+					message:
+						filteredPurchases.length > 0
+							? 'Online Book Already Bought!'
+							: 'Book Already In Cart',
 					variant: 'alert',
 					alert: {
 						color: 'warning',
