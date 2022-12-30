@@ -138,6 +138,8 @@ const Checkout = () => {
 	const [billing, setBilling] = useState(cart.checkout.billing);
 	const [address, setAddress] = useState<Address[]>([]);
 	const { addresses } = useSelector((state) => state.book);
+	const { loggedUser } = useSelector((state) => state.user);
+	const { subscription } = useSelector((state) => state.subscription);
 
 	useEffect(() => {
 		setAddress(addresses);
@@ -187,7 +189,30 @@ const Checkout = () => {
 	};
 
 	const onNext = () => {
-		dispatch(setNextStep());
+		if (!subscription || subscription?.type === 'premium')
+			dispatch(setNextStep());
+		if (subscription?.type === 'basic') {
+			const remainingFreeBooks =
+				subscription.monthlyFreeBooks - loggedUser!.booksReadThisMonth;
+			const onlineBooksInCart = cart.checkout.products.filter(
+				(product) => product.typeFormat === 'online'
+			);
+			if (onlineBooksInCart.length > remainingFreeBooks) {
+				dispatch(
+					openSnackbar({
+						open: true,
+						message: `You can only buy ${remainingFreeBooks} free books`,
+						variant: 'alert',
+						alert: {
+							color: 'error',
+						},
+						close: true,
+					})
+				);
+			} else {
+				dispatch(setNextStep());
+			}
+		}
 	};
 
 	const onBack = () => {
