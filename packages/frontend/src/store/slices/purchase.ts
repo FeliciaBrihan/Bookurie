@@ -77,3 +77,16 @@ export function getUserPurchases() {
 		}
 	};
 }
+
+export function deletePurchase(id: number, options: { sync?: boolean }) {
+	return async () => {
+		try {
+			const response = await axios.delete(`/purchase/${id}`);
+			console.log(response);
+			if (options?.sync === true) purchaseApi.getAll()();
+		} catch (error) {
+			dispatch(slice.actions.hasError(error));
+			console.log(error);
+		}
+	};
+}
