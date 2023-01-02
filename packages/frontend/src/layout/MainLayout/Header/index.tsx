@@ -8,7 +8,6 @@ import useConfig from 'hooks/useConfig';
 import LogoSection from '../LogoSection';
 import ProfileSection from './ProfileSection';
 import LocalizationSection from './LocalizationSection';
-import MegaMenuSection from './MegaMenuSection';
 
 import { useDispatch, useSelector } from 'store';
 import { openDrawer } from 'store/slices/menu';
@@ -86,19 +85,12 @@ const Header = () => {
 				)}
 			</Box>
 			{/* header search */}
-			<></> <Box sx={{ flexGrow: 1 }} />
 			<Box sx={{ flexGrow: 1 }} />
-			{/* mega-menu */}
-			<Box sx={{ display: { xs: 'none', sm: 'block' } }}>
-				<MegaMenuSection />
-			</Box>
 			{/* live customization & localization */}
-			<Box sx={{ display: { xs: 'none', sm: 'block' } }}>
+			<Box sx={{ display: { xs: 'none', sm: 'block', paddingRight: '10px' } }}>
 				<LocalizationSection />
-			</Box>
+			</Box>{' '}
 			{/* notification & profile */}
-			<></>
-			<></>
 			<ProfileSection />
 			{/* mobile header */}
 			<Box sx={{ display: { xs: 'block', sm: 'none' } }}>

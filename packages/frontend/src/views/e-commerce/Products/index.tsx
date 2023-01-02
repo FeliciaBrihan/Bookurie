@@ -23,7 +23,7 @@ import PerfectScrollbar from 'react-perfect-scrollbar';
 
 // project imports
 import SortOptions from './SortOptions';
-import ProductEmpty from './ProductEmpty';
+// import ProductEmpty from './ProductEmpty';
 import ProductFilter from './ProductFilter';
 import ProductFilterView from './ProductFilterView';
 import ProductCard from 'ui-component/cards/ProductCard';
@@ -246,13 +246,14 @@ const BooksList = () => {
 				/>
 			</Grid>
 		));
-	} else {
-		bookResult = (
-			<Grid item xs={12} sx={{ mt: 3 }}>
-				<ProductEmpty />
-			</Grid>
-		);
 	}
+	// else {
+	// 	bookResult = (
+	// 		<Grid item xs={12} sx={{ mt: 3 }}>
+	// 			<ProductEmpty />
+	// 		</Grid>
+	// 	);
+	// }
 
 	const spacingMD = matchDownMD ? 1 : 1.5;
 
@@ -288,7 +289,7 @@ const BooksList = () => {
 							spacing={matchDownSM ? 0.5 : spacingMD}
 						>
 							<TextField
-								sx={{ width: { xs: 140, md: 'auto' } }}
+								sx={{ width: { xs: 50, md: 'auto' } }}
 								InputProps={{
 									startAdornment: (
 										<InputAdornment position="start">
