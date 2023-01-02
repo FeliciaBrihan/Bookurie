@@ -20,10 +20,15 @@ export async function create(
 
 		const book = await Book.findByPk(bookId);
 
+		const alreadyLoaned = await Loan.findOne({
+			where: { BookId: bookId, UserId: user.id },
+		});
+
 		if (!book) return returnError(res, 'Invalid id');
 		if (book.typeFormat === 'online')
-			return returnError(res, 'Online book. Cannot be borrowed!');
-		if (!book.stock) return returnError(res, 'Book out of stock!');
+			return returnError(res, 'Online Book. Cannot Be Borrowed!');
+		if (!book.stock) return returnError(res, 'Book Out Of Stock!');
+		if (alreadyLoaned) return returnError(res, 'Book Already Borrowed!');
 
 		if (!user.subscriptionId) {
 			const bookFinalPrice = calculatePrice(
