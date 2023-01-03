@@ -20,6 +20,10 @@ import HowToRegIcon from '@mui/icons-material/HowToReg';
 import ShuffleOnIcon from '@mui/icons-material/ShuffleOn';
 import CardGiftcardIcon from '@mui/icons-material/CardGiftcard';
 import SubscriptionsIcon from '@mui/icons-material/Subscriptions';
+import CameraIcon from '@mui/icons-material/Camera';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
+import BadgeIcon from '@mui/icons-material/Badge';
 
 // constant
 const icons = {
@@ -38,7 +42,11 @@ const icons = {
 	CollectionsIcon,
 	ShuffleOnIcon,
 	CardGiftcardIcon,
-	SubscriptionsIcon
+	SubscriptionsIcon,
+	CameraIcon,
+	ShoppingCartIcon,
+	LibraryBooksIcon,
+	BadgeIcon,
 };
 
 // ==============================|| DASHBOARD MENU ITEMS ||============================== //
@@ -70,7 +78,7 @@ const appMenu: NavItemType = {
 			title: <FormattedMessage id="loans" />,
 			type: 'item',
 			url: '/loans',
-			icon: icons.CollectionsIcon,
+			icon: icons.LibraryBooksIcon,
 			breadcrumbs: false,
 		},
 		{
@@ -78,7 +86,7 @@ const appMenu: NavItemType = {
 			title: <FormattedMessage id="purchases" />,
 			type: 'item',
 			url: '/purchases',
-			icon: icons.ShoppingBagIcon,
+			icon: icons.ShoppingCartIcon,
 			breadcrumbs: false,
 		},
 		{
@@ -94,7 +102,7 @@ const appMenu: NavItemType = {
 			title: <FormattedMessage id="roles" />,
 			type: 'item',
 			url: '/roles',
-			icon: icons.EngineeringTwoToneIcon,
+			icon: icons.BadgeIcon,
 			breadcrumbs: false,
 		},
 		{
@@ -118,7 +126,7 @@ const appMenu: NavItemType = {
 			title: <FormattedMessage id="raffles" />,
 			type: 'item',
 			url: '/raffles',
-			icon: icons.ShuffleOnIcon,
+			icon: icons.CameraIcon,
 			breadcrumbs: false,
 		},
 		{

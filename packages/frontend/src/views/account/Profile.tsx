@@ -39,7 +39,7 @@ const Profile = () => {
 
 	return (
 		<Grid container spacing={gridSpacing}>
-			<Grid item lg={4} xs={12}>
+			<Grid xs={12}>
 				<SubCard
 					title={
 						<Grid container spacing={2} alignItems="center">
@@ -131,7 +131,7 @@ const Profile = () => {
 								/>
 								<ListItemSecondaryAction>
 									<Typography variant="subtitle2" align="right">
-										{new Intl.DateTimeFormat('en-US', {
+										{new Intl.DateTimeFormat('en-GB', {
 											year: 'numeric',
 											month: '2-digit',
 											day: '2-digit',

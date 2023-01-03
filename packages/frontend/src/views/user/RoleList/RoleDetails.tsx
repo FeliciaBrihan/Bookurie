@@ -63,10 +63,30 @@ const RoleDetails = ({ handleCloseDialog, data }: ProductAddProps) => {
 						<Text label="ID" value={data.id} />
 					</Grid>
 					<Grid item xs={12}>
-						<Text label="Created At" value={String(data.createdAt)} />
+						<Text
+							label="Created At"
+							value={new Intl.DateTimeFormat('en-GB', {
+								year: 'numeric',
+								month: '2-digit',
+								day: '2-digit',
+								hour: '2-digit',
+								minute: '2-digit',
+								second: '2-digit',
+							}).format(new Date(data.createdAt))}
+						/>
 					</Grid>
 					<Grid item xs={12}>
-						<Text label="Last Update" value={String(data.updatedAt)} />
+						<Text
+							label="Last Update"
+							value={new Intl.DateTimeFormat('en-GB', {
+								year: 'numeric',
+								month: '2-digit',
+								day: '2-digit',
+								hour: '2-digit',
+								minute: '2-digit',
+								second: '2-digit',
+							}).format(new Date(data.updatedAt))}
+						/>
 					</Grid>
 				</Grid>
 			</DialogContent>

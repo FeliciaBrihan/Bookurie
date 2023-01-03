@@ -164,17 +164,7 @@ const BookEdit = ({ handleCloseDialog, data }: ProductAddProps) => {
 							onChange={handleValueChange}
 						/>
 					</Grid>
-					<Grid item xs={12}>
-						<TextField
-							id="price"
-							required
-							fullWidth
-							defaultValue={formValue.price}
-							label="Enter Book Price"
-							onChange={handleValueChange}
-						/>
-					</Grid>
-					<Grid item xs={12}>
+					<Grid item xs={6}>
 						<TextField
 							id="typeFormat"
 							select
@@ -190,13 +180,43 @@ const BookEdit = ({ handleCloseDialog, data }: ProductAddProps) => {
 							))}
 						</TextField>
 					</Grid>
-					<Grid item xs={12}>
+					<Grid item xs={6}>
+						<TextField
+							id="price"
+							required
+							fullWidth
+							defaultValue={formValue.price}
+							label="Enter Book Price"
+							onChange={handleValueChange}
+						/>
+					</Grid>
+					<Grid item xs={6}>
 						<TextField
 							id="stock"
 							required
 							fullWidth
 							defaultValue={formValue.stock}
 							label="Enter Book Stock"
+							onChange={handleValueChange}
+						/>
+					</Grid>
+					<Grid item xs={6}>
+						<TextField
+							id="pages"
+							required
+							fullWidth
+							defaultValue={formValue.pages}
+							label="Enter Book Pages"
+							onChange={handleValueChange}
+						/>
+					</Grid>
+					<Grid item xs={12}>
+						<TextField
+							id="genre"
+							required
+							fullWidth
+							defaultValue={formValue.genre}
+							label="Enter Book Genre"
 							onChange={handleValueChange}
 						/>
 					</Grid>
@@ -222,11 +242,11 @@ const BookEdit = ({ handleCloseDialog, data }: ProductAddProps) => {
 					</Grid>
 					<Grid item xs={12}>
 						<TextField
-							id="genre"
+							id="description"
 							required
 							fullWidth
-							defaultValue={formValue.genre}
-							label="Enter Book Genre"
+							defaultValue={formValue.description}
+							label="Enter Book Description"
 							onChange={handleValueChange}
 						/>
 					</Grid>

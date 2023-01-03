@@ -326,7 +326,16 @@ const RaffleList = () => {
 														#{row.id}
 													</Typography>
 												</TableCell>
-												<TableCell>{String(row.createdAt)}</TableCell>
+												<TableCell>
+													{new Intl.DateTimeFormat('en-GB', {
+														year: 'numeric',
+														month: '2-digit',
+														day: '2-digit',
+														hour: '2-digit',
+														minute: '2-digit',
+														second: '2-digit',
+													}).format(new Date(row.createdAt))}
+												</TableCell>
 												<TableCell>
 													{row.BookId ? getBookTitle(row.BookId) : '-'}
 												</TableCell>
@@ -360,7 +369,7 @@ const RaffleList = () => {
 					/>
 				</>
 			)}
-			{!rows && `You don't have any raffle prizes, yer`}
+			{!rows && `You did not win any raffle, yet!`}
 		</MainCard>
 	);
 };

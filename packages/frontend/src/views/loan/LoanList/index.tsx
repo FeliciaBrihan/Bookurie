@@ -33,7 +33,7 @@ import { useDispatch, useSelector } from 'store';
 import DeleteIcon from '@mui/icons-material/Delete';
 import SearchIcon from '@mui/icons-material/Search';
 import VisibilityTwoToneIcon from '@mui/icons-material/VisibilityTwoTone';
-import EditTwoToneIcon from '@mui/icons-material/EditTwoTone';
+import PublishedWithChangesIcon from '@mui/icons-material/PublishedWithChanges';
 import DoneIcon from '@mui/icons-material/Done';
 import {
 	ArrangementOrder,
@@ -274,7 +274,7 @@ const LoanList = () => {
 			const newRows = rows.filter((row: KeyedObject) => {
 				let matches = true;
 
-				const properties = ['id', 'isAccepted', 'isReturned'];
+				const properties = ['BookId'];
 				let containsQuery = false;
 
 				properties.forEach((property) => {
@@ -412,7 +412,7 @@ const LoanList = () => {
 								),
 							}}
 							onChange={handleSearch}
-							placeholder="Search Loan"
+							placeholder="Search Loan by Book Id"
 							value={search}
 							size="small"
 						/>
@@ -548,7 +548,9 @@ const LoanList = () => {
 													size="large"
 													onClick={handleOpenReturn(row)}
 												>
-													<EditTwoToneIcon sx={{ fontSize: '1.3rem' }} />
+													<PublishedWithChangesIcon
+														sx={{ fontSize: '1.3rem' }}
+													/>
 												</IconButton>
 											</Tooltip>
 										</TableCell>

@@ -264,16 +264,6 @@ const BookAdd = ({ open, handleCloseDialog }: ProductAddProps) => {
 							</Grid>
 							<Grid item xs={12}>
 								<TextField
-									id="description"
-									fullWidth
-									multiline
-									rows={3}
-									label="Enter Book Description"
-									onChange={handleValueChange}
-								/>
-							</Grid>
-							<Grid item xs={12}>
-								<TextField
 									id="publishedYear"
 									fullWidth
 									label="Enter Book Published Year"
@@ -285,6 +275,16 @@ const BookAdd = ({ open, handleCloseDialog }: ProductAddProps) => {
 									id="publishingHouse"
 									fullWidth
 									label="Enter Book Publishing House"
+									onChange={handleValueChange}
+								/>
+							</Grid>
+							<Grid item xs={12}>
+								<TextField
+									id="description"
+									fullWidth
+									multiline
+									rows={4}
+									label="Enter Book Description"
 									onChange={handleValueChange}
 								/>
 							</Grid>

@@ -328,7 +328,11 @@ const LoanList = () => {
 												</TableCell>
 												<TableCell>
 													{row.expirationDate
-														? String(row.expirationDate)
+														? new Intl.DateTimeFormat('en-GB', {
+																year: 'numeric',
+																month: '2-digit',
+																day: '2-digit',
+														  }).format(new Date(row.expirationDate))
 														: '--'}
 												</TableCell>
 												<TableCell>{getBookTitle(row.BookId)}</TableCell>

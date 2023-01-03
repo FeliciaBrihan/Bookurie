@@ -528,11 +528,15 @@ const ProductList = () => {
 											onClick={(event) => handleClick(event, row.id)}
 											sx={{ cursor: 'pointer' }}
 										>
-											<Avatar
-												src={row.coverImage && prodImage(`./${row.coverImage}`)}
-												size="md"
-												variant="rounded"
-											/>
+											<Link to={`/books/${row.id}`}>
+												<Avatar
+													src={
+														row.coverImage && prodImage(`./${row.coverImage}`)
+													}
+													size="md"
+													variant="rounded"
+												/>
+											</Link>
 										</TableCell>
 										<TableCell
 											component="th"

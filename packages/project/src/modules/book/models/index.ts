@@ -23,7 +23,7 @@ export function getModelBook(sequelize: Sequelize) {
 
 			genre: DataTypes.STRING,
 
-			description: DataTypes.STRING,
+			description: DataTypes.TEXT,
 
 			pages: {
 				type: DataTypes.INTEGER,

@@ -326,7 +326,13 @@ const PurchaseList = () => {
 														#{row.id}
 													</Typography>
 												</TableCell>
-												<TableCell>{String(row.createdAt)}</TableCell>
+												<TableCell>
+													{new Intl.DateTimeFormat('en-GB', {
+														year: 'numeric',
+														month: '2-digit',
+														day: '2-digit',
+													}).format(new Date(row.createdAt))}
+												</TableCell>
 												<TableCell>{getBookTitle(row.BookId)}</TableCell>
 												<TableCell>{row.price} RON</TableCell>
 											</TableRow>
