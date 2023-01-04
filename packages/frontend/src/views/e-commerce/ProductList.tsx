@@ -579,7 +579,7 @@ const ProductList = () => {
 												<Chip
 													size="small"
 													label={`In Stock`}
-													chipcolor={'success'}
+													chipcolor={'primary'}
 													sx={{
 														borderRadius: '4px',
 														textTransform: 'capitalize',

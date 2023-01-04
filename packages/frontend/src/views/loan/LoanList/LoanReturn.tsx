@@ -22,6 +22,8 @@ import AnimateButton from 'ui-component/extended/AnimateButton';
 // assets
 import { TGetLoan, TSetLoan } from 'types/loan';
 import { loanApi } from 'store/slices/loan';
+import { useDispatch } from 'react-redux';
+import { openSnackbar } from 'store/slices/snackbar';
 
 interface ProductAddProps {
 	handleCloseDialog: (e?: any) => void;
@@ -34,6 +36,7 @@ const Transition = forwardRef((props: SlideProps, ref) => (
 ));
 
 const LoanReturn = ({ handleCloseDialog, data }: ProductAddProps) => {
+	const dispatch = useDispatch();
 	const defaultValue = {
 		isReturned: data.isReturned,
 	};
@@ -41,8 +44,36 @@ const LoanReturn = ({ handleCloseDialog, data }: ProductAddProps) => {
 	const [formValue, setFormValue] = useState<TSetLoan>(defaultValue);
 
 	const handleUpdate = async () => {
-		await loanApi.returnLoan(data.id, { sync: true });
-		handleCloseDialog();
+		if (data.isAccepted) {
+			if (formValue.isReturned) {
+				await loanApi.returnLoan(data.id, { sync: true });
+				handleCloseDialog();
+			} else {
+				dispatch(
+					openSnackbar({
+						open: true,
+						message: 'Check Return!',
+						variant: 'alert',
+						alert: {
+							color: 'error',
+						},
+						close: true,
+					})
+				);
+			}
+		} else {
+			dispatch(
+				openSnackbar({
+					open: true,
+					message: 'Loan Must Be Approved First!',
+					variant: 'alert',
+					alert: {
+						color: 'error',
+					},
+					close: true,
+				})
+			);
+		}
 	};
 	const handleSwitchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		setFormValue({

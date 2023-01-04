@@ -17,6 +17,8 @@ import {
 // project imports
 import { gridSpacing } from 'store/constant';
 import AnimateButton from 'ui-component/extended/AnimateButton';
+import { useDispatch } from 'react-redux';
+import { openSnackbar } from 'store/slices/snackbar';
 
 // assets
 import { TSetAction } from 'types/action';
@@ -36,6 +38,7 @@ const defaultValue = {
 };
 
 const ActionAdd = ({ handleCloseDialog }: ProductAddProps) => {
+	const dispatch = useDispatch();
 	const [formValue, setFormValue] = useState<TSetAction>(defaultValue);
 
 	const handleValueChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -46,13 +49,27 @@ const ActionAdd = ({ handleCloseDialog }: ProductAddProps) => {
 	};
 
 	const handleSave = async () => {
-		await actionApi.create(
-			{
-				name: formValue.name,
-			},
-			{ sync: true }
-		);
-		handleCloseDialog();
+		if (formValue.name !== '') {
+			await actionApi.create(
+				{
+					name: formValue.name,
+				},
+				{ sync: true }
+			);
+			handleCloseDialog();
+		} else {
+			dispatch(
+				openSnackbar({
+					open: true,
+					message: 'Please Enter Action Name',
+					variant: 'alert',
+					alert: {
+						color: 'error',
+					},
+					close: true,
+				})
+			);
+		}
 	};
 
 	return (

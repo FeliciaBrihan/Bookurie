@@ -22,6 +22,8 @@ import AnimateButton from 'ui-component/extended/AnimateButton';
 // assets
 import { TGetLoan, TSetLoan } from 'types/loan';
 import { loanApi } from 'store/slices/loan';
+import { useDispatch } from 'react-redux';
+import { openSnackbar } from 'store/slices/snackbar';
 
 interface ProductAddProps {
 	handleCloseDialog: (e?: any) => void;
@@ -34,6 +36,7 @@ const Transition = forwardRef((props: SlideProps, ref) => (
 ));
 
 const LoanAccept = ({ handleCloseDialog, data }: ProductAddProps) => {
+	const dispatch = useDispatch();
 	const defaultValue = {
 		isAccepted: data.isAccepted,
 	};
@@ -41,14 +44,32 @@ const LoanAccept = ({ handleCloseDialog, data }: ProductAddProps) => {
 	const [formValue, setFormValue] = useState<TSetLoan>(defaultValue);
 
 	const handleUpdate = async () => {
-		await loanApi.update(
-			data.id,
-			{
-				isAccepted: formValue.isAccepted,
-			},
-			{ sync: true }
-		);
-		handleCloseDialog();
+		if (formValue.isAccepted) {
+			await loanApi.update(
+				data.id,
+				{
+					isAccepted: formValue.isAccepted,
+				},
+				{ sync: true }
+			);
+			handleCloseDialog();
+		} else {
+			dispatch(
+				openSnackbar({
+					open: true,
+					anchorOrigin: {
+						vertical: 'bottom',
+						horizontal: 'right',
+					},
+					message: 'Check Approve!',
+					variant: 'alert',
+					alert: {
+						color: 'error',
+					},
+					close: true,
+				})
+			);
+		}
 	};
 	const handleSwitchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		setFormValue({
