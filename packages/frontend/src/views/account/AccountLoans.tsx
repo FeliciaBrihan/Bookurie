@@ -17,6 +17,7 @@ import {
 	Tooltip,
 	Typography,
 } from '@mui/material';
+import Chip from 'ui-component/extended/Chip';
 import { visuallyHidden } from '@mui/utils';
 
 // project imports
@@ -337,11 +338,27 @@ const LoanList = () => {
 												</TableCell>
 												<TableCell>{getBookTitle(row.BookId)}</TableCell>
 												<TableCell>
-													{row.isAccepted
-														? row.isReturned
-															? 'Returned'
-															: 'Approved'
-														: 'Pending'}
+													<Chip
+														size="small"
+														label={
+															row.isAccepted
+																? row.isReturned
+																	? 'Returned'
+																	: 'Approved'
+																: 'Pending'
+														}
+														chipcolor={
+															row.isAccepted
+																? row.isReturned
+																	? 'secondary'
+																	: 'success'
+																: 'error'
+														}
+														sx={{
+															borderRadius: '4px',
+															textTransform: 'capitalize',
+														}}
+													/>
 												</TableCell>
 											</TableRow>
 										);
