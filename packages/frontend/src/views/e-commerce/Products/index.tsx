@@ -118,8 +118,9 @@ const BooksList = () => {
 
 	// filter
 	const initialState: ProductsFilter = {
-		sort: 'low',
-		genre: ['all'],
+		// sort: 'low',
+		genre: [],
+		price: null,
 	};
 	const [filter, setFilter] = useState(initialState);
 
@@ -171,6 +172,7 @@ const BooksList = () => {
 	const filterIsEqual = (a1: ProductsFilter, a2: ProductsFilter) =>
 		a1 === a2 ||
 		(a1.length === a2.length &&
+			a1.price === a2.price &&
 			a1.sort === a2.sort &&
 			JSON.stringify(a1.genre) === JSON.stringify(a2.genre));
 
@@ -195,6 +197,9 @@ const BooksList = () => {
 				break;
 			case 'sort':
 				setFilter({ ...filter, sort: params });
+				break;
+			case 'price':
+				setFilter({ ...filter, price: +params });
 				break;
 			case 'reset':
 				setFilter(initialState);

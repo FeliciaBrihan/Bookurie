@@ -49,7 +49,7 @@ export const { hasError } = slice.actions;
 export const bookApi = {
 	getAll: () => async () => {
 		try {
-			const response = await axios.get('http://localhost:5000/book');
+			const response = await axios.get('/book');
 			dispatch(slice.actions.getBooksSuccess(response.data.data));
 		} catch (error) {
 			dispatch(slice.actions.hasError(error));
@@ -105,13 +105,11 @@ export function deleteBook(id: number, options: { sync?: boolean }) {
 	};
 }
 
-export function filterProducts({ genre }: ProductsFilter) {
-	const filterBy = genre.some((item) => item === 'all' || item === 'reset')
-		? ''
-		: { genre };
+export function filterProducts(filter: ProductsFilter) {
 	return async () => {
 		try {
-			const response = await axios.get('/book', { params: filterBy });
+			console.log(filter);
+			const response = await axios.get('/book', { params: filter });
 			console.log(response);
 			dispatch(slice.actions.filterProductsSuccess(response.data.data));
 		} catch (error) {

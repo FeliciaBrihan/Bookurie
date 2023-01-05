@@ -102,6 +102,30 @@ const ProductFilterView = ({
 								</SubCard>
 							</Grid>
 						)}
+					{!(initialState.price === filter.price) && (
+						<Grid item>
+							<SubCard content={false}>
+								<CardContent sx={{ pb: '12px !important', p: 1.5 }}>
+									<Grid container spacing={1} alignItems="center">
+										<Grid item>
+											<Typography variant="subtitle1">Price</Typography>
+										</Grid>
+										<Grid item>
+											<Chip
+												size={matchDownMD ? 'small' : undefined}
+												label={String(filter.price)}
+												chipcolor="primary"
+												sx={{
+													borderRadius: '4px',
+													textTransform: 'capitalize',
+												}}
+											/>
+										</Grid>
+									</Grid>
+								</CardContent>
+							</SubCard>
+						</Grid>
+					)}
 					<Grid item>
 						<Button
 							variant="outlined"

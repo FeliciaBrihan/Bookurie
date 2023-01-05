@@ -5,8 +5,11 @@ import {
 	Button,
 	CardContent,
 	Checkbox,
+	FormControl,
 	FormControlLabel,
 	Grid,
+	Radio,
+	RadioGroup,
 	Skeleton,
 	Stack,
 	Theme,
@@ -44,13 +47,6 @@ const Genre = ({
 			) : (
 				<>
 					<Grid item xs={6}>
-						<FormControlLabel
-							control={
-								<Checkbox checked={genre.some((item) => item === 'all')} />
-							}
-							onChange={() => handelFilter('genre', 'all')}
-							label="All"
-						/>
 						<FormControlLabel
 							control={
 								<Checkbox checked={genre.some((item) => item === 'fictiune')} />
@@ -96,6 +92,85 @@ const Genre = ({
 	);
 };
 
+const Price = ({
+	price,
+	handelFilter,
+}: {
+	price: number;
+	handelFilter: (type: string, params: string) => void;
+}) => {
+	console.log(price);
+	const [isPriceLoading, setPriceLoading] = useState(true);
+	useEffect(() => {
+		setPriceLoading(false);
+	}, []);
+
+	return (
+		<>
+			{isPriceLoading ? (
+				<Skeleton variant="rectangular" width="100%" height={172} />
+			) : (
+				<FormControl component="fieldset">
+					<RadioGroup
+						row
+						aria-label="layout"
+						value={price}
+						onChange={(e) => handelFilter('price', e.target.value)}
+						name="row-radio-buttons-group"
+					>
+						<Grid container spacing={0.25}>
+							<Grid item xs={6}>
+								<FormControlLabel
+									value={10}
+									control={<Radio />}
+									label="10 RON"
+									sx={{
+										'& .MuiSvgIcon-root': { fontSize: 28 },
+										'& .MuiFormControlLabel-label': { color: 'grey.900' },
+									}}
+								/>
+							</Grid>
+							<Grid item xs={6}>
+								<FormControlLabel
+									value={20}
+									control={<Radio />}
+									label="20 RON"
+									sx={{
+										'& .MuiSvgIcon-root': { fontSize: 28 },
+										'& .MuiFormControlLabel-label': { color: 'grey.900' },
+									}}
+								/>
+							</Grid>
+							<Grid item xs={6}>
+								<FormControlLabel
+									value={50}
+									control={<Radio />}
+									label="50 RON"
+									sx={{
+										'& .MuiSvgIcon-root': { fontSize: 28 },
+										'& .MuiFormControlLabel-label': { color: 'grey.900' },
+									}}
+								/>
+							</Grid>
+							<Grid item xs={6}>
+								<FormControlLabel
+									value={100}
+									control={<Radio />}
+									label="100 RON"
+									sx={{
+										'& .MuiSvgIcon-root': { fontSize: 28 },
+										'& .MuiFormControlLabel-label': { color: 'grey.900' },
+									}}
+								/>
+							</Grid>
+						</Grid>
+					</RadioGroup>
+				</FormControl>
+			)}
+		</>
+	);
+};
+
 // ==============================|| PRODUCT GRID - FILTER ||============================== //
 
 const ProductFilter = ({
@@ -115,6 +190,12 @@ const ProductFilter = ({
 			defaultExpand: true,
 			title: 'Categories',
 			content: <Genre genre={filter.genre} handelFilter={handelFilter} />,
+		},
+		{
+			id: 'price',
+			defaultExpand: true,
+			title: 'Price',
+			content: <Price price={filter.price!} handelFilter={handelFilter} />,
 		},
 	];
 
