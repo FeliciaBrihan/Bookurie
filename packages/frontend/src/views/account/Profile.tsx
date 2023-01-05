@@ -39,7 +39,7 @@ const Profile = () => {
 
 	return (
 		<Grid container spacing={gridSpacing}>
-			<Grid xs={12}>
+			<Grid item xs={12}>
 				<SubCard
 					title={
 						<Grid container spacing={2} alignItems="center">

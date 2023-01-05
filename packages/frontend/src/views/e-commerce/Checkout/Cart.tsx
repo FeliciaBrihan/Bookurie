@@ -198,9 +198,17 @@ const Cart = ({
 														src={row.image ? prodImage(`./${row.image}`) : ''}
 													/>
 												</Grid>
+
 												<Grid item>
 													<Stack spacing={0}>
-														<Typography variant="subtitle1">
+														<Typography
+															variant="subtitle1"
+															component={Link}
+															to={`/books/${row.id}`}
+															sx={{
+																textDecoration: 'none',
+															}}
+														>
 															{row.title}
 														</Typography>
 														<Stack
