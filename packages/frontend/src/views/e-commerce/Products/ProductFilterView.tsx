@@ -60,7 +60,9 @@ const ProductFilterView = ({
 												size={matchDownMD ? 'small' : undefined}
 												label={filter.sort}
 												chipcolor="secondary"
-												onDelete={() => handelFilter('sort', initialState.sort)}
+												onDelete={() =>
+													handelFilter('sort', initialState.sort!)
+												}
 												sx={{
 													borderRadius: '4px',
 													textTransform: 'capitalize',

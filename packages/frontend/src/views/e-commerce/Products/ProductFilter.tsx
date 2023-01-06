@@ -5,15 +5,17 @@ import {
 	Button,
 	CardContent,
 	Checkbox,
-	FormControl,
+	// FormControl,
 	FormControlLabel,
 	Grid,
-	Radio,
-	RadioGroup,
+	// Radio,
+	// RadioGroup,
 	Skeleton,
 	Stack,
 	Theme,
 	useMediaQuery,
+	Slider,
+	Typography,
 } from '@mui/material';
 
 // project imports
@@ -110,62 +112,19 @@ const Price = ({
 			{isPriceLoading ? (
 				<Skeleton variant="rectangular" width="100%" height={172} />
 			) : (
-				<FormControl component="fieldset">
-					<RadioGroup
-						row
-						aria-label="layout"
+				<div>
+					<Typography id="range-slider" gutterBottom></Typography>
+					<Slider
 						value={price}
-						onChange={(e) => handelFilter('price', e.target.value)}
-						name="row-radio-buttons-group"
-					>
-						<Grid container spacing={0.25}>
-							<Grid item xs={6}>
-								<FormControlLabel
-									value={10}
-									control={<Radio />}
-									label="10 RON"
-									sx={{
-										'& .MuiSvgIcon-root': { fontSize: 28 },
-										'& .MuiFormControlLabel-label': { color: 'grey.900' },
-									}}
-								/>
-							</Grid>
-							<Grid item xs={6}>
-								<FormControlLabel
-									value={20}
-									control={<Radio />}
-									label="20 RON"
-									sx={{
-										'& .MuiSvgIcon-root': { fontSize: 28 },
-										'& .MuiFormControlLabel-label': { color: 'grey.900' },
-									}}
-								/>
-							</Grid>
-							<Grid item xs={6}>
-								<FormControlLabel
-									value={50}
-									control={<Radio />}
-									label="50 RON"
-									sx={{
-										'& .MuiSvgIcon-root': { fontSize: 28 },
-										'& .MuiFormControlLabel-label': { color: 'grey.900' },
-									}}
-								/>
-							</Grid>
-							<Grid item xs={6}>
-								<FormControlLabel
-									value={100}
-									control={<Radio />}
-									label="100 RON"
-									sx={{
-										'& .MuiSvgIcon-root': { fontSize: 28 },
-										'& .MuiFormControlLabel-label': { color: 'grey.900' },
-									}}
-								/>
-							</Grid>
-						</Grid>
-					</RadioGroup>
-				</FormControl>
+						onChange={(e: any) => handelFilter('price', e.target.value)}
+						valueLabelDisplay="auto"
+						aria-labelledby="range-slider"
+						step={5}
+						min={0}
+						max={1000}
+					/>
+					{/* <Typography>0 RON - 1000 RON</Typography> */}
+				</div>
 			)}
 		</>
 	);
