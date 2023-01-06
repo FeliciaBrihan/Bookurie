@@ -52,6 +52,7 @@ export type ProductsFilter = {
 	sort?: string;
 	genre: string[];
 	price: number | null;
+	typeFormat: string[];
 };
 
 // product shop filter - sort options

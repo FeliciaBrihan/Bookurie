@@ -130,6 +130,52 @@ const Price = ({
 	);
 };
 
+const BookFormat = ({
+	typeFormat,
+	handelFilter,
+}: {
+	typeFormat: string[];
+	handelFilter: (type: string, params: string) => void;
+}) => {
+	const [isBookFormatLoading, setBookFormatLoading] = useState(true);
+	useEffect(() => {
+		setBookFormatLoading(false);
+	}, []);
+
+	return (
+		<Grid container spacing={1}>
+			{isBookFormatLoading ? (
+				<Grid item xs={12}>
+					<Skeleton variant="rectangular" width="100%" height={96} />
+				</Grid>
+			) : (
+				<>
+					<Grid item xs={6}>
+						<FormControlLabel
+							control={
+								<Checkbox
+									checked={typeFormat.some((item) => item === 'online')}
+								/>
+							}
+							onChange={() => handelFilter('typeFormat', 'online')}
+							label="Online"
+						/>
+						<FormControlLabel
+							control={
+								<Checkbox
+									checked={typeFormat.some((item) => item === 'printed')}
+								/>
+							}
+							onChange={() => handelFilter('typeFormat', 'printed')}
+							label="Printed"
+						/>
+					</Grid>{' '}
+				</>
+			)}
+		</Grid>
+	);
+};
+
 // ==============================|| PRODUCT GRID - FILTER ||============================== //
 
 const ProductFilter = ({
@@ -155,6 +201,17 @@ const ProductFilter = ({
 			defaultExpand: true,
 			title: 'Price',
 			content: <Price price={filter.price!} handelFilter={handelFilter} />,
+		},
+		{
+			id: 'typeFormat',
+			defaultExpand: true,
+			title: 'Book Type',
+			content: (
+				<BookFormat
+					typeFormat={filter.typeFormat}
+					handelFilter={handelFilter}
+				/>
+			),
 		},
 	];
 

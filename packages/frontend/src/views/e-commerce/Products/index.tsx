@@ -121,6 +121,7 @@ const BooksList = () => {
 		// sort: 'low',
 		genre: [],
 		price: null,
+		typeFormat: [],
 	};
 	const [filter, setFilter] = useState(initialState);
 
@@ -174,7 +175,8 @@ const BooksList = () => {
 		(a1.length === a2.length &&
 			a1.price === a2.price &&
 			a1.sort === a2.sort &&
-			JSON.stringify(a1.genre) === JSON.stringify(a2.genre));
+			JSON.stringify(a1.genre) === JSON.stringify(a2.genre) &&
+			JSON.stringify(a1.typeFormat) === JSON.stringify(a2.typeFormat));
 
 	const handelFilter = (type: string, params: string) => {
 		setLoading(true);
@@ -201,6 +203,17 @@ const BooksList = () => {
 			case 'price':
 				setFilter({ ...filter, price: +params });
 				break;
+			case 'typeFormat':
+				if (filter.typeFormat.some((item) => item === params)) {
+					setFilter({
+						...filter,
+						typeFormat: filter.typeFormat.filter((item) => item !== params),
+					});
+				} else {
+					setFilter({ ...filter, typeFormat: [...filter.typeFormat, params] });
+				}
+				break;
+
 			case 'reset':
 				setFilter(initialState);
 				break;
