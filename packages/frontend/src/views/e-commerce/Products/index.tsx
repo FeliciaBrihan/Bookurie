@@ -101,10 +101,6 @@ const BooksList = () => {
 	const bookState = useSelector((state) => state.book);
 
 	useEffect(() => {
-		setBooks(bookState.books);
-	}, [bookState]);
-
-	useEffect(() => {
 		dispatch(bookApi.getAll());
 
 		// hide left drawer when email app opens
@@ -116,6 +112,10 @@ const BooksList = () => {
 		}
 	}, []);
 
+	useEffect(() => {
+		setBooks(bookState.books);
+	}, [bookState]);
+
 	// filter
 	const initialState: ProductsFilter = {
 		// sort: 'low',
@@ -124,6 +124,19 @@ const BooksList = () => {
 		typeFormat: [],
 	};
 	const [filter, setFilter] = useState(initialState);
+
+	const handleSort = (option: string) => {
+		let booksSorted: TGetBook[];
+		if (option === 'low') {
+			booksSorted = [...books].sort((a, b) => a.price - b.price);
+			setBooks(booksSorted);
+		} else if (option === 'high') {
+			booksSorted = [...books].sort((a, b) => b.price - a.price);
+			setBooks(booksSorted);
+		}
+		// setFilter({ ...filter, sort: option });
+		setAnchorEl(null);
+	};
 
 	const handleSearch = (
 		event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement> | undefined
@@ -199,6 +212,7 @@ const BooksList = () => {
 				break;
 			case 'sort':
 				setFilter({ ...filter, sort: params });
+				console.log('sort case');
 				break;
 			case 'price':
 				setFilter({ ...filter, price: +params });
@@ -236,20 +250,20 @@ const BooksList = () => {
 	}, [matchDownLG]);
 
 	// sort filter
-	const handleMenuItemClick = (
-		event: React.MouseEvent<HTMLElement>,
-		index: string
-	) => {
-		setFilter({ ...filter, sort: index });
-		setAnchorEl(null);
-	};
+	// const handleMenuItemClick = (
+	// 	event: React.MouseEvent<HTMLElement>,
+	// 	index: string
+	// ) => {
+	// 	setFilter({ ...filter, sort: index });
+	// 	setAnchorEl(null);
+	// };
 
 	const sortLabel = SortOptions.filter((items) => items.value === filter.sort);
 
 	let bookResult: ReactElement | ReactElement[] = <></>;
 	if (books && books.length > 0) {
 		bookResult = books.map((book: TGetBook, index) => (
-			<Grid key={index} item xs={12} sm={6} md={4} lg={3} order={book.id}>
+			<Grid key={index} item xs={12} sm={6} md={4} lg={3}>
 				<ProductCard
 					id={book.id}
 					image={book.coverImage}
@@ -392,10 +406,8 @@ const BooksList = () => {
 										<MenuItem
 											sx={{ p: 1.5 }}
 											key={index}
-											selected={option.value === filter.sort}
-											onClick={(event) =>
-												handleMenuItemClick(event, option.value)
-											}
+											selected={option.label === filter.sort}
+											onClick={() => handleSort(option.value)}
 										>
 											{option.label}
 										</MenuItem>
