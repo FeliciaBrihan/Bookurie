@@ -26,7 +26,7 @@ interface ProductFilterViewProps {
 		initialState: ProductsFilter,
 		filter: ProductsFilter
 	) => boolean;
-	handelFilter: (type: string, params: string, rating?: number) => void;
+	handelFilter: (type: string, params: string) => void;
 }
 
 const ProductFilterView = ({
@@ -90,7 +90,7 @@ const ProductFilterView = ({
 													<Chip
 														size={matchDownMD ? 'small' : undefined}
 														label={item}
-														onDelete={() => handelFilter('categories', item)}
+														onDelete={() => handelFilter('genre', item)}
 														chipcolor="secondary"
 														sx={{
 															borderRadius: '4px',
@@ -141,7 +141,7 @@ const ProductFilterView = ({
 								<CardContent sx={{ pb: '12px !important', p: 1.5 }}>
 									<Grid container spacing={1} alignItems="center">
 										<Grid item>
-											<Typography variant="subtitle1">Price</Typography>
+											<Typography variant="subtitle1">Price Range</Typography>
 										</Grid>
 										<Grid item>
 											<Chip
