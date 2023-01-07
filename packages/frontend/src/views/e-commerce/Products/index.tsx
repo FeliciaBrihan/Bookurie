@@ -99,6 +99,7 @@ const BooksList = () => {
 	// product data
 	const [books, setBooks] = useState<TGetBook[]>([]);
 	const bookState = useSelector((state) => state.book);
+	const [sortLabel, setSortLabel] = useState<string>('');
 
 	useEffect(() => {
 		dispatch(bookApi.getAll());
@@ -134,7 +135,7 @@ const BooksList = () => {
 			booksSorted = [...books].sort((a, b) => b.price - a.price);
 			setBooks(booksSorted);
 		}
-		// setFilter({ ...filter, sort: option });
+		setSortLabel(option);
 		setAnchorEl(null);
 	};
 
@@ -230,6 +231,7 @@ const BooksList = () => {
 
 			case 'reset':
 				setFilter(initialState);
+				setSortLabel('');
 				break;
 			default:
 			// no options
@@ -258,7 +260,9 @@ const BooksList = () => {
 	// 	setAnchorEl(null);
 	// };
 
-	const sortLabel = SortOptions.filter((items) => items.value === filter.sort);
+	const sortLabelOption = SortOptions.filter(
+		(items) => items.value === sortLabel
+	);
 
 	let bookResult: ReactElement | ReactElement[] = <></>;
 	if (books && books.length > 0) {
@@ -385,7 +389,7 @@ const BooksList = () => {
 									sx={{ color: 'grey.500', fontWeight: 400 }}
 									endIcon={<KeyboardArrowDownIcon />}
 								>
-									{sortLabel.length > 0 && sortLabel[0].label}
+									{sortLabel.length > 0 && sortLabelOption[0].label}
 								</Button>
 								<Menu
 									id="demo-positioned-menu"
