@@ -111,6 +111,11 @@ const BooksList = () => {
 				.map((book) => book.genre)
 				.filter((genre, index, array) => array.indexOf(genre) === index)
 		: [];
+	const authors = allBooksRef
+		? allBooksRef.current
+				.map((book) => book.author)
+				.filter((author, index, array) => array.indexOf(author) === index)
+		: [];
 
 	useEffect(() => {
 		dispatch(bookApi.getAll());
@@ -138,6 +143,7 @@ const BooksList = () => {
 		genre: [],
 		price: null,
 		typeFormat: [],
+		author: [],
 	};
 	const [filter, setFilter] = useState(initialState);
 
@@ -218,6 +224,16 @@ const BooksList = () => {
 					});
 				} else {
 					setFilter({ ...filter, genre: [...filter.genre, params] });
+				}
+				break;
+			case 'author':
+				if (filter.author.some((item) => item === params)) {
+					setFilter({
+						...filter,
+						author: filter.author.filter((item) => item !== params),
+					});
+				} else {
+					setFilter({ ...filter, author: [...filter.author, params] });
 				}
 				break;
 			case 'sort':
@@ -481,6 +497,7 @@ const BooksList = () => {
 									handelFilter={handelFilter}
 									maxValue={maxValue}
 									genres={uniqueGenres}
+									authors={authors}
 								/>
 							</PerfectScrollbar>
 						)}

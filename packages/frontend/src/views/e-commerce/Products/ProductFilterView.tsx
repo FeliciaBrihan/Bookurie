@@ -104,6 +104,36 @@ const ProductFilterView = ({
 								</SubCard>
 							</Grid>
 						)}
+						{!(
+						JSON.stringify(initialState.author) === JSON.stringify(filter.author)
+					) &&
+						filter.author.length > 0 && (
+							<Grid item>
+								<SubCard content={false}>
+									<CardContent sx={{ pb: '12px !important', p: 1.5 }}>
+										<Grid container spacing={1} alignItems="center">
+											<Grid item>
+												<Typography variant="subtitle1">Categories</Typography>
+											</Grid>
+											{filter.author.map((item: string, index: number) => (
+												<Grid item key={index}>
+													<Chip
+														size={matchDownMD ? 'small' : undefined}
+														label={item}
+														onDelete={() => handelFilter('author', item)}
+														chipcolor="secondary"
+														sx={{
+															borderRadius: '4px',
+															textTransform: 'capitalize',
+														}}
+													/>
+												</Grid>
+											))}
+										</Grid>
+									</CardContent>
+								</SubCard>
+							</Grid>
+						)}
 					{!(
 						JSON.stringify(initialState.typeFormat) ===
 						JSON.stringify(filter.typeFormat)

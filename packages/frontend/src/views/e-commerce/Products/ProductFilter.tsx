@@ -127,7 +127,7 @@ const BookFormat = ({
 				</Grid>
 			) : (
 				<>
-					<Grid item xs={6}>
+					<Grid item xs={12}>
 						<FormControlLabel
 							control={
 								<Checkbox
@@ -152,6 +152,48 @@ const BookFormat = ({
 		</Grid>
 	);
 };
+const Author = ({
+	author,
+	handelFilter,
+	authors,
+}: {
+	author: string[];
+	handelFilter: (type: string, params: string) => void;
+	authors: string[];
+}) => {
+	const [isAuthorsLoading, setAuthorsLoading] = useState(true);
+	useEffect(() => {
+		setAuthorsLoading(false);
+	}, []);
+
+	return (
+		<Grid container spacing={1}>
+			{isAuthorsLoading ? (
+				<Grid item xs={12}>
+					<Skeleton variant="rectangular" width="100%" height={96} />
+				</Grid>
+			) : (
+				<Grid item xs={12}>
+					{authors.map((authorItem, index) => {
+						return (
+							<FormControlLabel
+								key={index}
+								control={
+									<Checkbox
+										checked={author.some((item) => item === authorItem)}
+									/>
+								}
+								onChange={() => handelFilter('author', authorItem)}
+								label={authorItem}
+								sx={{ textTransform: 'capitalize' }}
+							/>
+						);
+					})}
+				</Grid>
+			)}
+		</Grid>
+	);
+};
 
 // ==============================|| PRODUCT GRID - FILTER ||============================== //
 
@@ -160,11 +202,13 @@ const ProductFilter = ({
 	handelFilter,
 	maxValue,
 	genres,
+	authors,
 }: {
 	filter: ProductsFilter;
 	handelFilter: (type: string, params: string, rating?: number) => void;
 	maxValue: number;
 	genres: string[];
+	authors: string[];
 }) => {
 	const matchDownLG = useMediaQuery((theme: Theme) =>
 		theme.breakpoints.down('xl')
@@ -203,6 +247,18 @@ const ProductFilter = ({
 				<BookFormat
 					typeFormat={filter.typeFormat}
 					handelFilter={handelFilter}
+				/>
+			),
+		},
+		{
+			id: 'author',
+			defaultExpand: true,
+			title: 'Author',
+			content: (
+				<Author
+					author={filter.author}
+					handelFilter={handelFilter}
+					authors={authors}
 				/>
 			),
 		},
