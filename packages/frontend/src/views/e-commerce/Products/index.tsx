@@ -105,7 +105,12 @@ const BooksList = () => {
 	const maxValue = allBooksRef
 		? Math.max(...allBooksRef.current.map((book) => book.price))
 		: 1000;
-	console.log('allBooks', allBooksRef);
+
+	const uniqueGenres = allBooksRef
+		? allBooksRef.current
+				.map((book) => book.genre)
+				.filter((genre, index, array) => array.indexOf(genre) === index)
+		: [];
 
 	useEffect(() => {
 		dispatch(bookApi.getAll());
@@ -211,19 +216,12 @@ const BooksList = () => {
 						...filter,
 						genre: filter.genre.filter((item) => item !== params),
 					});
-				} else if (
-					filter.genre.some((item) => item === 'all') ||
-					params === 'all'
-				) {
-					setFilter({ ...filter, genre: [params] });
 				} else {
 					setFilter({ ...filter, genre: [...filter.genre, params] });
 				}
-
 				break;
 			case 'sort':
 				setFilter({ ...filter, sort: params });
-				console.log('sort case');
 				break;
 			case 'price':
 				setFilter({ ...filter, price: +params });
@@ -482,6 +480,7 @@ const BooksList = () => {
 									filter={filter}
 									handelFilter={handelFilter}
 									maxValue={maxValue}
+									genres={uniqueGenres}
 								/>
 							</PerfectScrollbar>
 						)}

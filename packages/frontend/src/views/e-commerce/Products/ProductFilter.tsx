@@ -31,9 +31,11 @@ import { ProductsFilter } from 'types/e-commerce';
 const Genre = ({
 	genre,
 	handelFilter,
+	genres,
 }: {
 	genre: string[];
 	handelFilter: (type: string, params: string) => void;
+	genres: string[];
 }) => {
 	const [isCategoriesLoading, setCategoriesLoading] = useState(true);
 	useEffect(() => {
@@ -47,48 +49,21 @@ const Genre = ({
 					<Skeleton variant="rectangular" width="100%" height={96} />
 				</Grid>
 			) : (
-				<>
-					<Grid item xs={6}>
-						<FormControlLabel
-							control={
-								<Checkbox checked={genre.some((item) => item === 'fictiune')} />
-							}
-							onChange={() => handelFilter('genre', 'fictiune')}
-							label="Fictiune"
-						/>
-						<FormControlLabel
-							control={
-								<Checkbox
-									checked={genre.some((item) => item === 'beletristica')}
-								/>
-							}
-							onChange={() => handelFilter('genre', 'beletristica')}
-							label="Beletristica"
-						/>
-					</Grid>
-					<Grid item xs={6}>
-						<FormControlLabel
-							control={
-								<Checkbox
-									checked={genre.some(
-										(item) => item === 'dezvoltare personala'
-									)}
-								/>
-							}
-							onChange={() => handelFilter('genre', 'dezvoltare personala')}
-							label="Dezvoltare personala"
-						/>
-						<FormControlLabel
-							control={
-								<Checkbox
-									checked={genre.some((item) => item === 'filozofic')}
-								/>
-							}
-							onChange={() => handelFilter('genre', 'filozofic')}
-							label="Filozofic"
-						/>
-					</Grid>
-				</>
+				<Grid item xs={12}>
+					{genres.map((gen, index) => {
+						return (
+							<FormControlLabel
+								key={index}
+								control={
+									<Checkbox checked={genre.some((item) => item === gen)} />
+								}
+								onChange={() => handelFilter('genre', gen)}
+								label={gen}
+								sx={{ textTransform: 'capitalize' }}
+							/>
+						);
+					})}
+				</Grid>
 			)}
 		</Grid>
 	);
@@ -184,10 +159,12 @@ const ProductFilter = ({
 	filter,
 	handelFilter,
 	maxValue,
+	genres,
 }: {
 	filter: ProductsFilter;
 	handelFilter: (type: string, params: string, rating?: number) => void;
 	maxValue: number;
+	genres: string[];
 }) => {
 	const matchDownLG = useMediaQuery((theme: Theme) =>
 		theme.breakpoints.down('xl')
@@ -198,7 +175,13 @@ const ProductFilter = ({
 			id: 'genre',
 			defaultExpand: true,
 			title: 'Categories',
-			content: <Genre genre={filter.genre} handelFilter={handelFilter} />,
+			content: (
+				<Genre
+					genre={filter.genre}
+					handelFilter={handelFilter}
+					genres={genres}
+				/>
+			),
 		},
 		{
 			id: 'price',
