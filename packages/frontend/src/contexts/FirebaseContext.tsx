@@ -53,12 +53,9 @@ export const FirebaseProvider = ({
 					const token = await getIdToken(user!);
 					console.log(user);
 					try {
-						const response = await axios.get(
-							'http://localhost:5000/user/allowed',
-							{
-								headers: { authorization: token },
-							}
-						);
+						const response = await axios.get('/user/allowed', {
+							headers: { authorization: token },
+						});
 						console.log('response', response.data);
 						localStorage.setItem('email', user?.email!);
 						axiosSetAuthorization(token);

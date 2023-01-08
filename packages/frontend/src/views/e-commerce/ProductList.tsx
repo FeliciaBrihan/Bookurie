@@ -578,7 +578,7 @@ const ProductList = () => {
 											) : (
 												<Chip
 													size="small"
-													label={`In Stock`}
+													label="Online"
 													chipcolor={'primary'}
 													sx={{
 														borderRadius: '4px',

@@ -1,6 +1,6 @@
 // material-ui
 // import { useTheme } from '@mui/material/styles';
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 
 import { Typography } from '@mui/material';
 
@@ -20,12 +20,12 @@ const Logo = () => {
 		// 	height={`${size}px`}
 		// />
 		<Typography variant="h2" color="secondary">
-			<Link
+			{/* <Link
 				to="/dashboard"
 				style={{ textDecoration: 'none', color: 'inherit' }}
-			>
-				Bookurie
-			</Link>
+			> */}
+			Bookurie
+			{/* </Link> */}
 		</Typography>
 
 		// <svg width="92" height="32" viewBox="0 0 92 32" fill="none" xmlns="http://www.w3.org/2000/svg">

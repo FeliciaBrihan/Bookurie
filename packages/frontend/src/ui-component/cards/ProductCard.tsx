@@ -143,7 +143,11 @@ const ProductCard = ({
 					/>
 					<CardContent sx={{ p: 2 }}>
 						<Grid container spacing={2}>
-							<Grid item xs={12}>
+							<Grid
+								item
+								xs={12}
+								sx={{ display: 'flex', justifyContent: 'space-between' }}
+							>
 								<Typography
 									component={Link}
 									to={`/books/${id}`}
@@ -152,6 +156,27 @@ const ProductCard = ({
 								>
 									{title}
 								</Typography>
+								{typeFormat === 'online' ? (
+									<Chip
+										size="small"
+										label="Online"
+										chipcolor="primary"
+										sx={{
+											borderRadius: '4px',
+											textTransform: 'capitalize',
+										}}
+									/>
+								) : (
+									<Chip
+										size="small"
+										label="Printed"
+										chipcolor="secondary"
+										sx={{
+											borderRadius: '4px',
+											textTransform: 'capitalize',
+										}}
+									/>
+								)}
 							</Grid>
 							<Grid item xs={12}>
 								<Typography
@@ -163,6 +188,7 @@ const ProductCard = ({
 									{author}
 								</Typography>
 							</Grid>
+
 							{genre && (
 								<Grid item xs={12}>
 									<Typography
@@ -204,7 +230,7 @@ const ProductCard = ({
 											)}
 										</Grid>
 									</Grid>
-									{stock ? (
+									{stock || typeFormat === 'online' ? (
 										<Button
 											variant="contained"
 											sx={{ minWidth: 0 }}
