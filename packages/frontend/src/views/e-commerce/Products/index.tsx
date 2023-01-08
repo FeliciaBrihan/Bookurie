@@ -1,4 +1,4 @@
-import { useEffect, useState, ReactElement } from 'react';
+import { useEffect, useState, useRef, ReactElement } from 'react';
 
 // material-ui
 import { styled, useTheme } from '@mui/material/styles';
@@ -99,7 +99,13 @@ const BooksList = () => {
 	// product data
 	const [books, setBooks] = useState<TGetBook[]>([]);
 	const bookState = useSelector((state) => state.book);
+	const allBooksRef = useRef<TGetBook[]>([]);
 	const [sortLabel, setSortLabel] = useState<string>('');
+
+	const maxValue = allBooksRef
+		? Math.max(...allBooksRef.current.map((book) => book.price))
+		: 1000;
+	console.log('allBooks', allBooksRef);
 
 	useEffect(() => {
 		dispatch(bookApi.getAll());
@@ -115,6 +121,10 @@ const BooksList = () => {
 
 	useEffect(() => {
 		setBooks(bookState.books);
+	}, [bookState]);
+
+	useEffect(() => {
+		if (allBooksRef.current.length === 0) allBooksRef.current = bookState.books;
 	}, [bookState]);
 
 	// filter
@@ -468,7 +478,11 @@ const BooksList = () => {
 					>
 						{open && (
 							<PerfectScrollbar component="div">
-								<ProductFilter filter={filter} handelFilter={handelFilter} />
+								<ProductFilter
+									filter={filter}
+									handelFilter={handelFilter}
+									maxValue={maxValue}
+								/>
 							</PerfectScrollbar>
 						)}
 					</Drawer>

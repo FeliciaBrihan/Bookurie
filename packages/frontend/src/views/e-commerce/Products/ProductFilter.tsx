@@ -97,9 +97,11 @@ const Genre = ({
 const Price = ({
 	price,
 	handelFilter,
+	maxValue,
 }: {
 	price: number;
 	handelFilter: (type: string, params: string) => void;
+	maxValue: number;
 }) => {
 	console.log(price);
 	const [isPriceLoading, setPriceLoading] = useState(true);
@@ -121,9 +123,9 @@ const Price = ({
 						aria-labelledby="range-slider"
 						step={5}
 						min={0}
-						max={1000}
+						max={maxValue}
 					/>
-					{/* <Typography>0 RON - 1000 RON</Typography> */}
+					<Typography>0 RON - {maxValue} RON</Typography>
 				</div>
 			)}
 		</>
@@ -181,9 +183,11 @@ const BookFormat = ({
 const ProductFilter = ({
 	filter,
 	handelFilter,
+	maxValue,
 }: {
 	filter: ProductsFilter;
 	handelFilter: (type: string, params: string, rating?: number) => void;
+	maxValue: number;
 }) => {
 	const matchDownLG = useMediaQuery((theme: Theme) =>
 		theme.breakpoints.down('xl')
@@ -200,7 +204,13 @@ const ProductFilter = ({
 			id: 'price',
 			defaultExpand: true,
 			title: 'Price',
-			content: <Price price={filter.price!} handelFilter={handelFilter} />,
+			content: (
+				<Price
+					price={filter.price!}
+					handelFilter={handelFilter}
+					maxValue={maxValue}
+				/>
+			),
 		},
 		{
 			id: 'typeFormat',
