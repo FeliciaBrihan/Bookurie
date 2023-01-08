@@ -131,7 +131,11 @@ const ProductCard = ({
 					}}
 				>
 					<CardMedia
-						sx={{ height: 220 }}
+						sx={{
+							height: 220,
+							opacity: typeFormat === 'printed' && !stock ? 0.3 : 1,
+							transition: 'opacity 0.3s ease-in-out',
+						}}
 						image={prodProfile}
 						title={title}
 						component={Link}
