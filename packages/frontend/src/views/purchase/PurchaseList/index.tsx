@@ -355,126 +355,134 @@ const PurchaseList = () => {
 
 	return (
 		<MainCard title="Purchase List" content={false}>
-			<CardContent>
-				<Grid
-					container
-					justifyContent="space-between"
-					alignItems="center"
-					spacing={2}
-				>
-					<Grid item xs={12} sm={6}>
-						<TextField
-							InputProps={{
-								startAdornment: (
-									<InputAdornment position="start">
-										<SearchIcon fontSize="small" />
-									</InputAdornment>
-								),
-							}}
-							onChange={handleSearch}
-							placeholder="Search Book ID"
-							value={search}
-							size="small"
-						/>
-					</Grid>
-				</Grid>
-			</CardContent>
+			{rows ? (
+				<>
+					<CardContent>
+						<Grid
+							container
+							justifyContent="space-between"
+							alignItems="center"
+							spacing={2}
+						>
+							<Grid item xs={12} sm={6}>
+								<TextField
+									InputProps={{
+										startAdornment: (
+											<InputAdornment position="start">
+												<SearchIcon fontSize="small" />
+											</InputAdornment>
+										),
+									}}
+									onChange={handleSearch}
+									placeholder="Search Book ID"
+									value={search}
+									size="small"
+								/>
+							</Grid>
+						</Grid>
+					</CardContent>
 
-			{/* table */}
-			<TableContainer>
-				<Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle">
-					<EnhancedTableHead
-						numSelected={selected.length}
-						order={order}
-						orderBy={orderBy}
-						onSelectAllClick={handleSelectAllClick}
-						onRequestSort={handleRequestSort}
-						rowCount={rows.length}
-						theme={theme}
-						selected={selected}
-						deleteHandler={() => handleDelete(selected)}
-					/>
-					<TableBody>
-						{stableSort(rows, getComparator(order, orderBy))
-							.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-							.map((row, index) => {
-								/** Make sure no display bugs if row isn't an OrderData object */
-								if (typeof row === 'number') return null;
+					{/* table */}
+					<TableContainer>
+						<Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle">
+							<EnhancedTableHead
+								numSelected={selected.length}
+								order={order}
+								orderBy={orderBy}
+								onSelectAllClick={handleSelectAllClick}
+								onRequestSort={handleRequestSort}
+								rowCount={rows.length}
+								theme={theme}
+								selected={selected}
+								deleteHandler={() => handleDelete(selected)}
+							/>
+							<TableBody>
+								{stableSort(rows, getComparator(order, orderBy))
+									.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+									.map((row, index) => {
+										/** Make sure no display bugs if row isn't an OrderData object */
+										if (typeof row === 'number') return null;
 
-								const isItemSelected = isSelected(row.id);
-								const labelId = `enhanced-table-checkbox-${index}`;
+										const isItemSelected = isSelected(row.id);
+										const labelId = `enhanced-table-checkbox-${index}`;
 
-								return (
-									<TableRow
-										hover
-										role="checkbox"
-										aria-checked={isItemSelected}
-										tabIndex={-1}
-										key={index}
-										selected={isItemSelected}
-									>
-										<TableCell
-											padding="checkbox"
-											sx={{ pl: 3 }}
-											onClick={(event) => handleClick(event, row.id)}
-										>
-											<Checkbox
-												color="primary"
-												checked={isItemSelected}
-												inputProps={{
-													'aria-labelledby': labelId,
-												}}
-											/>
-										</TableCell>
-										<TableCell
-											component="th"
-											id={labelId}
-											scope="row"
-											onClick={(event) => handleClick(event, row.id)}
-											sx={{ cursor: 'pointer' }}
-										>
-											<Typography
-												variant="subtitle1"
-												sx={{
-													color:
-														theme.palette.mode === 'dark'
-															? 'grey.600'
-															: 'grey.900',
-												}}
+										return (
+											<TableRow
+												hover
+												role="checkbox"
+												aria-checked={isItemSelected}
+												tabIndex={-1}
+												key={index}
+												selected={isItemSelected}
 											>
-												#{row.id}
-											</Typography>
-										</TableCell>
-										<TableCell>
-											{new Intl.DateTimeFormat('en-GB', {
-												year: 'numeric',
-												month: '2-digit',
-												day: '2-digit',
-												hour: '2-digit',
-												minute: '2-digit',
-												second: '2-digit',
-											}).format(new Date(row.createdAt))}
-										</TableCell>
-										<TableCell>{row.BookId}</TableCell>
-										<TableCell>{row.UserId}</TableCell>
-										<TableCell>{row.price} RON</TableCell>
-									</TableRow>
-								);
-							})}
-					</TableBody>
-				</Table>
-			</TableContainer>
+												<TableCell
+													padding="checkbox"
+													sx={{ pl: 3 }}
+													onClick={(event) => handleClick(event, row.id)}
+												>
+													<Checkbox
+														color="primary"
+														checked={isItemSelected}
+														inputProps={{
+															'aria-labelledby': labelId,
+														}}
+													/>
+												</TableCell>
+												<TableCell
+													component="th"
+													id={labelId}
+													scope="row"
+													onClick={(event) => handleClick(event, row.id)}
+													sx={{ cursor: 'pointer' }}
+												>
+													<Typography
+														variant="subtitle1"
+														sx={{
+															color:
+																theme.palette.mode === 'dark'
+																	? 'grey.600'
+																	: 'grey.900',
+														}}
+													>
+														#{row.id}
+													</Typography>
+												</TableCell>
+												<TableCell>
+													{new Intl.DateTimeFormat('en-GB', {
+														year: 'numeric',
+														month: '2-digit',
+														day: '2-digit',
+														hour: '2-digit',
+														minute: '2-digit',
+														second: '2-digit',
+													}).format(new Date(row.createdAt))}
+												</TableCell>
+												<TableCell>{row.BookId}</TableCell>
+												<TableCell>{row.UserId}</TableCell>
+												<TableCell>{row.price} RON</TableCell>
+											</TableRow>
+										);
+									})}
+							</TableBody>
+						</Table>
+					</TableContainer>
 
-			{/* table pagination */}
-			<TablePagination
-				rowsPerPageOptions={[5, 10, 25]}
-				component="div"
-				count={rows.length}
-				rowsPerPage={rowsPerPage}
-				page={page}
-				onPageChange={handleChangePage}
-				onRowsPerPageChange={handleChangeRowsPerPage}
-			/>
+					{/* table pagination */}
+					<TablePagination
+						rowsPerPageOptions={[5, 10, 25]}
+						component="div"
+						count={rows.length}
+						rowsPerPage={rowsPerPage}
+						page={page}
+						onPageChange={handleChangePage}
+						onRowsPerPageChange={handleChangeRowsPerPage}
+					/>
+				</>
+			) : (
+				<Typography variant="body1" sx={{ textAlign: 'center' }}>
+					No purchases to display.
+				</Typography>
+			)}
 		</MainCard>
 	);
 };

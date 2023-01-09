@@ -390,205 +390,225 @@ const LoanList = () => {
 	};
 
 	const isSelected = (id: number) => selected.indexOf(id) !== -1;
-	const emptyRows =
-		page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
+	const emptyRows = rows
+		? page > 0
+			? Math.max(0, (1 + page) * rowsPerPage - rows.length)
+			: 0
+		: 0;
 
 	return (
 		<MainCard title="Loan List" content={false}>
-			<CardContent>
-				<Grid
-					container
-					justifyContent="space-between"
-					alignItems="center"
-					spacing={2}
-				>
-					<Grid item xs={12} sm={6}>
-						<TextField
-							InputProps={{
-								startAdornment: (
-									<InputAdornment position="start">
-										<SearchIcon fontSize="small" />
-									</InputAdornment>
-								),
-							}}
-							onChange={handleSearch}
-							placeholder="Search Loan by Book Id"
-							value={search}
-							size="small"
-						/>
-					</Grid>
-				</Grid>
-			</CardContent>
+			{rows ? (
+				<>
+					<CardContent>
+						<Grid
+							container
+							justifyContent="space-between"
+							alignItems="center"
+							spacing={2}
+						>
+							<Grid item xs={12} sm={6}>
+								<TextField
+									InputProps={{
+										startAdornment: (
+											<InputAdornment position="start">
+												<SearchIcon fontSize="small" />
+											</InputAdornment>
+										),
+									}}
+									onChange={handleSearch}
+									placeholder="Search Loan by Book Id"
+									value={search}
+									size="small"
+								/>
+							</Grid>
+						</Grid>
+					</CardContent>
 
-			{/* table */}
-			<TableContainer>
-				<Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle">
-					<EnhancedTableHead
-						numSelected={selected.length}
-						order={order}
-						orderBy={orderBy}
-						onSelectAllClick={handleSelectAllClick}
-						onRequestSort={handleRequestSort}
-						rowCount={rows.length}
-						theme={theme}
-						selected={selected}
-						deleteHandler={() => handleDelete(selected)}
-					/>
-					<TableBody>
-						{stableSort(rows, getComparator(order, orderBy))
-							.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-							.map((row, index) => {
-								/** Make sure no display bugs if row isn't an OrderData object */
-								if (typeof row === 'number') return null;
+					{/* table */}
+					<TableContainer>
+						<Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle">
+							<EnhancedTableHead
+								numSelected={selected.length}
+								order={order}
+								orderBy={orderBy}
+								onSelectAllClick={handleSelectAllClick}
+								onRequestSort={handleRequestSort}
+								rowCount={rows.length}
+								theme={theme}
+								selected={selected}
+								deleteHandler={() => handleDelete(selected)}
+							/>
+							<TableBody>
+								{stableSort(rows, getComparator(order, orderBy))
+									.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+									.map((row, index) => {
+										/** Make sure no display bugs if row isn't an OrderData object */
+										if (typeof row === 'number') return null;
 
-								const isItemSelected = isSelected(row.id);
-								const labelId = `enhanced-table-checkbox-${index}`;
+										const isItemSelected = isSelected(row.id);
+										const labelId = `enhanced-table-checkbox-${index}`;
 
-								return (
-									<TableRow
-										hover
-										role="checkbox"
-										aria-checked={isItemSelected}
-										tabIndex={-1}
-										key={index}
-										selected={isItemSelected}
-									>
-										<TableCell
-											padding="checkbox"
-											sx={{ pl: 3 }}
-											onClick={(event) => handleClick(event, row.id)}
-										>
-											<Checkbox
-												color="primary"
-												checked={isItemSelected}
-												inputProps={{
-													'aria-labelledby': labelId,
-												}}
-											/>
-										</TableCell>
-										<TableCell
-											component="th"
-											id={labelId}
-											scope="row"
-											onClick={(event) => handleClick(event, row.id)}
-											sx={{ cursor: 'pointer' }}
-										>
-											<Typography
-												variant="subtitle1"
-												sx={{
-													color:
-														theme.palette.mode === 'dark'
-															? 'grey.600'
-															: 'grey.900',
-												}}
+										return (
+											<TableRow
+												hover
+												role="checkbox"
+												aria-checked={isItemSelected}
+												tabIndex={-1}
+												key={index}
+												selected={isItemSelected}
 											>
-												#{row.id}
-											</Typography>
-										</TableCell>
-										<TableCell>
-											<Chip
-												size="small"
-												label={
-													row.isAccepted
-														? row.isReturned
-															? 'Returned'
-															: 'Approved'
-														: 'Pending'
-												}
-												chipcolor={
-													row.isAccepted
-														? row.isReturned
-															? 'secondary'
-															: 'success'
-														: 'error'
-												}
-												sx={{
-													borderRadius: '4px',
-													textTransform: 'capitalize',
-												}}
-											/>
-										</TableCell>
-										<TableCell>
-											{row.expirationDate
-												? new Intl.DateTimeFormat('en-US', {
-														year: 'numeric',
-														month: '2-digit',
-														day: '2-digit',
-														hour: '2-digit',
-														minute: '2-digit',
-														second: '2-digit',
-												  }).format(new Date(row.expirationDate))
-												: '--'}
-										</TableCell>
-										<TableCell>{row.BookId}</TableCell>
-										<TableCell>{row.UserId}</TableCell>
-
-										<TableCell sx={{ pr: 3 }} align="center">
-											<Tooltip title="Details">
-												<IconButton
-													color="primary"
-													size="large"
-													onClick={handleOpenDetails(row)}
+												<TableCell
+													padding="checkbox"
+													sx={{ pl: 3 }}
+													onClick={(event) => handleClick(event, row.id)}
 												>
-													<VisibilityTwoToneIcon sx={{ fontSize: '1.3rem' }} />
-												</IconButton>
-											</Tooltip>
-											<Tooltip title="Approve">
-												<IconButton
-													color="success"
-													size="large"
-													onClick={handleOpenEdit(row)}
-												>
-													<DoneIcon sx={{ fontSize: '1.3rem' }} />
-												</IconButton>
-											</Tooltip>
-											<Tooltip title="Return">
-												<IconButton
-													color="secondary"
-													size="large"
-													onClick={handleOpenReturn(row)}
-												>
-													<PublishedWithChangesIcon
-														sx={{ fontSize: '1.3rem' }}
+													<Checkbox
+														color="primary"
+														checked={isItemSelected}
+														inputProps={{
+															'aria-labelledby': labelId,
+														}}
 													/>
-												</IconButton>
-											</Tooltip>
-										</TableCell>
-									</TableRow>
-								);
-							})}
-						{emptyRows > 0 && (
-							<TableRow
-								style={{
-									height: 53 * emptyRows,
-								}}
-							>
-								<TableCell colSpan={6} />
-							</TableRow>
-						)}
-					</TableBody>
-				</Table>
-				{openDetails && (
-					<LoanDetails handleCloseDialog={handleCloseDetails} data={rowData!} />
-				)}
-				{openEdit && (
-					<LoanAccept handleCloseDialog={handleCloseEdit} data={rowData!} />
-				)}
-				{openReturn && (
-					<LoanReturn handleCloseDialog={handleCloseReturn} data={rowData!} />
-				)}
-			</TableContainer>
+												</TableCell>
+												<TableCell
+													component="th"
+													id={labelId}
+													scope="row"
+													onClick={(event) => handleClick(event, row.id)}
+													sx={{ cursor: 'pointer' }}
+												>
+													<Typography
+														variant="subtitle1"
+														sx={{
+															color:
+																theme.palette.mode === 'dark'
+																	? 'grey.600'
+																	: 'grey.900',
+														}}
+													>
+														#{row.id}
+													</Typography>
+												</TableCell>
+												<TableCell>
+													<Chip
+														size="small"
+														label={
+															row.isAccepted
+																? row.isReturned
+																	? 'Returned'
+																	: 'Approved'
+																: 'Pending'
+														}
+														chipcolor={
+															row.isAccepted
+																? row.isReturned
+																	? 'secondary'
+																	: 'success'
+																: 'error'
+														}
+														sx={{
+															borderRadius: '4px',
+															textTransform: 'capitalize',
+														}}
+													/>
+												</TableCell>
+												<TableCell>
+													{row.expirationDate
+														? new Intl.DateTimeFormat('en-US', {
+																year: 'numeric',
+																month: '2-digit',
+																day: '2-digit',
+																hour: '2-digit',
+																minute: '2-digit',
+																second: '2-digit',
+														  }).format(new Date(row.expirationDate))
+														: '--'}
+												</TableCell>
+												<TableCell>{row.BookId}</TableCell>
+												<TableCell>{row.UserId}</TableCell>
 
-			{/* table pagination */}
-			<TablePagination
-				rowsPerPageOptions={[5, 10, 25]}
-				component="div"
-				count={rows.length}
-				rowsPerPage={rowsPerPage}
-				page={page}
-				onPageChange={handleChangePage}
-				onRowsPerPageChange={handleChangeRowsPerPage}
-			/>
+												<TableCell sx={{ pr: 3 }} align="center">
+													<Tooltip title="Details">
+														<IconButton
+															color="primary"
+															size="large"
+															onClick={handleOpenDetails(row)}
+														>
+															<VisibilityTwoToneIcon
+																sx={{ fontSize: '1.3rem' }}
+															/>
+														</IconButton>
+													</Tooltip>
+													<Tooltip title="Approve">
+														<IconButton
+															color="success"
+															size="large"
+															onClick={handleOpenEdit(row)}
+														>
+															<DoneIcon sx={{ fontSize: '1.3rem' }} />
+														</IconButton>
+													</Tooltip>
+													<Tooltip title="Return">
+														<IconButton
+															color="secondary"
+															size="large"
+															onClick={handleOpenReturn(row)}
+														>
+															<PublishedWithChangesIcon
+																sx={{ fontSize: '1.3rem' }}
+															/>
+														</IconButton>
+													</Tooltip>
+												</TableCell>
+											</TableRow>
+										);
+									})}
+								{emptyRows > 0 && (
+									<TableRow
+										style={{
+											height: 53 * emptyRows,
+										}}
+									>
+										<TableCell colSpan={6} />
+									</TableRow>
+								)}
+							</TableBody>
+						</Table>
+						{openDetails && (
+							<LoanDetails
+								handleCloseDialog={handleCloseDetails}
+								data={rowData!}
+							/>
+						)}
+						{openEdit && (
+							<LoanAccept handleCloseDialog={handleCloseEdit} data={rowData!} />
+						)}
+						{openReturn && (
+							<LoanReturn
+								handleCloseDialog={handleCloseReturn}
+								data={rowData!}
+							/>
+						)}
+					</TableContainer>
+					{/* table pagination */}
+
+					<TablePagination
+						rowsPerPageOptions={[5, 10, 25]}
+						component="div"
+						count={rows.length}
+						rowsPerPage={rowsPerPage}
+						page={page}
+						onPageChange={handleChangePage}
+						onRowsPerPageChange={handleChangeRowsPerPage}
+					/>
+				</>
+			) : (
+				<Typography variant="body1" sx={{ textAlign: 'center' }}>
+					{' '}
+					No loans to display{' '}
+				</Typography>
+			)}
 		</MainCard>
 	);
 };
