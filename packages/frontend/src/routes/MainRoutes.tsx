@@ -20,9 +20,6 @@ const PurchaseList = Loadable(
 	lazy(() => import('views/purchase/PurchaseList'))
 );
 const BookList = Loadable(lazy(() => import('views/e-commerce/ProductList')));
-const PermissionList = Loadable(
-	lazy(() => import('views/user/PermissionList'))
-);
 const RaffleList = Loadable(lazy(() => import('views/raffle/RaffleList')));
 const PrizeList = Loadable(lazy(() => import('views/prize')));
 const SubscriptionList = Loadable(
@@ -75,10 +72,6 @@ const MainRoutes = {
 		{
 			path: '/actions',
 			element: <ActionList />,
-		},
-		{
-			path: '/permissions',
-			element: <PermissionList />,
 		},
 		{
 			path: '/raffles',

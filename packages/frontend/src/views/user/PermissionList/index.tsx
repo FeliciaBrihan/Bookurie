@@ -258,7 +258,7 @@ const PermissionList = () => {
 		undefined
 	);
 	const { permissions } = useSelector((state) => state.permission);
-	const { roles } = useSelector((state) => state.role);
+	// const { roles } = useSelector((state) => state.role);
 	const { actions } = useSelector((state) => state.action);
 
 	React.useEffect(() => {
@@ -404,9 +404,9 @@ const PermissionList = () => {
 		});
 	};
 
-	const getRoleName = (id: number) => {
-		return roles.filter((role) => role.id === id)?.[0].name;
-	};
+	// const getRoleName = (id: number) => {
+	// 	return roles.filter((role) => role.id === id)?.[0].name;
+	// };
 	const getActionName = (id: number) => {
 		return actions.filter((action) => action.id === id)?.[0].name;
 	};
@@ -526,7 +526,7 @@ const PermissionList = () => {
 											</Typography>
 										</TableCell>
 										<TableCell>{row.RoleId}</TableCell>
-										<TableCell>{getRoleName(row.RoleId)}</TableCell>
+										{/* <TableCell>{getRoleName(row.RoleId)}</TableCell> */}
 										<TableCell>{row.ActionId}</TableCell>
 										<TableCell>{getActionName(row.ActionId)}</TableCell>
 										<TableCell sx={{ pr: 3 }} align="center">

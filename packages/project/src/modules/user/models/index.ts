@@ -30,6 +30,6 @@ export function getModelUser(sequelize: Sequelize) {
 				defaultValue: 0,
 			},
 		},
-		{ paranoid: true, tableName: 'user' }
+		{ tableName: 'user' }
 	);
 }

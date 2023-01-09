@@ -9,7 +9,11 @@ export function getModelRole(sequelize: Sequelize) {
 				allowNull: false,
 				unique: true,
 			},
+			allowedActions: {
+				type: DataTypes.ARRAY(DataTypes.INTEGER),
+				defaultValue: [],
+			},
 		},
-		{ paranoid: true, tableName: 'role' }
+		{ tableName: 'role' }
 	);
 }

@@ -114,14 +114,6 @@ const appMenu: NavItemType = {
 			breadcrumbs: false,
 		},
 		{
-			id: 'permissions',
-			title: <FormattedMessage id="permissions" />,
-			type: 'item',
-			url: '/permissions',
-			icon: icons.HowToRegIcon,
-			breadcrumbs: false,
-		},
-		{
 			id: 'raffles',
 			title: <FormattedMessage id="raffles" />,
 			type: 'item',

@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import { sequelize } from 'src/global';
 import { errorMessage } from 'src/helpers';
 import { ExtraRequest, Models } from 'src/interface';
+import { Op } from 'sequelize';
 
 export function checkAuthorization(requiredAction: string) {
 	return async function (
@@ -9,23 +10,29 @@ export function checkAuthorization(requiredAction: string) {
 		res: Response,
 		next: NextFunction
 	) {
-		const { Action, Permission } = sequelize.models as unknown as Models;
+		const { Action, Role } = sequelize.models as unknown as Models;
 
 		try {
 			const { roleId } = req.currentUser;
 
-			const action = await Action.findOne({
-				where: { name: requiredAction },
-			});
-			const permission = await Permission.findOne({
+			const role = await Role.findByPk(roleId);
+			if (!role) return res.sendStatus(401);
+
+			const allowedActions = await Action.findAll({
 				where: {
-					RoleId: roleId,
-					ActionId: action?.id,
+					id: {
+						[Op.in]: role.allowedActions,
+					},
 				},
 			});
-			if (!permission) {
+
+			const hasPermission = allowedActions.some(
+				(a) => a.name === requiredAction
+			);
+			if (!hasPermission) {
 				return res.sendStatus(401);
 			}
+
 			next();
 		} catch (error) {
 			const message = errorMessage(error);

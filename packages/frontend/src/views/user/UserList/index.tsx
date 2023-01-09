@@ -257,7 +257,7 @@ const UserList = () => {
 	const [openDetails, setOpenDetails] = React.useState(false);
 	const [openEdit, setOpenEdit] = React.useState(false);
 	const { users } = useSelector((state) => state.user);
-	const { roles } = useSelector((state) => state.role);
+	// const { roles } = useSelector((state) => state.role);
 
 	React.useEffect(() => {
 		dispatch(userApi.getAll());
@@ -402,9 +402,9 @@ const UserList = () => {
 			setSelected([]);
 		});
 	};
-	const getRoleName = (id: number) => {
-		return roles.filter((role) => role.id === id)[0].name;
-	};
+	// const getRoleName = (id: number) => {
+	// 	return roles.filter((role) => role.id === id)[0].name;
+	// };
 
 	const isSelected = (id: number) => selected.indexOf(id) !== -1;
 	const emptyRows =
@@ -543,7 +543,7 @@ const UserList = () => {
 										<TableCell>{row.lastName}</TableCell>
 										<TableCell>{row.email}</TableCell>
 										{/* <TableCell>{row.MRole?.name || '––'}</TableCell> */}
-										<TableCell>{getRoleName(row.roleId)}</TableCell>
+										{/* <TableCell>{getRoleName(row.roleId)}</TableCell> */}
 										<TableCell sx={{ pr: 3 }} align="center">
 											<Tooltip title="Details">
 												<IconButton

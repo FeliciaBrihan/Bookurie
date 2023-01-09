@@ -8,6 +8,7 @@ import {
 	DialogActions,
 	DialogContent,
 	DialogTitle,
+	Divider,
 	Grid,
 	Slide,
 	SlideProps,
@@ -17,6 +18,9 @@ import {
 
 // assets
 import { TGetRole } from 'types/roles';
+import { useDispatch, useSelector } from 'store';
+import { actionApi } from 'store/slices/action';
+import { TGetAction } from 'types/action';
 
 interface ProductAddProps {
 	handleCloseDialog: (e?: any) => void;
@@ -38,6 +42,18 @@ const Text = ({ label, value }: { label: string; value: string | number }) => (
 );
 
 const RoleDetails = ({ handleCloseDialog, data }: ProductAddProps) => {
+	const dispatch = useDispatch();
+	const [actions, setActions] = React.useState<TGetAction[]>([]);
+	const actionState = useSelector((state) => state.action);
+
+	React.useEffect(() => {
+		if (actionState.actions.length === 0) dispatch(actionApi.getAll());
+	}, [dispatch]);
+
+	React.useEffect(() => {
+		setActions(actionState.actions);
+	}, [actionState]);
+
 	return (
 		<Dialog
 			open
@@ -87,6 +103,18 @@ const RoleDetails = ({ handleCloseDialog, data }: ProductAddProps) => {
 								second: '2-digit',
 							}).format(new Date(data.updatedAt))}
 						/>
+					</Grid>
+					<Divider sx={{ width: '100%', marginTop: '20px' }}>
+						Permissions
+					</Divider>
+					<Grid item xs={12}>
+						{actions.map((action) => (
+							<Text
+								label={action.name}
+								key={action.id}
+								value={data.allowedActions.includes(action.id) ? '√' : '-'}
+							/>
+						))}
 					</Grid>
 				</Grid>
 			</DialogContent>

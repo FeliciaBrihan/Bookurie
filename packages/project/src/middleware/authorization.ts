@@ -25,6 +25,7 @@ export async function authorization(
 		if (user === null) {
 			const newUser = await User.create({
 				email: firebaseUser.email,
+				roleId: 1,
 				firstName: firebaseUser.name.split(' ')[0],
 				lastName: firebaseUser.name.split(' ')[1],
 				username: firebaseUser.name,

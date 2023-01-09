@@ -5,10 +5,12 @@ export interface TRoleStateProps {
 
 export interface TSetRole {
 	name: string;
+	allowedActions: number[];
 }
 export interface TGetRole {
 	id: number;
 	createdAt: Date;
 	updatedAt: Date;
 	name: string;
+	allowedActions: number[];
 }

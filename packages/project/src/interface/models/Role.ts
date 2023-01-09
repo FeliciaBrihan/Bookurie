@@ -4,6 +4,7 @@ import { DefaultParanoidAttributes } from './DefaultParanoidAttributes';
 export interface Role extends DefaultParanoidAttributes {
 	name: string;
 	UserId: number;
+	allowedActions: number[];
 }
 
 export interface RoleAttributes extends Role {

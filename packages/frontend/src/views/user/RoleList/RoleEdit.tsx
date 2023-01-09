@@ -8,10 +8,14 @@ import {
 	DialogActions,
 	DialogContent,
 	DialogTitle,
+	FormControlLabel,
 	Grid,
 	Slide,
 	SlideProps,
+	Stack,
+	Switch,
 	TextField,
+	Typography,
 } from '@mui/material';
 
 // project imports
@@ -21,6 +25,9 @@ import AnimateButton from 'ui-component/extended/AnimateButton';
 // assets
 import { TGetRole, TSetRole } from 'types/roles';
 import { roleApi } from 'store/slices/role';
+import { TGetAction } from 'types/action';
+import { useDispatch, useSelector } from 'store';
+import { actionApi } from 'store/slices/action';
 
 interface ProductAddProps {
 	handleCloseDialog: (e?: any) => void;
@@ -35,9 +42,21 @@ const Transition = forwardRef((props: SlideProps, ref) => (
 const RoleEdit = ({ handleCloseDialog, data }: ProductAddProps) => {
 	const defaultValue = {
 		name: data.name,
+		allowedActions: data.allowedActions,
 	};
 
+	const dispatch = useDispatch();
+	const [actions, setActions] = useState<TGetAction[]>([]);
 	const [formValue, setFormValue] = useState<TSetRole>(defaultValue);
+	const actionState = useSelector((state) => state.action);
+
+	React.useEffect(() => {
+		if (actionState.actions.length === 0) dispatch(actionApi.getAll());
+	}, [dispatch]);
+
+	React.useEffect(() => {
+		setActions(actionState.actions);
+	}, [actionState]);
 
 	const handleValueChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		setFormValue({
@@ -51,11 +70,25 @@ const RoleEdit = ({ handleCloseDialog, data }: ProductAddProps) => {
 			data.id,
 			{
 				name: formValue.name,
+				allowedActions: formValue.allowedActions,
 			},
 			{ sync: true }
 		);
 		handleCloseDialog();
 	};
+	const handleSwitchChange =
+		(id: number) => (event: React.ChangeEvent<HTMLInputElement>) => {
+			if (event.target.checked)
+				setFormValue({
+					...formValue,
+					allowedActions: [...formValue.allowedActions, id],
+				});
+			else
+				setFormValue({
+					...formValue,
+					allowedActions: formValue.allowedActions.filter((el) => el !== id),
+				});
+		};
 
 	return (
 		<Dialog
@@ -87,6 +120,24 @@ const RoleEdit = ({ handleCloseDialog, data }: ProductAddProps) => {
 							label="Enter Role Name"
 							onChange={handleValueChange}
 						/>
+					</Grid>
+					<Grid item xs={12}>
+						{actions.map((el) => (
+							<Stack direction="row" key={String(el.id)} spacing={1}>
+								<Typography variant="subtitle1">{el.name}</Typography>
+								<FormControlLabel
+									control={
+										<Switch
+											checked={
+												formValue.allowedActions.includes(el.id) || false
+											}
+											onChange={handleSwitchChange(el.id)}
+										/>
+									}
+									label=""
+								/>
+							</Stack>
+						))}
 					</Grid>
 				</Grid>
 			</DialogContent>

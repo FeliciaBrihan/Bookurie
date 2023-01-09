@@ -8,10 +8,12 @@ import {
 	DialogActions,
 	DialogContent,
 	DialogTitle,
+	FormControlLabel,
 	Grid,
 	MenuItem,
 	Slide,
 	SlideProps,
+	Switch,
 	TextField,
 } from '@mui/material';
 
@@ -75,6 +77,13 @@ const UserEdit = ({ handleCloseDialog, data }: ProductAddProps) => {
 		(event: React.ChangeEvent<HTMLInputElement>) => {
 			setFormValue({ ...formValue, [field]: Number(event?.target.value) });
 		};
+
+	const handleSwitchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+		setFormValue({
+			...formValue,
+			active: event.target.checked,
+		});
+	};
 
 	const handleSave = async () => {
 		await userApi.update(data.id, formValue, { sync: true });
@@ -153,7 +162,7 @@ const UserEdit = ({ handleCloseDialog, data }: ProductAddProps) => {
 							onChange={handleSelectChange('roleId')}
 						>
 							{role.map((option) => (
-								<MenuItem key={String(option.id)} value={option.name}>
+								<MenuItem key={String(option.id)} value={option.id}>
 									{option.name}
 								</MenuItem>
 							))}
@@ -197,6 +206,17 @@ const UserEdit = ({ handleCloseDialog, data }: ProductAddProps) => {
 							defaultValue={formValue.booksReadThisMonth}
 							label="Enter Books Read This Month"
 							onChange={handleValueChange}
+						/>
+					</Grid>
+					<Grid item xs={12}>
+						<FormControlLabel
+							control={
+								<Switch
+									checked={formValue.active || false}
+									onChange={handleSwitchChange}
+								/>
+							}
+							label="Active"
 						/>
 					</Grid>
 				</Grid>
