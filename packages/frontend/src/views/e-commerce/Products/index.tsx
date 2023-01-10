@@ -263,7 +263,7 @@ const BooksList = () => {
 	};
 
 	const filterData = async () => {
-		await dispatch(filterProducts(filter));
+		await dispatch(filterProducts(filter, sortLabel));
 		setLoading(false);
 	};
 

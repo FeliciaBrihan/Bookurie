@@ -78,7 +78,6 @@ const Price = ({
 	handelFilter: (type: string, params: string) => void;
 	maxValue: number;
 }) => {
-	console.log(price);
 	const [isPriceLoading, setPriceLoading] = useState(true);
 	useEffect(() => {
 		setPriceLoading(false);

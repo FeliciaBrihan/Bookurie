@@ -105,13 +105,21 @@ export function deleteBook(id: number, options: { sync?: boolean }) {
 	};
 }
 
-export function filterProducts(filter: ProductsFilter) {
+export function filterProducts(filter: ProductsFilter, sortLabel: string) {
 	return async () => {
 		try {
-			console.log(filter);
 			const response = await axios.get('/book', { params: filter });
-			console.log(response);
-			dispatch(slice.actions.filterProductsSuccess(response.data.data));
+			let sortedBooks = response.data.data;
+			if (sortLabel === 'low') {
+				sortedBooks = sortedBooks.sort(
+					(a: TGetBook, b: TGetBook) => a.price - b.price
+				);
+			} else if (sortLabel === 'high') {
+				sortedBooks = sortedBooks.sort(
+					(a: TGetBook, b: TGetBook) => b.price - a.price
+				);
+			}
+			dispatch(slice.actions.filterProductsSuccess(sortedBooks));
 		} catch (error) {
 			dispatch(slice.actions.hasError(error));
 		}
