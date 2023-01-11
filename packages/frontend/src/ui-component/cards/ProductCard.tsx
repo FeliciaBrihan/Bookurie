@@ -43,25 +43,10 @@ const ProductCard = ({
 	const prodProfile = image && prodImage(`./${image}`);
 	// const [productRating] = useState<number | undefined>(rating);
 	const cart = useSelector((state) => state.cart);
-	const { loggedUser } = useSelector((state) => state.user);
 	const { subscription } = useSelector((state) => state.subscription);
 
 	const discount = subscription ? subscription.everyBookDiscount / 100 : 0;
-	const bookWithDiscount = Math.round(price! - price! * discount);
-
-	const isPremium = subscription?.type === 'premium';
-	const isOnline = typeFormat === 'online';
-
-	const bookFinalPrice = subscription
-		? isPremium
-			? isOnline
-				? 0
-				: bookWithDiscount
-			: isOnline &&
-			  loggedUser!.booksReadThisMonth < subscription.monthlyFreeBooks
-			? 0
-			: bookWithDiscount
-		: price;
+	const bookWithoutDiscount = Math.ceil(price! + price! * discount) ; // not ok  CHECK!
 
 	const addCart = () => {
 		const filteredProducts = cart.checkout.products.filter(
@@ -78,7 +63,7 @@ const ProductCard = ({
 						author,
 						typeFormat,
 						stock,
-						price: bookFinalPrice,
+						price,
 						quantity: 1,
 					},
 					cart.checkout.products
@@ -211,9 +196,7 @@ const ProductCard = ({
 									<Grid container spacing={1}>
 										<Grid>
 											<Grid item>
-												<Typography variant="h4">
-													{bookFinalPrice} RON
-												</Typography>
+												<Typography variant="h4">{price} RON</Typography>
 											</Grid>
 											{subscription && (
 												<Grid item>
@@ -224,7 +207,7 @@ const ProductCard = ({
 															textDecoration: 'line-through',
 														}}
 													>
-														{price} RON
+														{bookWithoutDiscount} RON
 													</Typography>
 												</Grid>
 											)}

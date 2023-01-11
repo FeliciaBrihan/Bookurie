@@ -46,6 +46,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import { TGetBook } from 'types/book';
 import { ProductsFilter } from 'types/e-commerce';
 import { KeyedObject } from 'types';
+// import { TGetSubscription } from 'types/subscription';
 
 // product list container
 const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })<{
@@ -101,6 +102,10 @@ const BooksList = () => {
 	const bookState = useSelector((state) => state.book);
 	const allBooksRef = useRef<TGetBook[]>([]);
 	const [sortLabel, setSortLabel] = useState<string>('');
+	// const [promoBooks, setPromoBooks] = useState<TGetBook[]>([]);
+	const { subscription } = useSelector((state) => state.subscription);
+	const { loggedUser } = useSelector((state) => state.user);
+	console.log('books', books);
 
 	const maxValue = allBooksRef
 		? Math.max(...allBooksRef.current.map((book) => book.price))
@@ -118,7 +123,7 @@ const BooksList = () => {
 		: [];
 
 	useEffect(() => {
-		dispatch(bookApi.getAll());
+		dispatch(bookApi.getAll(subscription, loggedUser!));
 
 		// hide left drawer when email app opens
 		dispatch(openDrawer(false));
@@ -137,6 +142,11 @@ const BooksList = () => {
 		if (allBooksRef.current.length === 0) allBooksRef.current = bookState.books;
 	}, [bookState]);
 
+	// useEffect(() => {
+	// 	if (books && subscription)
+	// 		setPromoBooks(applyDiscount(books, subscription));
+	// }, [books]);
+
 	// filter
 	const initialState: ProductsFilter = {
 		// sort: 'low',
@@ -146,6 +156,16 @@ const BooksList = () => {
 		author: [],
 	};
 	const [filter, setFilter] = useState(initialState);
+
+	// const applyDiscount = (books: TGetBook[], subscription: TGetSubscription) => {
+	// 	const promoBooks = [];
+	// 	for (const book of books) {
+	// 		const promoPrice =
+	// 			book.price - (book.price * subscription.everyBookDiscount) / 100;
+	// 		promoBooks.push({ ...book, price: promoPrice });
+	// 	}
+	// 	return promoBooks;
+	// };
 
 	const handleSort = (option: string) => {
 		let booksSorted: TGetBook[];
@@ -263,7 +283,9 @@ const BooksList = () => {
 	};
 
 	const filterData = async () => {
-		await dispatch(filterProducts(filter, sortLabel));
+		await dispatch(
+			filterProducts(filter, sortLabel, subscription, loggedUser!)
+		);
 		setLoading(false);
 	};
 
