@@ -33,4 +33,5 @@ export interface TGetBook {
 	stock: number;
 	createdAt: Date;
 	updatedAt: Date;
+	pricePromo?: number;
 }

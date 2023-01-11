@@ -21,7 +21,7 @@ const getBooksWithDiscount = (
 ) => {
 	if (subscription.type === 'premium') {
 		books = books.map((book: TGetBook) => {
-			book.price =
+			book.pricePromo =
 				book.typeFormat === 'printed'
 					? Math.round(
 							book.price - (book.price * subscription.everyBookDiscount) / 100
@@ -31,7 +31,7 @@ const getBooksWithDiscount = (
 		});
 	} else if (subscription.type === 'basic') {
 		books = books.map((book: TGetBook) => {
-			book.price =
+			book.pricePromo =
 				book.typeFormat === 'printed'
 					? Math.round(
 							book.price - (book.price * subscription.everyBookDiscount) / 100
@@ -172,9 +172,10 @@ export function filterProducts(
 			}
 
 			const { price } = filter;
+
 			if (price) {
-				sortedBooks = sortedBooks.filter(
-					(book: TGetBook) => book.price <= price
+				sortedBooks = sortedBooks.filter((book: TGetBook) =>
+					subscription ? book.pricePromo : book.price <= price
 				);
 			}
 

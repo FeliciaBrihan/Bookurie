@@ -325,6 +325,7 @@ const BooksList = () => {
 					genre={book.genre}
 					stock={book.stock}
 					typeFormat={book.typeFormat}
+					pricePromo={book.pricePromo}
 				/>
 			</Grid>
 		));
