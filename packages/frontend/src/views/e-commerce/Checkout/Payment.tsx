@@ -325,7 +325,10 @@ const Payment = ({
 													<TableCell align="right">
 														{row.quantity && (
 															<Typography variant="subtitle1">
-																{row.price * row.quantity} RON
+																{row.pricePromo || row.pricePromo === 0
+																	? row.pricePromo * row.quantity
+																	: row.price * row.quantity}{' '}
+																RON
 															</Typography>
 														)}
 													</TableCell>

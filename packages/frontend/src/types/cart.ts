@@ -27,6 +27,7 @@ export interface CartProductStateProps {
 	typeFormat: string;
 	stock: number;
 	quantity: number;
+	pricePromo: number;
 }
 
 export type Address = {

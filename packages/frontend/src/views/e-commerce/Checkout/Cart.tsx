@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
-import { dispatch } from 'store';
+import { dispatch, useSelector } from 'store';
 import {
 	Button,
 	ButtonGroup,
@@ -144,6 +144,7 @@ const Cart = ({
 	const matchDownMD = useMediaQuery(theme.breakpoints.down('lg'));
 	const totalQuantity = sum(checkout.products.map((item) => item.quantity));
 	const [rows, setRows] = useState(checkout.products);
+	const { subscription } = useSelector((state) => state.subscription);
 
 	useEffect(() => {
 		setRows(checkout.products);
@@ -181,7 +182,6 @@ const Cart = ({
 						</TableHead>
 						<TableBody>
 							{rows.map((row: CartProductStateProps, index: number) => {
-								console.log(row);
 								return (
 									<TableRow
 										key={index}
@@ -228,7 +228,7 @@ const Cart = ({
 										<TableCell align="right">
 											<Stack>
 												<Typography variant="subtitle1">
-													{row.price} RON
+													{subscription ? row.pricePromo : row.price} RON
 												</Typography>
 											</Stack>
 										</TableCell>
@@ -244,7 +244,10 @@ const Cart = ({
 										<TableCell align="right">
 											{row.quantity && (
 												<Typography variant="subtitle1">
-													{row.price * row.quantity} RON
+													{subscription
+														? row.pricePromo * row.quantity
+														: row.price * row.quantity}{' '}
+													RON
 												</Typography>
 											)}
 										</TableCell>

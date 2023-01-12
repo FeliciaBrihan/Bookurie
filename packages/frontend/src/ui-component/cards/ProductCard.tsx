@@ -61,6 +61,7 @@ const ProductCard = ({
 						author,
 						typeFormat,
 						stock,
+						price,
 						pricePromo,
 						quantity: 1,
 					},

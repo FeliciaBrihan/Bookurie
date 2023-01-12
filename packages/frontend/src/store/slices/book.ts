@@ -16,35 +16,39 @@ import { TGetUser } from 'types/user';
 
 const getBooksWithDiscount = (
 	books: TGetBook[],
-	subscription: TGetSubscription,
+	subscription: TGetSubscription | undefined,
 	loggedUser: TGetUser
 ) => {
-	if (subscription.type === 'premium') {
-		books = books.map((book: TGetBook) => {
-			book.pricePromo =
-				book.typeFormat === 'printed'
-					? Math.round(
-							book.price - (book.price * subscription.everyBookDiscount) / 100
-					  )
-					: 0;
-			return book;
-		});
-	} else if (subscription.type === 'basic') {
-		books = books.map((book: TGetBook) => {
-			book.pricePromo =
-				book.typeFormat === 'printed'
-					? Math.round(
-							book.price - (book.price * subscription.everyBookDiscount) / 100
-					  )
-					: loggedUser!.booksReadThisMonth < subscription.monthlyFreeBooks
-					? 0
-					: Math.round(
-							book.price - (book.price * subscription.everyBookDiscount) / 100
-					  );
-			return book;
-		});
-	}
-	return books;
+	const newBooks = books.map((book) => {
+		if (subscription) {
+			if (subscription.type === 'premium') {
+				return {
+					...book,
+					pricePromo:
+						book.typeFormat === 'printed'
+							? Math.round(
+									book.price -
+										(book.price * subscription.everyBookDiscount) / 100
+							  )
+							: 0,
+				};
+			}
+			if (subscription.type === 'basic') {
+				const pricePromo =
+					book.typeFormat === 'printed'
+						? Math.round(
+								book.price - (book.price * subscription.everyBookDiscount) / 100
+						  )
+						: loggedUser!.booksReadThisMonth < subscription.monthlyFreeBooks
+						? 0
+						: Math.round(
+								book.price - (book.price * subscription.everyBookDiscount) / 100
+						  );
+				return { ...book, pricePromo };
+			}
+		}
+	});
+	return newBooks;
 };
 
 const initialState: DefaultRootStateProps['book'] = {
@@ -175,17 +179,17 @@ export function filterProducts(
 
 			if (price) {
 				sortedBooks = sortedBooks.filter((book: TGetBook) =>
-					subscription ? book.pricePromo : book.price <= price
+					subscription ? book.pricePromo! <= price : book.price <= price
 				);
 			}
 
 			if (sortLabel === 'low') {
-				sortedBooks = sortedBooks.sort(
-					(a: TGetBook, b: TGetBook) => a.price - b.price
+				sortedBooks = sortedBooks.sort((a: TGetBook, b: TGetBook) =>
+					subscription ? a.pricePromo! - b.pricePromo! : a.price - b.price
 				);
 			} else if (sortLabel === 'high') {
-				sortedBooks = sortedBooks.sort(
-					(a: TGetBook, b: TGetBook) => b.price - a.price
+				sortedBooks = sortedBooks.sort((a: TGetBook, b: TGetBook) =>
+					subscription ? b.pricePromo! - a.pricePromo! : b.price - a.price
 				);
 			}
 			dispatch(slice.actions.filterProductsSuccess(sortedBooks));
