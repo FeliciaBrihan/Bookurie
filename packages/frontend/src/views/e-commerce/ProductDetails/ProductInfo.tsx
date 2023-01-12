@@ -97,27 +97,8 @@ const ProductInfo = ({ product }: { product: TGetBook }) => {
 
 	const cart = useSelector((state) => state.cart);
 	const { subscription } = useSelector((state) => state.subscription);
-	const { loggedUser } = useSelector((state) => state.user);
 	const [purchases, setPurchases] = useState<TGetPurchase[]>([]);
 	const purchasesState = useSelector((state) => state.purchase);
-
-	const discount = subscription ? subscription.everyBookDiscount / 100 : 0;
-
-	const bookWithDiscount = Math.round(product.price - product.price * discount);
-
-	const isPremium = subscription?.type === 'premium';
-	const isOnline = product.typeFormat === 'online';
-
-	const bookFinalPrice = subscription
-		? isPremium
-			? isOnline
-				? 0
-				: bookWithDiscount
-			: isOnline &&
-			  loggedUser!.booksReadThisMonth < subscription.monthlyFreeBooks
-			? 0
-			: bookWithDiscount
-		: product.price;
 
 	useEffect(() => {
 		dispatch(getUserPurchases());
@@ -134,7 +115,8 @@ const ProductInfo = ({ product }: { product: TGetBook }) => {
 			title: product.title,
 			author: product.author,
 			image: product.coverImage,
-			price: bookFinalPrice,
+			price: product.price,
+			pricePromo: product.pricePromo,
 			stock: product.stock,
 			typeFormat: product.typeFormat,
 			quantity: 1,
@@ -164,14 +146,14 @@ const ProductInfo = ({ product }: { product: TGetBook }) => {
 		const filteredProducts = cart.checkout.products.filter(
 			(prod) => prod.id === product.id
 		);
-		const filteredPurchases = purchases
+		const filteredOnlinePurchases = purchases
 			? purchases.filter((purchase) => {
 					if (product.typeFormat === 'online')
 						return purchase.BookId === product.id;
 			  })
 			: [];
 
-		if (filteredProducts.length === 0 && filteredPurchases.length === 0) {
+		if (filteredProducts.length === 0 && filteredOnlinePurchases.length === 0) {
 			dispatch(addProduct(values, cart.checkout.products));
 			dispatch(
 				openSnackbar({
@@ -189,7 +171,7 @@ const ProductInfo = ({ product }: { product: TGetBook }) => {
 				openSnackbar({
 					open: true,
 					message:
-						filteredPurchases.length > 0
+						filteredOnlinePurchases.length > 0
 							? 'Online Book Already Bought!'
 							: 'Book Already In Cart',
 					variant: 'alert',
@@ -253,7 +235,7 @@ const ProductInfo = ({ product }: { product: TGetBook }) => {
 				<Stack direction="row" alignItems="center" spacing={1}>
 					<Typography variant="body1">Buy for</Typography>
 					<Typography variant="h3" color="primary">
-						{bookFinalPrice} RON
+						{subscription ? product.pricePromo : product.price} RON
 					</Typography>
 					{subscription && (
 						<Typography variant="body1" sx={{ textDecoration: 'line-through' }}>

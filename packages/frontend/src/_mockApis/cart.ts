@@ -88,7 +88,10 @@ services.onPost('/api/cart/update').reply((config) => {
 
 		latestProducts = products.map((item: ProductCardProps) => {
 			if (id === item.itemId) {
-				oldSubTotal = item.quantity * (item.price || 0);
+				oldSubTotal =
+					newProduct.pricePromo || newProduct.pricePromo === 0
+						? item.quantity * (item.pricePromo || 0)
+						: item.quantity * (item.price || 0);
 				return { ...item, quantity: quantity! };
 			}
 			return item;

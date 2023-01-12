@@ -102,10 +102,8 @@ const BooksList = () => {
 	const bookState = useSelector((state) => state.book);
 	const allBooksRef = useRef<TGetBook[]>([]);
 	const [sortLabel, setSortLabel] = useState<string>('');
-	// const [promoBooks, setPromoBooks] = useState<TGetBook[]>([]);
 	const { subscription } = useSelector((state) => state.subscription);
 	const { loggedUser } = useSelector((state) => state.user);
-	console.log('books', books);
 
 	const maxValue = allBooksRef
 		? Math.max(...allBooksRef.current.map((book) => book.price))
@@ -291,7 +289,7 @@ const BooksList = () => {
 
 	useEffect(() => {
 		filterData();
-	}, [filter]);
+	}, [filter, sortLabel]);
 
 	useEffect(() => {
 		setOpen(!matchDownLG);

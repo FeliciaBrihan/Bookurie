@@ -19,10 +19,12 @@ import { useDispatch, useSelector } from 'store';
 import { addProduct } from 'store/slices/cart';
 import { openSnackbar } from 'store/slices/snackbar';
 import { ProductCardProps } from 'types/cart';
+import { getUserPurchases } from 'store/slices/purchase';
 
 // assets
 import ShoppingCartTwoToneIcon from '@mui/icons-material/ShoppingCartTwoTone';
 import Chip from 'ui-component/extended/Chip';
+import { TGetPurchase } from 'types/purchase';
 
 const prodImage = require.context('assets/images/e-commerce', true);
 
@@ -45,12 +47,27 @@ const ProductCard = ({
 	// const [productRating] = useState<number | undefined>(rating);
 	const cart = useSelector((state) => state.cart);
 	const { subscription } = useSelector((state) => state.subscription);
+	const [purchases, setPurchases] = useState<TGetPurchase[]>([]);
+	const purchasesState = useSelector((state) => state.purchase);
+
+	useEffect(() => {
+		dispatch(getUserPurchases());
+	}, []);
+
+	useEffect(() => {
+		setPurchases(purchasesState.userPurchases);
+	}, [purchasesState]);
 
 	const addCart = () => {
 		const filteredProducts = cart.checkout.products.filter(
 			(prod) => prod.id === id
 		);
-		if (filteredProducts.length === 0) {
+		const filteredOnlinePurchases = purchases
+			? purchases.filter((purchase) => {
+					if (typeFormat === 'online') return purchase.BookId === id;
+			  })
+			: [];
+		if (filteredProducts.length === 0 && filteredOnlinePurchases.length === 0) {
 			dispatch(
 				addProduct(
 					{
@@ -83,7 +100,10 @@ const ProductCard = ({
 			dispatch(
 				openSnackbar({
 					open: true,
-					message: 'Book Already In Cart!',
+					message:
+						filteredOnlinePurchases.length > 0
+							? 'Online Book Already Bought!'
+							: 'Book Already In Cart',
 					variant: 'alert',
 					alert: {
 						color: 'warning',
