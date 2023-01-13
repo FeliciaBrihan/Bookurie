@@ -10,46 +10,8 @@ import { DefaultRootStateProps } from 'types';
 import { TGetBook, TSetBook } from 'types/book';
 import { ProductsFilter } from 'types/e-commerce';
 import { TGetSubscription } from 'types/subscription';
-import { TGetUser } from 'types/user';
 
 // ----------------------------------------------------------------------
-
-const getBooksWithDiscount = (
-	books: TGetBook[],
-	subscription: TGetSubscription | undefined,
-	loggedUser: TGetUser
-) => {
-	const newBooks = books.map((book) => {
-		if (subscription) {
-			if (subscription.type === 'premium') {
-				return {
-					...book,
-					pricePromo:
-						book.typeFormat === 'printed'
-							? Math.round(
-									book.price -
-										(book.price * subscription.everyBookDiscount) / 100
-							  )
-							: 0,
-				};
-			}
-			if (subscription.type === 'basic') {
-				const pricePromo =
-					book.typeFormat === 'printed'
-						? Math.round(
-								book.price - (book.price * subscription.everyBookDiscount) / 100
-						  )
-						: loggedUser!.booksReadThisMonth < subscription.monthlyFreeBooks
-						? 0
-						: Math.round(
-								book.price - (book.price * subscription.everyBookDiscount) / 100
-						  );
-				return { ...book, pricePromo };
-			}
-		}
-	});
-	return newBooks;
-};
 
 const initialState: DefaultRootStateProps['book'] = {
 	error: null,
@@ -86,20 +48,15 @@ export const { hasError } = slice.actions;
 // ----------------------------------------------------------------------
 
 export const bookApi = {
-	getAll:
-		(subscription?: TGetSubscription | undefined, loggedUser?: TGetUser) =>
-		async () => {
-			try {
-				const response = await axios.get('/book');
-				let books = response.data.data;
-				if (subscription) {
-					books = getBooksWithDiscount(books, subscription, loggedUser!);
-				}
-				dispatch(slice.actions.getBooksSuccess(books));
-			} catch (error) {
-				dispatch(slice.actions.hasError(error));
-			}
-		},
+	getAll: () => async () => {
+		try {
+			const response = await axios.get('/book');
+			const books = response.data.data;
+			dispatch(slice.actions.getBooksSuccess(books));
+		} catch (error) {
+			dispatch(slice.actions.hasError(error));
+		}
+	},
 
 	get create() {
 		return async (data: TSetBook, options: { sync?: boolean }) => {
@@ -153,8 +110,7 @@ export function deleteBook(id: number, options: { sync?: boolean }) {
 export function filterProducts(
 	filter: ProductsFilter,
 	sortLabel: string,
-	subscription: TGetSubscription | undefined,
-	loggedUser: TGetUser
+	subscription: TGetSubscription | undefined
 ) {
 	return async () => {
 		try {
@@ -166,14 +122,6 @@ export function filterProducts(
 				},
 			});
 			let sortedBooks = response.data.data;
-
-			if (subscription) {
-				sortedBooks = getBooksWithDiscount(
-					sortedBooks,
-					subscription,
-					loggedUser
-				);
-			}
 
 			const { price } = filter;
 

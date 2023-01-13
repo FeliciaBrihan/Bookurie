@@ -103,7 +103,7 @@ const BooksList = () => {
 	const allBooksRef = useRef<TGetBook[]>([]);
 	const [sortLabel, setSortLabel] = useState<string>('');
 	const { subscription } = useSelector((state) => state.subscription);
-	const { loggedUser } = useSelector((state) => state.user);
+	console.log('allbookRef', allBooksRef);
 
 	const maxValue = allBooksRef
 		? Math.max(...allBooksRef.current.map((book) => book.price))
@@ -121,7 +121,7 @@ const BooksList = () => {
 		: [];
 
 	useEffect(() => {
-		dispatch(bookApi.getAll(subscription, loggedUser!));
+		dispatch(bookApi.getAll());
 
 		// hide left drawer when email app opens
 		dispatch(openDrawer(false));
@@ -140,11 +140,6 @@ const BooksList = () => {
 		if (allBooksRef.current.length === 0) allBooksRef.current = bookState.books;
 	}, [bookState]);
 
-	// useEffect(() => {
-	// 	if (books && subscription)
-	// 		setPromoBooks(applyDiscount(books, subscription));
-	// }, [books]);
-
 	// filter
 	const initialState: ProductsFilter = {
 		// sort: 'low',
@@ -155,25 +150,7 @@ const BooksList = () => {
 	};
 	const [filter, setFilter] = useState(initialState);
 
-	// const applyDiscount = (books: TGetBook[], subscription: TGetSubscription) => {
-	// 	const promoBooks = [];
-	// 	for (const book of books) {
-	// 		const promoPrice =
-	// 			book.price - (book.price * subscription.everyBookDiscount) / 100;
-	// 		promoBooks.push({ ...book, price: promoPrice });
-	// 	}
-	// 	return promoBooks;
-	// };
-
 	const handleSort = (option: string) => {
-		let booksSorted: TGetBook[];
-		if (option === 'low') {
-			booksSorted = [...books].sort((a, b) => a.price - b.price);
-			setBooks(booksSorted);
-		} else if (option === 'high') {
-			booksSorted = [...books].sort((a, b) => b.price - a.price);
-			setBooks(booksSorted);
-		}
 		setSortLabel(option);
 		setAnchorEl(null);
 	};
@@ -281,9 +258,7 @@ const BooksList = () => {
 	};
 
 	const filterData = async () => {
-		await dispatch(
-			filterProducts(filter, sortLabel, subscription, loggedUser!)
-		);
+		await dispatch(filterProducts(filter, sortLabel, subscription));
 		setLoading(false);
 	};
 

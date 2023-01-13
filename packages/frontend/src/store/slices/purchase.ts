@@ -70,7 +70,6 @@ export function getUserPurchases() {
 		try {
 			const response = await axios.get(`/purchase`);
 			dispatch(slice.actions.getUserPurchasesSuccess(response.data.data));
-			console.log(response);
 		} catch (error) {
 			dispatch(slice.actions.hasError(error));
 			console.log(error);
