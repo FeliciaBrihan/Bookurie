@@ -103,10 +103,13 @@ const BooksList = () => {
 	const allBooksRef = useRef<TGetBook[]>([]);
 	const [sortLabel, setSortLabel] = useState<string>('');
 	const { subscription } = useSelector((state) => state.subscription);
-	console.log('allbookRef', allBooksRef);
 
 	const maxValue = allBooksRef
-		? Math.max(...allBooksRef.current.map((book) => book.price))
+		? Math.max(
+				...allBooksRef.current.map((book) =>
+					subscription ? book.pricePromo! : book.price
+				)
+		  )
 		: 1000;
 
 	const uniqueGenres = allBooksRef
@@ -491,7 +494,7 @@ const BooksList = () => {
 								<ProductFilter
 									filter={filter}
 									handelFilter={handelFilter}
-									maxValue={maxValue}
+									maxValue={maxValue ? maxValue : 1000}
 									genres={uniqueGenres}
 									authors={authors}
 								/>

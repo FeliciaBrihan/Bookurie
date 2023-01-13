@@ -125,7 +125,7 @@ export function filterProducts(
 
 			const { price } = filter;
 
-			if (price) {
+			if (price && price >= 0) {
 				sortedBooks = sortedBooks.filter((book: TGetBook) =>
 					subscription ? book.pricePromo! <= price : book.price <= price
 				);
