@@ -139,6 +139,8 @@ const ProductInfo = ({ product }: { product: TGetBook }) => {
 			history('/e-commerce/checkout');
 		},
 	});
+	const bookInCart =
+		cart.checkout.products.filter((prod) => prod.id === product.id).length > 0;
 
 	const { values, handleSubmit } = formik;
 
@@ -297,6 +299,7 @@ const ProductInfo = ({ product }: { product: TGetBook }) => {
 									<Grid container spacing={1}>
 										<Grid item xs={6}>
 											<Button
+												disabled={bookInCart ? true : false}
 												fullWidth
 												color="primary"
 												variant="contained"
@@ -304,7 +307,7 @@ const ProductInfo = ({ product }: { product: TGetBook }) => {
 												startIcon={<ShoppingCartTwoToneIcon />}
 												onClick={addCart}
 											>
-												Add to Cart
+												{bookInCart ? 'Book In Cart' : 'Add To Cart'}
 											</Button>
 										</Grid>
 										{product.typeFormat === 'printed' ? (

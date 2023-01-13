@@ -195,7 +195,7 @@ const Checkout = () => {
 			const remainingFreeBooks =
 				subscription.monthlyFreeBooks - loggedUser!.booksReadThisMonth;
 			const onlineBooksInCart = cart.checkout.products.filter(
-				(product) => product.typeFormat === 'online'
+				(product) => product.typeFormat === 'online' && product.pricePromo === 0
 			);
 			if (onlineBooksInCart.length > remainingFreeBooks) {
 				dispatch(

@@ -9,6 +9,7 @@ import {
 	Grid,
 	// Rating,
 	Stack,
+	Tooltip,
 	Typography,
 } from '@mui/material';
 
@@ -57,6 +58,9 @@ const ProductCard = ({
 	useEffect(() => {
 		setPurchases(purchasesState.userPurchases);
 	}, [purchasesState]);
+
+	const bookInCart =
+		cart.checkout.products.filter((prod) => prod.id === id).length > 0;
 
 	const addCart = () => {
 		const filteredProducts = cart.checkout.products.filter(
@@ -235,13 +239,20 @@ const ProductCard = ({
 										</Grid>
 									</Grid>
 									{stock || typeFormat === 'online' ? (
-										<Button
-											variant="contained"
-											sx={{ minWidth: 0 }}
-											onClick={addCart}
+										<Tooltip
+											title={bookInCart ? 'Book In Cart' : 'Add To Cart'}
 										>
-											<ShoppingCartTwoToneIcon fontSize="small" />
-										</Button>
+											<span>
+												<Button
+													disabled={bookInCart ? true : false}
+													variant="contained"
+													sx={{ minWidth: 0 }}
+													onClick={addCart}
+												>
+													<ShoppingCartTwoToneIcon fontSize="small" />
+												</Button>
+											</span>
+										</Tooltip>
 									) : (
 										<Chip
 											size="small"
