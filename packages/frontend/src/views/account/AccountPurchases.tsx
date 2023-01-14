@@ -18,6 +18,7 @@ import {
 	Typography,
 } from '@mui/material';
 import { visuallyHidden } from '@mui/utils';
+import VisibilityTwoToneIcon from '@mui/icons-material/VisibilityTwoTone';
 
 // project imports
 import MainCard from 'ui-component/cards/MainCard';
@@ -36,6 +37,7 @@ import {
 import { TGetPurchase } from 'types/purchase';
 import { getUserPurchases } from 'store/slices/purchase';
 import { bookApi } from 'store/slices/book';
+import PurchaseDetails from './PurchaseDetails';
 
 interface CumulatedPurchase extends TGetPurchase {
 	totalPrice: number;
@@ -156,6 +158,11 @@ function EnhancedTableHead({
 							</TableSortLabel>
 						</TableCell>
 					))}
+				{numSelected <= 0 && (
+					<TableCell sortDirection={false} align="center" sx={{ pr: 3 }}>
+						<Typography variant="subtitle1">Action</Typography>
+					</TableCell>
+				)}
 			</TableRow>
 		</TableHead>
 	);
@@ -204,10 +211,15 @@ const PurchaseList = () => {
 	const dispatch = useDispatch();
 	const [order, setOrder] = React.useState<ArrangementOrder>('asc');
 	const [orderBy, setOrderBy] = React.useState<string>('id');
+	const [openDetails, setOpenDetails] = React.useState(false);
 	const [selected, setSelected] = React.useState<number[]>([]);
 	const [page, setPage] = React.useState<number>(0);
 	const [rowsPerPage, setRowsPerPage] = React.useState<number>(10);
 	const [rows, setRows] = React.useState<TGetPurchase[]>([]);
+	const [purchases, setPurchases] = React.useState<TGetPurchase[]>([]);
+	const [rowData, setRowData] = React.useState<TGetPurchase[] | undefined>(
+		undefined
+	);
 	const { userPurchases } = useSelector((state) => state.purchase);
 
 	React.useEffect(() => {
@@ -237,6 +249,7 @@ const PurchaseList = () => {
 		const cumulatedPurchases: CumulatedPurchase[] =
 			Object.values(purchasesByOrderId);
 		setRows(cumulatedPurchases);
+		setPurchases(userPurchases);
 
 		console.log(rows);
 	}, [userPurchases]);
@@ -282,6 +295,16 @@ const PurchaseList = () => {
 			// dispatch(deleteLoan(item, { sync: true }));
 			setSelected([]);
 		});
+	};
+	const handleOpenDetails = (row: TGetPurchase) => () => {
+		const relatedPurchases = purchases.filter(
+			(purchase) => purchase.orderId === row.orderId
+		);
+		setRowData(relatedPurchases);
+		setOpenDetails(true);
+	};
+	const handleCloseDetails = () => {
+		setOpenDetails(false);
 	};
 
 	const isSelected = (id: number) => selected.indexOf(id) !== -1;
@@ -347,6 +370,18 @@ const PurchaseList = () => {
 													}).format(new Date(row.createdAt))}
 												</TableCell>
 												<TableCell>{row.totalPrice} RON</TableCell>
+												<TableCell sx={{ pr: 3 }} align="center">
+													<IconButton
+														title="Details"
+														color="primary"
+														size="large"
+														onClick={handleOpenDetails(row)}
+													>
+														<VisibilityTwoToneIcon
+															sx={{ fontSize: '1.3rem' }}
+														/>
+													</IconButton>
+												</TableCell>
 											</TableRow>
 										);
 									})}
@@ -361,6 +396,12 @@ const PurchaseList = () => {
 								)}
 							</TableBody>
 						</Table>
+						{openDetails && (
+							<PurchaseDetails
+								handleCloseDialog={handleCloseDetails}
+								data={rowData!}
+							/>
+						)}
 					</TableContainer>
 
 					<TablePagination
