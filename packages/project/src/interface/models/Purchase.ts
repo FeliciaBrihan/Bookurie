@@ -5,6 +5,7 @@ export interface Purchase extends DefaultParanoidAttributes {
 	BookId: number;
 	UserId: number;
 	price: number;
+	orderId: string;
 }
 
 export interface PurchaseAttributes extends Purchase {

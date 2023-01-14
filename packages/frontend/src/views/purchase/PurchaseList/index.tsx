@@ -79,9 +79,9 @@ function stableSort(
 
 const headCells: HeadCell[] = [
 	{
-		id: 'id',
+		id: 'orderId',
 		numeric: true,
-		label: 'ID',
+		label: 'Order Id',
 		align: 'left',
 	},
 	{
@@ -259,7 +259,7 @@ const PurchaseList = () => {
 			const newRows = rows.filter((row: KeyedObject) => {
 				let matches = true;
 
-				const properties = ['BookId'];
+				const properties = ['BookId', 'orderId'];
 				let containsQuery = false;
 
 				properties.forEach((property) => {
@@ -366,6 +366,7 @@ const PurchaseList = () => {
 						>
 							<Grid item xs={12} sm={6}>
 								<TextField
+									sx={{ width: 300 }}
 									InputProps={{
 										startAdornment: (
 											<InputAdornment position="start">
@@ -374,7 +375,7 @@ const PurchaseList = () => {
 										),
 									}}
 									onChange={handleSearch}
-									placeholder="Search Book ID"
+									placeholder="Search Book ID or Order ID"
 									value={search}
 									size="small"
 								/>
@@ -444,7 +445,7 @@ const PurchaseList = () => {
 																	: 'grey.900',
 														}}
 													>
-														#{row.id}
+														{row.orderId}
 													</Typography>
 												</TableCell>
 												<TableCell>

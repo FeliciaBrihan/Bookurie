@@ -11,6 +11,7 @@ export function getModelPurchase(sequelize: Sequelize) {
 				primaryKey: true,
 			},
 			price: DataTypes.INTEGER,
+			orderId: DataTypes.STRING,
 		},
 		{ paranoid: true, tableName: 'purchase' }
 	);

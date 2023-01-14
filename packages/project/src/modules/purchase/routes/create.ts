@@ -8,7 +8,7 @@ interface ReqParam {
 	bookId: number;
 }
 
-type ReqBody = Purchase;
+type ReqBody = Purchase & { orderId: string };
 
 export async function create(
 	req: ExtraRequest & Request<ReqParam, {}, ReqBody, {}>,
@@ -18,6 +18,8 @@ export async function create(
 
 	try {
 		const { bookId } = req.params;
+		const { orderId } = req.body;
+
 		const { currentUser: user } = req;
 
 		const book = await Book.findByPk(bookId);
@@ -55,6 +57,7 @@ export async function create(
 			BookId: bookId,
 			UserId: user.id,
 			price: price,
+			orderId: orderId,
 		});
 
 		return res.status(200).json({

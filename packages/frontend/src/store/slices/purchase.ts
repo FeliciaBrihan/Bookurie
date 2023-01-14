@@ -51,10 +51,10 @@ export const purchaseApi = {
 	},
 };
 
-export function create(id: number) {
+export function create(id: number, orderId: string) {
 	return async () => {
 		try {
-			await axios.post(`/book/${id}/purchase`);
+			await axios.post(`/book/${id}/purchase`, { orderId });
 			const res = await axios.get('/user/allowed');
 			dispatch(getLoggedUser(res.data.loggedUser));
 			dispatch(getLoggedUserSubscription(res.data.subscription));

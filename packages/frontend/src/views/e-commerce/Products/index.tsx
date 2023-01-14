@@ -104,25 +104,6 @@ const BooksList = () => {
 	const [sortLabel, setSortLabel] = useState<string>('');
 	const { subscription } = useSelector((state) => state.subscription);
 
-	const maxValue = allBooksRef
-		? Math.max(
-				...allBooksRef.current.map((book) =>
-					subscription ? book.pricePromo! : book.price
-				)
-		  )
-		: 1000;
-
-	const uniqueGenres = allBooksRef
-		? allBooksRef.current
-				.map((book) => book.genre)
-				.filter((genre, index, array) => array.indexOf(genre) === index)
-		: [];
-	const authors = allBooksRef
-		? allBooksRef.current
-				.map((book) => book.author)
-				.filter((author, index, array) => array.indexOf(author) === index)
-		: [];
-
 	useEffect(() => {
 		dispatch(bookApi.getAll());
 
@@ -142,6 +123,26 @@ const BooksList = () => {
 	useEffect(() => {
 		if (allBooksRef.current.length === 0) allBooksRef.current = bookState.books;
 	}, [bookState]);
+
+	const maxValue = allBooksRef.current && allBooksRef.current.length > 0
+		? Math.max(
+				...allBooksRef.current.map((book) =>
+					subscription ? book.pricePromo! : book.price
+				)
+		  )
+		: 1000;
+
+	const uniqueGenres =
+		allBooksRef.current && allBooksRef.current.length > 0
+			? allBooksRef.current
+					.map((book) => book.genre)
+					.filter((genre, index, array) => array.indexOf(genre) === index)
+			: [];
+	const authors = allBooksRef.current && allBooksRef.current.length > 0
+		? allBooksRef.current
+				.map((book) => book.author)
+				.filter((author, index, array) => array.indexOf(author) === index)
+		: [];
 
 	// filter
 	const initialState: ProductsFilter = {

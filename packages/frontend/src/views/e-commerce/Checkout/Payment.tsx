@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'store';
+import { v4 as UIDV4 } from 'uuid';
 
 // material-ui
 import {
@@ -64,6 +65,7 @@ const Payment = ({
 	const [rows, setRows] = useState(checkout.products);
 	const [cards, setCards] = useState(checkout.payment.card);
 	const { loggedUser } = useSelector((state) => state.user);
+	const [orderId, setOrderId] = useState<string>('');
 
 	const [open, setOpen] = useState(false);
 	const handleClickOpen = () => {
@@ -85,6 +87,10 @@ const Payment = ({
 	useEffect(() => {
 		setRows(checkout.products);
 	}, [checkout.products]);
+
+	useEffect(() => {
+		setOrderId(UIDV4());
+	}, []);
 
 	const cardHandler = (card: string) => {
 		if (payment === 'card') {
@@ -128,10 +134,10 @@ const Payment = ({
 				for (const product of checkout.products) {
 					if (product.quantity > 1) {
 						for (let i = 0; i < product.quantity; i++) {
-							await dispatch(create(product.id));
+							await dispatch(create(product.id, orderId));
 						}
 					} else {
-						await dispatch(create(product.id));
+						await dispatch(create(product.id, orderId));
 					}
 				}
 				onNext();
@@ -266,7 +272,7 @@ const Payment = ({
 								<Button variant="contained" onClick={completeHandler}>
 									Complete Order
 								</Button>
-								<OrderComplete open={complete} />
+								<OrderComplete open={complete} orderId={orderId} />
 							</Grid>
 						</Grid>
 					</Grid>

@@ -20,14 +20,11 @@ import MainCard from 'ui-component/cards/MainCard';
 import { gridSpacing } from 'store/constant';
 
 // third-party
-import { Chance } from 'chance';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 
 // assets
 import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
 import completed from 'assets/images/e-commerce/completed.png';
-
-const chance = new Chance();
 
 const Transition = forwardRef((props: ZoomProps, ref) => (
 	<Zoom ref={ref} {...props} />
@@ -35,7 +32,13 @@ const Transition = forwardRef((props: ZoomProps, ref) => (
 
 // ==============================|| CHECKOUT CART - DISCOUNT COUPON CODE ||============================== //
 
-const OrderComplete = ({ open }: { open: boolean }) => {
+const OrderComplete = ({
+	open,
+	orderId,
+}: {
+	open: boolean;
+	orderId: string;
+}) => {
 	const theme = useTheme();
 	const matchDownMD = useMediaQuery(theme.breakpoints.down('md'));
 
@@ -90,7 +93,7 @@ const OrderComplete = ({ open }: { open: boolean }) => {
 											component="span"
 											color="primary"
 										>
-											{chance.guid()}
+											{orderId}
 										</Typography>
 									</Typography>
 								</Stack>
@@ -102,21 +105,6 @@ const OrderComplete = ({ open }: { open: boolean }) => {
 									width="100%"
 									style={{ maxWidth: 780 }}
 								/>
-							</Grid>
-							<Grid item xs={12} sm={9}>
-								<Stack alignItems="center" spacing={1}>
-									<Typography variant="caption" align="center">
-										If you have any query or questions regarding purchase items,
-										then fell to get in contact us
-									</Typography>
-									<Typography
-										variant="subtitle1"
-										color="error"
-										sx={{ cursor: 'pointer' }}
-									>
-										{chance.phone()}
-									</Typography>
-								</Stack>
 							</Grid>
 							<Grid item xs={12}>
 								<Divider />
