@@ -17,4 +17,5 @@ export interface TGetPurchase {
 	UserId: number;
 	price: number;
 	orderId: string;
+	totalPrice: number;
 }

@@ -37,6 +37,10 @@ import { TGetPurchase } from 'types/purchase';
 import { getUserPurchases } from 'store/slices/purchase';
 import { bookApi } from 'store/slices/book';
 
+interface CumulatedPurchase extends TGetPurchase {
+	totalPrice: number;
+}
+
 // table sort
 function descendingComparator(a: KeyedObject, b: KeyedObject, orderBy: string) {
 	if (b[orderBy] < a[orderBy]) {
@@ -72,9 +76,9 @@ function stableSort(
 
 const headCells: HeadCell[] = [
 	{
-		id: 'id',
+		id: 'orderId',
 		numeric: true,
-		label: 'ID',
+		label: 'Order ID',
 		align: 'left',
 	},
 	{
@@ -84,15 +88,9 @@ const headCells: HeadCell[] = [
 		align: 'left',
 	},
 	{
-		id: 'BookId',
-		numeric: false,
-		label: 'Book',
-		align: 'left',
-	},
-	{
 		id: 'price',
 		numeric: false,
-		label: 'Price',
+		label: 'Total Price',
 		align: 'left',
 	},
 ];
@@ -211,7 +209,6 @@ const PurchaseList = () => {
 	const [rowsPerPage, setRowsPerPage] = React.useState<number>(10);
 	const [rows, setRows] = React.useState<TGetPurchase[]>([]);
 	const { userPurchases } = useSelector((state) => state.purchase);
-	const { books } = useSelector((state) => state.book);
 
 	React.useEffect(() => {
 		dispatch(getUserPurchases());
@@ -222,9 +219,28 @@ const PurchaseList = () => {
 	}, [dispatch]);
 
 	React.useEffect(() => {
-		setRows(userPurchases);
+		const purchasesByOrderId = userPurchases.reduce(
+			(acc: { [key: string]: CumulatedPurchase }, purchase: TGetPurchase) => {
+				if (!acc[purchase.orderId]) {
+					acc[purchase.orderId] = {
+						...purchase,
+						orderId: purchase.orderId,
+						totalPrice: purchase.price,
+					};
+				} else {
+					acc[purchase.orderId].totalPrice += purchase.price;
+				}
+				return acc;
+			},
+			{}
+		);
+		const cumulatedPurchases: CumulatedPurchase[] =
+			Object.values(purchasesByOrderId);
+		setRows(cumulatedPurchases);
+
 		console.log(rows);
 	}, [userPurchases]);
+
 	const handleRequestSort = (
 		event: React.SyntheticEvent<Element, Event>,
 		property: string
@@ -271,9 +287,6 @@ const PurchaseList = () => {
 	const isSelected = (id: number) => selected.indexOf(id) !== -1;
 	const emptyRows =
 		page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
-
-	const getBookTitle = (id: number) =>
-		books.filter((book) => book.id === id)[0].title;
 
 	return (
 		<MainCard title="" content={false}>
@@ -323,7 +336,7 @@ const PurchaseList = () => {
 																	: 'grey.900',
 														}}
 													>
-														#{row.id}
+														{row.orderId}
 													</Typography>
 												</TableCell>
 												<TableCell>
@@ -333,8 +346,7 @@ const PurchaseList = () => {
 														day: '2-digit',
 													}).format(new Date(row.createdAt))}
 												</TableCell>
-												<TableCell>{getBookTitle(row.BookId)}</TableCell>
-												<TableCell>{row.price} RON</TableCell>
+												<TableCell>{row.totalPrice} RON</TableCell>
 											</TableRow>
 										);
 									})}
