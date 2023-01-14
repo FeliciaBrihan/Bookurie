@@ -25,7 +25,7 @@ import AllInclusiveIcon from '@mui/icons-material/AllInclusive';
 import CardGiftcardIcon from '@mui/icons-material/CardGiftcard';
 import DiscountIcon from '@mui/icons-material/Discount';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
-import SubscriptionsIcon from '@mui/icons-material/Subscriptions';
+import ViewAgendaIcon from '@mui/icons-material/ViewAgenda';
 import MailTwoToneIcon from '@mui/icons-material/MailTwoTone';
 import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
 
@@ -91,7 +91,7 @@ const Profile = () => {
 						<Divider />
 						<ListItemButton>
 							<ListItemIcon>
-								<SubscriptionsIcon sx={{ fontSize: '1.3rem' }} />
+								<ViewAgendaIcon sx={{ fontSize: '1.3rem' }} />
 							</ListItemIcon>
 							<ListItemText
 								primary={
@@ -128,7 +128,7 @@ const Profile = () => {
 							</ListItemSecondaryAction>
 						</ListItemButton>
 					</List>
-					{subscription && (
+					{user?.subscriptionId && (
 						<>
 							<Divider />
 							<ListItemButton>
@@ -162,57 +162,57 @@ const Profile = () => {
 									</Typography>
 								</ListItemSecondaryAction>
 							</ListItemButton>
+
+							<CardContent>
+								<Grid container spacing={0}>
+									<Grid item xs={4}>
+										<Typography align="center" variant="h3">
+											<AllInclusiveIcon />
+										</Typography>
+										{subscription?.type === 'basic' ? (
+											<Typography align="center" variant="subtitle2">
+												Loans
+											</Typography>
+										) : (
+											<Typography align="center" variant="subtitle2">
+												Loans & Online Books
+											</Typography>
+										)}
+									</Grid>
+									<Grid item xs={4}>
+										<Typography align="center" variant="h3">
+											<DiscountIcon />
+										</Typography>
+
+										<Typography align="center" variant="subtitle2">
+											{`${subscription?.everyBookDiscount} % Book Discount`}
+										</Typography>
+									</Grid>
+									<Grid item xs={4}>
+										{subscription?.type === 'basic' ? (
+											<>
+												<Typography align="center" variant="h3">
+													{subscription?.monthlyFreeBooks}
+												</Typography>
+												<Typography align="center" variant="subtitle2">
+													Free Online Books
+												</Typography>
+											</>
+										) : (
+											<>
+												<Typography align="center" variant="h3">
+													<CardGiftcardIcon />
+												</Typography>
+												<Typography align="center" variant="subtitle2">
+													2 Monthly Raffles
+												</Typography>
+											</>
+										)}
+									</Grid>
+								</Grid>
+							</CardContent>
 						</>
 					)}
-
-					<CardContent>
-						<Grid container spacing={0}>
-							<Grid item xs={4}>
-								<Typography align="center" variant="h3">
-									<AllInclusiveIcon />
-								</Typography>
-								{subscription?.type === 'basic' ? (
-									<Typography align="center" variant="subtitle2">
-										Loans
-									</Typography>
-								) : (
-									<Typography align="center" variant="subtitle2">
-										Loans & Online Books
-									</Typography>
-								)}
-							</Grid>
-							<Grid item xs={4}>
-								<Typography align="center" variant="h3">
-									<DiscountIcon />
-								</Typography>
-
-								<Typography align="center" variant="subtitle2">
-									{`${subscription?.everyBookDiscount} % Book Discount`}
-								</Typography>
-							</Grid>
-							<Grid item xs={4}>
-								{subscription?.type === 'basic' ? (
-									<>
-										<Typography align="center" variant="h3">
-											{subscription?.monthlyFreeBooks}
-										</Typography>
-										<Typography align="center" variant="subtitle2">
-											Free Online Books
-										</Typography>
-									</>
-								) : (
-									<>
-										<Typography align="center" variant="h3">
-											<CardGiftcardIcon />
-										</Typography>
-										<Typography align="center" variant="subtitle2">
-											2 Monthly Raffles
-										</Typography>
-									</>
-								)}
-							</Grid>
-						</Grid>
-					</CardContent>
 				</SubCard>
 			</Grid>
 			<Grid item lg={8} xs={12}>

@@ -224,7 +224,6 @@ const LoanList = () => {
 
 	React.useEffect(() => {
 		setRows(userLoans);
-		console.log(rows);
 	}, [userLoans]);
 	const handleRequestSort = (
 		event: React.SyntheticEvent<Element, Event>,
@@ -270,8 +269,11 @@ const LoanList = () => {
 	};
 
 	const isSelected = (id: number) => selected.indexOf(id) !== -1;
-	const emptyRows =
-		page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
+	const emptyRows = rows
+		? page > 0
+			? Math.max(0, (1 + page) * rowsPerPage - rows.length)
+			: 0
+		: 0;
 
 	const getBookTitle = (id: number) =>
 		books.filter((book) => book.id === id)[0].title;
@@ -279,115 +281,126 @@ const LoanList = () => {
 	return (
 		<MainCard title="" content={false}>
 			{/* table */}
-			{rows && (
-				<>
-					<TableContainer>
-						<Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle">
-							<EnhancedTableHead
-								numSelected={selected.length}
-								order={order}
-								orderBy={orderBy}
-								onSelectAllClick={handleSelectAllClick}
-								onRequestSort={handleRequestSort}
-								rowCount={rows.length}
-								theme={theme}
-								selected={selected}
-								deleteHandler={() => handleDelete(selected)}
-							/>
-							<TableBody>
-								{stableSort(rows, getComparator(order, orderBy))
-									.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-									.map((row, index) => {
-										/** Make sure no display bugs if row isn't an OrderData object */
-										if (typeof row === 'number') return null;
 
-										const isItemSelected = isSelected(row.id);
-										const labelId = `enhanced-table-checkbox-${index}`;
-
-										return (
-											<TableRow
-												hover
-												role="checkbox"
-												aria-checked={isItemSelected}
-												tabIndex={-1}
-												key={index}
-												selected={isItemSelected}
-											>
-												<TableCell sx={{ pl: 3 }}></TableCell>
-												<TableCell component="th" id={labelId} scope="row">
-													<Typography
-														variant="subtitle1"
-														sx={{
-															color:
-																theme.palette.mode === 'dark'
-																	? 'grey.600'
-																	: 'grey.900',
-														}}
-													>
-														#{row.id}
-													</Typography>
-												</TableCell>
-												<TableCell>
-													{row.expirationDate
-														? new Intl.DateTimeFormat('en-GB', {
-																year: 'numeric',
-																month: '2-digit',
-																day: '2-digit',
-														  }).format(new Date(row.expirationDate))
-														: '--'}
-												</TableCell>
-												<TableCell>{getBookTitle(row.BookId)}</TableCell>
-												<TableCell>
-													<Chip
-														size="small"
-														label={
-															row.isAccepted
-																? row.isReturned
-																	? 'Returned'
-																	: 'Approved'
-																: 'Pending'
-														}
-														chipcolor={
-															row.isAccepted
-																? row.isReturned
-																	? 'secondary'
-																	: 'success'
-																: 'error'
-														}
-														sx={{
-															borderRadius: '4px',
-															textTransform: 'capitalize',
-														}}
-													/>
-												</TableCell>
-											</TableRow>
-										);
-									})}
-								{emptyRows > 0 && (
-									<TableRow
-										style={{
-											height: 53 * emptyRows,
-										}}
-									>
-										<TableCell colSpan={6} />
-									</TableRow>
-								)}
-							</TableBody>
-						</Table>
-					</TableContainer>
-
-					<TablePagination
-						rowsPerPageOptions={[5, 10, 25]}
-						component="div"
-						count={rows.length}
-						rowsPerPage={rowsPerPage}
-						page={page}
-						onPageChange={handleChangePage}
-						onRowsPerPageChange={handleChangeRowsPerPage}
+			<TableContainer>
+				<Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle">
+					<EnhancedTableHead
+						numSelected={selected.length}
+						order={order}
+						orderBy={orderBy}
+						onSelectAllClick={handleSelectAllClick}
+						onRequestSort={handleRequestSort}
+						rowCount={rows ? rows.length : 0}
+						theme={theme}
+						selected={selected}
+						deleteHandler={() => handleDelete(selected)}
 					/>
-				</>
+					{rows && (
+						<TableBody>
+							{stableSort(rows, getComparator(order, orderBy))
+								.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+								.map((row, index) => {
+									/** Make sure no display bugs if row isn't an OrderData object */
+									if (typeof row === 'number') return null;
+
+									const isItemSelected = isSelected(row.id);
+									const labelId = `enhanced-table-checkbox-${index}`;
+
+									return (
+										<TableRow
+											hover
+											role="checkbox"
+											aria-checked={isItemSelected}
+											tabIndex={-1}
+											key={index}
+											selected={isItemSelected}
+										>
+											<TableCell sx={{ pl: 3 }}></TableCell>
+											<TableCell component="th" id={labelId} scope="row">
+												<Typography
+													variant="subtitle1"
+													sx={{
+														color:
+															theme.palette.mode === 'dark'
+																? 'grey.600'
+																: 'grey.900',
+													}}
+												>
+													#{row.id}
+												</Typography>
+											</TableCell>
+											<TableCell>
+												{row.expirationDate
+													? new Intl.DateTimeFormat('en-GB', {
+															year: 'numeric',
+															month: '2-digit',
+															day: '2-digit',
+													  }).format(new Date(row.expirationDate))
+													: '--'}
+											</TableCell>
+											<TableCell>{getBookTitle(row.BookId)}</TableCell>
+											<TableCell>
+												<Chip
+													size="small"
+													label={
+														row.isAccepted
+															? row.isReturned
+																? 'Returned'
+																: 'Approved'
+															: 'Pending'
+													}
+													chipcolor={
+														row.isAccepted
+															? row.isReturned
+																? 'secondary'
+																: 'success'
+															: 'error'
+													}
+													sx={{
+														borderRadius: '4px',
+														textTransform: 'capitalize',
+													}}
+												/>
+											</TableCell>
+										</TableRow>
+									);
+								})}
+							{emptyRows > 0 && (
+								<TableRow
+									style={{
+										height: 53 * emptyRows,
+									}}
+								>
+									<TableCell colSpan={6} />
+								</TableRow>
+							)}
+						</TableBody>
+					)}
+				</Table>
+			</TableContainer>
+			{!rows && (
+				<Box
+					sx={{
+						height: '50px',
+						display: 'flex',
+						alignItems: 'center',
+						justifyContent: 'center',
+					}}
+				>
+					No loans to display
+				</Box>
 			)}
-			{!rows && `You don't have any loans, yet.`}
+			{rows && (
+				<TablePagination
+					rowsPerPageOptions={[5, 10, 25]}
+					component="div"
+					count={rows.length}
+					rowsPerPage={rowsPerPage}
+					page={page}
+					onPageChange={handleChangePage}
+					onRowsPerPageChange={handleChangeRowsPerPage}
+				/>
+			)}
 		</MainCard>
 	);
 };

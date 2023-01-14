@@ -231,27 +231,30 @@ const PurchaseList = () => {
 	}, [dispatch]);
 
 	React.useEffect(() => {
-		const purchasesByOrderId = userPurchases.reduce(
-			(acc: { [key: string]: CumulatedPurchase }, purchase: TGetPurchase) => {
-				if (!acc[purchase.orderId]) {
-					acc[purchase.orderId] = {
-						...purchase,
-						orderId: purchase.orderId,
-						totalPrice: purchase.price,
-					};
-				} else {
-					acc[purchase.orderId].totalPrice += purchase.price;
-				}
-				return acc;
-			},
-			{}
-		);
+		const purchasesByOrderId = userPurchases
+			? userPurchases.reduce(
+					(
+						acc: { [key: string]: CumulatedPurchase },
+						purchase: TGetPurchase
+					) => {
+						if (!acc[purchase.orderId]) {
+							acc[purchase.orderId] = {
+								...purchase,
+								orderId: purchase.orderId,
+								totalPrice: purchase.price,
+							};
+						} else {
+							acc[purchase.orderId].totalPrice += purchase.price;
+						}
+						return acc;
+					},
+					{}
+			  )
+			: [];
 		const cumulatedPurchases: CumulatedPurchase[] =
 			Object.values(purchasesByOrderId);
 		setRows(cumulatedPurchases);
 		setPurchases(userPurchases);
-
-		console.log(rows);
 	}, [userPurchases]);
 
 	const handleRequestSort = (
@@ -314,108 +317,118 @@ const PurchaseList = () => {
 	return (
 		<MainCard title="" content={false}>
 			{/* table */}
-			{rows && (
-				<>
-					<TableContainer>
-						<Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle">
-							<EnhancedTableHead
-								numSelected={selected.length}
-								order={order}
-								orderBy={orderBy}
-								onSelectAllClick={handleSelectAllClick}
-								onRequestSort={handleRequestSort}
-								rowCount={rows.length}
-								theme={theme}
-								selected={selected}
-								deleteHandler={() => handleDelete(selected)}
-							/>
-							<TableBody>
-								{stableSort(rows, getComparator(order, orderBy))
-									.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-									.map((row, index) => {
-										/** Make sure no display bugs if row isn't an OrderData object */
-										if (typeof row === 'number') return null;
 
-										const isItemSelected = isSelected(row.id);
-										const labelId = `enhanced-table-checkbox-${index}`;
-
-										return (
-											<TableRow
-												hover
-												role="checkbox"
-												aria-checked={isItemSelected}
-												tabIndex={-1}
-												key={index}
-												selected={isItemSelected}
-											>
-												<TableCell sx={{ pl: 3 }}></TableCell>
-												<TableCell component="th" id={labelId} scope="row">
-													<Typography
-														variant="subtitle1"
-														sx={{
-															color:
-																theme.palette.mode === 'dark'
-																	? 'grey.600'
-																	: 'grey.900',
-														}}
-													>
-														{row.orderId}
-													</Typography>
-												</TableCell>
-												<TableCell>
-													{new Intl.DateTimeFormat('en-GB', {
-														year: 'numeric',
-														month: '2-digit',
-														day: '2-digit',
-													}).format(new Date(row.createdAt))}
-												</TableCell>
-												<TableCell>{row.totalPrice} RON</TableCell>
-												<TableCell sx={{ pr: 3 }} align="center">
-													<IconButton
-														title="Details"
-														color="primary"
-														size="large"
-														onClick={handleOpenDetails(row)}
-													>
-														<VisibilityTwoToneIcon
-															sx={{ fontSize: '1.3rem' }}
-														/>
-													</IconButton>
-												</TableCell>
-											</TableRow>
-										);
-									})}
-								{emptyRows > 0 && (
-									<TableRow
-										style={{
-											height: 53 * emptyRows,
-										}}
-									>
-										<TableCell colSpan={6} />
-									</TableRow>
-								)}
-							</TableBody>
-						</Table>
-						{openDetails && (
-							<PurchaseDetails
-								handleCloseDialog={handleCloseDetails}
-								data={rowData!}
-							/>
-						)}
-					</TableContainer>
-
-					<TablePagination
-						rowsPerPageOptions={[5, 10, 25]}
-						component="div"
-						count={rows.length}
-						rowsPerPage={rowsPerPage}
-						page={page}
-						onPageChange={handleChangePage}
-						onRowsPerPageChange={handleChangeRowsPerPage}
+			<TableContainer>
+				<Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle">
+					<EnhancedTableHead
+						numSelected={selected.length}
+						order={order}
+						orderBy={orderBy}
+						onSelectAllClick={handleSelectAllClick}
+						onRequestSort={handleRequestSort}
+						rowCount={rows.length}
+						theme={theme}
+						selected={selected}
+						deleteHandler={() => handleDelete(selected)}
 					/>
-				</>
+					{rows.length > 0 && (
+						<TableBody>
+							{stableSort(rows, getComparator(order, orderBy))
+								.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+								.map((row, index) => {
+									/** Make sure no display bugs if row isn't an OrderData object */
+									if (typeof row === 'number') return null;
+
+									const isItemSelected = isSelected(row.id);
+									const labelId = `enhanced-table-checkbox-${index}`;
+
+									return (
+										<TableRow
+											hover
+											role="checkbox"
+											aria-checked={isItemSelected}
+											tabIndex={-1}
+											key={index}
+											selected={isItemSelected}
+										>
+											<TableCell sx={{ pl: 3 }}></TableCell>
+											<TableCell component="th" id={labelId} scope="row">
+												<Typography
+													variant="subtitle1"
+													sx={{
+														color:
+															theme.palette.mode === 'dark'
+																? 'grey.600'
+																: 'grey.900',
+													}}
+												>
+													{row.orderId}
+												</Typography>
+											</TableCell>
+											<TableCell>
+												{new Intl.DateTimeFormat('en-GB', {
+													year: 'numeric',
+													month: '2-digit',
+													day: '2-digit',
+												}).format(new Date(row.createdAt))}
+											</TableCell>
+											<TableCell>{row.totalPrice} RON</TableCell>
+											<TableCell sx={{ pr: 3 }} align="center">
+												<IconButton
+													title="Details"
+													color="primary"
+													size="large"
+													onClick={handleOpenDetails(row)}
+												>
+													<VisibilityTwoToneIcon sx={{ fontSize: '1.3rem' }} />
+												</IconButton>
+											</TableCell>
+										</TableRow>
+									);
+								})}
+							{emptyRows > 0 && (
+								<TableRow
+									style={{
+										height: 53 * emptyRows,
+									}}
+								>
+									<TableCell colSpan={6} />
+								</TableRow>
+							)}
+						</TableBody>
+					)}
+				</Table>
+				{openDetails && (
+					<PurchaseDetails
+						handleCloseDialog={handleCloseDetails}
+						data={rowData!}
+					/>
+				)}
+			</TableContainer>
+
+			{rows.length > 0 && (
+				<TablePagination
+					rowsPerPageOptions={[5, 10, 25]}
+					component="div"
+					count={rows.length}
+					rowsPerPage={rowsPerPage}
+					page={page}
+					onPageChange={handleChangePage}
+					onRowsPerPageChange={handleChangeRowsPerPage}
+				/>
 			)}
-			{!rows && `You don't have any purchases, yet.`}
+			{rows.length === 0 && (
+				<Box
+					sx={{
+						height: '50px',
+						display: 'flex',
+						alignItems: 'center',
+						justifyContent: 'center',
+					}}
+				>
+					No purchases to display
+				</Box>
+			)}
 		</MainCard>
 	);
 };
