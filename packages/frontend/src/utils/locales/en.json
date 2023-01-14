@@ -1,5 +1,5 @@
 {
-	"app-menu": "Application Menu",
+	"app-menu": "Menu",
 
 	"budget-request": "Budget Request",
 	"my-requests": "My Requests",
@@ -7,6 +7,7 @@
 	"all-requests": "All Requests",
 	"rules": "Rules",
 	"dashboard": "Dashboard",
+	"book-list": "Book List",
 	"user": "User",
 	"users": "Users",
 	"roles": "Roles",
