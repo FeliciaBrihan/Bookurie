@@ -1,6 +1,7 @@
 // material-ui
 import {
 	CardContent,
+	Box,
 	Chip,
 	Divider,
 	Grid,
@@ -38,8 +39,13 @@ const Profile = () => {
 	const { subscription } = useSelector((state) => state.subscription);
 
 	return (
-		<Grid container spacing={gridSpacing}>
-			<Grid item xs={12}>
+		<Grid
+			container
+			spacing={gridSpacing}
+			alignItems="center"
+			justifyContent="center"
+		>
+			<Grid item xs={7}>
 				<SubCard
 					title={
 						<Grid container spacing={2} alignItems="center">
@@ -89,23 +95,30 @@ const Profile = () => {
 							</ListItemIcon>
 							<ListItemText
 								primary={
-									<Typography variant="subtitle1">Subscription</Typography>
+									<Typography variant="subtitle1">
+										Subscription
+										<Box mx={1} sx={{ display: 'inline-block' }}>
+											{user?.subscriptionId ? (
+												<Chip
+													size="small"
+													label={
+														user.subscriptionId === 1 ? 'Basic' : 'Premium'
+													}
+													color="primary"
+												/>
+											) : (
+												''
+											)}
+										</Box>
+									</Typography>
 								}
 							/>
 							<ListItemSecondaryAction>
-								<Typography variant="subtitle2" align="right">
+								<Typography variant="subtitle2">
 									{user?.subscriptionId ? (
 										<Grid item>
 											<Tooltip title="Change subscription">
-												<Link to="/subscriptions">
-													<Chip
-														size="small"
-														label={
-															user.subscriptionId === 1 ? 'Basic' : 'Premium'
-														}
-														color="primary"
-													/>
-												</Link>
+												<Link to="/subscriptions">Change subscription</Link>
 											</Tooltip>
 										</Grid>
 									) : (
@@ -115,9 +128,9 @@ const Profile = () => {
 							</ListItemSecondaryAction>
 						</ListItemButton>
 					</List>
-					<Divider />
 					{subscription && (
 						<>
+							<Divider />
 							<ListItemButton>
 								<ListItemIcon>
 									<AccessTimeIcon sx={{ fontSize: '1.3rem' }} />
@@ -126,6 +139,13 @@ const Profile = () => {
 									primary={
 										<Typography variant="subtitle1">
 											Subscription Renew
+											<Box mx={1} sx={{ display: 'inline-block' }}>
+												{user?.subscriptionId ? (
+													<Chip size="small" label="Cancel" color="default" />
+												) : (
+													''
+												)}
+											</Box>
 										</Typography>
 									}
 								/>
@@ -144,66 +164,55 @@ const Profile = () => {
 							</ListItemButton>
 						</>
 					)}
-					{user?.subscriptionId === 1 && (
-						<CardContent>
-							<Grid container spacing={0}>
-								<Grid item xs={4}>
-									<Typography align="center" variant="h3">
-										<AllInclusiveIcon />
-									</Typography>
+
+					<CardContent>
+						<Grid container spacing={0}>
+							<Grid item xs={4}>
+								<Typography align="center" variant="h3">
+									<AllInclusiveIcon />
+								</Typography>
+								{subscription?.type === 'basic' ? (
 									<Typography align="center" variant="subtitle2">
 										Loans
 									</Typography>
-								</Grid>
-								<Grid item xs={4}>
-									<Typography align="center" variant="h3">
-										<DiscountIcon />
-									</Typography>
-									<Typography align="center" variant="subtitle2">
-										10 % Book Discount
-									</Typography>
-								</Grid>
-								<Grid item xs={4}>
-									<Typography align="center" variant="h3">
-										{subscription?.monthlyFreeBooks}
-									</Typography>
-									<Typography align="center" variant="subtitle2">
-										Free Online Books
-									</Typography>
-								</Grid>
-							</Grid>
-						</CardContent>
-					)}
-					{user?.subscriptionId === 2 && (
-						<CardContent>
-							<Grid container spacing={0}>
-								<Grid item xs={4}>
-									<Typography align="center" variant="h3">
-										<AllInclusiveIcon />
-									</Typography>
+								) : (
 									<Typography align="center" variant="subtitle2">
 										Loans & Online Books
 									</Typography>
-								</Grid>
-								<Grid item xs={4}>
-									<Typography align="center" variant="h3">
-										<DiscountIcon />
-									</Typography>
-									<Typography align="center" variant="subtitle2">
-										40 % Book Discount
-									</Typography>
-								</Grid>
-								<Grid item xs={4}>
-									<Typography align="center" variant="h3">
-										<CardGiftcardIcon />
-									</Typography>
-									<Typography align="center" variant="subtitle2">
-										2 Monthly Raffles
-									</Typography>
-								</Grid>
+								)}
 							</Grid>
-						</CardContent>
-					)}
+							<Grid item xs={4}>
+								<Typography align="center" variant="h3">
+									<DiscountIcon />
+								</Typography>
+
+								<Typography align="center" variant="subtitle2">
+									{`${subscription?.everyBookDiscount} % Book Discount`}
+								</Typography>
+							</Grid>
+							<Grid item xs={4}>
+								{subscription?.type === 'basic' ? (
+									<>
+										<Typography align="center" variant="h3">
+											{subscription?.monthlyFreeBooks}
+										</Typography>
+										<Typography align="center" variant="subtitle2">
+											Free Online Books
+										</Typography>
+									</>
+								) : (
+									<>
+										<Typography align="center" variant="h3">
+											<CardGiftcardIcon />
+										</Typography>
+										<Typography align="center" variant="subtitle2">
+											2 Monthly Raffles
+										</Typography>
+									</>
+								)}
+							</Grid>
+						</Grid>
+					</CardContent>
 				</SubCard>
 			</Grid>
 			<Grid item lg={8} xs={12}>
