@@ -424,12 +424,7 @@ const LoanList = () => {
 												selected={isItemSelected}
 											>
 												<TableCell sx={{ pl: 3 }}></TableCell>
-												<TableCell
-													component="th"
-													id={labelId}
-													scope="row"
-													sx={{ cursor: 'pointer' }}
-												>
+												<TableCell component="th" id={labelId} scope="row">
 													<Typography
 														variant="subtitle1"
 														sx={{

@@ -81,7 +81,7 @@ const LoanAccept = ({ handleCloseDialog, data }: ProductAddProps) => {
 					</Grid>
 				</Grid>
 			</DialogContent>
-			{!formValue.isAccepted && (
+			{!formValue.isAccepted ? (
 				<DialogActions
 					sx={{
 						display: 'flex',
@@ -96,6 +96,12 @@ const LoanAccept = ({ handleCloseDialog, data }: ProductAddProps) => {
 					</AnimateButton>
 					<Button variant="text" color="error" onClick={handleCloseDialog}>
 						No
+					</Button>
+				</DialogActions>
+			) : (
+				<DialogActions>
+					<Button variant="text" color="primary" onClick={handleCloseDialog}>
+						Close
 					</Button>
 				</DialogActions>
 			)}

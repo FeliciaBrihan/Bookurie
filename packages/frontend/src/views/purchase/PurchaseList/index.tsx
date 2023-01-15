@@ -5,7 +5,6 @@ import { useTheme, Theme } from '@mui/material/styles';
 import {
 	Box,
 	CardContent,
-	Checkbox,
 	Grid,
 	IconButton,
 	InputAdornment,
@@ -31,7 +30,7 @@ import { useDispatch, useSelector } from 'store';
 // assets
 import DeleteIcon from '@mui/icons-material/Delete';
 import SearchIcon from '@mui/icons-material/Search';
-// import VisibilityTwoToneIcon from '@mui/icons-material/VisibilityTwoTone';
+import VisibilityTwoToneIcon from '@mui/icons-material/VisibilityTwoTone';
 // import EditTwoToneIcon from '@mui/icons-material/EditTwoTone';
 import {
 	ArrangementOrder,
@@ -43,6 +42,11 @@ import {
 } from 'types';
 import { TGetPurchase } from 'types/purchase';
 import { deletePurchase, purchaseApi } from 'store/slices/purchase';
+import PurchaseDetails from '../PurchaseDetails';
+
+interface CumulatedPurchase extends TGetPurchase {
+	totalPrice: number;
+}
 
 // table sort
 function descendingComparator(a: KeyedObject, b: KeyedObject, orderBy: string) {
@@ -91,12 +95,6 @@ const headCells: HeadCell[] = [
 		align: 'left',
 	},
 	{
-		id: 'BookId',
-		numeric: true,
-		label: 'Book Id',
-		align: 'left',
-	},
-	{
 		id: 'UserId',
 		numeric: true,
 		label: 'User Id',
@@ -119,11 +117,9 @@ interface OrderListEnhancedTableHeadProps extends EnhancedTableHeadProps {
 }
 
 function EnhancedTableHead({
-	onSelectAllClick,
 	order,
 	orderBy,
 	numSelected,
-	rowCount,
 	onRequestSort,
 	selected,
 	deleteHandler,
@@ -136,17 +132,7 @@ function EnhancedTableHead({
 	return (
 		<TableHead>
 			<TableRow>
-				<TableCell padding="checkbox" sx={{ pl: 3 }}>
-					<Checkbox
-						color="primary"
-						indeterminate={numSelected > 0 && numSelected < rowCount}
-						checked={rowCount > 0 && numSelected === rowCount}
-						onChange={onSelectAllClick}
-						inputProps={{
-							'aria-label': 'select all purchases',
-						}}
-					/>
-				</TableCell>
+				<TableCell sx={{ pl: 3 }}></TableCell>
 				{numSelected > 0 && (
 					<TableCell padding="none" colSpan={8}>
 						<EnhancedTableToolbar
@@ -180,11 +166,9 @@ function EnhancedTableHead({
 						</TableCell>
 					))}
 				{numSelected <= 0 && (
-					<TableCell
-						sortDirection={false}
-						align="center"
-						sx={{ pr: 3 }}
-					></TableCell>
+					<TableCell sortDirection={false} align="center" sx={{ pr: 3 }}>
+						<Typography variant="subtitle1">Action</Typography>
+					</TableCell>
 				)}
 			</TableRow>
 		</TableHead>
@@ -234,19 +218,45 @@ const PurchaseList = () => {
 	const dispatch = useDispatch();
 	const [order, setOrder] = React.useState<ArrangementOrder>('asc');
 	const [orderBy, setOrderBy] = React.useState<string>('id');
+	const [openDetails, setOpenDetails] = React.useState(false);
 	const [selected, setSelected] = React.useState<number[]>([]);
 	const [page, setPage] = React.useState<number>(0);
 	const [rowsPerPage, setRowsPerPage] = React.useState<number>(10);
 	const [search, setSearch] = React.useState<string>('');
 	const [rows, setRows] = React.useState<TGetPurchase[]>([]);
 	const { purchases } = useSelector((state) => state.purchase);
+	const [rowData, setRowData] = React.useState<TGetPurchase[] | undefined>(
+		undefined
+	);
 
 	React.useEffect(() => {
 		dispatch(purchaseApi.getAll());
 	}, [dispatch]);
 
 	React.useEffect(() => {
-		setRows(purchases);
+		const purchasesByOrderId = purchases
+			? purchases.reduce(
+					(
+						acc: { [key: string]: CumulatedPurchase },
+						purchase: TGetPurchase
+					) => {
+						if (!acc[purchase.orderId]) {
+							acc[purchase.orderId] = {
+								...purchase,
+								orderId: purchase.orderId,
+								totalPrice: purchase.price,
+							};
+						} else {
+							acc[purchase.orderId].totalPrice += purchase.price;
+						}
+						return acc;
+					},
+					{}
+			  )
+			: [];
+		const cumulatedPurchases: CumulatedPurchase[] =
+			Object.values(purchasesByOrderId);
+		setRows(cumulatedPurchases);
 	}, [purchases]);
 
 	const handleSearch = (
@@ -259,7 +269,7 @@ const PurchaseList = () => {
 			const newRows = rows.filter((row: KeyedObject) => {
 				let matches = true;
 
-				const properties = ['BookId', 'orderId'];
+				const properties = ['UserId', 'orderId'];
 				let containsQuery = false;
 
 				properties.forEach((property) => {
@@ -306,29 +316,6 @@ const PurchaseList = () => {
 		setSelected([]);
 	};
 
-	const handleClick = (
-		event: React.MouseEvent<HTMLTableHeaderCellElement, MouseEvent>,
-		id: number
-	) => {
-		const selectedIndex = selected.indexOf(id);
-		let newSelected: number[] = [];
-
-		if (selectedIndex === -1) {
-			newSelected = newSelected.concat(selected, id);
-		} else if (selectedIndex === 0) {
-			newSelected = newSelected.concat(selected.slice(1));
-		} else if (selectedIndex === selected.length - 1) {
-			newSelected = newSelected.concat(selected.slice(0, -1));
-		} else if (selectedIndex > 0) {
-			newSelected = newSelected.concat(
-				selected.slice(0, selectedIndex),
-				selected.slice(selectedIndex + 1)
-			);
-		}
-
-		setSelected(newSelected);
-	};
-
 	const handleChangePage = (
 		event: React.MouseEvent<HTMLButtonElement, MouseEvent> | null,
 		newPage: number
@@ -348,11 +335,18 @@ const PurchaseList = () => {
 			setSelected([]);
 		});
 	};
+	const handleOpenDetails = (row: TGetPurchase) => () => {
+		const relatedPurchases = purchases.filter(
+			(purchase) => purchase.orderId === row.orderId
+		);
+		setRowData(relatedPurchases);
+		setOpenDetails(true);
+	};
+	const handleCloseDetails = () => {
+		setOpenDetails(false);
+	};
 
 	const isSelected = (id: number) => selected.indexOf(id) !== -1;
-	// const emptyRows =
-	// 	page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
-
 	return (
 		<MainCard title="Purchase List" content={false}>
 			{rows ? (
@@ -375,7 +369,7 @@ const PurchaseList = () => {
 										),
 									}}
 									onChange={handleSearch}
-									placeholder="Search Book ID or Order ID"
+									placeholder="Search by Order ID or User ID"
 									value={search}
 									size="small"
 								/>
@@ -416,26 +410,8 @@ const PurchaseList = () => {
 												key={index}
 												selected={isItemSelected}
 											>
-												<TableCell
-													padding="checkbox"
-													sx={{ pl: 3 }}
-													onClick={(event) => handleClick(event, row.id)}
-												>
-													<Checkbox
-														color="primary"
-														checked={isItemSelected}
-														inputProps={{
-															'aria-labelledby': labelId,
-														}}
-													/>
-												</TableCell>
-												<TableCell
-													component="th"
-													id={labelId}
-													scope="row"
-													onClick={(event) => handleClick(event, row.id)}
-													sx={{ cursor: 'pointer' }}
-												>
+												<TableCell sx={{ pl: 3 }}></TableCell>
+												<TableCell component="th" id={labelId} scope="row">
 													<Typography
 														variant="subtitle1"
 														sx={{
@@ -458,14 +434,31 @@ const PurchaseList = () => {
 														second: '2-digit',
 													}).format(new Date(row.createdAt))}
 												</TableCell>
-												<TableCell>{row.BookId}</TableCell>
 												<TableCell>{row.UserId}</TableCell>
-												<TableCell>{row.price} RON</TableCell>
+												<TableCell>{row.totalPrice} RON</TableCell>
+												<TableCell sx={{ pr: 3 }} align="center">
+													<IconButton
+														title="Details"
+														color="primary"
+														size="large"
+														onClick={handleOpenDetails(row)}
+													>
+														<VisibilityTwoToneIcon
+															sx={{ fontSize: '1.3rem' }}
+														/>
+													</IconButton>
+												</TableCell>
 											</TableRow>
 										);
 									})}
 							</TableBody>
 						</Table>
+						{openDetails && (
+							<PurchaseDetails
+								handleCloseDialog={handleCloseDetails}
+								data={rowData!}
+							/>
+						)}
 					</TableContainer>
 
 					{/* table pagination */}
