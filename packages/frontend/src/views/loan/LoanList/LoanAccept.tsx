@@ -8,11 +8,10 @@ import {
 	DialogActions,
 	DialogContent,
 	DialogTitle,
-	FormControlLabel,
 	Grid,
 	Slide,
 	SlideProps,
-	Switch,
+	Typography,
 } from '@mui/material';
 
 // project imports
@@ -22,9 +21,6 @@ import AnimateButton from 'ui-component/extended/AnimateButton';
 // assets
 import { TGetLoan, TSetLoan } from 'types/loan';
 import { loanApi } from 'store/slices/loan';
-import { useDispatch } from 'react-redux';
-import { openSnackbar } from 'store/slices/snackbar';
-
 interface ProductAddProps {
 	handleCloseDialog: (e?: any) => void;
 	data: TGetLoan;
@@ -36,7 +32,6 @@ const Transition = forwardRef((props: SlideProps, ref) => (
 ));
 
 const LoanAccept = ({ handleCloseDialog, data }: ProductAddProps) => {
-	const dispatch = useDispatch();
 	const defaultValue = {
 		isAccepted: data.isAccepted,
 	};
@@ -44,38 +39,15 @@ const LoanAccept = ({ handleCloseDialog, data }: ProductAddProps) => {
 	const [formValue, setFormValue] = useState<TSetLoan>(defaultValue);
 
 	const handleUpdate = async () => {
-		if (formValue.isAccepted) {
-			await loanApi.update(
-				data.id,
-				{
-					isAccepted: formValue.isAccepted,
-				},
-				{ sync: true }
-			);
-			handleCloseDialog();
-		} else {
-			dispatch(
-				openSnackbar({
-					open: true,
-					anchorOrigin: {
-						vertical: 'bottom',
-						horizontal: 'right',
-					},
-					message: 'Check Approve!',
-					variant: 'alert',
-					alert: {
-						color: 'error',
-					},
-					close: true,
-				})
-			);
-		}
-	};
-	const handleSwitchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-		setFormValue({
-			...formValue,
-			isAccepted: event.target.checked,
-		});
+		setFormValue({ ...formValue, isAccepted: true });
+		await loanApi.update(
+			data.id,
+			{
+				isAccepted: true,
+			},
+			{ sync: true }
+		);
+		handleCloseDialog();
 	};
 
 	return (
@@ -100,28 +72,33 @@ const LoanAccept = ({ handleCloseDialog, data }: ProductAddProps) => {
 			<DialogContent>
 				<Grid container spacing={gridSpacing} sx={{ mt: 0.25 }}>
 					<Grid item xs={12}>
-						<FormControlLabel
-							control={
-								<Switch
-									checked={formValue.isAccepted || false}
-									onChange={handleSwitchChange}
-								/>
-							}
-							label="Approve"
-						/>
+						<Typography>
+							{' '}
+							{formValue.isAccepted
+								? 'Loan already approved!'
+								: `Are you sure you want to approve this loan?`}
+						</Typography>
 					</Grid>
 				</Grid>
 			</DialogContent>
-			<DialogActions>
-				<AnimateButton>
-					<Button variant="contained" onClick={handleUpdate}>
-						Save
+			{!formValue.isAccepted && (
+				<DialogActions
+					sx={{
+						display: 'flex',
+						justifyContent: 'center',
+						alignItems: 'center',
+					}}
+				>
+					<AnimateButton>
+						<Button variant="contained" onClick={handleUpdate}>
+							Yes
+						</Button>
+					</AnimateButton>
+					<Button variant="text" color="error" onClick={handleCloseDialog}>
+						No
 					</Button>
-				</AnimateButton>
-				<Button variant="text" color="error" onClick={handleCloseDialog}>
-					Close
-				</Button>
-			</DialogActions>
+				</DialogActions>
+			)}
 		</Dialog>
 	);
 };

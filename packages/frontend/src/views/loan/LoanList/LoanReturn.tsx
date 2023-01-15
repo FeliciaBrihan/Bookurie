@@ -8,11 +8,10 @@ import {
 	DialogActions,
 	DialogContent,
 	DialogTitle,
-	FormControlLabel,
 	Grid,
 	Slide,
 	SlideProps,
-	Switch,
+	Typography,
 } from '@mui/material';
 
 // project imports
@@ -22,8 +21,6 @@ import AnimateButton from 'ui-component/extended/AnimateButton';
 // assets
 import { TGetLoan, TSetLoan } from 'types/loan';
 import { loanApi } from 'store/slices/loan';
-import { useDispatch } from 'react-redux';
-import { openSnackbar } from 'store/slices/snackbar';
 
 interface ProductAddProps {
 	handleCloseDialog: (e?: any) => void;
@@ -36,7 +33,6 @@ const Transition = forwardRef((props: SlideProps, ref) => (
 ));
 
 const LoanReturn = ({ handleCloseDialog, data }: ProductAddProps) => {
-	const dispatch = useDispatch();
 	const defaultValue = {
 		isReturned: data.isReturned,
 	};
@@ -44,44 +40,11 @@ const LoanReturn = ({ handleCloseDialog, data }: ProductAddProps) => {
 	const [formValue, setFormValue] = useState<TSetLoan>(defaultValue);
 
 	const handleUpdate = async () => {
-		if (data.isAccepted) {
-			if (formValue.isReturned) {
-				await loanApi.returnLoan(data.id, { sync: true });
-				handleCloseDialog();
-			} else {
-				dispatch(
-					openSnackbar({
-						open: true,
-						message: 'Check Return!',
-						variant: 'alert',
-						alert: {
-							color: 'error',
-						},
-						close: true,
-					})
-				);
-			}
-		} else {
-			dispatch(
-				openSnackbar({
-					open: true,
-					message: 'Loan Must Be Approved First!',
-					variant: 'alert',
-					alert: {
-						color: 'error',
-					},
-					close: true,
-				})
-			);
-		}
-	};
-	const handleSwitchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-		setFormValue({
-			...formValue,
-			isReturned: event.target.checked,
-		});
-	};
+		setFormValue({ ...formValue, isReturned: true });
 
+		await loanApi.returnLoan(data.id, { sync: true });
+		handleCloseDialog();
+	};
 	return (
 		<Dialog
 			open
@@ -104,28 +67,34 @@ const LoanReturn = ({ handleCloseDialog, data }: ProductAddProps) => {
 			<DialogContent>
 				<Grid container spacing={gridSpacing} sx={{ mt: 0.25 }}>
 					<Grid item xs={12}>
-						<FormControlLabel
-							control={
-								<Switch
-									checked={formValue.isReturned || false}
-									onChange={handleSwitchChange}
-								/>
-							}
-							label="Return"
-						/>
+						<Typography>
+							{data.isAccepted
+								? data.isReturned
+									? 'Loan already returned.'
+									: 'Are you sure you want to return this loan?'
+								: 'Loan cannot be returned because is not yet approved.'}
+						</Typography>
 					</Grid>
 				</Grid>
 			</DialogContent>
-			<DialogActions>
-				<AnimateButton>
-					<Button variant="contained" onClick={handleUpdate}>
-						Save
+			{data.isAccepted && !data.isReturned && (
+				<DialogActions
+					sx={{
+						display: 'flex',
+						justifyContent: 'center',
+						alignItems: 'center',
+					}}
+				>
+					<AnimateButton>
+						<Button variant="contained" onClick={handleUpdate}>
+							Yes
+						</Button>
+					</AnimateButton>
+					<Button variant="text" color="error" onClick={handleCloseDialog}>
+						No
 					</Button>
-				</AnimateButton>
-				<Button variant="text" color="error" onClick={handleCloseDialog}>
-					Close
-				</Button>
-			</DialogActions>
+				</DialogActions>
+			)}
 		</Dialog>
 	);
 };

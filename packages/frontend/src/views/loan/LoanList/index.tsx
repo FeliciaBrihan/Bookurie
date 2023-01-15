@@ -5,7 +5,6 @@ import { useTheme, Theme } from '@mui/material/styles';
 import {
 	Box,
 	CardContent,
-	Checkbox,
 	Grid,
 	IconButton,
 	InputAdornment,
@@ -124,11 +123,9 @@ interface OrderListEnhancedTableHeadProps extends EnhancedTableHeadProps {
 }
 
 function EnhancedTableHead({
-	onSelectAllClick,
 	order,
 	orderBy,
 	numSelected,
-	rowCount,
 	onRequestSort,
 	theme,
 	selected,
@@ -142,17 +139,7 @@ function EnhancedTableHead({
 	return (
 		<TableHead>
 			<TableRow>
-				<TableCell padding="checkbox" sx={{ pl: 3 }}>
-					<Checkbox
-						color="primary"
-						indeterminate={numSelected > 0 && numSelected < rowCount}
-						checked={rowCount > 0 && numSelected === rowCount}
-						onChange={onSelectAllClick}
-						inputProps={{
-							'aria-label': 'select all roles',
-						}}
-					/>
-				</TableCell>
+				<TableCell sx={{ pl: 3 }}></TableCell>
 				{numSelected > 0 && (
 					<TableCell padding="none" colSpan={8}>
 						<EnhancedTableToolbar
@@ -321,29 +308,6 @@ const LoanList = () => {
 		setSelected([]);
 	};
 
-	const handleClick = (
-		event: React.MouseEvent<HTMLTableHeaderCellElement, MouseEvent>,
-		id: number
-	) => {
-		const selectedIndex = selected.indexOf(id);
-		let newSelected: number[] = [];
-
-		if (selectedIndex === -1) {
-			newSelected = newSelected.concat(selected, id);
-		} else if (selectedIndex === 0) {
-			newSelected = newSelected.concat(selected.slice(1));
-		} else if (selectedIndex === selected.length - 1) {
-			newSelected = newSelected.concat(selected.slice(0, -1));
-		} else if (selectedIndex > 0) {
-			newSelected = newSelected.concat(
-				selected.slice(0, selectedIndex),
-				selected.slice(selectedIndex + 1)
-			);
-		}
-
-		setSelected(newSelected);
-	};
-
 	const handleChangePage = (
 		event: React.MouseEvent<HTMLButtonElement, MouseEvent> | null,
 		newPage: number
@@ -409,6 +373,7 @@ const LoanList = () => {
 						>
 							<Grid item xs={12} sm={6}>
 								<TextField
+									sx={{ width: '250px' }}
 									InputProps={{
 										startAdornment: (
 											<InputAdornment position="start">
@@ -458,24 +423,11 @@ const LoanList = () => {
 												key={index}
 												selected={isItemSelected}
 											>
-												<TableCell
-													padding="checkbox"
-													sx={{ pl: 3 }}
-													onClick={(event) => handleClick(event, row.id)}
-												>
-													<Checkbox
-														color="primary"
-														checked={isItemSelected}
-														inputProps={{
-															'aria-labelledby': labelId,
-														}}
-													/>
-												</TableCell>
+												<TableCell sx={{ pl: 3 }}></TableCell>
 												<TableCell
 													component="th"
 													id={labelId}
 													scope="row"
-													onClick={(event) => handleClick(event, row.id)}
 													sx={{ cursor: 'pointer' }}
 												>
 													<Typography
