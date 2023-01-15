@@ -112,6 +112,12 @@ const headCells: HeadCell[] = [
 	{
 		id: 'roleId',
 		numeric: true,
+		label: 'Role ID',
+		align: 'left',
+	},
+	{
+		id: 'role',
+		numeric: true,
 		label: 'Role',
 		align: 'left',
 	},
@@ -408,8 +414,8 @@ const UserList = () => {
 	};
 
 	const isSelected = (id: number) => selected.indexOf(id) !== -1;
-	const emptyRows =
-		page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
+	const emptyRows =rows? 
+		page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0 : 0
 
 	return (
 		<MainCard title="User List" content={false}>
@@ -466,12 +472,12 @@ const UserList = () => {
 						orderBy={orderBy}
 						onSelectAllClick={handleSelectAllClick}
 						onRequestSort={handleRequestSort}
-						rowCount={rows.length}
+						rowCount={rows? rows.length : 0}
 						theme={theme}
 						selected={selected}
 						deleteHandler={() => handleDelete(selected)}
 					/>
-					<TableBody>
+					{rows && <TableBody>
 						{stableSort(rows, getComparator(order, orderBy))
 							.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
 							.map((row, index) => {
@@ -543,6 +549,7 @@ const UserList = () => {
 										</TableCell>
 										<TableCell>{row.lastName}</TableCell>
 										<TableCell>{row.email}</TableCell>
+										<TableCell>{row.roleId}</TableCell>
 										<TableCell>{getRoleName(row.roleId)}</TableCell>
 										<TableCell sx={{ pr: 3 }} align="center">
 											<Tooltip title="Details">
@@ -577,6 +584,7 @@ const UserList = () => {
 							</TableRow>
 						)}
 					</TableBody>
+}
 				</Table>
 				{openDetails && (
 					<UserDetails handleCloseDialog={handleCloseDetails} data={rowData!} />
@@ -590,7 +598,7 @@ const UserList = () => {
 			<TablePagination
 				rowsPerPageOptions={[5, 10, 25]}
 				component="div"
-				count={rows.length}
+				count={rows ? rows.length : 0}
 				rowsPerPage={rowsPerPage}
 				page={page}
 				onPageChange={handleChangePage}

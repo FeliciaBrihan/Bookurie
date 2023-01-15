@@ -17,6 +17,7 @@ import {
 
 // assets
 import { TGetUser } from 'types/user';
+import { useSelector } from 'store';
 
 interface ProductAddProps {
 	handleCloseDialog: (e?: any) => void;
@@ -37,7 +38,12 @@ const Text = ({ label, value }: { label: string; value: string | number }) => (
 	</Stack>
 );
 
-const UserRequestDetails = ({ handleCloseDialog, data }: ProductAddProps) => {
+const UserDetails = ({ handleCloseDialog, data }: ProductAddProps) => {
+	const { roles } = useSelector((state) => state.role);
+	const getRoleName = (id: number) => {
+		if (roles.length > 0)
+			return roles.filter((role) => role.id === id)[0]?.name;
+	};
 	return (
 		<Dialog
 			open
@@ -77,8 +83,10 @@ const UserRequestDetails = ({ handleCloseDialog, data }: ProductAddProps) => {
 						<Text label="Username" value={data.username} />
 					</Grid>
 					<Grid item xs={12}>
-						{/* <Text label="Role" value={data.MRole?.name || '––'} /> */}
-						<Text label="Role" value={data.roleId} />
+						<Text label="Role ID" value={data.roleId} />
+					</Grid>
+					<Grid item xs={12}>
+						<Text label="Role Name" value={getRoleName(data.roleId)!} />
 					</Grid>
 					<Grid item xs={12}>
 						<Text label="Subscription Id" value={data.subscriptionId || '--'} />
@@ -94,7 +102,7 @@ const UserRequestDetails = ({ handleCloseDialog, data }: ProductAddProps) => {
 									hour: '2-digit',
 									minute: '2-digit',
 									second: '2-digit',
-								}).format(new Date(data.updatedAt)) || '--'
+								}).format(new Date(data.subscriptionDate)) || '--'
 							}
 						/>
 					</Grid>
@@ -109,7 +117,7 @@ const UserRequestDetails = ({ handleCloseDialog, data }: ProductAddProps) => {
 									hour: '2-digit',
 									minute: '2-digit',
 									second: '2-digit',
-								}).format(new Date(data.updatedAt)) || '--'
+								}).format(new Date(data.subscriptionExpirationDate)) || '--'
 							}
 						/>
 					</Grid>
@@ -165,4 +173,4 @@ const UserRequestDetails = ({ handleCloseDialog, data }: ProductAddProps) => {
 	);
 };
 
-export default UserRequestDetails;
+export default UserDetails;

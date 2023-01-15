@@ -42,7 +42,6 @@ const UserEdit = ({ handleCloseDialog, data }: ProductAddProps) => {
 		lastName: data.lastName,
 		email: data.email,
 		roleId: data.roleId,
-		// active: false,
 		username: data.username,
 		subscriptionId: data.subscriptionId,
 		subscriptionDate: data.subscriptionDate,

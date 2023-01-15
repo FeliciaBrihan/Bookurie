@@ -1,6 +1,4 @@
 import * as React from 'react';
-import { useNavigate } from 'react-router-dom';
-
 // material-ui
 import { useTheme, Theme } from '@mui/material/styles';
 import {
@@ -26,6 +24,7 @@ import {
 } from '@mui/material';
 import { visuallyHidden } from '@mui/utils';
 import AddIcon from '@mui/icons-material/AddTwoTone';
+import AllInclusiveIcon from '@mui/icons-material/AllInclusive';
 
 // project imports
 import MainCard from 'ui-component/cards/MainCard';
@@ -36,7 +35,6 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import SearchIcon from '@mui/icons-material/Search';
 import VisibilityTwoToneIcon from '@mui/icons-material/VisibilityTwoTone';
 import EditTwoToneIcon from '@mui/icons-material/EditTwoTone';
-import AppRegistrationIcon from '@mui/icons-material/AppRegistration';
 import {
 	ArrangementOrder,
 	EnhancedTableHeadProps,
@@ -48,11 +46,7 @@ import {
 import SubscriptionAdd from './SubscriptionAdd';
 import SubscriptionDetails from './SubscriptionDetails';
 import SubscriptionEdit from './SubscriptionEdit';
-import {
-	subscriptionApi,
-	deleteSubscription,
-	subscribe,
-} from 'store/slices/subscription';
+import { subscriptionApi, deleteSubscription } from 'store/slices/subscription';
 import { TGetSubscription } from 'types/subscription';
 
 // table sort
@@ -251,7 +245,7 @@ const EnhancedTableToolbar = ({
 );
 // ==============================|| ORDER LIST ||============================== //
 
-const RoleList = () => {
+const SubscriptionList = () => {
 	const theme = useTheme();
 	const dispatch = useDispatch();
 	const [order, setOrder] = React.useState<ArrangementOrder>('asc');
@@ -268,14 +262,15 @@ const RoleList = () => {
 		undefined
 	);
 	const { subscriptions } = useSelector((state) => state.subscription);
-	const navigate = useNavigate();
 
 	React.useEffect(() => {
 		dispatch(subscriptionApi.getAll());
 	}, [dispatch]);
+
 	React.useEffect(() => {
 		setRows(subscriptions);
 	}, [subscriptions]);
+
 	const handleSearch = (
 		event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement> | undefined
 	) => {
@@ -519,7 +514,13 @@ const RoleList = () => {
 										</TableCell>
 										<TableCell>{row.name}</TableCell>
 										<TableCell>{row.monthlyFee} RON</TableCell>
-										<TableCell>{row.monthlyFreeBooks}</TableCell>
+										<TableCell>
+											{row.type === 'basic' ? (
+												row.monthlyFreeBooks
+											) : (
+												<AllInclusiveIcon sx={{ fontSize: 'medium' }} />
+											)}
+										</TableCell>
 										<TableCell>{row.everyBookDiscount} %</TableCell>
 										<TableCell>{row.type}</TableCell>
 										<TableCell sx={{ pr: 3 }} align="center">
@@ -539,18 +540,6 @@ const RoleList = () => {
 													onClick={handleOpenEdit(row)}
 												>
 													<EditTwoToneIcon sx={{ fontSize: '1.3rem' }} />
-												</IconButton>
-											</Tooltip>
-											<Tooltip title="Subscribe">
-												<IconButton
-													color="success"
-													size="large"
-													onClick={() => {
-														dispatch(subscribe(row.id));
-														navigate('/account');
-													}}
-												>
-													<AppRegistrationIcon sx={{ fontSize: '1.3rem' }} />
 												</IconButton>
 											</Tooltip>
 										</TableCell>
@@ -599,4 +588,4 @@ const RoleList = () => {
 	);
 };
 
-export default RoleList;
+export default SubscriptionList;

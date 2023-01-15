@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import * as React from 'react';
 import { forwardRef, useState } from 'react';
 
@@ -9,12 +8,10 @@ import {
 	DialogActions,
 	DialogContent,
 	DialogTitle,
-	FormControlLabel,
 	Grid,
 	MenuItem,
 	Slide,
 	SlideProps,
-	Switch,
 	TextField,
 } from '@mui/material';
 
@@ -44,7 +41,6 @@ const defaultValue = {
 	lastName: '',
 	email: '',
 	roleId: undefined,
-	// active: false,
 	username: '',
 	subscriptionId: undefined,
 	subscriptionDate: null,
@@ -53,7 +49,7 @@ const defaultValue = {
 	budget: undefined,
 };
 
-const BudgetRequestAdd = ({ open, handleCloseDialog }: ProductAddProps) => {
+const UserAdd = ({ open, handleCloseDialog }: ProductAddProps) => {
 	const dispatch = useDispatch();
 	const [role, setRole] = useState<TGetRole[]>([]);
 	const [formValue, setFormValue] = useState<TSetUser>(defaultValue);
@@ -79,13 +75,6 @@ const BudgetRequestAdd = ({ open, handleCloseDialog }: ProductAddProps) => {
 			setFormValue({ ...formValue, [field]: Number(event?.target.value) });
 			console.log(event?.target.value);
 		};
-
-	const handleSwitchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-		setFormValue({
-			...formValue,
-			active: event.target.checked,
-		});
-	};
 
 	const handleSave = async () => {
 		await userApi.create(formValue, { sync: true });
@@ -179,12 +168,6 @@ const BudgetRequestAdd = ({ open, handleCloseDialog }: ProductAddProps) => {
 									))}
 								</TextField>
 							</Grid>
-							<Grid item xs={12}>
-								<FormControlLabel
-									control={<Switch onChange={handleSwitchChange} />}
-									label="Active"
-								/>
-							</Grid>
 						</Grid>
 					</DialogContent>
 					<DialogActions>
@@ -203,9 +186,4 @@ const BudgetRequestAdd = ({ open, handleCloseDialog }: ProductAddProps) => {
 	);
 };
 
-BudgetRequestAdd.propTypes = {
-	open: PropTypes.bool,
-	handleCloseDialog: PropTypes.func,
-};
-
-export default BudgetRequestAdd;
+export default UserAdd;
