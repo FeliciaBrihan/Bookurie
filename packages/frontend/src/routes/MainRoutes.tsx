@@ -26,6 +26,9 @@ const SubscriptionList = Loadable(
 	lazy(() => import('views/subscription/SubscriptionList'))
 );
 const Account = Loadable(lazy(() => import('views/account')));
+const SubscriptionListUserView = Loadable(
+	lazy(() => import('views/subscription/SubscriptionListUserView'))
+);
 
 // ==============================|| MAIN ROUTING ||============================== //
 
@@ -84,6 +87,10 @@ const MainRoutes = {
 		{
 			path: '/subscriptions',
 			element: <SubscriptionList />,
+		},
+		{
+			path: '/subscriptions-list',
+			element: <SubscriptionListUserView />,
 		},
 		{
 			path: '/account',

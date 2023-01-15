@@ -2,6 +2,7 @@
 import {
 	CardContent,
 	Box,
+	Button,
 	Chip,
 	Divider,
 	Grid,
@@ -10,7 +11,7 @@ import {
 	ListItemIcon,
 	ListItemSecondaryAction,
 	ListItemText,
-	Tooltip,
+	// Tooltip,
 	Typography,
 } from '@mui/material';
 
@@ -18,7 +19,6 @@ import {
 import Avatar from 'ui-component/extended/Avatar';
 import SubCard from 'ui-component/cards/SubCard';
 import { gridSpacing } from 'store/constant';
-import { Link } from 'react-router-dom';
 
 // assets
 import AllInclusiveIcon from '@mui/icons-material/AllInclusive';
@@ -31,12 +31,23 @@ import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
 
 import Avatar3 from 'assets/images/users/User1.png';
 import { useSelector } from 'store';
+import { useState } from 'react';
+import SubscriptionListUserView from 'views/subscription/SubscriptionListUserView';
 
 // ==============================|| PROFILE 1 - PROFILE ||============================== //
 
 const Profile = () => {
 	const { loggedUser: user } = useSelector((state) => state.user);
 	const { subscription } = useSelector((state) => state.subscription);
+	const [open, setOpen] = useState(false);
+
+	const handleOpenDialog = () => {
+		setOpen(true);
+	};
+
+	const handleCloseDialog = () => {
+		setOpen(false);
+	};
 
 	return (
 		<Grid
@@ -115,15 +126,13 @@ const Profile = () => {
 							/>
 							<ListItemSecondaryAction>
 								<Typography variant="subtitle2">
-									{user?.subscriptionId ? (
-										<Grid item>
-											<Tooltip title="Change subscription">
-												<Link to="/subscriptions">Change subscription</Link>
-											</Tooltip>
-										</Grid>
-									) : (
-										<Link to="/subscriptions">Get subscription</Link>
-									)}
+									<Grid item>
+										<Button variant="text" onClick={handleOpenDialog}>
+											{user?.subscriptionId
+												? 'Change subscription'
+												: 'Get subscription'}
+										</Button>
+									</Grid>
 								</Typography>
 							</ListItemSecondaryAction>
 						</ListItemButton>
@@ -214,6 +223,9 @@ const Profile = () => {
 						</>
 					)}
 				</SubCard>
+				{open && (
+					<SubscriptionListUserView handleCloseDialog={handleCloseDialog} />
+				)}
 			</Grid>
 			<Grid item lg={8} xs={12}>
 				<Grid container direction="column" spacing={gridSpacing}>
