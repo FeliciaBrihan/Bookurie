@@ -102,8 +102,8 @@ const appMenu: NavItemType = {
 			breadcrumbs: false,
 		},
 		{
-			id: 'raffles',
-			title: <FormattedMessage id="raffles" />,
+			id: 'raffle',
+			title: <FormattedMessage id="raffle" />,
 			type: 'item',
 			url: '/raffles',
 			icon: icons.CardGiftcardIcon,

@@ -421,7 +421,7 @@ const PurchaseList = () => {
 																	: 'grey.900',
 														}}
 													>
-														{row.orderId}
+														#{row.orderId}
 													</Typography>
 												</TableCell>
 												<TableCell>

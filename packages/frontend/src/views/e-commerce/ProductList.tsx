@@ -405,8 +405,11 @@ const ProductList = () => {
 	};
 
 	const isSelected = (id: number) => selected.indexOf(id) !== -1;
-	const emptyRows =
-		page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
+	const emptyRows = rows
+		? page > 0
+			? Math.max(0, (1 + page) * rowsPerPage - rows.length)
+			: 0
+		: 0;
 
 	return (
 		<MainCard title="Book List" content={false}>
@@ -463,161 +466,165 @@ const ProductList = () => {
 						orderBy={orderBy}
 						onSelectAllClick={handleSelectAllClick}
 						onRequestSort={handleRequestSort}
-						rowCount={rows.length}
+						rowCount={rows ? rows.length : 0}
 						theme={theme}
 						selected={selected}
 						deleteHandler={() => handleDelete(selected)}
 					/>
-					<TableBody>
-						{stableSort(rows, getComparator(order, orderBy))
-							.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-							.map((row, index) => {
-								if (typeof row === 'number') return null;
-								const isItemSelected = isSelected(row.id);
-								const labelId = `enhanced-table-checkbox-${index}`;
+					{rows && (
+						<TableBody>
+							{stableSort(rows, getComparator(order, orderBy))
+								.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+								.map((row, index) => {
+									if (typeof row === 'number') return null;
+									const isItemSelected = isSelected(row.id);
+									const labelId = `enhanced-table-checkbox-${index}`;
 
-								return (
-									<TableRow
-										hover
-										role="checkbox"
-										aria-checked={isItemSelected}
-										tabIndex={-1}
-										key={index}
-										selected={isItemSelected}
-									>
-										<TableCell
-											padding="checkbox"
-											sx={{ pl: 3 }}
-											onClick={(event) => handleClick(event, row.id)}
+									return (
+										<TableRow
+											hover
+											role="checkbox"
+											aria-checked={isItemSelected}
+											tabIndex={-1}
+											key={index}
+											selected={isItemSelected}
 										>
-											<Checkbox
-												color="primary"
-												checked={isItemSelected}
-												inputProps={{
-													'aria-labelledby': labelId,
-												}}
-											/>
-										</TableCell>
-										<TableCell
-											component="th"
-											id={labelId}
-											scope="row"
-											sx={{ cursor: 'pointer' }}
-										>
-											<Typography
-												component={Link}
-												to={`/books/${row.id}`}
-												variant="subtitle1"
-												sx={{
-													color:
-														theme.palette.mode === 'dark'
-															? theme.palette.grey[600]
-															: 'grey.900',
-													textDecoration: 'none',
-												}}
+											<TableCell
+												padding="checkbox"
+												sx={{ pl: 3 }}
+												onClick={(event) => handleClick(event, row.id)}
 											>
-												#{row.id}
-											</Typography>
-										</TableCell>
-
-										<TableCell
-											align="left"
-											component="th"
-											id={labelId}
-											scope="row"
-											onClick={(event) => handleClick(event, row.id)}
-											sx={{ cursor: 'pointer' }}
-										>
-											<Link to={`/books/${row.id}`}>
-												<Avatar
-													src={
-														row.coverImage && prodImage(`./${row.coverImage}`)
-													}
-													size="md"
-													variant="rounded"
-												/>
-											</Link>
-										</TableCell>
-										<TableCell
-											component="th"
-											id={labelId}
-											scope="row"
-											sx={{ cursor: 'pointer' }}
-										>
-											<Typography
-												component={Link}
-												to={`/books/${row.id}`}
-												variant="subtitle1"
-												sx={{
-													color:
-														theme.palette.mode === 'dark'
-															? theme.palette.grey[600]
-															: 'grey.900',
-													textDecoration: 'none',
-												}}
-											>
-												{row.title}
-											</Typography>
-										</TableCell>
-										<TableCell align="left">{row.author}</TableCell>
-										<TableCell align="left">{row.price} RON</TableCell>
-										<TableCell align="left">{row.typeFormat}</TableCell>
-										<TableCell align="center">
-											{row.typeFormat === 'printed' ? (
-												<Chip
-													size="small"
-													label={
-														row.stock ? `In Stock ${row.stock}` : 'Out of Stock'
-													}
-													chipcolor={row.stock ? 'success' : 'error'}
-													sx={{
-														borderRadius: '4px',
-														textTransform: 'capitalize',
+												<Checkbox
+													color="primary"
+													checked={isItemSelected}
+													inputProps={{
+														'aria-labelledby': labelId,
 													}}
 												/>
-											) : (
-												<Chip
-													size="small"
-													label="Online"
-													chipcolor={'primary'}
+											</TableCell>
+											<TableCell
+												component="th"
+												id={labelId}
+												scope="row"
+												sx={{ cursor: 'pointer' }}
+											>
+												<Typography
+													component={Link}
+													to={`/books/${row.id}`}
+													variant="subtitle1"
 													sx={{
-														borderRadius: '4px',
-														textTransform: 'capitalize',
+														color:
+															theme.palette.mode === 'dark'
+																? theme.palette.grey[600]
+																: 'grey.900',
+														textDecoration: 'none',
 													}}
-												/>
-											)}
-										</TableCell>
-										<TableCell sx={{ pr: 3 }} align="center">
-											<IconButton
-												title="Details"
-												color="primary"
-												size="large"
-												onClick={handleOpenDetails(row)}
+												>
+													#{row.id}
+												</Typography>
+											</TableCell>
+
+											<TableCell
+												align="left"
+												component="th"
+												id={labelId}
+												scope="row"
+												onClick={(event) => handleClick(event, row.id)}
+												sx={{ cursor: 'pointer' }}
 											>
-												<VisibilityTwoToneIcon sx={{ fontSize: '1.3rem' }} />
-											</IconButton>
-											<IconButton
-												title="Edit"
-												color="secondary"
-												size="large"
-												onClick={handleOpenEdit(row)}
+												<Link to={`/books/${row.id}`}>
+													<Avatar
+														src={
+															row.coverImage && prodImage(`./${row.coverImage}`)
+														}
+														size="md"
+														variant="rounded"
+													/>
+												</Link>
+											</TableCell>
+											<TableCell
+												component="th"
+												id={labelId}
+												scope="row"
+												sx={{ cursor: 'pointer' }}
 											>
-												<EditTwoToneIcon sx={{ fontSize: '1.3rem' }} />
-											</IconButton>
-										</TableCell>
-									</TableRow>
-								);
-							})}
-						{emptyRows > 0 && (
-							<TableRow
-								style={{
-									height: 53 * emptyRows,
-								}}
-							>
-								<TableCell colSpan={6} />
-							</TableRow>
-						)}
-					</TableBody>
+												<Typography
+													component={Link}
+													to={`/books/${row.id}`}
+													variant="subtitle1"
+													sx={{
+														color:
+															theme.palette.mode === 'dark'
+																? theme.palette.grey[600]
+																: 'grey.900',
+														textDecoration: 'none',
+													}}
+												>
+													{row.title}
+												</Typography>
+											</TableCell>
+											<TableCell align="left">{row.author}</TableCell>
+											<TableCell align="left">{row.price} RON</TableCell>
+											<TableCell align="left">{row.typeFormat}</TableCell>
+											<TableCell align="center">
+												{row.typeFormat === 'printed' ? (
+													<Chip
+														size="small"
+														label={
+															row.stock
+																? `In Stock ${row.stock}`
+																: 'Out of Stock'
+														}
+														chipcolor={row.stock ? 'success' : 'error'}
+														sx={{
+															borderRadius: '4px',
+															textTransform: 'capitalize',
+														}}
+													/>
+												) : (
+													<Chip
+														size="small"
+														label="Online"
+														chipcolor={'primary'}
+														sx={{
+															borderRadius: '4px',
+															textTransform: 'capitalize',
+														}}
+													/>
+												)}
+											</TableCell>
+											<TableCell sx={{ pr: 3 }} align="center">
+												<IconButton
+													title="Details"
+													color="primary"
+													size="large"
+													onClick={handleOpenDetails(row)}
+												>
+													<VisibilityTwoToneIcon sx={{ fontSize: '1.3rem' }} />
+												</IconButton>
+												<IconButton
+													title="Edit"
+													color="secondary"
+													size="large"
+													onClick={handleOpenEdit(row)}
+												>
+													<EditTwoToneIcon sx={{ fontSize: '1.3rem' }} />
+												</IconButton>
+											</TableCell>
+										</TableRow>
+									);
+								})}
+							{emptyRows > 0 && (
+								<TableRow
+									style={{
+										height: 53 * emptyRows,
+									}}
+								>
+									<TableCell colSpan={6} />
+								</TableRow>
+							)}
+						</TableBody>
+					)}
 				</Table>
 				{openDetails && (
 					<BookDetails handleCloseDialog={handleCloseDetails} data={rowData!} />
@@ -634,7 +641,7 @@ const ProductList = () => {
 			<TablePagination
 				rowsPerPageOptions={[5, 10, 25]}
 				component="div"
-				count={rows.length}
+				count={rows ? rows.length : 0}
 				rowsPerPage={rowsPerPage}
 				page={page}
 				onPageChange={handleChangePage}
