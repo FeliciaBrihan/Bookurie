@@ -121,6 +121,8 @@ const ProductInfo = ({ product }: { product: TGetBook }) => {
 	const bookInCart =
 		cart.checkout.products.filter((prod) => prod.id === product.id).length > 0;
 
+	const loan = loans && loans.find((loan) => loan.BookId === product.id);
+
 	const { values, handleSubmit } = formik;
 
 	const addCart = () => {
@@ -300,7 +302,13 @@ const ProductInfo = ({ product }: { product: TGetBook }) => {
 													size="large"
 													onClick={createLoan}
 												>
-													Loan
+													{wasBorrowed
+														? loan?.isAccepted
+															? loan.isReturned
+																? 'Loan Returned'
+																: 'Loan Accepted'
+															: 'Loan Pending'
+														: 'Loan'}
 												</Button>
 											</Grid>
 										) : (

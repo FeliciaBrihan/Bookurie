@@ -276,7 +276,7 @@ const LoanList = () => {
 		: 0;
 
 	const getBookTitle = (id: number) =>
-		books.filter((book) => book.id === id)[0].title;
+		books ? books.filter((book) => book.id === id)[0].title : '';
 
 	return (
 		<MainCard title="" content={false}>
