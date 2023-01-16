@@ -30,8 +30,8 @@ import { TGetBook } from 'types/book';
 import { openSnackbar } from 'store/slices/snackbar';
 import { useDispatch, useSelector } from 'store';
 import { addProduct } from 'store/slices/cart';
-import { create } from 'store/slices/loan';
-import { getProduct } from 'store/slices/book';
+import { create, getUserLoans } from 'store/slices/loan';
+// import { getProduct } from 'store/slices/book';
 
 // assets
 ('@mui/icons-material/StarBorderTwoTone');
@@ -42,47 +42,12 @@ import { LOAN_DISCOUNT } from 'constant';
 import { useEffect, useState } from 'react';
 import { TGetPurchase } from 'types/purchase';
 import { getUserPurchases } from 'store/slices/purchase';
+import { TGetLoan } from 'types/loan';
 
 const validationSchema = yup.object({
 	color: yup.string().required('Color selection is required'),
 	size: yup.number().required('Size selection is required.'),
 });
-
-// ==============================|| COLORS OPTION ||============================== //
-
-// const Increment = (props: string | FieldHookConfig<any>) => {
-// 	const [field, , helpers] = useField(props);
-
-// 	const { value } = field;
-// 	const { setValue } = helpers;
-// 	return (
-// 		<ButtonGroup
-// 			size="large"
-// 			variant="text"
-// 			color="inherit"
-// 			sx={{ border: '1px solid', borderColor: 'grey.400' }}
-// 		>
-// 			<Button
-// 				key="three"
-// 				disabled={value <= 1}
-// 				onClick={() => setValue(value - 1)}
-// 				sx={{ pr: 0.75, pl: 0.75, minWidth: '0px !important' }}
-// 			>
-// 				<RemoveIcon fontSize="inherit" />
-// 			</Button>
-// 			<Button key="two" sx={{ pl: 0.5, pr: 0.5 }}>
-// 				{value}
-// 			</Button>
-// 			<Button
-// 				key="one"
-// 				onClick={() => setValue(value + 1)}
-// 				sx={{ pl: 0.75, pr: 0.75, minWidth: '0px !important' }}
-// 			>
-// 				<AddIcon fontSize="inherit" />
-// 			</Button>
-// 		</ButtonGroup>
-// 	);
-// };
 
 // ==============================|| PRODUCT DETAILS - INFORMATION ||============================== //
 
@@ -92,21 +57,35 @@ const ProductInfo = ({ product }: { product: TGetBook }) => {
 
 	const createLoan = async () => {
 		await dispatch(create(product.id));
-		await dispatch(getProduct(String(product.id)));
 	};
 
 	const cart = useSelector((state) => state.cart);
 	const { subscription } = useSelector((state) => state.subscription);
 	const [purchases, setPurchases] = useState<TGetPurchase[]>([]);
 	const purchasesState = useSelector((state) => state.purchase);
+	const [loans, setLoans] = useState<TGetLoan[]>([]);
+	const loansState = useSelector((state) => state.loan);
+	const [wasBorrowed, setWasBorrowed] = useState<boolean>(false);
 
 	useEffect(() => {
 		dispatch(getUserPurchases());
+		dispatch(getUserLoans());
 	}, []);
 
 	useEffect(() => {
 		setPurchases(purchasesState.userPurchases);
 	}, [purchasesState]);
+
+	useEffect(() => {
+		setLoans(loansState.userLoans);
+	}, [loansState]);
+
+	useEffect(() => {
+		const bookWasBorrowed: boolean = loans
+			? loans.filter((loan) => loan.BookId === product.id).length > 0
+			: false;
+		setWasBorrowed(bookWasBorrowed);
+	}, [loans]);
 
 	const formik = useFormik({
 		enableReinitialize: true,
@@ -313,6 +292,7 @@ const ProductInfo = ({ product }: { product: TGetBook }) => {
 										{product.typeFormat === 'printed' ? (
 											<Grid item xs={6}>
 												<Button
+													disabled={wasBorrowed ? true : false}
 													type="submit"
 													fullWidth
 													color="secondary"

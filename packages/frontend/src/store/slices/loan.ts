@@ -84,6 +84,7 @@ export function create(id: number) {
 		try {
 			const response = await axios.post(`/book/${id}/loan`);
 			const res = await axios.get('/user/allowed');
+			dispatch(getUserLoans());
 			dispatch(getLoggedUser(res.data.loggedUser));
 			console.log(response);
 			dispatch(

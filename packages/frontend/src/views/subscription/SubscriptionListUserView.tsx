@@ -75,7 +75,7 @@ const SubscriptionListUserView = ({
 			>
 				{subscriptions.map((subscription) => {
 					return (
-						<Grid item xs={12} lg={6}>
+						<Grid item xs={12} lg={6} key={subscription.id}>
 							<SubCard title={subscription.name}>
 								<Card sx={cardStyle}>
 									<CardContent>
