@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
-import { dispatch, useSelector } from 'store';
+import { useSelector } from 'store';
 import {
 	Button,
 	ButtonGroup,
@@ -34,7 +34,6 @@ import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
 import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
-import { openSnackbar } from 'store/slices/snackbar';
 
 const prodImage = require.context('assets/images/e-commerce', true);
 
@@ -55,45 +54,16 @@ const Increment = ({
 	stock,
 	typeFormat,
 }: IncrementProps) => {
-	console.log(typeFormat);
 	const [value, setValue] = useState(quantity);
 
-	const incrementHandler = () => {
+	const decrementHandler = () => {
 		setValue(value - 1);
 		updateQuantity(itemId, value - 1);
 	};
 
-	const decrementHandler = () => {
-		if (typeFormat === 'online') {
-			dispatch(
-				openSnackbar({
-					open: true,
-					message: 'Online Book! You can only buy one.',
-					variant: 'alert',
-					alert: {
-						color: 'error',
-					},
-					close: true,
-				})
-			);
-		} else {
-			if (stock < value + 1) {
-				dispatch(
-					openSnackbar({
-						open: true,
-						message: 'No more stock',
-						variant: 'alert',
-						alert: {
-							color: 'error',
-						},
-						close: true,
-					})
-				);
-			} else {
-				setValue(value + 1);
-				updateQuantity(itemId, value + 1);
-			}
-		}
+	const incrementHandler = () => {
+		setValue(value + 1);
+		updateQuantity(itemId, value + 1);
 	};
 
 	return (
@@ -106,7 +76,7 @@ const Increment = ({
 			<Button
 				key="three"
 				disabled={value <= 1}
-				onClick={incrementHandler}
+				onClick={decrementHandler}
 				sx={{ pr: 0.75, pl: 0.75, minWidth: '0px !important' }}
 			>
 				<RemoveIcon fontSize="inherit" />
@@ -115,8 +85,9 @@ const Increment = ({
 				{value}
 			</Button>
 			<Button
+				disabled={stock < value + 1 || typeFormat === 'online'}
 				key="one"
-				onClick={decrementHandler}
+				onClick={incrementHandler}
 				sx={{ pl: 0.75, pr: 0.75, minWidth: '0px !important' }}
 			>
 				<AddIcon fontSize="inherit" />
