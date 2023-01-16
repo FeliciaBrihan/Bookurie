@@ -40,9 +40,8 @@ const LoanReturn = ({ handleCloseDialog, data }: ProductAddProps) => {
 	const [formValue, setFormValue] = useState<TSetLoan>(defaultValue);
 
 	const handleUpdate = async () => {
-		setFormValue({ ...formValue, isReturned: true });
-
 		await loanApi.returnLoan(data.id, { sync: true });
+		setFormValue({ ...formValue, isReturned: true });
 		handleCloseDialog();
 	};
 	return (

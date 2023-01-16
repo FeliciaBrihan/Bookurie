@@ -39,7 +39,6 @@ const LoanAccept = ({ handleCloseDialog, data }: ProductAddProps) => {
 	const [formValue, setFormValue] = useState<TSetLoan>(defaultValue);
 
 	const handleUpdate = async () => {
-		setFormValue({ ...formValue, isAccepted: true });
 		await loanApi.update(
 			data.id,
 			{
@@ -47,6 +46,7 @@ const LoanAccept = ({ handleCloseDialog, data }: ProductAddProps) => {
 			},
 			{ sync: true }
 		);
+		setFormValue({ ...formValue, isAccepted: true });
 		handleCloseDialog();
 	};
 

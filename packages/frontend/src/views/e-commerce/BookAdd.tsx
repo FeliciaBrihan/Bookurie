@@ -8,7 +8,6 @@ import {
 	DialogContent,
 	DialogTitle,
 	Grid,
-	InputLabel,
 	MenuItem,
 	Slide,
 	SlideProps,
@@ -290,22 +289,25 @@ const BookAdd = ({ open, handleCloseDialog }: ProductAddProps) => {
 							</Grid>
 							<Grid item xs={12}>
 								<Grid container spacing={1}>
-									<Grid item xs={12}>
-										<Typography variant="subtitle1" align="left">
-											Book Image
-										</Typography>
-									</Grid>
-									<Grid item xs={12}>
-										<div>
-											<InputLabel>
-												<input
-													id="coverImage"
-													type="file"
-													onChange={handleImageUpload}
-												/>
-											</InputLabel>
-										</div>
-									</Grid>
+									<Grid item xs={12}></Grid>
+									<Button
+										sx={{ marginLeft: '10px' }}
+										variant="outlined"
+										component="label"
+										color="primary"
+									>
+										Upload Book Image
+										<input
+											id="coverImage"
+											type="file"
+											hidden
+											onChange={handleImageUpload}
+										/>
+									</Button>
+									<Typography sx={{ marginLeft: '10px' }}>
+										{' '}
+										{file ? file.name : ''}
+									</Typography>
 								</Grid>
 							</Grid>
 						</Grid>

@@ -13,6 +13,7 @@ import {
 	Slide,
 	SlideProps,
 	TextField,
+	Typography,
 } from '@mui/material';
 
 // project imports
@@ -256,8 +257,26 @@ const BookEdit = ({ handleCloseDialog, data }: ProductAddProps) => {
 							defaultValue={formValue.coverImage}
 							label="Book Image Name"
 						/>
-						<input id="coverImage" type="file" onChange={handleImageUpload} />
 					</Grid>
+
+					<Grid item xs={12}></Grid>
+					<Button
+						sx={{ marginLeft: '25px' }}
+						variant="outlined"
+						component="label"
+						color="primary"
+					>
+						Change Book Image
+						<input
+							id="coverImage"
+							type="file"
+							hidden
+							onChange={handleImageUpload}
+						/>
+					</Button>
+					<Typography sx={{ marginLeft: '10px' }}>
+						{file ? file.name : ''}
+					</Typography>
 				</Grid>
 			</DialogContent>
 			<DialogActions>
