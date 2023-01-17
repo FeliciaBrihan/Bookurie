@@ -24,6 +24,7 @@ import { TPurchaseStateProps } from './purchase';
 import { TRaffleStateProps } from './raffle';
 import { TPrizeStateProps } from './prize';
 import { TSubscriptionStateProps } from './subscription';
+import { TAddressStateProps } from './address';
 
 export type ArrangementOrder = 'asc' | 'desc' | undefined;
 
@@ -138,6 +139,7 @@ export interface DefaultRootStateProps {
 	raffle: TRaffleStateProps;
 	prize: TPrizeStateProps;
 	subscription: TSubscriptionStateProps;
+	address: TAddressStateProps;
 }
 
 export interface ColorProps {

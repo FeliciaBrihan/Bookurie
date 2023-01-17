@@ -20,6 +20,7 @@ import purchaseReducer from './slices/purchase';
 import raffleReducer from './slices/raffle';
 import prizeReducer from './slices/prize';
 import subscriptionReducer from './slices/subscription';
+import addressReducer from './slices/address';
 
 // ==============================|| COMBINE REDUCER ||============================== //
 
@@ -47,6 +48,7 @@ const reducer = combineReducers({
 	raffle: raffleReducer,
 	prize: prizeReducer,
 	subscription: subscriptionReducer,
+	address: addressReducer,
 });
 
 export default reducer;

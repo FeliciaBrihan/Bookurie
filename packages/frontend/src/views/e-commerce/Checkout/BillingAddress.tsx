@@ -13,8 +13,10 @@ import { gridSpacing } from 'store/constant';
 // assets
 import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
 import AddIcon from '@mui/icons-material/Add';
+import PersonOutlineTwoToneIcon from '@mui/icons-material/PersonOutlineTwoTone';
 import { Address } from 'types/e-commerce';
 import { CartCheckoutStateProps } from 'types/cart';
+import { useSelector } from 'store';
 
 // ==============================|| CHECKOUT BILLING ADDRESS - MAIN ||============================== //
 
@@ -36,7 +38,8 @@ const BillingAddress = ({
 	editAddress,
 }: BillingAddressProps) => {
 	const [select, setSelect] = useState<Address | null>(null);
-    
+	const { loggedUser } = useSelector((state) => state.user);
+
 	const [open, setOpen] = useState(false);
 	const handleClickOpen = (billingAddress: Address | null) => {
 		setOpen(true);
@@ -122,6 +125,22 @@ const BillingAddress = ({
 			</Grid>
 			<Grid item xs={12} md={4}>
 				<SubCard sx={{ mb: gridSpacing }}>
+					<Grid container spacing={2}>
+						<Grid item xs={12}>
+							<Stack direction="row" spacing={1.5} alignItems="center">
+								<PersonOutlineTwoToneIcon color="primary" />
+								<Typography variant="h3">
+									{loggedUser?.firstName} {loggedUser?.lastName}
+								</Typography>
+							</Stack>
+						</Grid>
+						<Grid item xs={12}>
+							<Stack spacing={0.25}>
+								<Typography variant="caption">Email</Typography>
+								<Typography variant="subtitle1">{loggedUser?.email}</Typography>
+							</Stack>
+						</Grid>
+					</Grid>
 				</SubCard>
 				{shippingAddress}
 			</Grid>

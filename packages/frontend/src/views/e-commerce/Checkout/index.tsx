@@ -16,7 +16,7 @@ import { TabsProps } from 'types';
 import { CartStateProps } from 'types/cart';
 import { Address } from 'types/e-commerce';
 import { useDispatch, useSelector } from 'store';
-import { getAddresses, editAddress, addAddress } from 'store/slices/product';
+import { getAddresses, editAddress, addAddress } from 'store/slices/address';
 import {
 	removeProduct,
 	setBackStep,
@@ -137,18 +137,16 @@ const Checkout = () => {
 	);
 	const [billing, setBilling] = useState(cart.checkout.billing);
 	const [address, setAddress] = useState<Address[]>([]);
-	const { addresses } = useSelector((state) => state.book);
+	const { addresses } = useSelector((state) => state.address);
 	const { loggedUser } = useSelector((state) => state.user);
 	const { subscription } = useSelector((state) => state.subscription);
-
-	useEffect(() => {
-		setAddress(addresses);
-	}, [addresses]);
-
 	useEffect(() => {
 		dispatch(getAddresses());
 	}, []);
 
+	useEffect(() => {
+		setAddress(addresses);
+	}, [addresses]);
 	const addBillingAddress = (addressNew: Address) => {
 		dispatch(addAddress(addressNew));
 	};
@@ -229,20 +227,19 @@ const Checkout = () => {
 				setBillingAddress(addressBilling !== null ? addressBilling : billing)
 			);
 			onNext();
-			// } else {
-			// 	dispatch(
-			// 		openSnackbar({
-			// 			open: true,
-			// 			message: 'Please select delivery address',
-			// 			variant: 'alert',
-			// 			alert: {
-			// 				color: 'error',
-			// 			},
-			// 			close: false,
-			// 		})
-			// 	);
+		} else {
+			dispatch(
+				openSnackbar({
+					open: true,
+					message: 'Please select delivery address',
+					variant: 'alert',
+					alert: {
+						color: 'error',
+					},
+					close: false,
+				})
+			);
 		}
-		onNext(); //
 	};
 
 	const handleShippingCharge = (type: string) => {
