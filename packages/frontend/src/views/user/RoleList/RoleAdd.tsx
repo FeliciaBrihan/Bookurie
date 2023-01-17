@@ -12,10 +12,13 @@ import {
 	Grid,
 	Slide,
 	SlideProps,
-	Stack,
 	Switch,
 	TextField,
 	Typography,
+	Table,
+	TableBody,
+	TableCell,
+	TableRow,
 } from '@mui/material';
 
 // project imports
@@ -119,23 +122,38 @@ const RoleAdd = ({ handleCloseDialog }: ProductAddProps) => {
 							onChange={handleValueChange}
 						/>
 					</Grid>
-					<Grid item xs={12}>
-						{actions.map((action) => (
-							<Stack direction="row" key={String(action.id)} spacing={1}>
-								<Typography variant="subtitle1">{action.name}</Typography>
-								<FormControlLabel
-									control={
-										<Switch
-											checked={
-												formValue.allowedActions.includes(action.id) || false
-											}
-											onChange={handleSwitchChange(action.id)}
-										/>
-									}
-									label=""
-								/>
-							</Stack>
-						))}
+					<Grid item xs={7}>
+						<Table>
+							<TableBody>
+								{actions.map((action) => (
+									<TableRow key={String(action.id)}>
+										<TableCell sx={{ borderBottom: 'none', padding: 0 }}>
+											<Typography variant="subtitle1">{action.name}</Typography>
+										</TableCell>
+										<TableCell
+											sx={{
+												borderBottom: 'none',
+												alignItems: 'left',
+												padding: 0,
+											}}
+										>
+											<FormControlLabel
+												control={
+													<Switch
+														checked={
+															formValue.allowedActions.includes(action.id) ||
+															false
+														}
+														onChange={handleSwitchChange(action.id)}
+													/>
+												}
+												label=""
+											/>
+										</TableCell>
+									</TableRow>
+								))}
+							</TableBody>
+						</Table>
 					</Grid>
 				</Grid>
 			</DialogContent>

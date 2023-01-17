@@ -12,9 +12,12 @@ import {
 	Grid,
 	Slide,
 	SlideProps,
-	Stack,
 	Switch,
 	TextField,
+	Table,
+	TableBody,
+	TableRow,
+	TableCell,
 	Typography,
 } from '@mui/material';
 
@@ -121,23 +124,38 @@ const RoleEdit = ({ handleCloseDialog, data }: ProductAddProps) => {
 							onChange={handleValueChange}
 						/>
 					</Grid>
-					<Grid item xs={12}>
-						{actions.map((el) => (
-							<Stack direction="row" key={String(el.id)} spacing={1}>
-								<Typography variant="subtitle1">{el.name}</Typography>
-								<FormControlLabel
-									control={
-										<Switch
-											checked={
-												formValue.allowedActions.includes(el.id) || false
-											}
-											onChange={handleSwitchChange(el.id)}
-										/>
-									}
-									label=""
-								/>
-							</Stack>
-						))}
+					<Grid item xs={7}>
+						<Table>
+							<TableBody>
+								{actions.map((action) => (
+									<TableRow key={String(action.id)}>
+										<TableCell sx={{ borderBottom: 'none', padding: 0 }}>
+											<Typography variant="subtitle1">{action.name}</Typography>
+										</TableCell>
+										<TableCell
+											sx={{
+												borderBottom: 'none',
+												alignItems: 'left',
+												padding: 0,
+											}}
+										>
+											<FormControlLabel
+												control={
+													<Switch
+														checked={
+															formValue.allowedActions.includes(action.id) ||
+															false
+														}
+														onChange={handleSwitchChange(action.id)}
+													/>
+												}
+												label=""
+											/>
+										</TableCell>
+									</TableRow>
+								))}
+							</TableBody>
+						</Table>
 					</Grid>
 				</Grid>
 			</DialogContent>
