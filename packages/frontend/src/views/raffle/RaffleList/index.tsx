@@ -80,27 +80,27 @@ const headCells: HeadCell[] = [
 		align: 'left',
 	},
 	{
-		id: 'createdAt',
-		numeric: false,
-		label: 'Date',
-		align: 'left',
-	},
-	{
 		id: 'BookId',
 		numeric: true,
 		label: 'Book Id',
 		align: 'left',
 	},
 	{
-		id: 'UserId',
-		numeric: true,
-		label: 'User Id',
-		align: 'left',
-	},
-	{
 		id: 'prize',
 		numeric: true,
 		label: 'Voucher',
+		align: 'left',
+	},
+	{
+		id: 'createdAt',
+		numeric: false,
+		label: 'Date',
+		align: 'left',
+	},
+	{
+		id: 'UserId',
+		numeric: true,
+		label: 'User Id',
 		align: 'left',
 	},
 ];
@@ -334,6 +334,8 @@ const RaffleList = () => {
 															#{row.id}
 														</Typography>
 													</TableCell>
+													<TableCell>{row.BookId}</TableCell>
+													<TableCell>{row.prize} RON</TableCell>
 													<TableCell>
 														{' '}
 														{new Intl.DateTimeFormat('en-GB', {
@@ -345,9 +347,7 @@ const RaffleList = () => {
 															second: '2-digit',
 														}).format(new Date(row.createdAt))}
 													</TableCell>
-													<TableCell>{row.BookId}</TableCell>
 													<TableCell>{row.UserId}</TableCell>
-													<TableCell>{row.prize} RON</TableCell>
 
 													<TableCell sx={{ pr: 3 }} align="center"></TableCell>
 												</TableRow>

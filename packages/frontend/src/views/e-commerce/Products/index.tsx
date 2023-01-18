@@ -23,7 +23,7 @@ import PerfectScrollbar from 'react-perfect-scrollbar';
 
 // project imports
 import SortOptions from './SortOptions';
-// import ProductEmpty from './ProductEmpty';
+import ProductEmpty from './ProductEmpty';
 import ProductFilter from './ProductFilter';
 import ProductFilterView from './ProductFilterView';
 import ProductCard from 'ui-component/cards/ProductCard';
@@ -31,7 +31,7 @@ import FloatingCart from 'ui-component/cards/FloatingCart';
 import SkeletonProductPlaceholder from 'ui-component/cards/Skeleton/ProductPlaceholder';
 import useConfig from 'hooks/useConfig';
 import { resetCart } from 'store/slices/cart';
-import { openDrawer } from 'store/slices/menu';
+// import { openDrawer } from 'store/slices/menu';
 import { useDispatch, useSelector } from 'store';
 import { appDrawerWidth, gridSpacing } from 'store/constant';
 import { bookApi, filterProducts } from 'store/slices/book';
@@ -86,9 +86,10 @@ const BooksList = () => {
 	const matchDownLG = useMediaQuery(theme.breakpoints.down('xl'));
 
 	const [isLoading, setLoading] = useState(false);
-	// useEffect(() => {
-	// 	setLoading(false);
-	// }, []);
+
+	useEffect(() => {
+		setLoading(false);
+	}, []);
 
 	// drawer
 	const [open, setOpen] = useState(isLoading);
@@ -108,7 +109,7 @@ const BooksList = () => {
 		dispatch(bookApi.getAll());
 
 		// hide left drawer when email app opens
-		dispatch(openDrawer(false));
+		// dispatch(openDrawer(false));
 
 		// clear cart if complete order
 		if (cart.checkout.step > 2) {
@@ -124,13 +125,14 @@ const BooksList = () => {
 		if (allBooksRef.current.length === 0) allBooksRef.current = bookState.books;
 	}, [bookState]);
 
-	const maxValue = allBooksRef.current && allBooksRef.current.length > 0
-		? Math.max(
-				...allBooksRef.current.map((book) =>
-					subscription ? book.pricePromo! : book.price
-				)
-		  )
-		: 1000;
+	const maxValue =
+		allBooksRef.current && allBooksRef.current.length > 0
+			? Math.max(
+					...allBooksRef.current.map((book) =>
+						subscription ? book.pricePromo! : book.price
+					)
+			  )
+			: 1000;
 
 	const uniqueGenres =
 		allBooksRef.current && allBooksRef.current.length > 0
@@ -138,11 +140,12 @@ const BooksList = () => {
 					.map((book) => book.genre)
 					.filter((genre, index, array) => array.indexOf(genre) === index)
 			: [];
-	const authors = allBooksRef.current && allBooksRef.current.length > 0
-		? allBooksRef.current
-				.map((book) => book.author)
-				.filter((author, index, array) => array.indexOf(author) === index)
-		: [];
+	const authors =
+		allBooksRef.current && allBooksRef.current.length > 0
+			? allBooksRef.current
+					.map((book) => book.author)
+					.filter((author, index, array) => array.indexOf(author) === index)
+			: [];
 
 	// filter
 	const initialState: ProductsFilter = {
@@ -306,14 +309,13 @@ const BooksList = () => {
 				/>
 			</Grid>
 		));
+	} else {
+		bookResult = (
+			<Grid item xs={12} sx={{ mt: 3 }}>
+				<ProductEmpty />
+			</Grid>
+		);
 	}
-	// else {
-	// 	bookResult = (
-	// 		<Grid item xs={12} sx={{ mt: 3 }}>
-	// 			<ProductEmpty />
-	// 		</Grid>
-	// 	);
-	// }
 
 	const spacingMD = matchDownMD ? 1 : 1.5;
 

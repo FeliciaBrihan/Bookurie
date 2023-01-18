@@ -38,9 +38,7 @@ const AddressCard = ({
 							alignItems="center"
 							justifyContent="space-between"
 						>
-							<Typography variant={change ? 'h3' : 'h3'}>
-								Shipping Address
-							</Typography>
+							<Typography>Shipping Address</Typography>
 							{change && (
 								<Button
 									variant="contained"

@@ -284,7 +284,9 @@ const Checkout = () => {
 								border={borderRadius}
 								value={index}
 								cart={cart}
-								disabled={index > cart.checkout.step}
+								disabled={
+									index > cart.checkout.step || index < cart.checkout.step
+								}
 								key={index}
 								icon={tab.icon}
 								label={
