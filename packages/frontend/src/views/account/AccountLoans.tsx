@@ -213,6 +213,7 @@ const LoanList = () => {
 	const [rows, setRows] = React.useState<TGetLoan[]>([]);
 	const { userLoans } = useSelector((state) => state.loan);
 	const { books } = useSelector((state) => state.book);
+	console.log('books', books);
 
 	React.useEffect(() => {
 		dispatch(getUserLoans());
@@ -225,6 +226,7 @@ const LoanList = () => {
 	React.useEffect(() => {
 		setRows(userLoans);
 	}, [userLoans]);
+
 	const handleRequestSort = (
 		event: React.SyntheticEvent<Element, Event>,
 		property: string
@@ -275,8 +277,11 @@ const LoanList = () => {
 			: 0
 		: 0;
 
-	const getBookTitle = (id: number) =>
-		books ? books.filter((book) => book.id === id)[0].title : '';
+	const getBookTitle = (id: number) => {
+		if (books.length > 0) {
+			return books.filter((book) => book.id === id)[0]?.title;
+		}
+	};
 
 	return (
 		<MainCard title="" content={false}>
@@ -338,7 +343,7 @@ const LoanList = () => {
 													  }).format(new Date(row.expirationDate))
 													: '--'}
 											</TableCell>
-											<TableCell>{getBookTitle(row.BookId)}</TableCell>
+											<TableCell>{getBookTitle(row.BookId) || ''}</TableCell>
 											<TableCell>
 												<Chip
 													size="small"

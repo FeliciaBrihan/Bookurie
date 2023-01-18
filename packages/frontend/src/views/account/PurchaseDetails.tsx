@@ -38,7 +38,7 @@ const PurchaseDetails = ({ handleCloseDialog, data }: ProductAddProps) => {
 
 	const getBookTitle = (id: number) => {
 		if (books.length > 0)
-			return books.filter((book) => book.id === id)[0].title;
+			return books.filter((book) => book.id === id)[0]?.title;
 	};
 
 	return (
@@ -67,7 +67,7 @@ const PurchaseDetails = ({ handleCloseDialog, data }: ProductAddProps) => {
 								}).format(new Date(item.createdAt))}
 							</TableCell>
 
-							<TableCell>{getBookTitle(item.BookId)}</TableCell>
+							<TableCell>{getBookTitle(item.BookId) || ''}</TableCell>
 							<TableCell>{item.price} RON</TableCell>
 						</TableRow>
 					))}

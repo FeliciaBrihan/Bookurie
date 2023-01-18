@@ -275,8 +275,11 @@ const RaffleList = () => {
 			: 0
 		: 0;
 
-	const getBookTitle = (id: number) =>
-		books.filter((book) => book.id === id)[0].title;
+	const getBookTitle = (id: number) => {
+		if (books.length > 0) {
+			return books.filter((book) => book.id === id)[0]?.title;
+		}
+	};
 
 	return (
 		<MainCard title="" content={false}>
