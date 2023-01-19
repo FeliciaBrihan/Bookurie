@@ -160,7 +160,14 @@ const ProductCard = ({
 									component={Link}
 									to={`/books/${id}`}
 									variant="subtitle1"
-									sx={{ textDecoration: 'none', fontWeight: 'bold' }}
+									sx={{
+										textDecoration: 'none',
+										fontWeight: 'bold',
+										maxWidth: '170px',
+										textOverflow: 'ellipsis',
+										overflow: 'hidden',
+										whiteSpace: 'nowrap',
+									}}
 								>
 									{title}
 								</Typography>

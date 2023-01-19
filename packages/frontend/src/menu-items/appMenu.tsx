@@ -17,11 +17,11 @@ import AutoStoriesTwoToneIcon from '@mui/icons-material/AutoStoriesTwoTone';
 import HowToRegIcon from '@mui/icons-material/HowToReg';
 import ShuffleOnIcon from '@mui/icons-material/ShuffleOn';
 import CardGiftcardIcon from '@mui/icons-material/CardGiftcard';
+import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 import ViewAgendaIcon from '@mui/icons-material/ViewAgenda';
 import CameraIcon from '@mui/icons-material/Camera';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
-import BadgeIcon from '@mui/icons-material/Badge';
 
 // constant
 const icons = {
@@ -41,8 +41,8 @@ const icons = {
 	CameraIcon,
 	ShoppingCartIcon,
 	LibraryBooksIcon,
-	BadgeIcon,
 	TextSnippetIcon,
+	AdminPanelSettingsIcon,
 };
 
 // ==============================|| DASHBOARD MENU ITEMS ||============================== //
@@ -98,7 +98,7 @@ const appMenu: NavItemType = {
 			title: <FormattedMessage id="roles" />,
 			type: 'item',
 			url: '/roles',
-			icon: icons.BadgeIcon,
+			icon: icons.AdminPanelSettingsIcon,
 			breadcrumbs: false,
 		},
 		{

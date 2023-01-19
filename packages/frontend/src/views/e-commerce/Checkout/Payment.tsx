@@ -214,44 +214,43 @@ const Payment = ({
 							</RadioGroup>
 						</FormControl>
 					</Grid>
-					<Grid
-						item
-						xs={12}
-						lg={6}
-						sx={{ opacity: payment === 'card' ? 1 : 0.4 }}
-					>
-						<SubCard
-							title="Add Your Card"
-							secondary={
-								<Button
-									variant="contained"
-									size="small"
-									startIcon={<AddTwoToneIcon />}
-									onClick={handleClickOpen}
-								>
-									Add Card
-								</Button>
-							}
-						>
-							<Grid container spacing={gridSpacing}>
-								<Grid item xs={12} xl={6}>
-									<PaymentCard
-										type="mastercard"
-										cards={cards}
-										cardHandler={cardHandler}
-									/>
+					{payment === 'card' && (
+						<Grid item xs={12} lg={6}>
+							<SubCard
+								sx={{ display: payment === 'card' ? 'block' : 'none' }}
+								title="Add Your Card"
+								secondary={
+									<Button
+										disabled={payment === 'card' ? false : true}
+										variant="contained"
+										size="small"
+										startIcon={<AddTwoToneIcon />}
+										onClick={handleClickOpen}
+									>
+										Add Card
+									</Button>
+								}
+							>
+								<Grid container spacing={gridSpacing}>
+									<Grid item xs={12} xl={6}>
+										<PaymentCard
+											type="mastercard"
+											cards={cards}
+											cardHandler={cardHandler}
+										/>
+									</Grid>
+									<Grid item xs={12} xl={6}>
+										<PaymentCard
+											type="visa"
+											cards={cards}
+											cardHandler={cardHandler}
+										/>
+									</Grid>
 								</Grid>
-								<Grid item xs={12} xl={6}>
-									<PaymentCard
-										type="visa"
-										cards={cards}
-										cardHandler={cardHandler}
-									/>
-								</Grid>
-							</Grid>
-							<AddPaymentCard open={open} handleClose={handleClose} />
-						</SubCard>
-					</Grid>
+								<AddPaymentCard open={open} handleClose={handleClose} />
+							</SubCard>
+						</Grid>
+					)}
 					<Grid item xs={12}>
 						<Grid
 							container
