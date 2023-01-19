@@ -1,7 +1,7 @@
 import { forwardRef, useEffect, useState } from 'react';
 
 // material-ui
-import { useTheme } from '@mui/material/styles';
+// import { useTheme } from '@mui/material/styles';
 import {
 	Button,
 	Card,
@@ -33,18 +33,18 @@ interface SubscriptionAddProps {
 const SubscriptionListUserView = ({
 	handleCloseDialog,
 }: SubscriptionAddProps) => {
-	const theme = useTheme();
-	const cardStyle = {
-		background:
-			theme.palette.mode === 'dark'
-				? theme.palette.dark.main
-				: theme.palette.grey[50],
-		border: '1px solid',
-		borderColor:
-			theme.palette.mode === 'dark'
-				? theme.palette.dark.main
-				: theme.palette.grey[100],
-	};
+	// const theme = useTheme();
+	// const cardStyle = {
+	// 	background:
+	// 		theme.palette.mode === 'dark'
+	// 			? theme.palette.dark.main
+	// 			: theme.palette.grey[50],
+	// 	border: '5px solid red',
+	// 	borderColor:
+	// 		theme.palette.mode === 'dark'
+	// 			? theme.palette.dark.main
+	// 			: theme.palette.grey[100],
+	// };
 	const [subscriptions, setSubscriptions] = useState<TGetSubscription[]>([]);
 	const subscriptionState = useSelector((state) => state.subscription);
 	const { loggedUser } = useSelector((state) => state.user);
@@ -61,6 +61,7 @@ const SubscriptionListUserView = ({
 		<Dialog
 			open
 			TransitionComponent={Transition}
+			PaperProps={{ style: { backgroundColor: 'rgba(0, 0, 0, 0)' } }}
 			keepMounted
 			onClose={handleCloseDialog}
 		>
@@ -71,13 +72,14 @@ const SubscriptionListUserView = ({
 					display: 'flex',
 					alignItems: 'center',
 					justifyContent: 'center',
+					padding: ' 0 12px 0 12px',
 				}}
 			>
 				{subscriptions.map((subscription) => {
 					return (
 						<Grid item xs={12} lg={6} key={subscription.id}>
 							<SubCard title={subscription.name}>
-								<Card sx={cardStyle}>
+								<Card>
 									<CardContent>
 										<Grid container spacing={2}>
 											<Grid item>
