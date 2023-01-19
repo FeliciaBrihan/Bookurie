@@ -37,6 +37,7 @@ import {
 import { TGetLoan } from 'types/loan';
 import { deleteLoan, getUserLoans } from 'store/slices/loan';
 import { bookApi } from 'store/slices/book';
+import { getBookTitle } from 'utils/helpers/getBookTitle';
 
 // table sort
 function descendingComparator(a: KeyedObject, b: KeyedObject, orderBy: string) {
@@ -213,10 +214,10 @@ const LoanList = () => {
 	const [rows, setRows] = React.useState<TGetLoan[]>([]);
 	const { userLoans } = useSelector((state) => state.loan);
 	const { books } = useSelector((state) => state.book);
-	console.log('books', books);
 
 	React.useEffect(() => {
 		dispatch(getUserLoans());
+		dispatch(bookApi.getAll());
 	}, [dispatch]);
 
 	React.useEffect(() => {
@@ -276,12 +277,6 @@ const LoanList = () => {
 			? Math.max(0, (1 + page) * rowsPerPage - rows.length)
 			: 0
 		: 0;
-
-	const getBookTitle = (id: number) => {
-		if (books.length > 0) {
-			return books.filter((book) => book.id === id)[0]?.title;
-		}
-	};
 
 	return (
 		<MainCard title="" content={false}>
@@ -343,7 +338,9 @@ const LoanList = () => {
 													  }).format(new Date(row.expirationDate))
 													: '--'}
 											</TableCell>
-											<TableCell>{getBookTitle(row.BookId) || ''}</TableCell>
+											<TableCell>
+												{getBookTitle(row.BookId, books) || '-'}
+											</TableCell>
 											<TableCell>
 												<Chip
 													size="small"

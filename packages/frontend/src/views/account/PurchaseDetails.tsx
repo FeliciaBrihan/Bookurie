@@ -46,8 +46,6 @@ const PurchaseDetails = ({ handleCloseDialog, data }: ProductAddProps) => {
 			<Table>
 				<TableHead>
 					<TableRow>
-						<TableCell>Order ID</TableCell>
-						<TableCell>Date</TableCell>
 						<TableCell>Book</TableCell>
 						<TableCell sx={{ width: '100px' }}>Price</TableCell>
 					</TableRow>
@@ -55,18 +53,6 @@ const PurchaseDetails = ({ handleCloseDialog, data }: ProductAddProps) => {
 				<TableBody>
 					{data.map((item, index) => (
 						<TableRow key={index}>
-							<TableCell>{item.orderId}</TableCell>
-							<TableCell>
-								{new Intl.DateTimeFormat('en-GB', {
-									year: 'numeric',
-									month: '2-digit',
-									day: '2-digit',
-									hour: '2-digit',
-									minute: '2-digit',
-									second: '2-digit',
-								}).format(new Date(item.createdAt))}
-							</TableCell>
-
 							<TableCell>{getBookTitle(item.BookId) || ''}</TableCell>
 							<TableCell>{item.price} RON</TableCell>
 						</TableRow>

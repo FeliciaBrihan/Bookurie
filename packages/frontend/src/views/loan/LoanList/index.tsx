@@ -47,6 +47,10 @@ import LoanAccept from './LoanAccept';
 import { TGetLoan } from 'types/loan';
 import { loanApi, deleteLoan } from 'store/slices/loan';
 import LoanReturn from './LoanReturn';
+import { getUserFullName } from 'utils/helpers/getUserFullName';
+import { getBookTitle } from 'utils/helpers/getBookTitle';
+import { userApi } from 'store/slices/user';
+import { bookApi } from 'store/slices/book';
 
 // table sort
 function descendingComparator(a: KeyedObject, b: KeyedObject, orderBy: string) {
@@ -103,13 +107,13 @@ const headCells: HeadCell[] = [
 	{
 		id: 'BookId',
 		numeric: false,
-		label: 'Book Id',
+		label: 'Book',
 		align: 'left',
 	},
 	{
 		id: 'UserId',
 		numeric: false,
-		label: 'User Id',
+		label: 'User',
 		align: 'left',
 	},
 ];
@@ -242,9 +246,13 @@ const LoanList = () => {
 	const [openReturn, setOpenReturn] = React.useState(false);
 	const [rowData, setRowData] = React.useState<TGetLoan | undefined>(undefined);
 	const { loans } = useSelector((state) => state.loan);
+	const { users } = useSelector((state) => state.user);
+	const { books } = useSelector((state) => state.book);
 
 	React.useEffect(() => {
 		dispatch(loanApi.getAll());
+		dispatch(userApi.getAll());
+		dispatch(bookApi.getAll());
 	}, [dispatch]);
 
 	React.useEffect(() => {
@@ -472,8 +480,12 @@ const LoanList = () => {
 														  }).format(new Date(row.expirationDate))
 														: '--'}
 												</TableCell>
-												<TableCell>{row.BookId}</TableCell>
-												<TableCell>{row.UserId}</TableCell>
+												<TableCell>
+													{getBookTitle(row.BookId, books)} #{row.BookId}
+												</TableCell>
+												<TableCell>
+													{getUserFullName(row.UserId, users)} #{row.UserId}
+												</TableCell>
 
 												<TableCell sx={{ pr: 3 }} align="center">
 													<Tooltip title="Details">

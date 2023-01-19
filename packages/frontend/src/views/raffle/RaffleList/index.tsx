@@ -38,6 +38,8 @@ import {
 import { raffleApi, deleteRaffle } from 'store/slices/raffle';
 import { TGetRaffle } from 'types/raffle';
 import PrizeList from 'views/prize';
+import { getUserFullName } from 'utils/helpers/getUserFullName';
+import { userApi } from 'store/slices/user';
 
 // table sort
 function descendingComparator(a: KeyedObject, b: KeyedObject, orderBy: string) {
@@ -100,7 +102,7 @@ const headCells: HeadCell[] = [
 	{
 		id: 'UserId',
 		numeric: true,
-		label: 'User Id',
+		label: 'User',
 		align: 'left',
 	},
 ];
@@ -214,10 +216,13 @@ const RaffleList = () => {
 	const [rowsPerPage, setRowsPerPage] = React.useState<number>(10);
 	const [rows, setRows] = React.useState<TGetRaffle[]>([]);
 	const { raffles } = useSelector((state) => state.raffle);
+	const { users } = useSelector((state) => state.user);
 
 	React.useEffect(() => {
 		dispatch(raffleApi.getAll());
+		dispatch(userApi.getAll());
 	}, [dispatch]);
+
 	React.useEffect(() => {
 		setRows(raffles);
 	}, [raffles]);
@@ -347,7 +352,9 @@ const RaffleList = () => {
 															second: '2-digit',
 														}).format(new Date(row.createdAt))}
 													</TableCell>
-													<TableCell>{row.UserId}</TableCell>
+													<TableCell>
+														{getUserFullName(row.UserId, users)} #{row.UserId}
+													</TableCell>
 
 													<TableCell sx={{ pr: 3 }} align="center"></TableCell>
 												</TableRow>

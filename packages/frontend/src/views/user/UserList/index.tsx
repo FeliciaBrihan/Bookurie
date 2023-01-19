@@ -414,8 +414,11 @@ const UserList = () => {
 	};
 
 	const isSelected = (id: number) => selected.indexOf(id) !== -1;
-	const emptyRows =rows? 
-		page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0 : 0
+	const emptyRows = rows
+		? page > 0
+			? Math.max(0, (1 + page) * rowsPerPage - rows.length)
+			: 0
+		: 0;
 
 	return (
 		<MainCard title="User List" content={false}>
@@ -472,119 +475,122 @@ const UserList = () => {
 						orderBy={orderBy}
 						onSelectAllClick={handleSelectAllClick}
 						onRequestSort={handleRequestSort}
-						rowCount={rows? rows.length : 0}
+						rowCount={rows ? rows.length : 0}
 						theme={theme}
 						selected={selected}
 						deleteHandler={() => handleDelete(selected)}
 					/>
-					{rows && <TableBody>
-						{stableSort(rows, getComparator(order, orderBy))
-							.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-							.map((row, index) => {
-								/** Make sure no display bugs if row isn't an OrderData object */
-								if (typeof row === 'number') return null;
+					{rows && (
+						<TableBody>
+							{stableSort(rows, getComparator(order, orderBy))
+								.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+								.map((row, index) => {
+									/** Make sure no display bugs if row isn't an OrderData object */
+									if (typeof row === 'number') return null;
 
-								const isItemSelected = isSelected(row.id);
-								const labelId = `enhanced-table-checkbox-${index}`;
+									const isItemSelected = isSelected(row.id);
+									const labelId = `enhanced-table-checkbox-${index}`;
 
-								return (
-									<TableRow
-										hover
-										role="checkbox"
-										aria-checked={isItemSelected}
-										tabIndex={-1}
-										key={index}
-										selected={isItemSelected}
-									>
-										<TableCell
-											padding="checkbox"
-											sx={{ pl: 3 }}
-											onClick={(event) => handleClick(event, row.id)}
+									return (
+										<TableRow
+											hover
+											role="checkbox"
+											aria-checked={isItemSelected}
+											tabIndex={-1}
+											key={index}
+											selected={isItemSelected}
 										>
-											<Checkbox
-												color="primary"
-												checked={isItemSelected}
-												inputProps={{
-													'aria-labelledby': labelId,
-												}}
-											/>
-										</TableCell>
-										<TableCell
-											component="th"
-											id={labelId}
-											scope="row"
-											onClick={(event) => handleClick(event, row.id)}
-											sx={{ cursor: 'pointer' }}
-										>
-											<Typography
-												variant="subtitle1"
-												sx={{
-													color:
-														theme.palette.mode === 'dark'
-															? 'grey.600'
-															: 'grey.900',
-												}}
+											<TableCell
+												padding="checkbox"
+												sx={{ pl: 3 }}
+												onClick={(event) => handleClick(event, row.id)}
 											>
-												#{row.id}
-											</Typography>
-										</TableCell>
-										<TableCell
-											component="th"
-											id={labelId}
-											scope="row"
-											onClick={(event) => handleClick(event, row.id)}
-											sx={{ cursor: 'pointer' }}
-										>
-											<Typography
-												variant="subtitle1"
-												sx={{
-													color:
-														theme.palette.mode === 'dark'
-															? 'grey.600'
-															: 'grey.900',
-												}}
-											>
-												{row.firstName}
-											</Typography>
-										</TableCell>
-										<TableCell>{row.lastName}</TableCell>
-										<TableCell>{row.email}</TableCell>
-										<TableCell>{row.roleId}</TableCell>
-										<TableCell>{getRoleName(row.roleId)}</TableCell>
-										<TableCell sx={{ pr: 3 }} align="center">
-											<Tooltip title="Details">
-												<IconButton
+												<Checkbox
 													color="primary"
-													size="large"
-													onClick={handleOpenDetails(row)}
+													checked={isItemSelected}
+													inputProps={{
+														'aria-labelledby': labelId,
+													}}
+												/>
+											</TableCell>
+											<TableCell
+												component="th"
+												id={labelId}
+												scope="row"
+												onClick={(event) => handleClick(event, row.id)}
+												sx={{ cursor: 'pointer' }}
+											>
+												<Typography
+													variant="subtitle1"
+													sx={{
+														color:
+															theme.palette.mode === 'dark'
+																? 'grey.600'
+																: 'grey.900',
+													}}
 												>
-													<VisibilityTwoToneIcon sx={{ fontSize: '1.3rem' }} />
-												</IconButton>
-											</Tooltip>
-											<Tooltip title="Edit">
-												<IconButton
-													color="secondary"
-													size="large"
-													onClick={handleOpenEdit(row)}
+													#{row.id}
+												</Typography>
+											</TableCell>
+											<TableCell
+												component="th"
+												id={labelId}
+												scope="row"
+												onClick={(event) => handleClick(event, row.id)}
+												sx={{ cursor: 'pointer' }}
+											>
+												<Typography
+													variant="subtitle1"
+													sx={{
+														color:
+															theme.palette.mode === 'dark'
+																? 'grey.600'
+																: 'grey.900',
+													}}
 												>
-													<EditTwoToneIcon sx={{ fontSize: '1.3rem' }} />
-												</IconButton>
-											</Tooltip>
-										</TableCell>
-									</TableRow>
-								);
-							})}
-						{emptyRows > 0 && (
-							<TableRow
-								style={{
-									height: 53 * emptyRows,
-								}}
-							>
-								<TableCell colSpan={6} />
-							</TableRow>
-						)}
-					</TableBody>
-}
+													{row.firstName}
+												</Typography>
+											</TableCell>
+											<TableCell>{row.lastName}</TableCell>
+											<TableCell>{row.email}</TableCell>
+											<TableCell>{row.roleId}</TableCell>
+											<TableCell>{getRoleName(row.roleId)}</TableCell>
+											<TableCell sx={{ pr: 3 }} align="center">
+												<Tooltip title="Details">
+													<IconButton
+														color="primary"
+														size="large"
+														onClick={handleOpenDetails(row)}
+													>
+														<VisibilityTwoToneIcon
+															sx={{ fontSize: '1.3rem' }}
+														/>
+													</IconButton>
+												</Tooltip>
+												<Tooltip title="Edit">
+													<IconButton
+														color="secondary"
+														size="large"
+														onClick={handleOpenEdit(row)}
+													>
+														<EditTwoToneIcon sx={{ fontSize: '1.3rem' }} />
+													</IconButton>
+												</Tooltip>
+											</TableCell>
+										</TableRow>
+									);
+								})}
+							{emptyRows > 0 && (
+								<TableRow
+									style={{
+										height: 53 * emptyRows,
+									}}
+								>
+									<TableCell colSpan={6} />
+								</TableRow>
+							)}
+						</TableBody>
+					)}
 				</Table>
 				{openDetails && (
 					<UserDetails handleCloseDialog={handleCloseDetails} data={rowData!} />

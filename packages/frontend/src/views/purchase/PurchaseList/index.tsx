@@ -43,6 +43,8 @@ import {
 import { TGetPurchase } from 'types/purchase';
 import { deletePurchase, purchaseApi } from 'store/slices/purchase';
 import PurchaseDetails from '../PurchaseDetails';
+import { getUserFullName } from 'utils/helpers/getUserFullName';
+import { userApi } from 'store/slices/user';
 
 interface CumulatedPurchase extends TGetPurchase {
 	totalPrice: number;
@@ -95,15 +97,15 @@ const headCells: HeadCell[] = [
 		align: 'left',
 	},
 	{
-		id: 'UserId',
+		id: 'userId',
 		numeric: true,
-		label: 'User Id',
+		label: 'User',
 		align: 'left',
 	},
 	{
 		id: 'price',
 		numeric: true,
-		label: 'Price',
+		label: 'Total Price',
 		align: 'left',
 	},
 ];
@@ -225,12 +227,14 @@ const PurchaseList = () => {
 	const [search, setSearch] = React.useState<string>('');
 	const [rows, setRows] = React.useState<TGetPurchase[]>([]);
 	const { purchases } = useSelector((state) => state.purchase);
+	const { users } = useSelector((state) => state.user);
 	const [rowData, setRowData] = React.useState<TGetPurchase[] | undefined>(
 		undefined
 	);
 
 	React.useEffect(() => {
 		dispatch(purchaseApi.getAll());
+		dispatch(userApi.getAll());
 	}, [dispatch]);
 
 	React.useEffect(() => {
@@ -434,7 +438,9 @@ const PurchaseList = () => {
 														second: '2-digit',
 													}).format(new Date(row.createdAt))}
 												</TableCell>
-												<TableCell>{row.UserId}</TableCell>
+												<TableCell>
+													{getUserFullName(row.UserId, users)} #{row.UserId}
+												</TableCell>
 												<TableCell>{row.totalPrice} RON</TableCell>
 												<TableCell sx={{ pr: 3 }} align="center">
 													<IconButton

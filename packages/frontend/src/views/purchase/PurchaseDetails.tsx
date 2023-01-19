@@ -14,9 +14,9 @@ import {
 import { useDispatch, useSelector } from 'store';
 import { TGetBook } from 'types/book';
 import { bookApi } from 'store/slices/book';
-
-// assets
 import { TGetPurchase } from 'types/purchase';
+import { userApi } from 'store/slices/user';
+import { getUserFullName } from 'utils/helpers/getUserFullName';
 
 interface ProductAddProps {
 	handleCloseDialog: (e?: any) => void;
@@ -27,9 +27,11 @@ const PurchaseDetails = ({ handleCloseDialog, data }: ProductAddProps) => {
 	const dispatch = useDispatch();
 	const [books, setBooks] = useState<TGetBook[]>([]);
 	const bookState = useSelector((state) => state.book);
+	const { users } = useSelector((state) => state.user);
 
 	useEffect(() => {
 		dispatch(bookApi.getAll());
+		dispatch(userApi.getAll());
 	}, []);
 
 	useEffect(() => {
@@ -46,29 +48,18 @@ const PurchaseDetails = ({ handleCloseDialog, data }: ProductAddProps) => {
 			<Table>
 				<TableHead>
 					<TableRow>
-						<TableCell>Order ID</TableCell>
-						<TableCell>Date</TableCell>
 						<TableCell>User ID</TableCell>
+						<TableCell>User Name</TableCell>
 						<TableCell>Book ID</TableCell>
 						<TableCell>Book Title</TableCell>
-						<TableCell sx={{ width: '100px' }}>Price</TableCell>
+						<TableCell sx={{ width: '100px' }}>Total Price</TableCell>
 					</TableRow>
 				</TableHead>
 				<TableBody>
 					{data.map((item, index) => (
 						<TableRow key={index}>
-							<TableCell>{item.orderId}</TableCell>
-							<TableCell>
-								{new Intl.DateTimeFormat('en-GB', {
-									year: 'numeric',
-									month: '2-digit',
-									day: '2-digit',
-									hour: '2-digit',
-									minute: '2-digit',
-									second: '2-digit',
-								}).format(new Date(item.createdAt))}
-							</TableCell>
 							<TableCell>{item.UserId}</TableCell>
+							<TableCell>{getUserFullName(item.UserId, users)}</TableCell>
 							<TableCell>{item.BookId}</TableCell>
 							<TableCell>{getBookTitle(item.BookId) || ''}</TableCell>
 							<TableCell>{item.price} RON</TableCell>
