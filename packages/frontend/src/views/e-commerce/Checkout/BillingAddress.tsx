@@ -41,6 +41,7 @@ const BillingAddress = ({
 	const { loggedUser } = useSelector((state) => state.user);
 
 	const [open, setOpen] = useState(false);
+
 	const handleClickOpen = (billingAddress: Address | null) => {
 		setOpen(true);
 		billingAddress && setSelect(billingAddress!);
@@ -53,6 +54,7 @@ const BillingAddress = ({
 
 	let shippingAddress: ReactElement | ReactElement[] = <></>;
 	let addressResult: ReactElement | ReactElement[] = <></>;
+
 	if (address) {
 		addressResult = address.map((data: Address, index: number) => {
 			if (data.isDefault) {
@@ -81,6 +83,7 @@ const BillingAddress = ({
 							justifyContent="space-between"
 						>
 							<Typography variant="subtitle1">Billing Address</Typography>
+
 							<Button
 								size="small"
 								variant="contained"
@@ -114,7 +117,7 @@ const BillingAddress = ({
 							<Grid item>
 								<Button
 									variant="contained"
-									onClick={() => billingAddressHandler(null)}
+									onClick={() => billingAddressHandler(select)}
 								>
 									Place Order
 								</Button>

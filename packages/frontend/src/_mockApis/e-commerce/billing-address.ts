@@ -11,7 +11,7 @@ let address: Address[] = [];
 
 // ==============================|| MOCK SERVICES ||============================== //
 
-services.onGet('/api/address/list').reply(200, { address });
+services.onGet('/api/address/list').reply(200);
 
 services.onPost('/api/address/new').reply((request) => {
 	try {

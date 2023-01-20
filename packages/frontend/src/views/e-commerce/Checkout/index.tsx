@@ -140,6 +140,7 @@ const Checkout = () => {
 	const { addresses } = useSelector((state) => state.address);
 	const { loggedUser } = useSelector((state) => state.user);
 	const { subscription } = useSelector((state) => state.subscription);
+
 	useEffect(() => {
 		dispatch(getAddresses());
 	}, []);
@@ -147,6 +148,7 @@ const Checkout = () => {
 	useEffect(() => {
 		setAddress(addresses);
 	}, [addresses]);
+
 	const addBillingAddress = (addressNew: Address) => {
 		dispatch(addAddress(addressNew));
 	};
