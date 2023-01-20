@@ -213,6 +213,7 @@ const BooksList = () => {
 			a1.price === a2.price &&
 			a1.sort === a2.sort &&
 			JSON.stringify(a1.genre) === JSON.stringify(a2.genre) &&
+			JSON.stringify(a1.author) === JSON.stringify(a2.author) &&
 			JSON.stringify(a1.typeFormat) === JSON.stringify(a2.typeFormat));
 
 	const handelFilter = (type: string, params: string) => {

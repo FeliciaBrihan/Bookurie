@@ -104,8 +104,9 @@ const ProductFilterView = ({
 								</SubCard>
 							</Grid>
 						)}
-						{!(
-						JSON.stringify(initialState.author) === JSON.stringify(filter.author)
+					{!(
+						JSON.stringify(initialState.author) ===
+						JSON.stringify(filter.author)
 					) &&
 						filter.author.length > 0 && (
 							<Grid item>
@@ -113,7 +114,7 @@ const ProductFilterView = ({
 									<CardContent sx={{ pb: '12px !important', p: 1.5 }}>
 										<Grid container spacing={1} alignItems="center">
 											<Grid item>
-												<Typography variant="subtitle1">Categories</Typography>
+												<Typography variant="subtitle1">Author</Typography>
 											</Grid>
 											{filter.author.map((item: string, index: number) => (
 												<Grid item key={index}>
@@ -144,7 +145,7 @@ const ProductFilterView = ({
 									<CardContent sx={{ pb: '12px !important', p: 1.5 }}>
 										<Grid container spacing={1} alignItems="center">
 											<Grid item>
-												<Typography variant="subtitle1">Book Format</Typography>
+												<Typography variant="subtitle1">Book Type</Typography>
 											</Grid>
 											{filter.typeFormat.map((item: string, index: number) => (
 												<Grid item key={index}>
