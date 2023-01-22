@@ -50,13 +50,18 @@ const ProductCard = ({
 	const { subscription } = useSelector((state) => state.subscription);
 	const [purchases, setPurchases] = useState<TGetPurchase[]>([]);
 	const purchasesState = useSelector((state) => state.purchase);
+	const [isLoading, setLoading] = useState(true);
 
 	useEffect(() => {
+		setLoading(true);
 		dispatch(getUserPurchases());
 	}, []);
 
 	useEffect(() => {
-		setPurchases(purchasesState.userPurchases);
+		if (purchasesState.userPurchases.length > 0) {
+			setPurchases(purchasesState.userPurchases);
+			setLoading(false);
+		}
 	}, [purchasesState]);
 
 	const bookInCart =
@@ -117,11 +122,6 @@ const ProductCard = ({
 			);
 		}
 	};
-
-	const [isLoading, setLoading] = useState(true);
-	useEffect(() => {
-		setLoading(false);
-	}, []);
 
 	return (
 		<>

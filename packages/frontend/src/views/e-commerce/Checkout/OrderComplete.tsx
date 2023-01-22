@@ -70,7 +70,7 @@ const OrderComplete = ({
 							spacing={gridSpacing}
 							alignItems="center"
 							justifyContent="center"
-							sx={{ my: 3 }}
+							sx={{ my: 0 }}
 						>
 							<Grid item xs={12}>
 								<Typography variant={matchDownMD ? 'h2' : 'h1'}>
@@ -78,11 +78,11 @@ const OrderComplete = ({
 								</Typography>
 							</Grid>
 							<Grid item xs={12}>
-								<Stack alignItems="center" spacing={2}>
+								<Stack alignItems="center" spacing={1}>
 									<Typography
 										align="center"
 										variant="h4"
-										sx={{ fontWeight: 400, color: 'grey.500' }}
+										sx={{ fontWeight: 300, color: 'grey.500' }}
 									>
 										We will send a process notification, before it delivered.
 									</Typography>
@@ -98,11 +98,11 @@ const OrderComplete = ({
 									</Typography>
 								</Stack>
 							</Grid>
-							<Grid item xs={12} sx={{ m: 3 }}>
+							<Grid item xs={12} sx={{ m: 0 }}>
 								<img
 									src={completed}
 									alt="Order Complete"
-									width="100%"
+									width="90%"
 									style={{ maxWidth: 780 }}
 								/>
 							</Grid>
@@ -128,12 +128,7 @@ const OrderComplete = ({
 										</Button>
 									</Grid>
 									<Grid item>
-										<Button
-											component={Link}
-											to="/dashboard"
-											variant="contained"
-											fullWidth
-										>
+										<Button variant="contained" fullWidth>
 											Download Invoice
 										</Button>
 									</Grid>

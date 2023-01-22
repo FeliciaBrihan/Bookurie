@@ -107,7 +107,7 @@ const headCells: HeadCell[] = [
 		id: 'email',
 		numeric: false,
 		label: 'Email',
-		align: 'center',
+		align: 'left',
 	},
 	{
 		id: 'roleId',

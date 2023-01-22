@@ -177,7 +177,7 @@ const ProductFilterView = ({
 										<Grid item>
 											<Chip
 												size={matchDownMD ? 'small' : undefined}
-												label={String(filter.price)}
+												label={`0 - {String(filter.price)}`}
 												chipcolor="primary"
 												sx={{
 													borderRadius: '4px',

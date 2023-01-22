@@ -54,7 +54,7 @@ const appMenu: NavItemType = {
 	type: 'group',
 	children: [
 		{
-			id: 'books',
+			id: 'dashboard',
 			title: <FormattedMessage id="books" />,
 			type: 'item',
 			url: '/dashboard',
