@@ -19,8 +19,8 @@ async function addModels(sequelize: Sequelize) {
 
 	const { getModelAction } = await import('src/modules/action/models');
 
-	const { getModelPermission } = await import('src/modules/permission/models');
 	const { getModelPurchase } = await import('src/modules/purchase/models');
+
 	const { getModelSubscription } = await import(
 		'src/modules/subscription/models'
 	);
@@ -33,32 +33,25 @@ async function addModels(sequelize: Sequelize) {
 	getModelUser(sequelize);
 	getModelRole(sequelize);
 	getModelAction(sequelize);
-	getModelPermission(sequelize);
 	getModelPurchase(sequelize);
 	getModelSubscription(sequelize);
 	getModelRaffle(sequelize);
 	getModelPrize(sequelize);
 
-	const {
-		Book,
-		User,
-		Loan,
-		Role,
-		Action,
-		Permission,
-		Purchase,
-		Subscription,
-		Raffle,
-	} = sequelize.models as unknown as Models;
+	const { Book, User, Loan, Role, Action, Purchase, Subscription, Raffle } =
+		sequelize.models as unknown as Models;
 
-	Book.belongsToMany(User, { through: Loan });
-	Book.belongsToMany(User, { through: { model: Purchase, unique: false } });
+	Book.belongsToMany(User, { through: Loan, onDelete: 'CASCADE' });
+	Book.belongsToMany(User, {
+		through: { model: Purchase, unique: false },
+		onDelete: 'CASCADE',
+	});
 
 	User.hasOne(Role);
 	Role.belongsTo(User);
 
 	Role.hasMany(Action);
-	Action.belongsToMany(Role, { through: Permission });
+	Action.belongsTo(Role);
 
 	User.hasOne(Subscription);
 	Subscription.belongsTo(User);
@@ -66,14 +59,14 @@ async function addModels(sequelize: Sequelize) {
 	User.hasOne(Raffle);
 	Raffle.belongsTo(User);
 
-	await sequelize.sync();
+	await sequelize.sync({ force: true });
 }
 async function addModuleProperties(_: Sequelize) {
 	//
 }
 
 async function addDefaultData(sequelize: Sequelize) {
-	const { Role, Action, User, Subscription, Permission, Prize } =
+	const { Role, Action, User, Subscription, Prize } =
 		sequelize.models as unknown as Models;
 	const roles = await Role.findAll();
 	if (roles.length === 0) {
@@ -86,9 +79,6 @@ async function addDefaultData(sequelize: Sequelize) {
 			},
 			{
 				name: 'admin',
-			},
-			{
-				name: 'subscriber',
 			},
 		]);
 	}
@@ -183,75 +173,17 @@ async function addDefaultData(sequelize: Sequelize) {
 			{
 				name: 'Subscription: read',
 			},
-		]);
-	}
-
-	const permissions = await Permission.findAll();
-	if (permissions.length === 0) {
-		await Permission.bulkCreate([
 			{
-				RoleId: 3,
-				ActionId: 1,
+				name: 'Prize: update',
 			},
 			{
-				RoleId: 3,
-				ActionId: 2,
+				name: 'Role: create',
 			},
 			{
-				RoleId: 3,
-				ActionId: 3,
+				name: 'Role: update',
 			},
 			{
-				RoleId: 3,
-				ActionId: 4,
-			},
-			{
-				RoleId: 3,
-				ActionId: 5,
-			},
-			{
-				RoleId: 3,
-				ActionId: 6,
-			},
-			{
-				RoleId: 3,
-				ActionId: 7,
-			},
-			{
-				RoleId: 3,
-				ActionId: 8,
-			},
-			{
-				RoleId: 3,
-				ActionId: 9,
-			},
-			{
-				RoleId: 3,
-				ActionId: 10,
-			},
-			{
-				RoleId: 3,
-				ActionId: 11,
-			},
-			{
-				RoleId: 3,
-				ActionId: 12,
-			},
-			{
-				RoleId: 3,
-				ActionId: 13,
-			},
-			{
-				RoleId: 3,
-				ActionId: 14,
-			},
-			{
-				RoleId: 3,
-				ActionId: 15,
-			},
-			{
-				RoleId: 3,
-				ActionId: 16,
+				name: 'Role: delete',
 			},
 		]);
 	}

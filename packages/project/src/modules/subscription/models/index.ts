@@ -26,6 +26,6 @@ export function getModelSubscription(sequelize: Sequelize) {
 				allowNull: false,
 			},
 		},
-		{ paranoid: true, tableName: 'subscription' }
+		{ tableName: 'subscription' }
 	);
 }

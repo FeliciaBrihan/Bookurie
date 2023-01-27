@@ -21,7 +21,10 @@ export function getModelLoan(sequelize: Sequelize) {
 				type: DataTypes.BOOLEAN,
 				defaultValue: false,
 			},
+			price: {
+				type: DataTypes.INTEGER,
+			},
 		},
-		{ paranoid: true, tableName: 'loan' }
+		{ tableName: 'loan' }
 	);
 }

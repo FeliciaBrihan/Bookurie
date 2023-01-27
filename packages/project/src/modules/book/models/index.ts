@@ -35,8 +35,10 @@ export function getModelBook(sequelize: Sequelize) {
 			},
 			price: { type: DataTypes.INTEGER, allowNull: false },
 
-			stock: { type: DataTypes.INTEGER, allowNull: false },
+			stockNew: { type: DataTypes.INTEGER, allowNull: false },
+
+			stockOld: { type: DataTypes.INTEGER, allowNull: false },
 		},
-		{ paranoid: true, tableName: 'book' }
+		{ tableName: 'book' }
 	);
 }

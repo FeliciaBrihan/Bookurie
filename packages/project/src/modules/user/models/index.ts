@@ -29,6 +29,7 @@ export function getModelUser(sequelize: Sequelize) {
 				type: DataTypes.INTEGER,
 				defaultValue: 0,
 			},
+			address: DataTypes.TEXT,
 		},
 		{ tableName: 'user' }
 	);
