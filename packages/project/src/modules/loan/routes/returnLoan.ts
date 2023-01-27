@@ -22,7 +22,7 @@ export async function returnLoan(
 		if (loan.isReturned) return returnError(res, 'Loan already returned');
 
 		const book = await Book.findByPk(loan.BookId);
-		await book.update({ stock: book.stock + 1 });
+		await book.update({ stockOld: book.stockOld + 1 });
 		await loan.update({ isReturned: true });
 
 		return res.status(200).json({

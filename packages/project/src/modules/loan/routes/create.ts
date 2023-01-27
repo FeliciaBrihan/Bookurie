@@ -27,7 +27,7 @@ export async function create(
 		if (!book) return returnError(res, 'Invalid id');
 		if (book.typeFormat === 'online')
 			return returnError(res, 'Online Book. Cannot Be Borrowed!');
-		if (!book.stock) return returnError(res, 'Book Out Of Stock!');
+		if (!book.stockOld) return returnError(res, 'Book Out Of Stock!');
 		if (alreadyLoaned) return returnError(res, 'Book Already Borrowed!');
 
 		if (!user.subscriptionId) {
@@ -45,7 +45,7 @@ export async function create(
 			UserId: user.id,
 		});
 
-		await book.update({ stock: book.stock - 1 });
+		await book.update({ stockOld: book.stockOld - 1 });
 
 		return res.status(200).json({
 			data: loan,

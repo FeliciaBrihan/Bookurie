@@ -32,7 +32,7 @@ export async function create(
 		if (alreadyBought.length > 0 && book.typeFormat === 'online')
 			return returnError(res, 'Online book already bought');
 		if (!book) return returnError(res, 'Invalid id');
-		if (book.typeFormat === 'printed' && !book.stock)
+		if (book.typeFormat === 'printed' && !book.stockNew)
 			return returnError(res, 'Book out of stock');
 
 		const { isPremiumSubscription, isFreeBook, price } = await getBookDetails({
@@ -49,7 +49,7 @@ export async function create(
 			if (user.budget >= price) {
 				await user.update({ budget: user.budget - price });
 				if (book.typeFormat === 'printed')
-					await book.update({ stock: book.stock - 1 });
+					await book.update({ stockNew: book.stockNew - 1 });
 			} else return returnError(res, 'Not enough money');
 		}
 

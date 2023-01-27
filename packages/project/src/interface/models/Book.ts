@@ -12,7 +12,8 @@ export interface Book extends DefaultParanoidAttributes {
 	typeFormat: string;
 	pages: number;
 	price: number;
-	stock: number;
+	stockOld: number;
+	stockNew: number;
 }
 
 export interface BookAttributes extends Book {
