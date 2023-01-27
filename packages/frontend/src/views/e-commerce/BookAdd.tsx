@@ -127,7 +127,8 @@ const BookAdd = ({ open, handleCloseDialog }: ProductAddProps) => {
 				pages: formValue.pages,
 				typeFormat: typeFormat,
 				price: formValue.price,
-				stock: formValue.stock,
+				stockOld: formValue.stockOld,
+				stockNew: formValue.stockNew,
 			},
 			{ sync: true }
 		);
@@ -235,11 +236,21 @@ const BookAdd = ({ open, handleCloseDialog }: ProductAddProps) => {
 							</Grid>
 							<Grid item xs={6}>
 								<TextField
-									id="stock"
+									id="stockOld"
 									type="number"
 									required
 									fullWidth
-									label="Enter Book Stock"
+									label="Enter Book Old Stock"
+									onChange={handleValueChange}
+								/>
+							</Grid>
+							<Grid item xs={6}>
+								<TextField
+									id="stockNew"
+									type="number"
+									required
+									fullWidth
+									label="Enter Book New Stock"
 									onChange={handleValueChange}
 								/>
 							</Grid>

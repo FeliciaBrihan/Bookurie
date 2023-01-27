@@ -17,8 +17,8 @@ schedule('0 0 1,15 * *', async () => {
 	const prize = await Prize.findOne();
 	if (prize.bookId) {
 		const book = await Book.findByPk(prize.bookId);
-		if (book.typeFormat === 'printed' && book.stock > 0) {
-			await book.update({ stock: book.stock - 1 });
+		if (book.typeFormat === 'printed' && book.stockNew > 0) {
+			await book.update({ stockNew: book.stockNew - 1 });
 		}
 	}
 	if (prize.voucher) {

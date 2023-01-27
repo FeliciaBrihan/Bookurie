@@ -16,7 +16,7 @@ import { routes as purchaseRouter } from 'src/modules/purchase/routes/';
 
 const router = Router();
 router.use('/:bookId/loan', loanRouter);
-router.use('/:bookId/purchase', purchaseRouter);
+router.use('/purchase', purchaseRouter);
 
 router.post('/', create);
 router.get('/', getAll);

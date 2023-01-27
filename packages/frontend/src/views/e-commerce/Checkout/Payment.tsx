@@ -131,19 +131,17 @@ const Payment = ({
 					})
 				);
 			} else {
+				const booksId = []
 				for (const product of checkout.products) {
-					if (product.quantity > 1) {
-						for (let i = 0; i < product.quantity; i++) {
-							await dispatch(create(product.id, orderId));
-						}
-					} else {
-						await dispatch(create(product.id, orderId));
+						booksId.push(product.id)
 					}
+					await dispatch(create(booksId));
 				}
 				onNext();
 				setComplete(true);
-			}
+		
 		}
+	
 	};
 
 	return (

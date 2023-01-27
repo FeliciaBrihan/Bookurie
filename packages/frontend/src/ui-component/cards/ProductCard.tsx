@@ -58,10 +58,10 @@ const ProductCard = ({
 	}, []);
 
 	useEffect(() => {
-		if (purchasesState.userPurchases.length > 0) {
+		if (purchasesState?.userPurchases?.length > 0) {
 			setPurchases(purchasesState.userPurchases);
 			setLoading(false);
-		}
+		} else setLoading(false);
 	}, [purchasesState]);
 
 	const bookInCart =

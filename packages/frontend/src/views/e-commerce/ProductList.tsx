@@ -87,7 +87,8 @@ function stableSort(
 	array: TGetBook[],
 	comparator: (a: TGetBook, b: TGetBook) => number
 ) {
-	const stabilizedThis = array.map((el, index) => [el, index]);
+	const stabilizedThis =
+		array?.length > 0 ? array.map((el, index) => [el, index]) : [];
 	stabilizedThis.sort((a, b) => {
 		const order = comparator(a[0] as TGetBook, b[0] as TGetBook);
 		if (order !== 0) return order;
@@ -590,9 +591,11 @@ const ProductList = () => {
 												<Chip
 													size="small"
 													label={
-														row.stock ? `In Stock ${row.stock}` : 'Out of Stock'
+														row.stockNew
+															? `In Stock ${row.stockNew}`
+															: 'Out of Stock'
 													}
-													chipcolor={row.stock ? 'success' : 'error'}
+													chipcolor={row.stockNew ? 'success' : 'error'}
 													sx={{
 														borderRadius: '4px',
 														textTransform: 'capitalize',

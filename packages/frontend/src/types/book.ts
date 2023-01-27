@@ -16,7 +16,8 @@ export interface TSetBook {
 	pages?: number;
 	typeFormat: string;
 	price?: number;
-	stock?: number;
+	stockOld?: number;
+	stockNew?: number;
 }
 export interface TGetBook {
 	id: number;
@@ -30,7 +31,8 @@ export interface TGetBook {
 	pages: number;
 	typeFormat: string;
 	price: number;
-	stock: number;
+	stockOld: number;
+	stockNew: number;
 	createdAt: Date;
 	updatedAt: Date;
 	pricePromo?: number;

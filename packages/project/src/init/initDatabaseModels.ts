@@ -59,7 +59,7 @@ async function addModels(sequelize: Sequelize) {
 	User.hasOne(Raffle);
 	Raffle.belongsTo(User);
 
-	await sequelize.sync({ force: true });
+	await sequelize.sync();
 }
 async function addModuleProperties(_: Sequelize) {
 	//
