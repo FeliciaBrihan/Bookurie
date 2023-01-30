@@ -304,7 +304,8 @@ const BooksList = () => {
 					price={book.price}
 					pages={book.pages}
 					genre={book.genre}
-					stock={book.stock}
+					stockNew={book.stockNew}
+					stockOld={book.stockOld}
 					typeFormat={book.typeFormat}
 					pricePromo={book.pricePromo}
 				/>

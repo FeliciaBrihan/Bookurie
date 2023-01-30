@@ -96,7 +96,8 @@ const ProductInfo = ({ product }: { product: TGetBook }) => {
 			image: product.coverImage,
 			price: product.price,
 			pricePromo: product.pricePromo,
-			stock: product.stock,
+			stockOld: product.stockOld,
+			stockNew: product.stockNew,
 			typeFormat: product.typeFormat,
 			quantity: 1,
 		},
@@ -180,8 +181,8 @@ const ProductInfo = ({ product }: { product: TGetBook }) => {
 							{product.typeFormat === 'printed' ? (
 								<Chip
 									size="small"
-									label={product.stock ? 'In Stock' : 'Out of Stock'}
-									chipcolor={product.stock ? 'success' : 'error'}
+									label={product.stockNew ? 'In Stock' : 'Out of Stock'}
+									chipcolor={product.stockNew ? 'success' : 'error'}
 									sx={{ borderRadius: '4px', textTransform: 'capitalize' }}
 								/>
 							) : (
@@ -252,7 +253,7 @@ const ProductInfo = ({ product }: { product: TGetBook }) => {
 			<Grid item xs={12}>
 				<FormikProvider value={formik}>
 					<Form autoComplete="off" noValidate onSubmit={handleSubmit}>
-						{(product.typeFormat === 'printed' && product.stock) ||
+						{(product.typeFormat === 'printed' && product.stockNew) ||
 						product.typeFormat === 'online' ? (
 							<Grid container spacing={2}>
 								<Grid item xs={12} lg={10}>

@@ -136,9 +136,15 @@ const headCells: HeadCell[] = [
 		align: 'left',
 	},
 	{
-		id: 'stock',
+		id: 'stockNew',
 		numeric: true,
-		label: 'Status',
+		label: 'Status New',
+		align: 'center',
+	},
+	{
+		id: 'stockOld',
+		numeric: true,
+		label: 'Status Old',
 		align: 'center',
 	},
 ];
@@ -596,6 +602,33 @@ const ProductList = () => {
 															: 'Out of Stock'
 													}
 													chipcolor={row.stockNew ? 'success' : 'error'}
+													sx={{
+														borderRadius: '4px',
+														textTransform: 'capitalize',
+													}}
+												/>
+											) : (
+												<Chip
+													size="small"
+													label="Online"
+													chipcolor={'primary'}
+													sx={{
+														borderRadius: '4px',
+														textTransform: 'capitalize',
+													}}
+												/>
+											)}
+										</TableCell>
+										<TableCell align="center">
+											{row.typeFormat === 'printed' ? (
+												<Chip
+													size="small"
+													label={
+														row.stockOld
+															? `In Stock ${row.stockOld}`
+															: 'Out of Stock'
+													}
+													chipcolor={row.stockOld ? 'success' : 'error'}
 													sx={{
 														borderRadius: '4px',
 														textTransform: 'capitalize',

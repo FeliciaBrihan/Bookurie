@@ -38,7 +38,8 @@ const ProductCard = ({
 	genre,
 	author,
 	price,
-	stock,
+	stockOld,
+	stockNew,
 	typeFormat,
 	pricePromo,
 }: ProductCardProps) => {
@@ -86,7 +87,8 @@ const ProductCard = ({
 						genre,
 						author,
 						typeFormat,
-						stock,
+						stockOld,
+						stockNew,
 						price,
 						pricePromo,
 						quantity: 1,
@@ -141,7 +143,7 @@ const ProductCard = ({
 					<CardMedia
 						sx={{
 							height: 220,
-							opacity: typeFormat === 'printed' && !stock ? 0.3 : 1,
+							opacity: typeFormat === 'printed' && !stockNew ? 0.3 : 1,
 							transition: 'opacity 0.3s ease-in-out',
 						}}
 						image={prodProfile}
@@ -245,7 +247,7 @@ const ProductCard = ({
 											)}
 										</Grid>
 									</Grid>
-									{stock || typeFormat === 'online' ? (
+									{stockNew || typeFormat === 'online' ? (
 										<Tooltip
 											title={bookInCart ? 'Book In Cart' : 'Add To Cart'}
 										>

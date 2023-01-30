@@ -60,7 +60,8 @@ const BookEdit = ({ handleCloseDialog, data }: ProductAddProps) => {
 		pages: data.pages,
 		typeFormat: data.typeFormat,
 		price: data.price,
-		stock: data.stock,
+		stockOld: data.stockOld,
+		stockNew: data.stockNew,
 	};
 
 	const [formValue, setFormValue] = useState<TSetBook>(defaultValue);
@@ -117,7 +118,8 @@ const BookEdit = ({ handleCloseDialog, data }: ProductAddProps) => {
 				pages: formValue.pages,
 				typeFormat: currentType,
 				price: formValue.price,
-				stock: formValue.stock,
+				stockOld: formValue.stockOld,
+				stockNew: formValue.stockNew,
 			},
 			{ sync: true }
 		);
@@ -191,13 +193,24 @@ const BookEdit = ({ handleCloseDialog, data }: ProductAddProps) => {
 							onChange={handleValueChange}
 						/>
 					</Grid>
+
 					<Grid item xs={6}>
 						<TextField
-							id="stock"
+							id="stockNew"
 							required
 							fullWidth
-							defaultValue={formValue.stock}
-							label="Enter Book Stock"
+							defaultValue={formValue.stockNew}
+							label="Enter Book New Stock"
+							onChange={handleValueChange}
+						/>
+					</Grid>
+					<Grid item xs={6}>
+						<TextField
+							id="stockOld"
+							required
+							fullWidth
+							defaultValue={formValue.stockOld}
+							label="Enter Book Old Stock"
 							onChange={handleValueChange}
 						/>
 					</Grid>

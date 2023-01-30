@@ -25,7 +25,8 @@ export interface CartProductStateProps {
 	price: number;
 	pages: number;
 	typeFormat: string;
-	stock: number;
+	stockOld: number;
+	stockNew: number;
 	quantity: number;
 	pricePromo: number;
 }
@@ -60,5 +61,6 @@ export interface ProductCardProps extends KeyedObject {
 	pages?: number;
 	typeFormat: string;
 	genre?: string;
-	stock: number;
+	stockOld: number;
+	stockNew: number;
 }

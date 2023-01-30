@@ -40,7 +40,7 @@ const prodImage = require.context('assets/images/e-commerce', true);
 // ==============================|| CART - INCREMENT QUANTITY ||============================== //
 
 interface IncrementProps {
-	stock: number;
+	stockNew: number;
 	typeFormat: string;
 	itemId: string | number | undefined;
 	quantity: number;
@@ -51,7 +51,7 @@ const Increment = ({
 	itemId,
 	quantity,
 	updateQuantity,
-	stock,
+	stockNew,
 	typeFormat,
 }: IncrementProps) => {
 	const [value, setValue] = useState(quantity);
@@ -85,7 +85,7 @@ const Increment = ({
 				{value}
 			</Button>
 			<Button
-				disabled={stock < value + 1 || typeFormat === 'online'}
+				disabled={stockNew < value + 1 || typeFormat === 'online'}
 				key="one"
 				onClick={incrementHandler}
 				sx={{ pl: 0.75, pr: 0.75, minWidth: '0px !important' }}
@@ -205,7 +205,7 @@ const Cart = ({
 										</TableCell>
 										<TableCell align="center">
 											<Increment
-												stock={row.stock}
+												stockNew={row.stockNew}
 												typeFormat={row.typeFormat}
 												quantity={row.quantity}
 												itemId={row.itemId}

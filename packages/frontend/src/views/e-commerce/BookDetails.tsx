@@ -85,8 +85,14 @@ const BookDetails = ({ handleCloseDialog, data }: ProductAddProps) => {
 					</Grid>
 					<Grid item xs={12}>
 						<Text
-							label="Stock"
-							value={`${data.stock} ${data.stock === 1 ? 'pc' : 'pcs'}`}
+							label="Stock New"
+							value={`${data.stockNew} ${data.stockNew === 1 ? 'pc' : 'pcs'}`}
+						/>
+					</Grid>
+					<Grid item xs={12}>
+						<Text
+							label="Stock Old"
+							value={`${data.stockOld} ${data.stockOld === 1 ? 'pc' : 'pcs'}`}
 						/>
 					</Grid>
 					<Grid item xs={12}>
