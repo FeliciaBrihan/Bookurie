@@ -24,7 +24,7 @@ import { bookApi, hasError } from 'store/slices/book';
 import { TSetBook } from 'types/book';
 import axios from 'axios';
 import { openSnackbar } from 'store/slices/snackbar';
-import { dispatch, useSelector } from 'store';
+import { dispatch } from 'store';
 
 // book type options
 const types = [
@@ -36,13 +36,13 @@ const types = [
 	},
 ];
 
+import { useFormik } from 'formik';
+import * as yup from 'yup';
+
 // animation
 const Transition = forwardRef((props: SlideProps, ref) => (
 	<Slide direction="left" ref={ref} {...props} />
 ));
-
-const ITEM_HEIGHT = 48;
-const ITEM_PADDING_TOP = 8;
 
 // ==============================|| PRODUCT ADD DIALOG ||============================== //
 
@@ -50,48 +50,89 @@ interface ProductAddProps {
 	open: boolean;
 	handleCloseDialog: () => void;
 }
-const defaultValue = {
+const initialValues = {
 	title: '',
 	author: '',
 	publishingHouse: '',
-	publishedYear: undefined,
+	publishedYear: 0,
 	coverImage: '',
 	genre: '',
 	description: '',
-	pages: undefined,
+	pages: 0,
 	typeFormat: '',
-	price: undefined,
-	stock: undefined,
+	price: 0,
+	stockOld: 0,
+	stockNew: 0,
 };
 
 const BookAdd = ({ open, handleCloseDialog }: ProductAddProps) => {
-	const [formValue, setFormValue] = useState<TSetBook>(defaultValue);
 	const [file, setFile] = useState<File | undefined>();
-	const { error } = useSelector((state) => state.book);
-	console.log('Book Add', error);
 
-	// handle category change dropdown
-	const [typeFormat, setTypeFormat] = useState('printed');
+	const validationSchema = yup.object({
+		title: yup.string().required('Title is required'),
+		author: yup.string().required('Author is required'),
+		publishingHouse: yup.string().notRequired(),
+		publishedYear: yup
+			.number()
+			.min(1, 'Must be grater than 0')
+			.required('Published Year is required'),
+		coverImage: yup.string().notRequired(),
+		genre: yup.string().required('Genre is required'),
+		description: yup.string().notRequired(),
+		pages: yup
+			.number()
+			.min(1, 'Must be grater than 0')
+			.required('Pages is required'),
+		typeFormat: yup.string().required('Type Format is required'),
+		price: yup.number().required('Price is required'),
+		stockOld: yup.number().required('Stock Old is required'),
+		stockNew: yup.number().required('Stock New is required'),
+	});
 
-	const handleSelectChange = (
-		event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | undefined
-	) => {
-		event?.target.value && setTypeFormat(event?.target.value);
-	};
-
-	const handleValueChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-		setFormValue({
-			...formValue,
-			[event?.target.id]: event?.target.value,
-		});
-	};
+	const formik = useFormik({
+		initialValues,
+		validationSchema,
+		onSubmit: async (values) => {
+			console.log(values);
+			if (values) {
+				const book: TSetBook = {
+					title: values.title,
+					author: values.author,
+					publishingHouse: values.publishingHouse,
+					publishedYear: values.publishedYear,
+					coverImage: file!.name,
+					genre: values.genre,
+					description: values.description,
+					pages: values.pages,
+					typeFormat: values.typeFormat,
+					price: values.price,
+					stockOld: values.stockOld,
+					stockNew: values.stockNew,
+				};
+				uploadFile();
+				const response = await bookApi.create(book, { sync: true });
+				response &&
+					dispatch(
+						openSnackbar({
+							open: true,
+							anchorOrigin: {
+								vertical: 'top',
+								horizontal: 'right',
+							},
+							message: 'Book Add Success',
+							variant: 'alert',
+							alert: {
+								color: 'success',
+							},
+							close: false,
+						})
+					);
+				handleCloseDialog();
+			}
+		},
+	});
 
 	const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-		console.log('name', event.target.files![0].name);
-		setFormValue({
-			...formValue,
-			coverImage: event.target.files![0].name,
-		});
 		setFile(event.target.files![0]);
 	};
 
@@ -111,60 +152,6 @@ const BookAdd = ({ open, handleCloseDialog }: ProductAddProps) => {
 		} catch (err) {
 			dispatch(hasError(err));
 		}
-	};
-
-	const handleSave = async () => {
-		uploadFile();
-		const response = await bookApi.create(
-			{
-				title: formValue.title,
-				author: formValue.author,
-				publishingHouse: formValue.publishingHouse,
-				publishedYear: formValue.publishedYear,
-				coverImage: formValue.coverImage,
-				genre: formValue.genre,
-				description: formValue.description,
-				pages: formValue.pages,
-				typeFormat: typeFormat,
-				price: formValue.price,
-				stockOld: formValue.stockOld,
-				stockNew: formValue.stockNew,
-			},
-			{ sync: true }
-		);
-		!response &&
-			dispatch(
-				openSnackbar({
-					open: true,
-					anchorOrigin: {
-						vertical: 'top',
-						horizontal: 'right',
-					},
-					message: 'Something went wrong',
-					variant: 'alert',
-					alert: {
-						color: 'error',
-					},
-					close: false,
-				})
-			);
-		response &&
-			dispatch(
-				openSnackbar({
-					open: true,
-					anchorOrigin: {
-						vertical: 'top',
-						horizontal: 'right',
-					},
-					message: 'Book Add Success',
-					variant: 'alert',
-					alert: {
-						color: 'success',
-					},
-					close: false,
-				})
-			);
-		handleCloseDialog();
 	};
 
 	return (
@@ -188,151 +175,240 @@ const BookAdd = ({ open, handleCloseDialog }: ProductAddProps) => {
 			{open && (
 				<>
 					<DialogTitle>Add Book</DialogTitle>
-					<DialogContent>
-						<Grid container spacing={gridSpacing} sx={{ mt: 0.25 }}>
-							<Grid item xs={12}>
-								<TextField
-									id="title"
-									required
-									fullWidth
-									label="Enter Book Title"
-									onChange={handleValueChange}
-								/>
-							</Grid>
-							<Grid item xs={12}>
-								<TextField
-									id="author"
-									required
-									fullWidth
-									label="Enter Book Author"
-									onChange={handleValueChange}
-								/>
-							</Grid>
-							<Grid item xs={6}>
-								<TextField
-									id="typeFormat"
-									required
-									select
-									label="Select Book Format"
-									value={typeFormat}
-									fullWidth
-									onChange={handleSelectChange}
-								>
-									{types.map((option) => (
-										<MenuItem key={option.value} value={option.value}>
-											{option.value}
-										</MenuItem>
-									))}
-								</TextField>
-							</Grid>
-							<Grid item xs={6}>
-								<TextField
-									id="price"
-									required
-									fullWidth
-									label="Price"
-									onChange={handleValueChange}
-								/>
-							</Grid>
-							<Grid item xs={6}>
-								<TextField
-									id="stockOld"
-									type="number"
-									required
-									fullWidth
-									label="Enter Book Old Stock"
-									onChange={handleValueChange}
-								/>
-							</Grid>
-							<Grid item xs={6}>
-								<TextField
-									id="stockNew"
-									type="number"
-									required
-									fullWidth
-									label="Enter Book New Stock"
-									onChange={handleValueChange}
-								/>
-							</Grid>
-							<Grid item xs={6}>
-								<TextField
-									id="pages"
-									type="number"
-									required
-									fullWidth
-									label="Enter Book Pages"
-									onChange={handleValueChange}
-								/>
-							</Grid>
-							<Grid item xs={12}>
-								<TextField
-									id="genre"
-									fullWidth
-									label="Enter Book Genre"
-									onChange={handleValueChange}
-								/>
-							</Grid>
-							<Grid item xs={12}>
-								<TextField
-									id="publishedYear"
-									fullWidth
-									label="Enter Book Published Year"
-									onChange={handleValueChange}
-								/>
-							</Grid>
-							<Grid item xs={12}>
-								<TextField
-									id="publishingHouse"
-									fullWidth
-									label="Enter Book Publishing House"
-									onChange={handleValueChange}
-								/>
-							</Grid>
-							<Grid item xs={12}>
-								<TextField
-									id="description"
-									fullWidth
-									multiline
-									rows={4}
-									label="Enter Book Description"
-									onChange={handleValueChange}
-								/>
-							</Grid>
-							<Grid item xs={12}>
-								<Grid container spacing={1}>
-									<Grid item xs={12}></Grid>
-									<Button
-										sx={{ marginLeft: '10px' }}
-										variant="outlined"
-										component="label"
-										color="primary"
+					<form onSubmit={formik.handleSubmit}>
+						<DialogContent>
+							<Grid container spacing={gridSpacing} sx={{ mt: 0.25 }}>
+								<Grid item xs={12}>
+									<TextField
+										id="title"
+										required
+										fullWidth
+										label="Enter Book Title"
+										value={formik.values.title}
+										onBlur={formik.handleBlur}
+										error={formik.touched.title && Boolean(formik.errors.title)}
+										helperText={formik.touched.title && formik.errors.title}
+										onChange={formik.handleChange}
+									/>
+								</Grid>
+								<Grid item xs={12}>
+									<TextField
+										id="author"
+										required
+										fullWidth
+										label="Enter Book Author"
+										value={formik.values.author}
+										onBlur={formik.handleBlur}
+										error={
+											formik.touched.author && Boolean(formik.errors.author)
+										}
+										helperText={formik.touched.author && formik.errors.author}
+										onChange={formik.handleChange}
+									/>
+								</Grid>
+								<Grid item xs={6}>
+									<TextField
+										id="typeFormat"
+										required
+										select
+										label="Select Book Format"
+										name="typeFormat"
+										value={formik.values.typeFormat}
+										onBlur={formik.handleBlur}
+										error={
+											formik.touched.typeFormat &&
+											Boolean(formik.errors.typeFormat)
+										}
+										helperText={
+											formik.touched.typeFormat && formik.errors.typeFormat
+										}
+										fullWidth
+										onChange={formik.handleChange}
 									>
-										Upload Book Image
-										<input
-											id="coverImage"
-											type="file"
-											hidden
-											onChange={handleImageUpload}
-										/>
-									</Button>
-									<Typography sx={{ marginLeft: '10px' }}>
-										{' '}
-										{file ? file.name : ''}
-									</Typography>
+										{types.map((option) => (
+											<MenuItem
+												key={option.value}
+												value={option.value}
+												id={option.value}
+											>
+												{option.value}
+											</MenuItem>
+										))}
+									</TextField>
+								</Grid>
+								<Grid item xs={6}>
+									<TextField
+										id="price"
+										required
+										fullWidth
+										value={formik.values.price}
+										onBlur={formik.handleBlur}
+										error={formik.touched.price && Boolean(formik.errors.price)}
+										helperText={formik.touched.price && formik.errors.price}
+										label="Price"
+										onChange={formik.handleChange}
+									/>
+								</Grid>
+								<Grid item xs={6}>
+									<TextField
+										id="stockOld"
+										type="number"
+										required
+										fullWidth
+										value={formik.values.stockOld}
+										onBlur={formik.handleBlur}
+										error={
+											formik.touched.stockOld && Boolean(formik.errors.stockOld)
+										}
+										helperText={
+											formik.touched.stockOld && formik.errors.stockOld
+										}
+										label="Enter Book Old Stock"
+										onChange={formik.handleChange}
+									/>
+								</Grid>
+								<Grid item xs={6}>
+									<TextField
+										id="stockNew"
+										type="number"
+										required
+										fullWidth
+										value={formik.values.stockNew}
+										onBlur={formik.handleBlur}
+										error={
+											formik.touched.stockNew && Boolean(formik.errors.stockNew)
+										}
+										helperText={
+											formik.touched.stockNew && formik.errors.stockNew
+										}
+										label="Enter Book New Stock"
+										onChange={formik.handleChange}
+									/>
+								</Grid>
+								<Grid item xs={6}>
+									<TextField
+										id="pages"
+										type="number"
+										required
+										fullWidth
+										value={formik.values.pages}
+										onBlur={formik.handleBlur}
+										error={formik.touched.pages && Boolean(formik.errors.pages)}
+										helperText={formik.touched.pages && formik.errors.pages}
+										label="Enter Book Pages"
+										onChange={formik.handleChange}
+									/>
+								</Grid>
+								<Grid item xs={12}>
+									<TextField
+										id="genre"
+										fullWidth
+										value={formik.values.genre}
+										onBlur={formik.handleBlur}
+										error={formik.touched.genre && Boolean(formik.errors.genre)}
+										helperText={formik.touched.genre && formik.errors.genre}
+										label="Enter Book Genre"
+										onChange={formik.handleChange}
+									/>
+								</Grid>
+								<Grid item xs={12}>
+									<TextField
+										id="publishedYear"
+										fullWidth
+										value={formik.values.publishedYear}
+										onBlur={formik.handleBlur}
+										error={
+											formik.touched.publishedYear &&
+											Boolean(formik.errors.publishedYear)
+										}
+										helperText={
+											formik.touched.publishedYear &&
+											formik.errors.publishedYear
+										}
+										label="Enter Book Published Year"
+										onChange={formik.handleChange}
+									/>
+								</Grid>
+								<Grid item xs={12}>
+									<TextField
+										id="publishingHouse"
+										fullWidth
+										value={formik.values.publishingHouse}
+										onBlur={formik.handleBlur}
+										error={
+											formik.touched.publishingHouse &&
+											Boolean(formik.errors.publishingHouse)
+										}
+										helperText={
+											formik.touched.publishingHouse &&
+											formik.errors.publishingHouse
+										}
+										label="Enter Book Publishing House"
+										onChange={formik.handleChange}
+									/>
+								</Grid>
+								<Grid item xs={12}>
+									<TextField
+										id="description"
+										fullWidth
+										multiline
+										rows={4}
+										value={formik.values.description}
+										onBlur={formik.handleBlur}
+										error={
+											formik.touched.description &&
+											Boolean(formik.errors.description)
+										}
+										helperText={
+											formik.touched.description && formik.errors.description
+										}
+										label="Enter Book Description"
+										onChange={formik.handleChange}
+									/>
+								</Grid>
+								<Grid item xs={12}>
+									<Grid container spacing={1}>
+										<Grid item xs={12}></Grid>
+										<Button
+											sx={{ marginLeft: '10px' }}
+											variant="outlined"
+											component="label"
+											color="primary"
+										>
+											Upload Book Image
+											<input
+												id="coverImage"
+												type="file"
+												name="coverImage"
+												hidden
+												onBlur={formik.handleBlur}
+												onChange={handleImageUpload}
+											/>
+										</Button>
+										<Typography sx={{ marginLeft: '10px' }}>
+											{' '}
+											{file ? file.name : ''}
+										</Typography>
+									</Grid>
 								</Grid>
 							</Grid>
-						</Grid>
-					</DialogContent>
-					<DialogActions>
-						<AnimateButton>
-							<Button variant="contained" onClick={handleSave}>
-								Create
+						</DialogContent>
+
+						<DialogActions>
+							<AnimateButton>
+								<Button
+									variant="contained"
+									disabled={formik.isSubmitting}
+									type="submit"
+								>
+									Create
+								</Button>
+							</AnimateButton>
+							<Button variant="text" color="error" onClick={handleCloseDialog}>
+								Close
 							</Button>
-						</AnimateButton>
-						<Button variant="text" color="error" onClick={handleCloseDialog}>
-							Close
-						</Button>
-					</DialogActions>
+						</DialogActions>
+					</form>
 				</>
 			)}
 		</Dialog>
