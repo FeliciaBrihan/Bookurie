@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 
 // material-ui
 import {
+	Box,
 	Button,
 	CardContent,
 	CardMedia,
@@ -140,17 +141,50 @@ const ProductCard = ({
 						},
 					}}
 				>
-					<CardMedia
+					<Box
 						sx={{
-							height: 220,
-							opacity: typeFormat === 'printed' && !stockNew ? 0.3 : 1,
-							transition: 'opacity 0.3s ease-in-out',
+							position: 'relative',
 						}}
-						image={prodProfile}
-						title={title}
-						component={Link}
-						to={`/books/${id}`}
-					/>
+					>
+						<CardMedia
+							sx={{
+								height: 220,
+								opacity: typeFormat === 'printed' && !stockNew ? 0.3 : 1,
+								transition: 'opacity 0.3s ease-in-out',
+							}}
+							image={prodProfile}
+							title={title}
+							component={Link}
+							to={`/books/${id}`}
+						/>
+						{typeFormat === 'online' ? (
+							<Chip
+								size="small"
+								label="Online"
+								chipcolor="primary"
+								sx={{
+									borderRadius: '4px',
+									textTransform: 'capitalize',
+									position: 'absolute',
+									bottom: '0',
+									right: '0',
+								}}
+							/>
+						) : (
+							<Chip
+								size="small"
+								label="Printed"
+								chipcolor="secondary"
+								sx={{
+									borderRadius: '4px',
+									textTransform: 'capitalize',
+									position: 'absolute',
+									bottom: '0',
+									right: '0',
+								}}
+							/>
+						)}
+					</Box>
 					<CardContent sx={{ p: 2 }}>
 						<Grid container spacing={2}>
 							<Grid
@@ -173,27 +207,6 @@ const ProductCard = ({
 								>
 									{title}
 								</Typography>
-								{typeFormat === 'online' ? (
-									<Chip
-										size="small"
-										label="Online"
-										chipcolor="primary"
-										sx={{
-											borderRadius: '4px',
-											textTransform: 'capitalize',
-										}}
-									/>
-								) : (
-									<Chip
-										size="small"
-										label="Printed"
-										chipcolor="secondary"
-										sx={{
-											borderRadius: '4px',
-											textTransform: 'capitalize',
-										}}
-									/>
-								)}
 							</Grid>
 							<Grid item xs={12}>
 								<Typography
