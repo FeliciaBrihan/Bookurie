@@ -54,7 +54,6 @@ import { bookApi, deleteBook } from 'store/slices/book';
 import DeleteIcon from '@mui/icons-material/Delete';
 import SearchIcon from '@mui/icons-material/Search';
 import AddIcon from '@mui/icons-material/AddTwoTone';
-// import MoreHorizOutlinedIcon from '@mui/icons-material/MoreHorizOutlined';
 import VisibilityTwoToneIcon from '@mui/icons-material/VisibilityTwoTone';
 import EditTwoToneIcon from '@mui/icons-material/EditTwoTone';
 import { visuallyHidden } from '@mui/utils';
@@ -124,17 +123,18 @@ const headCells: HeadCell[] = [
 		align: 'left',
 	},
 	{
-		id: 'price',
-		numeric: true,
-		label: 'Price',
-		align: 'left',
-	},
-	{
 		id: 'typeFormat',
 		numeric: true,
 		label: 'Type',
 		align: 'left',
 	},
+	{
+		id: 'price',
+		numeric: true,
+		label: 'Price',
+		align: 'left',
+	},
+
 	{
 		id: 'stockNew',
 		numeric: true,
@@ -188,7 +188,7 @@ function EnhancedTableHead({
 					/>
 				</TableCell>
 				{numSelected > 0 && (
-					<TableCell padding="none" colSpan={8}>
+					<TableCell padding="none" colSpan={9}>
 						<EnhancedTableToolbar
 							numSelected={selected.length}
 							onDeleteClick={deleteHandler}
@@ -590,8 +590,8 @@ const ProductList = () => {
 											</Typography>
 										</TableCell>
 										<TableCell align="left">{row.author}</TableCell>
-										<TableCell align="left">{row.price} RON</TableCell>
 										<TableCell align="left">{row.typeFormat}</TableCell>
+										<TableCell align="left">{row.price} RON</TableCell>
 										<TableCell align="center">
 											{row.typeFormat === 'printed' ? (
 												<Chip
@@ -712,8 +712,10 @@ const ProductList = () => {
 						<Grid container>
 							<Grid item xs={12}>
 								<Typography>
-									Are you sure you want to permanently delete the selected
-									books?
+									{`Are you sure you want to permanently delete the selected ${
+										selected.length === 1 ? 'book' : 'books'
+									}
+									?`}
 								</Typography>
 							</Grid>
 						</Grid>
