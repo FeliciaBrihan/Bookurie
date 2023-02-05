@@ -84,7 +84,7 @@ const ProductDetails = () => {
 									value={value}
 									indicatorColor="primary"
 									onChange={handleChange}
-									sx={{}}
+									sx={{ marginBottom: '10px' }}
 									aria-label="product description tabs example"
 									variant="scrollable"
 								>

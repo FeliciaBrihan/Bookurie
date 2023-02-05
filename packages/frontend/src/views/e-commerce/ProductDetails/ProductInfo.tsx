@@ -9,8 +9,6 @@ import {
 	Stack,
 	Table,
 	TableBody,
-	TableCell,
-	TableRow,
 	Typography,
 } from '@mui/material';
 
@@ -177,34 +175,32 @@ const ProductInfo = ({ product }: { product: TGetBook }) => {
 					justifyContent="space-between"
 				>
 					<Grid container spacing={1}>
-						<Grid item xs={12}>
+						<Grid container sx={{ justifyContent: 'flex-end' }}>
 							{product.typeFormat === 'printed' ? (
 								<Chip
 									size="small"
-									label={product.stockNew ? 'In Stock' : 'Out of Stock'}
-									chipcolor={product.stockNew ? 'success' : 'error'}
+									label={
+										product.stockNew || product.stockOld
+											? 'In Stock'
+											: 'Out of Stock'
+									}
+									chipcolor={
+										product.stockNew || product.stockOld ? 'success' : 'error'
+									}
 									sx={{ borderRadius: '4px', textTransform: 'capitalize' }}
 								/>
 							) : (
 								<Chip
 									size="small"
-									label="In Stock"
-									chipcolor="success"
-									sx={{ borderRadius: '4px', textTransform: 'capitalize' }}
+									label="Online"
+									chipcolor="primary"
+									variant="outlined"
 								/>
 							)}
 						</Grid>
 						<Grid item xs={12}>
 							<Stack direction="row" alignItems="center" spacing={1}>
-								<Typography variant="h3">{product.title}</Typography>
-								{product.typeFormat === 'online' && (
-									<Chip
-										size="small"
-										label="online"
-										chipcolor="primary"
-										variant="outlined"
-									/>
-								)}
+								<Typography variant="h3">{product.title}</Typography>{' '}
 							</Stack>
 						</Grid>
 					</Grid>
@@ -213,10 +209,14 @@ const ProductInfo = ({ product }: { product: TGetBook }) => {
 			<Grid item xs={12}>
 				<Typography variant="body2"> by {product.author}</Typography>
 			</Grid>
-			<Grid item xs={12}></Grid>
-			<Grid item xs={12}></Grid>
+
 			<Grid item xs={12}>
-				<Stack direction="row" alignItems="center" spacing={1}>
+				<Stack
+					direction="row"
+					alignItems="center"
+					spacing={1}
+					sx={{ marginTop: '20px' }}
+				>
 					<Typography variant="body1">Buy for</Typography>
 					<Typography variant="h3" color="primary">
 						{subscription ? product.pricePromo : product.price} RON
@@ -250,35 +250,26 @@ const ProductInfo = ({ product }: { product: TGetBook }) => {
 			<Grid item xs={12}>
 				<Divider />
 			</Grid>
-			<Grid item xs={12}>
+			<Grid
+				item
+				xs={12}
+				sx={{ marginTop: product.typeFormat === 'printed' ? '150px' : '210px' }}
+			>
 				<FormikProvider value={formik}>
 					<Form autoComplete="off" noValidate onSubmit={handleSubmit}>
-						{(product.typeFormat === 'printed' && product.stockNew) ||
-						product.typeFormat === 'online' ? (
-							<Grid container spacing={2}>
-								<Grid item xs={12} lg={10}>
-									<Table>
-										<TableBody
-											sx={{ '& .MuiTableCell-root': { borderBottom: 'none' } }}
-										>
-											<TableRow>
-												<TableCell></TableCell>
-											</TableRow>
-											<TableRow>
-												<TableCell></TableCell>
-											</TableRow>
-											<TableRow>
-												<TableCell></TableCell>
-											</TableRow>
-											<TableRow>
-												<TableCell></TableCell>
-											</TableRow>
-										</TableBody>
-									</Table>
-								</Grid>
-								<Divider />
-								<Grid item xs={12}>
-									<Grid container spacing={1}>
+						<Grid container spacing={2}>
+							<Grid item xs={12} lg={10}>
+								<Table>
+									<TableBody
+										sx={{ '& .MuiTableCell-root': { borderBottom: 'none' } }}
+									></TableBody>
+								</Table>
+							</Grid>
+							<Divider />
+							<Grid item xs={12}>
+								<Grid container spacing={1}>
+									{(product.typeFormat === 'printed' && product.stockNew) ||
+									product.typeFormat === 'online' ? (
 										<Grid item xs={6}>
 											<Button
 												disabled={bookInCart ? true : false}
@@ -292,35 +283,36 @@ const ProductInfo = ({ product }: { product: TGetBook }) => {
 												{bookInCart ? 'Book In Cart' : 'Add To Cart'}
 											</Button>
 										</Grid>
-										{product.typeFormat === 'printed' ? (
-											<Grid item xs={6}>
-												<Button
-													disabled={wasBorrowed ? true : false}
-													type="submit"
-													fullWidth
-													color="secondary"
-													variant="contained"
-													size="large"
-													onClick={createLoan}
-												>
-													{wasBorrowed
-														? loan?.isAccepted
-															? loan.isReturned
-																? 'Loan Returned'
-																: 'Loan Accepted'
-															: 'Loan Pending'
-														: 'Loan'}
-												</Button>
-											</Grid>
-										) : (
-											''
-										)}
-									</Grid>
+									) : (
+										''
+									)}
+									{(product.typeFormat === 'printed' && product.stockOld) ||
+									wasBorrowed ? (
+										<Grid item xs={6}>
+											<Button
+												disabled={wasBorrowed ? true : false}
+												type="submit"
+												fullWidth
+												color="secondary"
+												variant="contained"
+												size="large"
+												onClick={createLoan}
+											>
+												{wasBorrowed
+													? loan?.isAccepted
+														? loan.isReturned
+															? 'Loan Returned'
+															: 'Loan Accepted'
+														: 'Loan Pending'
+													: 'Loan'}
+											</Button>
+										</Grid>
+									) : (
+										''
+									)}
 								</Grid>
 							</Grid>
-						) : (
-							''
-						)}
+						</Grid>
 					</Form>
 				</FormikProvider>
 			</Grid>

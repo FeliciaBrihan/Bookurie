@@ -222,21 +222,6 @@ const BookEdit = ({ handleCloseDialog, data }: ProductAddProps) => {
 
 						<Grid item xs={6}>
 							<TextField
-								id="stockOld"
-								required
-								fullWidth
-								value={formik.values.stockOld}
-								label="Enter Book Old Stock"
-								onBlur={formik.handleBlur}
-								error={
-									formik.touched.stockOld && Boolean(formik.errors.stockOld)
-								}
-								helperText={formik.touched.stockOld && formik.errors.stockOld}
-								onChange={formik.handleChange}
-							/>
-						</Grid>
-						<Grid item xs={6}>
-							<TextField
 								id="stockNew"
 								required
 								fullWidth
@@ -247,6 +232,21 @@ const BookEdit = ({ handleCloseDialog, data }: ProductAddProps) => {
 									formik.touched.stockNew && Boolean(formik.errors.stockNew)
 								}
 								helperText={formik.touched.stockNew && formik.errors.stockNew}
+								onChange={formik.handleChange}
+							/>
+						</Grid>
+						<Grid item xs={6}>
+							<TextField
+								id="stockOld"
+								required
+								fullWidth
+								value={formik.values.stockOld}
+								label="Enter Book Old Stock"
+								onBlur={formik.handleBlur}
+								error={
+									formik.touched.stockOld && Boolean(formik.errors.stockOld)
+								}
+								helperText={formik.touched.stockOld && formik.errors.stockOld}
 								onChange={formik.handleChange}
 							/>
 						</Grid>

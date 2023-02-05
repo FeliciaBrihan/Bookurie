@@ -27,6 +27,8 @@ import { getUserPurchases } from 'store/slices/purchase';
 import ShoppingCartTwoToneIcon from '@mui/icons-material/ShoppingCartTwoTone';
 import Chip from 'ui-component/extended/Chip';
 import { TGetPurchase } from 'types/purchase';
+import { getUserLoans } from 'store/slices/loan';
+import { TGetLoan } from 'types/loan';
 
 const prodImage = require.context('assets/images/e-commerce', true);
 
@@ -52,11 +54,15 @@ const ProductCard = ({
 	const { subscription } = useSelector((state) => state.subscription);
 	const [purchases, setPurchases] = useState<TGetPurchase[]>([]);
 	const purchasesState = useSelector((state) => state.purchase);
+	const [loans, setLoans] = useState<TGetLoan[]>([]);
+	const loanState = useSelector((state) => state.loan);
 	const [isLoading, setLoading] = useState(true);
+	const [wasBorrowed, setWasBorrowed] = useState<boolean>(false);
 
 	useEffect(() => {
 		setLoading(true);
 		dispatch(getUserPurchases());
+		dispatch(getUserLoans());
 	}, []);
 
 	useEffect(() => {
@@ -65,6 +71,17 @@ const ProductCard = ({
 			setLoading(false);
 		} else setLoading(false);
 	}, [purchasesState]);
+
+	useEffect(() => {
+		if (loanState?.userLoans?.length > 0) setLoans(loanState.userLoans);
+	}, [loanState]);
+
+	useEffect(() => {
+		const bookWasBorrowed: boolean = loans
+			? loans.filter((loan) => loan.BookId === id).length > 0
+			: false;
+		setWasBorrowed(bookWasBorrowed);
+	}, [loans]);
 
 	const bookInCart =
 		cart.checkout.products.filter((prod) => prod.id === id).length > 0;
@@ -149,7 +166,8 @@ const ProductCard = ({
 						<CardMedia
 							sx={{
 								height: 220,
-								opacity: typeFormat === 'printed' && !stockNew ? 0.3 : 1,
+								opacity:
+									typeFormat === 'printed' && !stockNew && !stockOld ? 0.3 : 1,
 								transition: 'opacity 0.3s ease-in-out',
 							}}
 							image={prodProfile}
@@ -276,17 +294,40 @@ const ProductCard = ({
 											</span>
 										</Tooltip>
 									) : (
-										<Chip
-											size="small"
-											label={
-												typeFormat === 'printed' ? `Out of stock` : 'Online'
-											}
-											chipcolor={typeFormat === 'printed' ? 'error' : 'primary'}
-											sx={{
-												borderRadius: '4px',
-												textTransform: 'capitalize',
-											}}
-										/>
+										!stockOld && (
+											<Chip
+												size="medium"
+												label={
+													typeFormat === 'printed' ? `Out of stock` : 'Online'
+												}
+												chipcolor={
+													typeFormat === 'printed' ? 'error' : 'primary'
+												}
+												sx={{
+													borderRadius: '4px',
+													textTransform: 'capitalize',
+												}}
+											/>
+										)
+									)}
+									{stockOld ? (
+										<Tooltip title={'Loan'}>
+											<span>
+												<Link to={`/books/${id}`}>
+													<Button
+														disabled={wasBorrowed}
+														size="small"
+														variant="contained"
+														color="secondary"
+														sx={{ minWidth: 0, marginLeft: '5px' }}
+													>
+														Loan
+													</Button>
+												</Link>
+											</span>
+										</Tooltip>
+									) : (
+										''
 									)}
 								</Stack>
 							</Grid>
