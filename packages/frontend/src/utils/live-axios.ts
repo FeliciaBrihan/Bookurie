@@ -1,20 +1,20 @@
 import axios from 'axios';
-import useAuth from 'hooks/useAuth';
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/auth';
 
+const token = localStorage.getItem('token');
 const axiosServices = axios.create({
 	baseURL: 'http://localhost:5000',
+	...axios(token ? { headers: { authorization: token } } : {}),
 });
-
-export function axiosSetAuthorization(token: string) {
-	axiosServices.defaults.headers.common.authorization = token;
-}
 
 axiosServices.interceptors.response.use(
 	(response) => response,
 	async (error) => {
-		if (error.response.status === 403) {
-			const { firebaseGoogleSignIn } = useAuth();
-			await firebaseGoogleSignIn();
+		try {
+			if (error.response.status === 403) await firebase.auth().signOut();
+		} catch (error) {
+			console.error(error);
 		}
 
 		return Promise.reject(

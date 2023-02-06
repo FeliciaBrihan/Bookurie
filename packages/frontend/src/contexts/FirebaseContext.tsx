@@ -17,7 +17,7 @@ import { FirebaseContextType, InitialLoginContextProps } from 'types/auth';
 import { getIdToken } from 'firebase/auth';
 import { getLoggedUser } from 'store/slices/user';
 import { getLoggedUserSubscription } from 'store/slices/subscription';
-import axios, { axiosSetAuthorization } from 'utils/live-axios';
+import axios from 'utils/live-axios';
 import { Snackbar, Alert } from '@mui/material';
 
 // firebase initialize
@@ -51,6 +51,7 @@ export const FirebaseProvider = ({
 				setOpen(false);
 				if (user) {
 					const token = await getIdToken(user!);
+					axios.defaults.headers.common.authorization = token;
 					console.log(user);
 					try {
 						const response = await axios.get('/user/allowed', {
@@ -58,7 +59,8 @@ export const FirebaseProvider = ({
 						});
 						console.log('response', response.data);
 						localStorage.setItem('email', user?.email!);
-						axiosSetAuthorization(token);
+						localStorage.setItem('token', token);
+
 						setState({
 							type: LOGIN,
 							payload: {
@@ -91,7 +93,7 @@ export const FirebaseProvider = ({
 	firebase.auth().onIdTokenChanged(async (user) => {
 		if (user) {
 			const token = await getIdToken(user);
-			axiosSetAuthorization(token);
+			axios.defaults.headers.common.authorization = token;
 		}
 	});
 
