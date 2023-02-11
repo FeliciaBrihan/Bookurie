@@ -13,6 +13,7 @@ export interface User extends DefaultParanoidAttributes {
 	subscriptionDate: Date;
 	subscriptionExpirationDate: Date;
 	booksReadThisMonth: number;
+	addressId: number;
 }
 
 export interface UserAttributes extends User {

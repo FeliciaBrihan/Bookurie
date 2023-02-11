@@ -28,6 +28,8 @@ async function addModels(sequelize: Sequelize) {
 
 	const { getModelPrize } = await import('src/modules/prize/models');
 
+	const { getModelAddress } = await import('src/modules/address/models');
+
 	getModelLoan(sequelize);
 	getModelBook(sequelize);
 	getModelUser(sequelize);
@@ -37,9 +39,19 @@ async function addModels(sequelize: Sequelize) {
 	getModelSubscription(sequelize);
 	getModelRaffle(sequelize);
 	getModelPrize(sequelize);
+	getModelAddress(sequelize);
 
-	const { Book, User, Loan, Role, Action, Purchase, Subscription, Raffle } =
-		sequelize.models as unknown as Models;
+	const {
+		Book,
+		User,
+		Loan,
+		Role,
+		Action,
+		Purchase,
+		Subscription,
+		Raffle,
+		Address,
+	} = sequelize.models as unknown as Models;
 
 	Book.belongsToMany(User, { through: Loan, onDelete: 'CASCADE' });
 	Book.belongsToMany(User, {
@@ -58,6 +70,9 @@ async function addModels(sequelize: Sequelize) {
 
 	User.hasOne(Raffle);
 	Raffle.belongsTo(User);
+
+	User.hasOne(Address);
+	Address.belongsTo(User);
 
 	await sequelize.sync();
 }

@@ -8,4 +8,5 @@ export * from './Purchase';
 export * from './Subscription';
 export * from './Raffle';
 export * from './Prize';
+export * from './Address';
 export * from './staticModels';

@@ -50,7 +50,7 @@ export default slice.reducer;
 export function getAddresses() {
 	return async () => {
 		try {
-			const response = await axios.get('/api/address/list');
+			const response = await axios.get('/address');
 			dispatch(slice.actions.getAddressesSuccess(response.data.address));
 		} catch (error) {
 			dispatch(slice.actions.hasError(error));
@@ -61,7 +61,7 @@ export function getAddresses() {
 export function addAddress(address: Address) {
 	return async () => {
 		try {
-			const response = await axios.post('/api/address/new', address);
+			const response = await axios.post('/address/', address);
 			dispatch(slice.actions.addAddressSuccess(response.data.address));
 		} catch (error) {
 			dispatch(slice.actions.hasError(error));
