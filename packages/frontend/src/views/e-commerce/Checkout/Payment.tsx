@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'store';
-import { v4 as UIDV4 } from 'uuid';
 
 // material-ui
 import {
@@ -39,7 +38,7 @@ import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
 import { CartCheckoutStateProps } from 'types/cart';
 import { PaymentOptionsProps } from 'types/e-commerce';
 import { setPaymentCard, setPaymentMethod } from 'store/slices/cart';
-import { create } from 'store/slices/purchase';
+import { create, getUserPurchases } from 'store/slices/purchase';
 
 const prodImage = require.context('assets/images/e-commerce', true);
 
@@ -65,7 +64,6 @@ const Payment = ({
 	const [rows, setRows] = useState(checkout.products);
 	const [cards, setCards] = useState(checkout.payment.card);
 	const { loggedUser } = useSelector((state) => state.user);
-	const [orderId, setOrderId] = useState<string>('');
 
 	const [open, setOpen] = useState(false);
 	const handleClickOpen = () => {
@@ -87,10 +85,6 @@ const Payment = ({
 	useEffect(() => {
 		setRows(checkout.products);
 	}, [checkout.products]);
-
-	useEffect(() => {
-		setOrderId(UIDV4());
-	}, []);
 
 	const cardHandler = (card: string) => {
 		if (payment === 'card') {
@@ -131,17 +125,16 @@ const Payment = ({
 					})
 				);
 			} else {
-				const booksId = []
+				const booksId = [];
 				for (const product of checkout.products) {
-						booksId.push(product.id)
-					}
-					await dispatch(create(booksId));
+					booksId.push(product.id);
 				}
+				await dispatch(create(booksId));
+				await dispatch(getUserPurchases());
 				onNext();
 				setComplete(true);
-		
+			}
 		}
-	
 	};
 
 	return (
@@ -271,7 +264,11 @@ const Payment = ({
 								<Button variant="contained" onClick={completeHandler}>
 									Complete Order
 								</Button>
-								<OrderComplete open={complete} orderId={orderId} />
+								<OrderComplete
+									open={complete}
+									items={checkout}
+									loggedUser={loggedUser!}
+								/>
 							</Grid>
 						</Grid>
 					</Grid>

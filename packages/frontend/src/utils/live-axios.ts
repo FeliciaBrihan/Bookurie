@@ -2,10 +2,8 @@ import axios from 'axios';
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
 
-const token = localStorage.getItem('token');
 const axiosServices = axios.create({
 	baseURL: 'http://localhost:5000',
-	...axios(token ? { headers: { authorization: token } } : {}),
 });
 
 axiosServices.interceptors.response.use(
