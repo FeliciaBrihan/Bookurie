@@ -50,21 +50,30 @@ const Invoice = ({ items, orderId, loggedUser }: InvoiceProps) => {
 				<Text style={styles.invoiceHeader}>Invoice</Text>
 				<Text style={styles.headerRow}>
 					<Text style={styles.headerCell}>Invoice number: </Text>
-					<Text style={styles.headerCell}>{orderId}</Text>
+					<Text style={styles.itemCell}>{orderId}</Text>
 				</Text>
 				<Text style={styles.headerRow}>
 					<Text style={styles.headerCell}>Date: </Text>
-					<Text style={styles.headerCell}>{date}</Text>
+					<Text style={styles.itemCell}>{date}</Text>
 				</Text>
 				<Text style={styles.headerRow}>
 					<Text style={styles.headerCell}>Customer name: </Text>
-					<Text style={styles.headerCell}>
+					<Text style={styles.itemCell}>
 						{loggedUser?.firstName} {loggedUser?.lastName}
 					</Text>
 				</Text>
 				<Text style={styles.headerRow}>
+					<Text style={styles.headerCell}>Shipping address: </Text>
+					<Text style={styles.itemCell}>
+						Street: {items.billing?.street}, Building {items.billing?.building},{' '}
+						No: {items.billing?.number}, City: {items.billing?.city}, Country:
+						{items.billing?.country}, Zip Code: {items.billing?.zipCode}, Phone:
+						{items.billing?.contact}
+					</Text>
+				</Text>
+				<Text style={styles.headerRow}>
 					<Text style={styles.headerCell}>Total: </Text>
-					<Text style={styles.headerCell}>{items.total} RON</Text>
+					<Text style={styles.itemCell}>{items.total} RON</Text>
 				</Text>
 				<Text style={styles.itemRow}>
 					<Text style={styles.headerCell}>Items: </Text>
