@@ -48,15 +48,9 @@ interface PaymentProps {
 	checkout: CartCheckoutStateProps;
 	onBack: () => void;
 	onNext: () => void;
-	handleShippingCharge: (type: string) => void;
 }
 
-const Payment = ({
-	checkout,
-	onBack,
-	onNext,
-	handleShippingCharge,
-}: PaymentProps) => {
+const Payment = ({ checkout, onBack, onNext }: PaymentProps) => {
 	const dispatch = useDispatch();
 
 	const [type, setType] = useState(checkout.payment.type);
@@ -116,7 +110,7 @@ const Payment = ({
 				dispatch(
 					openSnackbar({
 						open: true,
-						message: 'Not enough money',
+						message: 'Not Enough Money!',
 						variant: 'alert',
 						alert: {
 							color: 'error',
@@ -151,7 +145,6 @@ const Payment = ({
 									value={type}
 									onChange={(e) => {
 										setType(e.target.value);
-										handleShippingCharge(e.target.value);
 									}}
 									name="delivery-options"
 								>
@@ -346,12 +339,7 @@ const Payment = ({
 						<OrderSummary checkout={checkout} />
 					</Grid>
 					<Grid item xs={12}>
-						<AddressCard
-							single
-							change
-							address={checkout.billing}
-							onBack={onBack}
-						/>
+						<AddressCard change address={checkout.billing} onBack={onBack} />
 					</Grid>
 				</Grid>
 			</Grid>

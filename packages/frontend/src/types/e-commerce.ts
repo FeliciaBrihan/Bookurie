@@ -21,16 +21,13 @@ export type Products = {
 // checkout-cart billing address
 export type Address = {
 	id?: string | number | undefined;
-	name: string;
-	destination: string;
 	building: string;
 	street: string;
 	city: string;
-	state: string;
+	number: string;
 	country: string;
-	post: string | number;
-	phone: string | number;
-	isDefault: boolean;
+	zipCode: string | number;
+	contact: string | number;
 };
 
 // product reviews list

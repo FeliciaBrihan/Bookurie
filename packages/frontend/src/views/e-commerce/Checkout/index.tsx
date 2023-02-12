@@ -16,13 +16,12 @@ import { TabsProps } from 'types';
 import { CartStateProps } from 'types/cart';
 import { Address } from 'types/e-commerce';
 import { useDispatch, useSelector } from 'store';
-import { getAddresses, editAddress, addAddress } from 'store/slices/address';
+import { getAddress, editAddress, addAddress } from 'store/slices/address';
 import {
 	removeProduct,
 	setBackStep,
 	setBillingAddress,
 	setNextStep,
-	setShippingCharge,
 	setStep,
 	updateProduct,
 } from 'store/slices/cart';
@@ -135,26 +134,25 @@ const Checkout = () => {
 	const [value, setValue] = useState(
 		cart.checkout.step > 2 ? 2 : cart.checkout.step
 	);
-	const [billing, setBilling] = useState(cart.checkout.billing);
-	const [address, setAddress] = useState<Address[]>([]);
-	const { addresses } = useSelector((state) => state.address);
+	const [address, setAddress] = useState<Address>();
+	const addressState = useSelector((state) => state.address);
 	const { loggedUser } = useSelector((state) => state.user);
 	const { subscription } = useSelector((state) => state.subscription);
 
 	useEffect(() => {
-		dispatch(getAddresses());
+		dispatch(getAddress());
 	}, []);
 
 	useEffect(() => {
-		setAddress(addresses);
-	}, [addresses]);
+		setAddress(addressState.address);
+	}, [addressState]);
 
-	const addBillingAddress = (addressNew: Address) => {
+	const addShippingAddress = (addressNew: Address) => {
 		dispatch(addAddress(addressNew));
 	};
 
-	const editBillingAddress = (addressEdit: Address) => {
-		dispatch(editAddress(addressEdit));
+	const editShippingAddress = (addressEdit: Address) => {
+		dispatch(editAddress(addressEdit.id, addressEdit));
 	};
 
 	const handleChange = (newValue: number) => {
@@ -219,33 +217,23 @@ const Checkout = () => {
 		dispatch(setBackStep());
 	};
 
-	const billingAddressHandler = (addressBilling: Address | null) => {
-		if (billing !== null || addressBilling !== null) {
-			if (addressBilling !== null) {
-				setBilling(addressBilling);
-			}
-
-			dispatch(
-				setBillingAddress(addressBilling !== null ? addressBilling : billing)
-			);
-			onNext();
-		} else {
+	const checkAddressHandler = () => {
+		if (address?.street === '')
 			dispatch(
 				openSnackbar({
 					open: true,
-					message: 'Please select delivery address',
+					message: `Please Add Delivery Address!`,
 					variant: 'alert',
 					alert: {
 						color: 'error',
 					},
-					close: false,
+					close: true,
 				})
 			);
+		else {
+			dispatch(setBillingAddress(address!));
+			onNext();
 		}
-	};
-
-	const handleShippingCharge = (type: string) => {
-		dispatch(setShippingCharge(type, cart.checkout.shipping));
 	};
 
 	return (
@@ -325,19 +313,14 @@ const Checkout = () => {
 						<BillingAddress
 							checkout={cart.checkout}
 							onBack={onBack}
-							billingAddressHandler={billingAddressHandler}
-							address={address}
-							addAddress={addBillingAddress}
-							editAddress={editBillingAddress}
+							address={address!}
+							addAddress={addShippingAddress}
+							editAddress={editShippingAddress}
+							checkAddressHandler={checkAddressHandler}
 						/>
 					</TabPanel>
 					<TabPanel value={value} index={2}>
-						<Payment
-							checkout={cart.checkout}
-							onBack={onBack}
-							onNext={onNext}
-							handleShippingCharge={handleShippingCharge}
-						/>
+						<Payment checkout={cart.checkout} onBack={onBack} onNext={onNext} />
 					</TabPanel>
 				</Grid>
 			</Grid>

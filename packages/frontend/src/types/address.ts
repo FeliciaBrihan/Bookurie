@@ -1,6 +1,6 @@
 import { Address } from './e-commerce';
 
 export interface TAddressStateProps {
-	addresses: Address[];
+	address: Address;
 	error: object | string | null;
 }

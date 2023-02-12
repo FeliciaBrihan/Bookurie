@@ -36,4 +36,5 @@ export interface TGetUser {
 	Role?: Pick<TGetRole, 'id' | 'name'>;
 	roleId: number;
 	active: boolean;
+	addressId?: number;
 }

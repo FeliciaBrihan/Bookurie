@@ -16,40 +16,18 @@ services.onGet('/api/address/list').reply(200);
 services.onPost('/api/address/new').reply((request) => {
 	try {
 		const data = JSON.parse(request.data);
-		const {
-			name,
-			destination,
-			building,
-			street,
-			city,
-			state,
-			country,
-			post,
-			phone,
-			isDefault,
-		} = data;
+		const { building, street, city, number, country, zipCode, contact } = data;
 		const newAddress = {
 			id: UIDV4(),
-			name,
-			destination,
+
 			building,
 			street,
 			city,
-			state,
+			number,
 			country,
-			post,
-			phone,
-			isDefault,
+			zipCode,
+			contact,
 		};
-
-		if (isDefault) {
-			address = address.map((item) => {
-				if (item.isDefault === true) {
-					return { ...item, isDefault: false };
-				}
-				return item;
-			});
-		}
 
 		address = [...address, newAddress];
 
@@ -63,15 +41,6 @@ services.onPost('/api/address/new').reply((request) => {
 services.onPost('/api/address/edit').reply((request) => {
 	try {
 		const data = JSON.parse(request.data);
-
-		if (data.isDefault) {
-			address = address.map((item) => {
-				if (item.isDefault === true) {
-					return { ...item, isDefault: false };
-				}
-				return item;
-			});
-		}
 
 		address = address.map((item) => {
 			if (item.id === data.id) {

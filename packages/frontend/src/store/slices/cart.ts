@@ -7,7 +7,8 @@ import { dispatch } from '../index';
 
 // types
 import { DefaultRootStateProps } from 'types';
-import { Address, ProductCardProps } from 'types/cart';
+import { ProductCardProps } from 'types/cart';
+import { Address } from 'types/e-commerce';
 
 // ----------------------------------------------------------------------
 

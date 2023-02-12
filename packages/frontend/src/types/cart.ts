@@ -1,4 +1,5 @@
 import { KeyedObject } from 'types';
+import { Address } from './e-commerce';
 
 export interface CartStateProps {
 	checkout: CartCheckoutStateProps;
@@ -30,20 +31,6 @@ export interface CartProductStateProps {
 	quantity: number;
 	pricePromo: number;
 }
-
-export type Address = {
-	id?: string | number | undefined;
-	name: string;
-	destination: string;
-	building: string;
-	street: string;
-	city: string;
-	state: string;
-	country: string;
-	post: string | number;
-	phone: string | number;
-	isDefault: boolean;
-};
 
 export interface CartPaymentStateProps {
 	type: string;

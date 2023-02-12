@@ -1,4 +1,4 @@
-import { useState, ReactElement } from 'react';
+import { useState, ReactElement, useEffect } from 'react';
 
 // material-ui
 import { Button, Grid, Stack, Typography } from '@mui/material';
@@ -7,74 +7,63 @@ import { Button, Grid, Stack, Typography } from '@mui/material';
 import AddAddress from './AddAddress';
 import OrderSummary from './OrderSummary';
 import AddressCard from './AddressCard';
-import SubCard from 'ui-component/cards/SubCard';
 import { gridSpacing } from 'store/constant';
 
 // assets
 import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
 import AddIcon from '@mui/icons-material/Add';
-import PersonOutlineTwoToneIcon from '@mui/icons-material/PersonOutlineTwoTone';
 import { Address } from 'types/e-commerce';
 import { CartCheckoutStateProps } from 'types/cart';
-import { useSelector } from 'store';
+import { setBillingAddress } from 'store/slices/cart';
 
 // ==============================|| CHECKOUT BILLING ADDRESS - MAIN ||============================== //
 
 interface BillingAddressProps {
-	address: Address[];
+	address: Address;
 	checkout: CartCheckoutStateProps;
 	onBack: () => void;
 	addAddress: (address: Address) => void;
 	editAddress: (address: Address) => void;
-	billingAddressHandler: (billingAddress: Address | null) => void;
+	checkAddressHandler: () => void;
 }
 
 const BillingAddress = ({
 	checkout,
 	onBack,
-	billingAddressHandler,
+	checkAddressHandler,
 	address,
 	addAddress,
 	editAddress,
 }: BillingAddressProps) => {
-	const [select, setSelect] = useState<Address | null>(null);
-	const { loggedUser } = useSelector((state) => state.user);
+	useEffect(() => {
+		if (address?.street !== '') {
+			setBillingAddress(address);
+		}
+	}, []);
 
 	const [open, setOpen] = useState(false);
 
-	const handleClickOpen = (billingAddress: Address | null) => {
+	const handleClickOpen = () => {
 		setOpen(true);
-		billingAddress && setSelect(billingAddress!);
 	};
 
 	const handleClose = () => {
 		setOpen(false);
-		setSelect(null);
 	};
 
 	let shippingAddress: ReactElement | ReactElement[] = <></>;
-	let addressResult: ReactElement | ReactElement[] = <></>;
 
-	if (address) {
-		addressResult = address.map((data: Address, index: number) => {
-			if (data.isDefault) {
-				shippingAddress = <AddressCard address={data} single />;
-			}
-			return (
-				<Grid item xs={12} lg={6} key={index}>
-					<AddressCard
-						address={data}
-						handleClickOpen={handleClickOpen}
-						billingAddressHandler={billingAddressHandler}
-					/>
-				</Grid>
-			);
-		});
+	if (address?.street) {
+		shippingAddress = (
+			<Grid item xs={12} lg={12} key={0}>
+				<AddressCard address={address} handleClickOpen={handleClickOpen} />
+			</Grid>
+		);
 	}
 
 	return (
 		<Grid container spacing={gridSpacing}>
-			<Grid item xs={12} md={8}>
+			<Grid item xs={12} md={12}>
 				<Grid container spacing={gridSpacing}>
 					<Grid item xs={12}>
 						<Stack
@@ -82,19 +71,23 @@ const BillingAddress = ({
 							alignItems="center"
 							justifyContent="space-between"
 						>
-							<Typography variant="subtitle1">Billing Address</Typography>
+							{!address?.street && (
+								<>
+									<Typography variant="subtitle1">Shipping Address</Typography>
 
-							<Button
-								size="small"
-								variant="contained"
-								startIcon={<AddIcon />}
-								onClick={() => handleClickOpen(null)}
-							>
-								Add Address
-							</Button>
+									<Button
+										size="small"
+										variant="contained"
+										startIcon={<AddIcon />}
+										onClick={() => handleClickOpen()}
+									>
+										Add Address
+									</Button>
+								</>
+							)}
 						</Stack>
 					</Grid>
-					{addressResult}
+					{shippingAddress}
 					<Grid item xs={12}>
 						<OrderSummary checkout={checkout} />
 					</Grid>
@@ -115,10 +108,7 @@ const BillingAddress = ({
 								</Button>
 							</Grid>
 							<Grid item>
-								<Button
-									variant="contained"
-									onClick={() => billingAddressHandler(select)}
-								>
+								<Button variant="contained" onClick={checkAddressHandler}>
 									Place Order
 								</Button>
 							</Grid>
@@ -126,31 +116,10 @@ const BillingAddress = ({
 					</Grid>
 				</Grid>
 			</Grid>
-			<Grid item xs={12} md={4}>
-				<SubCard sx={{ mb: gridSpacing }}>
-					<Grid container spacing={2}>
-						<Grid item xs={12}>
-							<Stack direction="row" spacing={1.5} alignItems="center">
-								<PersonOutlineTwoToneIcon color="primary" />
-								<Typography variant="h3">
-									{loggedUser?.firstName} {loggedUser?.lastName}
-								</Typography>
-							</Stack>
-						</Grid>
-						<Grid item xs={12}>
-							<Stack spacing={0.25}>
-								<Typography variant="caption">Email</Typography>
-								<Typography variant="subtitle1">{loggedUser?.email}</Typography>
-							</Stack>
-						</Grid>
-					</Grid>
-				</SubCard>
-				{shippingAddress}
-			</Grid>
 			<AddAddress
 				open={open}
 				handleClose={handleClose}
-				address={select!}
+				address={address!}
 				addAddress={addAddress}
 				editAddress={editAddress}
 			/>

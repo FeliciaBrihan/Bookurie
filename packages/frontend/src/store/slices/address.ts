@@ -1,9 +1,8 @@
 // third-party
 import { createSlice } from '@reduxjs/toolkit';
-import SwitchAccessShortcutIcon from '@mui/icons-material/SwitchAccessShortcut';
 
 // project imports
-import axios from 'utils/axios';
+import axios from 'utils/live-axios';
 import { dispatch } from '../index';
 
 // types
@@ -14,7 +13,15 @@ import { Address } from 'types/e-commerce';
 
 const initialState: DefaultRootStateProps['address'] = {
 	error: null,
-	addresses: [],
+	address: {
+		street: '',
+		city: '',
+		number: '',
+		country: '',
+		building: '',
+		zipCode: '',
+		contact: '',
+	},
 };
 
 const slice = createSlice({
@@ -27,18 +34,18 @@ const slice = createSlice({
 		},
 
 		// GET ADDRESSES
-		getAddressesSuccess(state, action) {
-			state.addresses = action.payload;
+		getAddressSuccess(state, action) {
+			state.address = action.payload;
 		},
 
 		// ADD ADDRESS
 		addAddressSuccess(state, action) {
-			state.addresses = action.payload;
+			state.address = action.payload;
 		},
 
 		// EDIT ADDRESS
 		editAddressSuccess(state, action) {
-			state.addresses = action.payload;
+			state.address = action.payload;
 		},
 	},
 });
@@ -47,13 +54,14 @@ const slice = createSlice({
 export default slice.reducer;
 
 // ----------------------------------------------------------------------
-export function getAddresses() {
+export function getAddress() {
 	return async () => {
 		try {
 			const response = await axios.get('/address');
-			dispatch(slice.actions.getAddressesSuccess(response.data.address));
+			dispatch(slice.actions.getAddressSuccess(response.data.data));
 		} catch (error) {
 			dispatch(slice.actions.hasError(error));
+			dispatch(slice.actions.addAddressSuccess(initialState.address));
 		}
 	};
 }
@@ -62,22 +70,20 @@ export function addAddress(address: Address) {
 	return async () => {
 		try {
 			const response = await axios.post('/address/', address);
-			dispatch(slice.actions.addAddressSuccess(response.data.address));
+			dispatch(slice.actions.addAddressSuccess(response.data.data));
 		} catch (error) {
 			dispatch(slice.actions.hasError(error));
 		}
 	};
 }
 
-export function editAddress(address: Address) {
+export function editAddress(id: number | string | undefined, address: Address) {
 	return async () => {
 		try {
-			const response = await axios.post('/api/address/edit', address);
-			dispatch(slice.actions.editAddressSuccess(response.data.address));
+			const response = await axios.put(`/address/${id}`, address);
+			dispatch(slice.actions.getAddressSuccess(response.data.data));
 		} catch (error) {
 			dispatch(slice.actions.hasError(error));
 		}
 	};
 }
-
-SwitchAccessShortcutIcon;
