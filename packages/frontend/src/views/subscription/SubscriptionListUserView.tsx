@@ -33,18 +33,10 @@ interface SubscriptionAddProps {
 const SubscriptionListUserView = ({
 	handleCloseDialog,
 }: SubscriptionAddProps) => {
-	// const theme = useTheme();
-	// const cardStyle = {
-	// 	background:
-	// 		theme.palette.mode === 'dark'
-	// 			? theme.palette.dark.main
-	// 			: theme.palette.grey[50],
-	// 	border: '5px solid red',
-	// 	borderColor:
-	// 		theme.palette.mode === 'dark'
-	// 			? theme.palette.dark.main
-	// 			: theme.palette.grey[100],
-	// };
+	const cardStyle = {
+		width: '200px',
+		height: '250px',
+	};
 	const [subscriptions, setSubscriptions] = useState<TGetSubscription[]>([]);
 	const subscriptionState = useSelector((state) => state.subscription);
 	const { loggedUser } = useSelector((state) => state.user);
@@ -79,7 +71,7 @@ const SubscriptionListUserView = ({
 					return (
 						<Grid item xs={12} lg={6} key={subscription.id}>
 							<SubCard title={subscription.name}>
-								<Card>
+								<Card style={cardStyle}>
 									<CardContent>
 										<Grid container spacing={2}>
 											<Grid item>
