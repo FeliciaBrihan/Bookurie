@@ -33,6 +33,7 @@ import Avatar3 from 'assets/images/users/User1.png';
 import { useSelector } from 'store';
 import { useState } from 'react';
 import SubscriptionListUserView from 'views/subscription/SubscriptionListUserView';
+import CancelSubscriptionConfirm from 'views/account/CancelSubscriptionConfirm';
 
 // ==============================|| PROFILE 1 - PROFILE ||============================== //
 
@@ -40,6 +41,7 @@ const Profile = () => {
 	const { loggedUser: user } = useSelector((state) => state.user);
 	const { subscription } = useSelector((state) => state.subscription);
 	const [open, setOpen] = useState(false);
+	const [openCancel, setOpenCancel] = useState(false);
 
 	const handleOpenDialog = () => {
 		setOpen(true);
@@ -47,6 +49,9 @@ const Profile = () => {
 
 	const handleCloseDialog = () => {
 		setOpen(false);
+	};
+	const handleCloseCancel = () => {
+		setOpenCancel(false);
 	};
 
 	return (
@@ -150,7 +155,12 @@ const Profile = () => {
 											Subscription Renew
 											<Box mx={1} sx={{ display: 'inline-block' }}>
 												{user?.subscriptionId ? (
-													<Chip size="small" label="Cancel" color="default" />
+													<Chip
+														size="small"
+														label="Cancel"
+														color="default"
+														onClick={() => setOpenCancel(true)}
+													/>
 												) : (
 													''
 												)}
@@ -225,6 +235,12 @@ const Profile = () => {
 				</SubCard>
 				{open && (
 					<SubscriptionListUserView handleCloseDialog={handleCloseDialog} />
+				)}
+				{openCancel && (
+					<CancelSubscriptionConfirm
+						handleCloseCancel={handleCloseCancel}
+						subscriptionId={user?.subscriptionId!}
+					/>
 				)}
 			</Grid>
 			<Grid item lg={8} xs={12}>

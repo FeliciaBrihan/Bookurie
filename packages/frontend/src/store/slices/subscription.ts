@@ -102,13 +102,50 @@ export function subscribe(id: number) {
 		try {
 			const response = await axios.put(`/subscription/${id}/subscribe`);
 			console.log(response);
-			const res = await axios.get('http://localhost:5000/user/allowed');
+			const res = await axios.get('/user/allowed');
 			dispatch(getLoggedUser(res.data.loggedUser));
 			dispatch(getLoggedUserSubscription(res.data.subscription));
 			dispatch(
 				openSnackbar({
 					open: true,
 					message: 'Subscribe Success',
+					variant: 'alert',
+					alert: {
+						color: 'success',
+					},
+					close: true,
+				})
+			);
+		} catch (error) {
+			dispatch(slice.actions.hasError(error));
+			const err = error as objectError;
+			console.log(error);
+			dispatch(
+				openSnackbar({
+					open: true,
+					message: err.details || err.error,
+					variant: 'alert',
+					alert: {
+						color: 'error',
+					},
+					close: true,
+				})
+			);
+		}
+	};
+}
+
+export function unsubscribe(id: number) {
+	return async () => {
+		try {
+			await axios.put(`/subscription/${id}/unsubscribe`);
+			const res = await axios.get('/user/allowed');
+			dispatch(getLoggedUser(res.data.loggedUser));
+			dispatch(getLoggedUserSubscription(res.data.subscription));
+			dispatch(
+				openSnackbar({
+					open: true,
+					message: 'Unsubscribe Success',
 					variant: 'alert',
 					alert: {
 						color: 'success',
