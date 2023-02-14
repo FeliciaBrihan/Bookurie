@@ -23,7 +23,6 @@ import AnimateButton from 'ui-component/extended/AnimateButton';
 import { bookApi, hasError } from 'store/slices/book';
 import { TSetBook } from 'types/book';
 import axios from 'axios';
-import { openSnackbar } from 'store/slices/snackbar';
 import { dispatch } from 'store';
 
 // book type options
@@ -110,23 +109,7 @@ const BookAdd = ({ open, handleCloseDialog }: ProductAddProps) => {
 					stockNew: values.stockNew,
 				};
 				uploadFile();
-				const response = await bookApi.create(book, { sync: true });
-				response &&
-					dispatch(
-						openSnackbar({
-							open: true,
-							anchorOrigin: {
-								vertical: 'top',
-								horizontal: 'right',
-							},
-							message: 'Book Add Success',
-							variant: 'alert',
-							alert: {
-								color: 'success',
-							},
-							close: false,
-						})
-					);
+				await bookApi.create(book, { sync: true });
 				handleCloseDialog();
 			}
 		},

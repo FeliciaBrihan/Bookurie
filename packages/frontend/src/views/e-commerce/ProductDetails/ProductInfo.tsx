@@ -25,7 +25,6 @@ import * as yup from 'yup';
 // project imports
 import Chip from 'ui-component/extended/Chip';
 import { TGetBook } from 'types/book';
-import { openSnackbar } from 'store/slices/snackbar';
 import { useDispatch, useSelector } from 'store';
 import { addProduct } from 'store/slices/cart';
 import { create, getUserLoans } from 'store/slices/loan';
@@ -41,6 +40,7 @@ import { useEffect, useState } from 'react';
 import { TGetPurchase } from 'types/purchase';
 import { getUserPurchases } from 'store/slices/purchase';
 import { TGetLoan } from 'types/loan';
+import { alert } from 'utils/helpers/alert';
 
 const validationSchema = yup.object({
 	color: yup.string().required('Color selection is required'),
@@ -102,18 +102,7 @@ const ProductInfo = ({ product }: { product: TGetBook }) => {
 		validationSchema,
 		onSubmit: (values) => {
 			dispatch(addProduct(values, cart.checkout.products));
-			dispatch(
-				openSnackbar({
-					open: true,
-					message: 'Submit Success',
-					variant: 'alert',
-					alert: {
-						color: 'success',
-					},
-					close: false,
-				})
-			);
-
+			alert.display('Submit Success');
 			history('/e-commerce/checkout');
 		},
 	});
@@ -137,31 +126,13 @@ const ProductInfo = ({ product }: { product: TGetBook }) => {
 
 		if (filteredProducts.length === 0 && filteredOnlinePurchases.length === 0) {
 			dispatch(addProduct(values, cart.checkout.products));
-			dispatch(
-				openSnackbar({
-					open: true,
-					message: 'Add To Cart Success',
-					variant: 'alert',
-					alert: {
-						color: 'success',
-					},
-					close: true,
-				})
-			);
+			alert.display('Add To Cart Success');
 		} else {
-			dispatch(
-				openSnackbar({
-					open: true,
-					message:
-						filteredOnlinePurchases.length > 0
-							? 'Online Book Already Bought!'
-							: 'Book Already In Cart',
-					variant: 'alert',
-					alert: {
-						color: 'warning',
-					},
-					close: true,
-				})
+			alert.display(
+				filteredOnlinePurchases.length > 0
+					? 'Online Book Already Bought!'
+					: 'Book Already In Cart',
+				'warning'
 			);
 		}
 	};

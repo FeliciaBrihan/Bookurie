@@ -353,48 +353,47 @@ const PurchaseList = () => {
 	const isSelected = (id: number) => selected.indexOf(id) !== -1;
 	return (
 		<MainCard title="Purchase List" content={false}>
-			{rows ? (
-				<>
-					<CardContent>
-						<Grid
-							container
-							justifyContent="space-between"
-							alignItems="center"
-							spacing={2}
-						>
-							<Grid item xs={12} sm={6}>
-								<TextField
-									sx={{ width: 300 }}
-									InputProps={{
-										startAdornment: (
-											<InputAdornment position="start">
-												<SearchIcon fontSize="small" />
-											</InputAdornment>
-										),
-									}}
-									onChange={handleSearch}
-									placeholder="Search by Order ID or User ID"
-									value={search}
-									size="small"
-								/>
-							</Grid>
-						</Grid>
-					</CardContent>
-
-					{/* table */}
-					<TableContainer>
-						<Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle">
-							<EnhancedTableHead
-								numSelected={selected.length}
-								order={order}
-								orderBy={orderBy}
-								onSelectAllClick={handleSelectAllClick}
-								onRequestSort={handleRequestSort}
-								rowCount={rows.length}
-								theme={theme}
-								selected={selected}
-								deleteHandler={() => handleDelete(selected)}
+			<>
+				<CardContent>
+					<Grid
+						container
+						justifyContent="space-between"
+						alignItems="center"
+						spacing={2}
+					>
+						<Grid item xs={12} sm={6}>
+							<TextField
+								sx={{ width: 300 }}
+								InputProps={{
+									startAdornment: (
+										<InputAdornment position="start">
+											<SearchIcon fontSize="small" />
+										</InputAdornment>
+									),
+								}}
+								onChange={handleSearch}
+								placeholder="Search by Order ID or User ID"
+								value={search}
+								size="small"
 							/>
+						</Grid>
+					</Grid>
+				</CardContent>
+				{/* table */}
+				<TableContainer>
+					<Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle">
+						<EnhancedTableHead
+							numSelected={selected.length}
+							order={order}
+							orderBy={orderBy}
+							onSelectAllClick={handleSelectAllClick}
+							onRequestSort={handleRequestSort}
+							rowCount={rows?.length}
+							theme={theme}
+							selected={selected}
+							deleteHandler={() => handleDelete(selected)}
+						/>
+						{rows && (
 							<TableBody>
 								{stableSort(rows, getComparator(order, orderBy))
 									.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
@@ -458,16 +457,17 @@ const PurchaseList = () => {
 										);
 									})}
 							</TableBody>
-						</Table>
-						{openDetails && (
-							<PurchaseDetails
-								handleCloseDialog={handleCloseDetails}
-								data={rowData!}
-							/>
 						)}
-					</TableContainer>
-
-					{/* table pagination */}
+					</Table>
+					{openDetails && (
+						<PurchaseDetails
+							handleCloseDialog={handleCloseDetails}
+							data={rowData!}
+						/>
+					)}
+				</TableContainer>
+				{/* table pagination */}
+				{rows.length !== 0 && (
 					<TablePagination
 						rowsPerPageOptions={[5, 10, 25]}
 						component="div"
@@ -477,12 +477,20 @@ const PurchaseList = () => {
 						onPageChange={handleChangePage}
 						onRowsPerPageChange={handleChangeRowsPerPage}
 					/>
-				</>
-			) : (
-				<Typography variant="body1" sx={{ textAlign: 'center' }}>
-					No purchases to display.
-				</Typography>
-			)}
+				)}
+				{!rows.length && (
+					<Box
+						sx={{
+							height: '50px',
+							display: 'flex',
+							alignItems: 'center',
+							justifyContent: 'center',
+						}}
+					>
+						No purchases to display
+					</Box>
+				)}
+			</>
 		</MainCard>
 	);
 };

@@ -370,48 +370,48 @@ const LoanList = () => {
 
 	return (
 		<MainCard title="Loan List" content={false}>
-			{rows ? (
-				<>
-					<CardContent>
-						<Grid
-							container
-							justifyContent="space-between"
-							alignItems="center"
-							spacing={2}
-						>
-							<Grid item xs={12} sm={6}>
-								<TextField
-									sx={{ width: '250px' }}
-									InputProps={{
-										startAdornment: (
-											<InputAdornment position="start">
-												<SearchIcon fontSize="small" />
-											</InputAdornment>
-										),
-									}}
-									onChange={handleSearch}
-									placeholder="Search Loan by Book Id"
-									value={search}
-									size="small"
-								/>
-							</Grid>
-						</Grid>
-					</CardContent>
-
-					{/* table */}
-					<TableContainer>
-						<Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle">
-							<EnhancedTableHead
-								numSelected={selected.length}
-								order={order}
-								orderBy={orderBy}
-								onSelectAllClick={handleSelectAllClick}
-								onRequestSort={handleRequestSort}
-								rowCount={rows.length}
-								theme={theme}
-								selected={selected}
-								deleteHandler={() => handleDelete(selected)}
+			<>
+				<CardContent>
+					<Grid
+						container
+						justifyContent="space-between"
+						alignItems="center"
+						spacing={2}
+					>
+						<Grid item xs={12} sm={6}>
+							<TextField
+								sx={{ width: '250px' }}
+								InputProps={{
+									startAdornment: (
+										<InputAdornment position="start">
+											<SearchIcon fontSize="small" />
+										</InputAdornment>
+									),
+								}}
+								onChange={handleSearch}
+								placeholder="Search Loan by Book Id"
+								value={search}
+								size="small"
 							/>
+						</Grid>
+					</Grid>
+				</CardContent>
+
+				{/* table */}
+				<TableContainer>
+					<Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle">
+						<EnhancedTableHead
+							numSelected={selected.length}
+							order={order}
+							orderBy={orderBy}
+							onSelectAllClick={handleSelectAllClick}
+							onRequestSort={handleRequestSort}
+							rowCount={rows?.length}
+							theme={theme}
+							selected={selected}
+							deleteHandler={() => handleDelete(selected)}
+						/>
+						{rows && (
 							<TableBody>
 								{stableSort(rows, getComparator(order, orderBy))
 									.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
@@ -533,25 +533,37 @@ const LoanList = () => {
 									</TableRow>
 								)}
 							</TableBody>
-						</Table>
-						{openDetails && (
-							<LoanDetails
-								handleCloseDialog={handleCloseDetails}
-								data={rowData!}
-							/>
 						)}
-						{openEdit && (
-							<LoanAccept handleCloseDialog={handleCloseEdit} data={rowData!} />
-						)}
-						{openReturn && (
-							<LoanReturn
-								handleCloseDialog={handleCloseReturn}
-								data={rowData!}
-							/>
-						)}
-					</TableContainer>
-					{/* table pagination */}
+					</Table>
+					{openDetails && (
+						<LoanDetails
+							handleCloseDialog={handleCloseDetails}
+							data={rowData!}
+						/>
+					)}
+					{openEdit && (
+						<LoanAccept handleCloseDialog={handleCloseEdit} data={rowData!} />
+					)}
+					{openReturn && (
+						<LoanReturn handleCloseDialog={handleCloseReturn} data={rowData!} />
+					)}
+				</TableContainer>
+				{/* table pagination */}
 
+				{!rows && (
+					<Box
+						sx={{
+							height: '50px',
+							display: 'flex',
+							alignItems: 'center',
+							justifyContent: 'center',
+						}}
+					>
+						No loans to display
+					</Box>
+				)}
+
+				{rows && (
 					<TablePagination
 						rowsPerPageOptions={[5, 10, 25]}
 						component="div"
@@ -561,13 +573,8 @@ const LoanList = () => {
 						onPageChange={handleChangePage}
 						onRowsPerPageChange={handleChangeRowsPerPage}
 					/>
-				</>
-			) : (
-				<Typography variant="body1" sx={{ textAlign: 'center' }}>
-					{' '}
-					No loans to display{' '}
-				</Typography>
-			)}
+				)}
+			</>
 		</MainCard>
 	);
 };

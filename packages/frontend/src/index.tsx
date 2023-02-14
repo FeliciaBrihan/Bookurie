@@ -18,6 +18,7 @@ import { ConfigProvider } from 'contexts/ConfigContext';
 
 // style + assets
 import 'assets/scss/style.scss';
+import { SnackbarProvider } from 'notistack';
 
 // ==============================|| REACT DOM RENDER  ||============================== //
 
@@ -29,7 +30,9 @@ root.render(
 		<PersistGate loading={null} persistor={persister}>
 			<ConfigProvider>
 				<BrowserRouter basename={BASE_PATH}>
-					<App />
+					<SnackbarProvider maxSnack={3}>
+						<App />
+					</SnackbarProvider>
 				</BrowserRouter>
 			</ConfigProvider>
 		</PersistGate>

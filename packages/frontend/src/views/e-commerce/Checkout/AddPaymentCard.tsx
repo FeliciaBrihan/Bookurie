@@ -1,5 +1,4 @@
 import { forwardRef } from 'react';
-import { useDispatch } from 'store';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
@@ -24,11 +23,11 @@ import { useFormik } from 'formik';
 // project imports
 import MainCard from 'ui-component/cards/MainCard';
 import AnimateButton from 'ui-component/extended/AnimateButton';
-import { openSnackbar } from 'store/slices/snackbar';
 import { gridSpacing } from 'store/constant';
 
 // assets
 import HighlightOffTwoToneIcon from '@mui/icons-material/HighlightOffTwoTone';
+import { alert } from 'utils/helpers/alert';
 
 const Transition = forwardRef((props: ZoomProps, ref) => (
 	<Zoom ref={ref} {...props} />
@@ -44,7 +43,6 @@ const AddPaymentCard = ({
 	handleClose: () => void;
 }) => {
 	const theme = useTheme();
-	const dispatch = useDispatch();
 
 	const formik = useFormik({
 		enableReinitialize: true,
@@ -59,17 +57,7 @@ const AddPaymentCard = ({
 		// eslint-disable-next-line @typescript-eslint/no-unused-vars
 		onSubmit: (values) => {
 			handleClose();
-			dispatch(
-				openSnackbar({
-					open: true,
-					message: 'Payment Card Add Success',
-					variant: 'alert',
-					alert: {
-						color: 'success',
-					},
-					close: false,
-				})
-			);
+			alert.display('Payment Card Add Success');
 		},
 	});
 

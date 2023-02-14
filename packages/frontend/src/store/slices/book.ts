@@ -10,6 +10,7 @@ import { DefaultRootStateProps } from 'types';
 import { TGetBook, TSetBook } from 'types/book';
 import { ProductsFilter } from 'types/e-commerce';
 import { TGetSubscription } from 'types/subscription';
+import { alert } from 'utils/helpers/alert';
 
 // ----------------------------------------------------------------------
 
@@ -62,6 +63,7 @@ export const bookApi = {
 		return async (data: TSetBook, options: { sync?: boolean }) => {
 			try {
 				const response = await axios.post<TGetBook>(`/book`, data);
+				if (response.status === 201) alert.display('Book Add Success');
 				if (options?.sync === true) this.getAll()();
 				return response.data;
 			} catch (error) {
@@ -73,7 +75,8 @@ export const bookApi = {
 	get update() {
 		return async (id: number, data: TSetBook, options: { sync?: boolean }) => {
 			try {
-				await axios.put(`/book/${id}`, data);
+				const response = await axios.put(`/book/${id}`, data);
+				if (response.status === 200) alert.display('Book Update Success');
 				if (options?.sync === true) this.getAll()();
 			} catch (error) {
 				if (options?.sync === true) dispatch(slice.actions.hasError(error));
@@ -98,6 +101,7 @@ export function deleteBook(id: number, options: { sync?: boolean }) {
 	return async () => {
 		try {
 			const response = await axios.delete(`/book/${id}`);
+			if (response.status === 200) alert.display('Book Delete Success');
 			console.log(response);
 			if (options?.sync === true) bookApi.getAll()();
 		} catch (error) {

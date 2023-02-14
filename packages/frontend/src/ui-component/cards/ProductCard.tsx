@@ -19,7 +19,6 @@ import MainCard from './MainCard';
 import SkeletonProductPlaceholder from 'ui-component/cards/Skeleton/ProductPlaceholder';
 import { useDispatch, useSelector } from 'store';
 import { addProduct } from 'store/slices/cart';
-import { openSnackbar } from 'store/slices/snackbar';
 import { ProductCardProps } from 'types/cart';
 import { getUserPurchases } from 'store/slices/purchase';
 
@@ -29,6 +28,7 @@ import Chip from 'ui-component/extended/Chip';
 import { TGetPurchase } from 'types/purchase';
 import { getUserLoans } from 'store/slices/loan';
 import { TGetLoan } from 'types/loan';
+import { alert } from 'utils/helpers/alert';
 
 const prodImage = require.context('assets/images/e-commerce', true);
 
@@ -114,33 +114,14 @@ const ProductCard = ({
 					cart.checkout.products
 				)
 			);
-			dispatch(
-				openSnackbar({
-					open: true,
-					message: 'Add To Cart Success',
-					variant: 'alert',
-					alert: {
-						color: 'success',
-					},
-					close: true,
-				})
+			alert.display('Add To Cart Success');
+		} else
+			alert.display(
+				filteredOnlinePurchases.length > 0
+					? 'Online Book Already Bought!'
+					: 'Book Already In Cart',
+				'warning'
 			);
-		} else {
-			dispatch(
-				openSnackbar({
-					open: true,
-					message:
-						filteredOnlinePurchases.length > 0
-							? 'Online Book Already Bought!'
-							: 'Book Already In Cart',
-					variant: 'alert',
-					alert: {
-						color: 'warning',
-					},
-					close: true,
-				})
-			);
-		}
 	};
 
 	return (

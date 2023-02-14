@@ -4,17 +4,12 @@ import { createSlice } from '@reduxjs/toolkit';
 // project imports
 import axios from 'utils/live-axios';
 import { dispatch } from '../index';
-import { openSnackbar } from 'store/slices/snackbar';
+import { alert } from 'utils/helpers/alert';
 import { getLoggedUser } from './user';
 
 // types
 import { DefaultRootStateProps } from 'types';
 import { TSetLoan } from 'types/loan';
-
-type objectError = {
-	details?: string;
-	error?: string;
-};
 
 // ----------------------------------------------------------------------
 
@@ -58,7 +53,8 @@ export const loanApi = {
 	get update() {
 		return async (id: number, data: TSetLoan, options: { sync?: boolean }) => {
 			try {
-				await axios.put(`/loan/${id}`, data);
+				const response = await axios.put(`/loan/${id}`, data);
+				if (response.status === 200) alert.display('Loan Accept Success');
 				if (options?.sync === true) this.getAll()();
 			} catch (error) {
 				console.log(error);
@@ -70,6 +66,7 @@ export const loanApi = {
 		return async (id: number, options: { sync?: boolean }) => {
 			try {
 				const response = await axios.put(`loan/loans/${id}`);
+				if (response.status === 200) alert.display('Loan Return Success');
 				if (options?.sync === true) this.getAll()();
 				console.log(response);
 			} catch (error) {
@@ -87,32 +84,10 @@ export function create(id: number) {
 			dispatch(getUserLoans());
 			dispatch(getLoggedUser(res.data.loggedUser));
 			console.log(response);
-			dispatch(
-				openSnackbar({
-					open: true,
-					message: 'Loan Request Success',
-					variant: 'alert',
-					alert: {
-						color: 'success',
-					},
-					close: true,
-				})
-			);
+			if (response.status === 200) alert.display('Loan Request Success');
 		} catch (error) {
 			dispatch(slice.actions.hasError(error));
 			console.log(error);
-			const err = error as objectError;
-			dispatch(
-				openSnackbar({
-					open: true,
-					message: err.details || err.error,
-					variant: 'alert',
-					alert: {
-						color: 'error',
-					},
-					close: true,
-				})
-			);
 		}
 	};
 }

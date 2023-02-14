@@ -21,11 +21,17 @@ import customShadows from './shadows';
 import { CustomShadowProps } from 'types/default-theme';
 import { TypographyOptions } from '@mui/material/styles/createTypography';
 
+import { useSnackbar } from 'notistack';
+import React from 'react';
+import { useSelector } from 'store';
+
 interface Props {
 	children: ReactNode;
 }
 
 export default function ThemeCustomization({ children }: Props) {
+	const { enqueueSnackbar } = useSnackbar();
+	const alert = useSelector((state) => state.notistack);
 	const {
 		borderRadius,
 		fontFamily,
@@ -34,6 +40,10 @@ export default function ThemeCustomization({ children }: Props) {
 		presetColor,
 		rtlLayout,
 	} = useConfig();
+
+	React.useEffect(() => {
+		if (alert.text) enqueueSnackbar(alert.text, { variant: alert.variant });
+	}, [alert]);
 
 	const theme: Theme = useMemo<Theme>(
 		() => Palette(navType, presetColor),

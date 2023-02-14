@@ -8,6 +8,7 @@ import { dispatch } from '../index';
 // types
 import { DefaultRootStateProps } from 'types';
 import { TSetPrize } from 'types/prize';
+import { alert } from 'utils/helpers/alert';
 
 // ----------------------------------------------------------------------
 
@@ -47,7 +48,8 @@ export const prizeApi = {
 	get update() {
 		return async (data: TSetPrize, options: { sync?: boolean }) => {
 			try {
-				await axios.put(`/prize`, data);
+				const response = await axios.put(`/prize`, data);
+				if (response.status === 200) alert.display('Prize Update Success');
 				if (options?.sync === true) this.getAll()();
 			} catch (error) {
 				if (options?.sync === true) dispatch(slice.actions.hasError(error));

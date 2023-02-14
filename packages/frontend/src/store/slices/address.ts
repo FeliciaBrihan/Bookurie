@@ -8,6 +8,7 @@ import { dispatch } from '../index';
 // types
 import { DefaultRootStateProps } from 'types';
 import { Address } from 'types/e-commerce';
+import { alert } from 'utils/helpers/alert';
 
 // ----------------------------------------------------------------------
 
@@ -70,6 +71,8 @@ export function addAddress(address: Address) {
 	return async () => {
 		try {
 			const response = await axios.post('/address/', address);
+			console.log(response);
+			if (response.status === 201) alert.display('Address Add Success');
 			dispatch(slice.actions.addAddressSuccess(response.data.data));
 		} catch (error) {
 			dispatch(slice.actions.hasError(error));
@@ -81,6 +84,7 @@ export function editAddress(id: number | string | undefined, address: Address) {
 	return async () => {
 		try {
 			const response = await axios.put(`/address/${id}`, address);
+			if (response.status === 200) alert.display('Address Update Success');
 			dispatch(slice.actions.getAddressSuccess(response.data.data));
 		} catch (error) {
 			dispatch(slice.actions.hasError(error));

@@ -25,6 +25,7 @@ import { TRaffleStateProps } from './raffle';
 import { TPrizeStateProps } from './prize';
 import { TSubscriptionStateProps } from './subscription';
 import { TAddressStateProps } from './address';
+import { NotistackProps } from './notistack';
 
 export type ArrangementOrder = 'asc' | 'desc' | undefined;
 
@@ -124,6 +125,7 @@ export interface ColorPaletteProps {
 
 export interface DefaultRootStateProps {
 	snackbar: SnackbarProps;
+	notistack: NotistackProps;
 	cart: CartStateProps;
 	budgetRequest: TBudgetRequestStateProps;
 	currency: TCurrencyStateProps;

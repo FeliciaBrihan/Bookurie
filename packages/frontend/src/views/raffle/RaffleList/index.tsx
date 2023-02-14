@@ -281,31 +281,31 @@ const RaffleList = () => {
 		<>
 			<PrizeList />
 			<MainCard title="Raffle List" content={false}>
-				{rows ? (
-					<>
-						<CardContent>
-							<Grid
-								container
-								justifyContent="space-between"
-								alignItems="center"
-								spacing={2}
-							></Grid>
-						</CardContent>
+				<>
+					<CardContent>
+						<Grid
+							container
+							justifyContent="space-between"
+							alignItems="center"
+							spacing={2}
+						></Grid>
+					</CardContent>
 
-						{/* table */}
-						<TableContainer>
-							<Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle">
-								<EnhancedTableHead
-									numSelected={selected.length}
-									order={order}
-									orderBy={orderBy}
-									onSelectAllClick={handleSelectAllClick}
-									onRequestSort={handleRequestSort}
-									rowCount={rows.length}
-									theme={theme}
-									selected={selected}
-									deleteHandler={() => handleDelete(selected)}
-								/>
+					{/* table */}
+					<TableContainer>
+						<Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle">
+							<EnhancedTableHead
+								numSelected={selected.length}
+								order={order}
+								orderBy={orderBy}
+								onSelectAllClick={handleSelectAllClick}
+								onRequestSort={handleRequestSort}
+								rowCount={rows?.length}
+								theme={theme}
+								selected={selected}
+								deleteHandler={() => handleDelete(selected)}
+							/>
+							{rows && (
 								<TableBody>
 									{stableSort(rows, getComparator(order, orderBy))
 										.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
@@ -370,10 +370,25 @@ const RaffleList = () => {
 										</TableRow>
 									)}
 								</TableBody>
-							</Table>
-						</TableContainer>
+							)}
+						</Table>
+					</TableContainer>
 
-						{/* table pagination */}
+					{/* table pagination */}
+					{!rows && (
+						<Box
+							sx={{
+								height: '50px',
+								display: 'flex',
+								alignItems: 'center',
+								justifyContent: 'center',
+							}}
+						>
+							No raffles to display
+						</Box>
+					)}
+
+					{rows && (
 						<TablePagination
 							rowsPerPageOptions={[5, 10, 25]}
 							component="div"
@@ -383,12 +398,8 @@ const RaffleList = () => {
 							onPageChange={handleChangePage}
 							onRowsPerPageChange={handleChangeRowsPerPage}
 						/>
-					</>
-				) : (
-					<Typography variant="body1" sx={{ textAlign: 'center' }}>
-						No raffles to display.
-					</Typography>
-				)}
+					)}
+				</>
 			</MainCard>
 		</>
 	);

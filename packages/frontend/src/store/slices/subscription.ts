@@ -9,7 +9,7 @@ import { dispatch } from '../index';
 import { DefaultRootStateProps } from 'types';
 import { TGetSubscription, TSetSubscription } from 'types/subscription';
 import { getLoggedUser } from './user';
-import { openSnackbar } from './snackbar';
+import { alert } from 'utils/helpers/alert';
 
 // ----------------------------------------------------------------------
 type objectError = {
@@ -105,32 +105,13 @@ export function subscribe(id: number) {
 			const res = await axios.get('/user/allowed');
 			dispatch(getLoggedUser(res.data.loggedUser));
 			dispatch(getLoggedUserSubscription(res.data.subscription));
-			dispatch(
-				openSnackbar({
-					open: true,
-					message: 'Subscribe Success',
-					variant: 'alert',
-					alert: {
-						color: 'success',
-					},
-					close: true,
-				})
-			);
+
+			alert.display('Subscribe success');
 		} catch (error) {
 			dispatch(slice.actions.hasError(error));
 			const err = error as objectError;
 			console.log(error);
-			dispatch(
-				openSnackbar({
-					open: true,
-					message: err.details || err.error,
-					variant: 'alert',
-					alert: {
-						color: 'error',
-					},
-					close: true,
-				})
-			);
+			alert.display(err.details!);
 		}
 	};
 }
@@ -142,32 +123,22 @@ export function unsubscribe(id: number) {
 			const res = await axios.get('/user/allowed');
 			dispatch(getLoggedUser(res.data.loggedUser));
 			dispatch(getLoggedUserSubscription(res.data.subscription));
-			dispatch(
-				openSnackbar({
-					open: true,
-					message: 'Unsubscribe Success',
-					variant: 'alert',
-					alert: {
-						color: 'success',
-					},
-					close: true,
-				})
-			);
+			alert.display('Unsubscribe Success!');
 		} catch (error) {
 			dispatch(slice.actions.hasError(error));
-			const err = error as objectError;
+			// const err = error as objectError;
 			console.log(error);
-			dispatch(
-				openSnackbar({
-					open: true,
-					message: err.details || err.error,
-					variant: 'alert',
-					alert: {
-						color: 'error',
-					},
-					close: true,
-				})
-			);
+			// dispatch(
+			// 	openSnackbar({
+			// 		open: true,
+			// 		message: err.details || err.error,
+			// 		variant: 'alert',
+			// 		alert: {
+			// 			color: 'error',
+			// 		},
+			// 		close: true,
+			// 	})
+			// );
 		}
 	};
 }

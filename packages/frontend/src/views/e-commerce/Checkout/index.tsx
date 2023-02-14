@@ -10,7 +10,6 @@ import Cart from './Cart';
 import BillingAddress from './BillingAddress';
 import Payment from './Payment';
 import MainCard from 'ui-component/cards/MainCard';
-import { openSnackbar } from 'store/slices/snackbar';
 import { gridSpacing } from 'store/constant';
 import { TabsProps } from 'types';
 import { CartStateProps } from 'types/cart';
@@ -31,6 +30,7 @@ import ShoppingCartTwoToneIcon from '@mui/icons-material/ShoppingCartTwoTone';
 import ApartmentIcon from '@mui/icons-material/Apartment';
 import CreditCardTwoToneIcon from '@mui/icons-material/CreditCardTwoTone';
 import useConfig from 'hooks/useConfig';
+import { alert } from 'utils/helpers/alert';
 
 interface StyledProps {
 	theme: Theme;
@@ -140,7 +140,7 @@ const Checkout = () => {
 	const { subscription } = useSelector((state) => state.subscription);
 
 	useEffect(() => {
-		dispatch(getAddress());
+		if (loggedUser?.addressId) dispatch(getAddress());
 	}, []);
 
 	useEffect(() => {
@@ -166,17 +166,7 @@ const Checkout = () => {
 
 	const removeCartProduct = (id: string | number | undefined) => {
 		dispatch(removeProduct(id, cart.checkout.products));
-		dispatch(
-			openSnackbar({
-				open: true,
-				message: 'Update Cart Success',
-				variant: 'alert',
-				alert: {
-					color: 'success',
-				},
-				close: false,
-			})
-		);
+		alert.display('Update Cart Success');
 	};
 
 	const updateQuantity = (
@@ -195,21 +185,12 @@ const Checkout = () => {
 			const onlineBooksInCart = cart.checkout.products.filter(
 				(product) => product.typeFormat === 'online' && product.pricePromo === 0
 			);
-			if (onlineBooksInCart.length > remainingFreeBooks) {
-				dispatch(
-					openSnackbar({
-						open: true,
-						message: `You can only buy ${remainingFreeBooks} free books`,
-						variant: 'alert',
-						alert: {
-							color: 'error',
-						},
-						close: true,
-					})
+			if (onlineBooksInCart.length > remainingFreeBooks)
+				alert.display(
+					`You can only buy ${remainingFreeBooks} free books`,
+					'warning'
 				);
-			} else {
-				dispatch(setNextStep());
-			}
+			else dispatch(setNextStep());
 		}
 	};
 
@@ -218,18 +199,7 @@ const Checkout = () => {
 	};
 
 	const checkAddressHandler = () => {
-		if (address?.street === '')
-			dispatch(
-				openSnackbar({
-					open: true,
-					message: `Please Add Delivery Address!`,
-					variant: 'alert',
-					alert: {
-						color: 'error',
-					},
-					close: true,
-				})
-			);
+		if (address?.street === '') alert.display(`Please Add Delivery Address!`);
 		else {
 			dispatch(setBillingAddress(address!));
 			onNext();

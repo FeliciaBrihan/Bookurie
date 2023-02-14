@@ -8,7 +8,6 @@ import { dispatch } from '../index';
 // types
 import { DefaultRootStateProps } from 'types';
 import { TGetAction, TSetAction } from 'types/action';
-import { openSnackbar } from './snackbar';
 
 // ----------------------------------------------------------------------
 
@@ -52,18 +51,7 @@ export const actionApi = {
 				if (options?.sync === true) this.getAll()();
 				return response.data;
 			} catch (error) {
-				if (options?.sync === true) dispatch(slice.actions.hasError(error));
-				dispatch(
-					openSnackbar({
-						open: true,
-						message: 'Name Must Be Unique',
-						variant: 'alert',
-						alert: {
-							color: 'error',
-						},
-						close: true,
-					})
-				);
+				dispatch(slice.actions.hasError(error));
 			}
 		};
 	},
@@ -77,7 +65,7 @@ export const actionApi = {
 				await axios.put(`/action/${id}`, data);
 				if (options?.sync === true) this.getAll()();
 			} catch (error) {
-				if (options?.sync === true) dispatch(slice.actions.hasError(error));
+				dispatch(slice.actions.hasError(error));
 			}
 		};
 	},

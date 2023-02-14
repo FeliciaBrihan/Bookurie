@@ -29,7 +29,6 @@ import AddPaymentCard from './AddPaymentCard';
 import OrderComplete from './OrderComplete';
 import SubCard from 'ui-component/cards/SubCard';
 import Avatar from 'ui-component/extended/Avatar';
-import { openSnackbar } from 'store/slices/snackbar';
 import { gridSpacing } from 'store/constant';
 
 // assets
@@ -39,6 +38,7 @@ import { CartCheckoutStateProps } from 'types/cart';
 import { PaymentOptionsProps } from 'types/e-commerce';
 import { setPaymentCard, setPaymentMethod } from 'store/slices/cart';
 import { create, getUserPurchases } from 'store/slices/purchase';
+import { alert } from 'utils/helpers/alert';
 
 const prodImage = require.context('assets/images/e-commerce', true);
 
@@ -94,31 +94,11 @@ const Payment = ({ checkout, onBack, onNext }: PaymentProps) => {
 
 	const completeHandler = async () => {
 		if (payment === 'card' && (cards === '' || cards === null)) {
-			dispatch(
-				openSnackbar({
-					open: true,
-					message: 'Select Payment Card',
-					variant: 'alert',
-					alert: {
-						color: 'error',
-					},
-					close: false,
-				})
-			);
+			alert.display('Select Payment Card!', 'warning');
 		} else {
-			if (loggedUser!.budget <= checkout.total) {
-				dispatch(
-					openSnackbar({
-						open: true,
-						message: 'Not Enough Money!',
-						variant: 'alert',
-						alert: {
-							color: 'error',
-						},
-						close: true,
-					})
-				);
-			} else {
+			if (loggedUser!.budget <= checkout.total)
+				alert.display('Not Enough Money!', 'warning');
+			else {
 				const booksId = [];
 				for (const product of checkout.products) {
 					booksId.push(product.id);
