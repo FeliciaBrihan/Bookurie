@@ -199,7 +199,8 @@ const Checkout = () => {
 	};
 
 	const checkAddressHandler = () => {
-		if (address?.street === '') alert.display(`Please Add Delivery Address!`);
+		if (address?.street === '')
+			alert.display(`Please Add Delivery Address!`, 'warning');
 		else {
 			dispatch(setBillingAddress(address!));
 			onNext();
