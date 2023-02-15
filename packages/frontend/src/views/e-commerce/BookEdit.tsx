@@ -71,8 +71,12 @@ const BookEdit = ({ handleCloseDialog, data }: ProductAddProps) => {
 		publishingHouse: yup.string().notRequired(),
 		publishedYear: yup
 			.number()
-			.min(1, 'Must be grater than 0')
-			.required('Published Year is required'),
+			.required('Published Year is required')
+			.test(
+				'is-four-digits',
+				'Must be a four digit number',
+				(value) => value !== undefined && value.toString().length === 4
+			),
 		coverImage: yup.string().notRequired(),
 		genre: yup.string().required('Genre is required'),
 		description: yup.string().notRequired(),
@@ -82,8 +86,14 @@ const BookEdit = ({ handleCloseDialog, data }: ProductAddProps) => {
 			.required('Pages is required'),
 		typeFormat: yup.string().required('Type Format is required'),
 		price: yup.number().required('Price is required'),
-		stockOld: yup.number().required('Stock Old is required'),
-		stockNew: yup.number().required('Stock New is required'),
+		stockOld: yup
+			.number()
+			.min(0, 'Must be positive')
+			.required('Stock Old is required'),
+		stockNew: yup
+			.number()
+			.min(0, 'Must be positive')
+			.required('Stock New is required'),
 	});
 
 	const formik = useFormik({
@@ -96,7 +106,7 @@ const BookEdit = ({ handleCloseDialog, data }: ProductAddProps) => {
 					author: values.author,
 					publishingHouse: values.publishingHouse,
 					publishedYear: values.publishedYear,
-					coverImage: values.coverImage,
+					coverImage: file ? file.name : values.coverImage,
 					genre: values.genre,
 					description: values.description,
 					pages: values.pages,
@@ -105,7 +115,7 @@ const BookEdit = ({ handleCloseDialog, data }: ProductAddProps) => {
 					stockOld: values.stockOld,
 					stockNew: values.stockNew,
 				};
-				uploadFile();
+				if (file) uploadFile();
 				await bookApi.update(data.id, book, { sync: true });
 				handleCloseDialog();
 			}

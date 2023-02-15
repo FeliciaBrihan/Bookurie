@@ -26,13 +26,13 @@ import { gridSpacing } from 'store/constant';
 import HighlightOffTwoToneIcon from '@mui/icons-material/HighlightOffTwoTone';
 
 const validationSchema = yup.object({
-	street: yup.string().required('Name is required'),
+	street: yup.string().required('Street is required'),
 	building: yup.string().required('Building is required'),
-	city: yup.string().required('Street is required'),
-	country: yup.string().required('City is required'),
-	number: yup.string().required('Number is required'),
-	zipCode: yup.string().required('Zip code is required'),
-	contact: yup.string().required('Phone no is required'),
+	city: yup.string().required('City is required'),
+	country: yup.string().required('Country is required'),
+	number: yup.number().required('Number is required'),
+	zipCode: yup.number().required('Zip code is required'),
+	contact: yup.number().required('Phone no is required'),
 });
 
 const Transition = forwardRef((props: ZoomProps, ref) => (
