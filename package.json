@@ -1,0 +1,8 @@
+{
+	"name": "PracticaFelicia",
+	"version": "1.0.0",
+	"main": "index.ts",
+	"repository": "https://github.com/efratech/PracticaFelicia.git",
+	"author": "Felicia Brihan <felicia.brihan@yahoo.com>",
+	"license": "MIT"
+}

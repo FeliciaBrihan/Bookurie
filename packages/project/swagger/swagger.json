@@ -1,0 +1,2383 @@
+{
+	"components": {
+		"examples": {},
+		"headers": {},
+		"parameters": {},
+		"requestBodies": {},
+		"responses": {},
+		"schemas": {
+			"Action": {
+				"properties": {
+					"id": {
+						"type": "number",
+						"format": "double"
+					},
+					"createdAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"updatedAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"deletedAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"name": {
+						"type": "string"
+					},
+					"RoleId": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"name",
+					"RoleId"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"Pick_Action.name_": {
+				"properties": {
+					"name": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"name"
+				],
+				"type": "object",
+				"description": "From T, pick a set of properties whose keys are in the union K"
+			},
+			"ReqBodyAction": {
+				"$ref": "#/components/schemas/Pick_Action.name_"
+			},
+			"Pick_User.username-or-password_": {
+				"properties": {
+					"username": {
+						"type": "string"
+					},
+					"password": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"username",
+					"password"
+				],
+				"type": "object",
+				"description": "From T, pick a set of properties whose keys are in the union K"
+			},
+			"ReqBodyAuth": {
+				"$ref": "#/components/schemas/Pick_User.username-or-password_"
+			},
+			"Book": {
+				"properties": {
+					"id": {
+						"type": "number",
+						"format": "double"
+					},
+					"createdAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"updatedAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"deletedAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"title": {
+						"type": "string"
+					},
+					"author": {
+						"type": "string"
+					},
+					"publishingHouse": {
+						"type": "string"
+					},
+					"publishedYear": {
+						"type": "number",
+						"format": "double"
+					},
+					"coverImage": {
+						"type": "string"
+					},
+					"genre": {
+						"type": "string"
+					},
+					"description": {
+						"type": "string"
+					},
+					"typeFormat": {
+						"type": "string"
+					},
+					"pages": {
+						"type": "number",
+						"format": "double"
+					},
+					"price": {
+						"type": "number",
+						"format": "double"
+					},
+					"stock": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"title",
+					"author",
+					"publishingHouse",
+					"publishedYear",
+					"coverImage",
+					"genre",
+					"description",
+					"typeFormat",
+					"pages",
+					"price",
+					"stock"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"Pick_Book.Exclude_keyofBook.createdAt-or-updatedAt-or-deletedAt-or-id__": {
+				"properties": {
+					"title": {
+						"type": "string"
+					},
+					"author": {
+						"type": "string"
+					},
+					"publishingHouse": {
+						"type": "string"
+					},
+					"publishedYear": {
+						"type": "number",
+						"format": "double"
+					},
+					"coverImage": {
+						"type": "string"
+					},
+					"genre": {
+						"type": "string"
+					},
+					"description": {
+						"type": "string"
+					},
+					"typeFormat": {
+						"type": "string"
+					},
+					"pages": {
+						"type": "number",
+						"format": "double"
+					},
+					"price": {
+						"type": "number",
+						"format": "double"
+					},
+					"stock": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"title",
+					"author",
+					"publishingHouse",
+					"publishedYear",
+					"coverImage",
+					"genre",
+					"description",
+					"typeFormat",
+					"pages",
+					"price",
+					"stock"
+				],
+				"type": "object",
+				"description": "From T, pick a set of properties whose keys are in the union K"
+			},
+			"Omit_Book.createdAt-or-updatedAt-or-deletedAt-or-id_": {
+				"$ref": "#/components/schemas/Pick_Book.Exclude_keyofBook.createdAt-or-updatedAt-or-deletedAt-or-id__",
+				"description": "Construct a type with the properties of T except for those in type K."
+			},
+			"ReqBodyBook": {
+				"$ref": "#/components/schemas/Omit_Book.createdAt-or-updatedAt-or-deletedAt-or-id_"
+			},
+			"Loan": {
+				"properties": {
+					"id": {
+						"type": "number",
+						"format": "double"
+					},
+					"createdAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"updatedAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"deletedAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"isAccepted": {
+						"type": "boolean"
+					},
+					"isReturned": {
+						"type": "boolean"
+					},
+					"expirationDate": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"BookId": {
+						"type": "number",
+						"format": "double"
+					},
+					"UserId": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"isAccepted",
+					"isReturned",
+					"expirationDate",
+					"BookId",
+					"UserId"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"Permission": {
+				"properties": {
+					"id": {
+						"type": "number",
+						"format": "double"
+					},
+					"createdAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"updatedAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"deletedAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"ActionId": {
+						"type": "number",
+						"format": "double"
+					},
+					"RoleId": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"ActionId",
+					"RoleId"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"Pick_Permission.Exclude_keyofPermission.createdAt-or-updatedAt-or-deletedAt-or-id__": {
+				"properties": {
+					"ActionId": {
+						"type": "number",
+						"format": "double"
+					},
+					"RoleId": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"ActionId",
+					"RoleId"
+				],
+				"type": "object",
+				"description": "From T, pick a set of properties whose keys are in the union K"
+			},
+			"Omit_Permission.createdAt-or-updatedAt-or-deletedAt-or-id_": {
+				"$ref": "#/components/schemas/Pick_Permission.Exclude_keyofPermission.createdAt-or-updatedAt-or-deletedAt-or-id__",
+				"description": "Construct a type with the properties of T except for those in type K."
+			},
+			"ReqBodyPermission": {
+				"$ref": "#/components/schemas/Omit_Permission.createdAt-or-updatedAt-or-deletedAt-or-id_"
+			},
+			"Prize": {
+				"properties": {
+					"id": {
+						"type": "number",
+						"format": "double"
+					},
+					"createdAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"updatedAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"deletedAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"bookId": {
+						"type": "number",
+						"format": "double"
+					},
+					"voucher": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"bookId",
+					"voucher"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"Pick_Prize.bookId-or-voucher_": {
+				"properties": {
+					"bookId": {
+						"type": "number",
+						"format": "double"
+					},
+					"voucher": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"bookId",
+					"voucher"
+				],
+				"type": "object",
+				"description": "From T, pick a set of properties whose keys are in the union K"
+			},
+			"ReqBodyPrize": {
+				"$ref": "#/components/schemas/Pick_Prize.bookId-or-voucher_"
+			},
+			"Purchase": {
+				"properties": {
+					"id": {
+						"type": "number",
+						"format": "double"
+					},
+					"createdAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"updatedAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"deletedAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"BookId": {
+						"type": "number",
+						"format": "double"
+					},
+					"UserId": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"BookId",
+					"UserId"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"Raffle": {
+				"properties": {
+					"id": {
+						"type": "number",
+						"format": "double"
+					},
+					"createdAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"updatedAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"deletedAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"prize": {
+						"type": "number",
+						"format": "double"
+					},
+					"BookId": {
+						"type": "number",
+						"format": "double"
+					},
+					"UserId": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"prize",
+					"BookId",
+					"UserId"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"Role": {
+				"properties": {
+					"id": {
+						"type": "number",
+						"format": "double"
+					},
+					"createdAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"updatedAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"deletedAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"name": {
+						"type": "string"
+					},
+					"UserId": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"name",
+					"UserId"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"Pick_Role.name_": {
+				"properties": {
+					"name": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"name"
+				],
+				"type": "object",
+				"description": "From T, pick a set of properties whose keys are in the union K"
+			},
+			"ReqBodyRole": {
+				"$ref": "#/components/schemas/Pick_Role.name_"
+			},
+			"Subscription": {
+				"properties": {
+					"id": {
+						"type": "number",
+						"format": "double"
+					},
+					"createdAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"updatedAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"deletedAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"name": {
+						"type": "string"
+					},
+					"monthlyFee": {
+						"type": "number",
+						"format": "double"
+					},
+					"monthlyFreeBooks": {
+						"type": "number",
+						"format": "double"
+					},
+					"everyBookDiscount": {
+						"type": "number",
+						"format": "double"
+					},
+					"type": {
+						"type": "string",
+						"enum": [
+							"basic",
+							"premium"
+						]
+					}
+				},
+				"required": [
+					"name",
+					"monthlyFee",
+					"monthlyFreeBooks",
+					"everyBookDiscount",
+					"type"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"Pick_Subscription.Exclude_keyofSubscription.createdAt-or-updatedAt-or-deletedAt-or-id__": {
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"monthlyFee": {
+						"type": "number",
+						"format": "double"
+					},
+					"monthlyFreeBooks": {
+						"type": "number",
+						"format": "double"
+					},
+					"everyBookDiscount": {
+						"type": "number",
+						"format": "double"
+					},
+					"type": {
+						"type": "string",
+						"enum": [
+							"basic",
+							"premium"
+						]
+					}
+				},
+				"required": [
+					"name",
+					"monthlyFee",
+					"monthlyFreeBooks",
+					"everyBookDiscount",
+					"type"
+				],
+				"type": "object",
+				"description": "From T, pick a set of properties whose keys are in the union K"
+			},
+			"Omit_Subscription.createdAt-or-updatedAt-or-deletedAt-or-id_": {
+				"$ref": "#/components/schemas/Pick_Subscription.Exclude_keyofSubscription.createdAt-or-updatedAt-or-deletedAt-or-id__",
+				"description": "Construct a type with the properties of T except for those in type K."
+			},
+			"ReqBodySubscription": {
+				"$ref": "#/components/schemas/Omit_Subscription.createdAt-or-updatedAt-or-deletedAt-or-id_"
+			},
+			"Pick_User.Exclude_keyofUser.password__": {
+				"properties": {
+					"username": {
+						"type": "string"
+					},
+					"createdAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"updatedAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"deletedAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"id": {
+						"type": "number",
+						"format": "double"
+					},
+					"firstName": {
+						"type": "string"
+					},
+					"lastName": {
+						"type": "string"
+					},
+					"email": {
+						"type": "string"
+					},
+					"roleId": {
+						"type": "number",
+						"format": "double"
+					},
+					"budget": {
+						"type": "number",
+						"format": "double"
+					},
+					"subscriptionId": {
+						"type": "number",
+						"format": "double"
+					},
+					"subscriptionDate": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"subscriptionExpirationDate": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"booksReadThisMonth": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"username",
+					"firstName",
+					"lastName",
+					"email",
+					"roleId",
+					"budget",
+					"subscriptionId",
+					"subscriptionDate",
+					"subscriptionExpirationDate",
+					"booksReadThisMonth"
+				],
+				"type": "object",
+				"description": "From T, pick a set of properties whose keys are in the union K"
+			},
+			"Omit_User.password_": {
+				"$ref": "#/components/schemas/Pick_User.Exclude_keyofUser.password__",
+				"description": "Construct a type with the properties of T except for those in type K."
+			},
+			"User": {
+				"properties": {
+					"id": {
+						"type": "number",
+						"format": "double"
+					},
+					"createdAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"updatedAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"deletedAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"firstName": {
+						"type": "string"
+					},
+					"lastName": {
+						"type": "string"
+					},
+					"username": {
+						"type": "string"
+					},
+					"password": {
+						"type": "string"
+					},
+					"email": {
+						"type": "string"
+					},
+					"roleId": {
+						"type": "number",
+						"format": "double"
+					},
+					"budget": {
+						"type": "number",
+						"format": "double"
+					},
+					"subscriptionId": {
+						"type": "number",
+						"format": "double"
+					},
+					"subscriptionDate": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"subscriptionExpirationDate": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"booksReadThisMonth": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"firstName",
+					"lastName",
+					"username",
+					"password",
+					"email",
+					"roleId",
+					"budget",
+					"subscriptionId",
+					"subscriptionDate",
+					"subscriptionExpirationDate",
+					"booksReadThisMonth"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"Pick_User.Exclude_keyofUser.createdAt-or-updatedAt-or-deletedAt-or-id__": {
+				"properties": {
+					"username": {
+						"type": "string"
+					},
+					"password": {
+						"type": "string"
+					},
+					"firstName": {
+						"type": "string"
+					},
+					"lastName": {
+						"type": "string"
+					},
+					"email": {
+						"type": "string"
+					},
+					"roleId": {
+						"type": "number",
+						"format": "double"
+					},
+					"budget": {
+						"type": "number",
+						"format": "double"
+					},
+					"subscriptionId": {
+						"type": "number",
+						"format": "double"
+					},
+					"subscriptionDate": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"subscriptionExpirationDate": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"booksReadThisMonth": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"username",
+					"password",
+					"firstName",
+					"lastName",
+					"email",
+					"roleId",
+					"budget",
+					"subscriptionId",
+					"subscriptionDate",
+					"subscriptionExpirationDate",
+					"booksReadThisMonth"
+				],
+				"type": "object",
+				"description": "From T, pick a set of properties whose keys are in the union K"
+			},
+			"Omit_User.createdAt-or-updatedAt-or-deletedAt-or-id_": {
+				"$ref": "#/components/schemas/Pick_User.Exclude_keyofUser.createdAt-or-updatedAt-or-deletedAt-or-id__",
+				"description": "Construct a type with the properties of T except for those in type K."
+			},
+			"ReqBody": {
+				"$ref": "#/components/schemas/Omit_User.createdAt-or-updatedAt-or-deletedAt-or-id_"
+			}
+		},
+		"securitySchemes": {
+			"jwt-auth": {
+				"type": "http",
+				"scheme": "bearer",
+				"bearerFormat": "JWT"
+			}
+		}
+	},
+	"info": {
+		"title": "project",
+		"version": "1.0.0",
+		"license": {
+			"name": "MIT"
+		},
+		"contact": {}
+	},
+	"openapi": "3.0.0",
+	"paths": {
+		"/action": {
+			"get": {
+				"operationId": "GetAll",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/Action"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"summary": "Get all actions",
+				"tags": [
+					"Action"
+				],
+				"security": [
+					{
+						"jwt-auth": []
+					}
+				],
+				"parameters": []
+			},
+			"post": {
+				"operationId": "Create",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Action"
+								}
+							}
+						}
+					}
+				},
+				"summary": "Create new action",
+				"tags": [
+					"Action"
+				],
+				"security": [
+					{
+						"jwt-auth": []
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/ReqBodyAction"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/action/{id}": {
+			"put": {
+				"operationId": "Update",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Action"
+								}
+							}
+						}
+					}
+				},
+				"summary": "Update action by Id",
+				"tags": [
+					"Action"
+				],
+				"security": [
+					{
+						"jwt-auth": []
+					}
+				],
+				"parameters": [
+					{
+						"description": "The action identifier",
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/ReqBodyAction"
+							}
+						}
+					}
+				}
+			},
+			"delete": {
+				"operationId": "Delete",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Action"
+								}
+							}
+						}
+					}
+				},
+				"summary": "Delete action by Id",
+				"tags": [
+					"Action"
+				],
+				"security": [
+					{
+						"jwt-auth": []
+					}
+				],
+				"parameters": [
+					{
+						"description": "The action identifier",
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			}
+		},
+		"/auth/login": {
+			"post": {
+				"operationId": "Create",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"accessToken": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"accessToken"
+									],
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"summary": "User login",
+				"tags": [
+					"Auth"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/ReqBodyAuth"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/book": {
+			"get": {
+				"operationId": "GetAll",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/Book"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"summary": "Get all Books",
+				"tags": [
+					"Book"
+				],
+				"security": [],
+				"parameters": []
+			},
+			"post": {
+				"operationId": "Create",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Book"
+								}
+							}
+						}
+					}
+				},
+				"summary": "Create new book",
+				"tags": [
+					"Book"
+				],
+				"security": [
+					{
+						"jwt-auth": []
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/ReqBodyBook"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/book/{id}": {
+			"get": {
+				"operationId": "GetById",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Book"
+								}
+							}
+						}
+					}
+				},
+				"summary": "Get book by ID",
+				"tags": [
+					"Book"
+				],
+				"security": [
+					{
+						"jwt-auth": []
+					}
+				],
+				"parameters": [
+					{
+						"description": "The book identifier",
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			},
+			"put": {
+				"operationId": "Update",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Book"
+								}
+							}
+						}
+					}
+				},
+				"summary": "Update book by Id",
+				"tags": [
+					"Book"
+				],
+				"security": [
+					{
+						"jwt-auth": []
+					}
+				],
+				"parameters": [
+					{
+						"description": "The book identifier",
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/ReqBodyBook"
+							}
+						}
+					}
+				}
+			},
+			"delete": {
+				"operationId": "Delete",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Book"
+								}
+							}
+						}
+					}
+				},
+				"summary": "Delete book by Id",
+				"tags": [
+					"Book"
+				],
+				"security": [
+					{
+						"jwt-auth": []
+					}
+				],
+				"parameters": [
+					{
+						"description": "The book identifier",
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			}
+		},
+		"/loan": {
+			"get": {
+				"operationId": "GetAll",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/Loan"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"summary": "Get all Loans",
+				"tags": [
+					"Loan"
+				],
+				"security": [
+					{
+						"jwt-auth": []
+					}
+				],
+				"parameters": []
+			}
+		},
+		"/loan/loans": {
+			"get": {
+				"operationId": "GetByUserId",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Loan"
+								}
+							}
+						}
+					}
+				},
+				"summary": "Get loans by user",
+				"tags": [
+					"Loan"
+				],
+				"security": [
+					{
+						"jwt-auth": []
+					}
+				],
+				"parameters": []
+			}
+		},
+		"/books/{id}/loan": {
+			"post": {
+				"operationId": "Create",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Loan"
+								}
+							}
+						}
+					}
+				},
+				"summary": "Create new loan",
+				"tags": [
+					"Loan"
+				],
+				"security": [
+					{
+						"jwt-auth": []
+					}
+				],
+				"parameters": [
+					{
+						"description": "The book identifier",
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			}
+		},
+		"/loan/{id}": {
+			"put": {
+				"operationId": "Update",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Loan"
+								}
+							}
+						}
+					}
+				},
+				"summary": "Accept loan by Id",
+				"tags": [
+					"Loan"
+				],
+				"security": [
+					{
+						"jwt-auth": []
+					}
+				],
+				"parameters": [
+					{
+						"description": "The loan identifier",
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			}
+		},
+		"/loan/loans/{id}": {
+			"put": {
+				"operationId": "ReturnLoan",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Loan"
+								}
+							}
+						}
+					}
+				},
+				"summary": "Return loan by Id",
+				"tags": [
+					"Loan"
+				],
+				"security": [
+					{
+						"jwt-auth": []
+					}
+				],
+				"parameters": [
+					{
+						"description": "The loan identifier",
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			}
+		},
+		"/permission": {
+			"get": {
+				"operationId": "GetAll",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/Permission"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"summary": "Get all permissions",
+				"tags": [
+					"Permission"
+				],
+				"security": [
+					{
+						"jwt-auth": []
+					}
+				],
+				"parameters": []
+			},
+			"post": {
+				"operationId": "Create",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Permission"
+								}
+							}
+						}
+					}
+				},
+				"summary": "Create new permission",
+				"tags": [
+					"Permission"
+				],
+				"security": [
+					{
+						"jwt-auth": []
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/ReqBodyPermission"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/permission/{id}": {
+			"put": {
+				"operationId": "Update",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Permission"
+								}
+							}
+						}
+					}
+				},
+				"summary": "Update permission by Id",
+				"tags": [
+					"Permission"
+				],
+				"security": [
+					{
+						"jwt-auth": []
+					}
+				],
+				"parameters": [
+					{
+						"description": "The permission identifier",
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/ReqBodyPermission"
+							}
+						}
+					}
+				}
+			},
+			"delete": {
+				"operationId": "Delete",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Permission"
+								}
+							}
+						}
+					}
+				},
+				"summary": "Delete permission by Id",
+				"tags": [
+					"Permission"
+				],
+				"security": [
+					{
+						"jwt-auth": []
+					}
+				],
+				"parameters": [
+					{
+						"description": "The permission identifier",
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			}
+		},
+		"/prize": {
+			"put": {
+				"operationId": "Update",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Prize"
+								}
+							}
+						}
+					}
+				},
+				"summary": "Update prize",
+				"tags": [
+					"Prize"
+				],
+				"security": [
+					{
+						"jwt-auth": []
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/ReqBodyPrize"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/purchase/all": {
+			"get": {
+				"operationId": "GetAll",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/Purchase"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"summary": "Get all purchases",
+				"tags": [
+					"Purchase"
+				],
+				"security": [
+					{
+						"jwt-auth": []
+					}
+				],
+				"parameters": []
+			}
+		},
+		"/purchase": {
+			"get": {
+				"operationId": "GetByUserId",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Purchase"
+								}
+							}
+						}
+					}
+				},
+				"summary": "Get purchases by user",
+				"tags": [
+					"Purchase"
+				],
+				"security": [
+					{
+						"jwt-auth": []
+					}
+				],
+				"parameters": []
+			}
+		},
+		"/books/{bookId}/purchase": {
+			"post": {
+				"operationId": "Create",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Purchase"
+								}
+							}
+						}
+					}
+				},
+				"summary": "Create new purchase",
+				"tags": [
+					"Purchase"
+				],
+				"security": [
+					{
+						"jwt-auth": []
+					}
+				],
+				"parameters": [
+					{
+						"description": "The book identifier",
+						"in": "path",
+						"name": "bookId",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			}
+		},
+		"/raffle": {
+			"get": {
+				"operationId": "GetAll",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/Raffle"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"summary": "Get all raffles",
+				"tags": [
+					"Raffle"
+				],
+				"security": [
+					{
+						"jwt-auth": []
+					}
+				],
+				"parameters": []
+			}
+		},
+		"/role": {
+			"get": {
+				"operationId": "GetAll",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/Role"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"summary": "Get all roles",
+				"tags": [
+					"Role"
+				],
+				"security": [
+					{
+						"jwt-auth": []
+					}
+				],
+				"parameters": []
+			},
+			"post": {
+				"operationId": "Create",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Role"
+								}
+							}
+						}
+					}
+				},
+				"summary": "Create new role",
+				"tags": [
+					"Role"
+				],
+				"security": [
+					{
+						"jwt-auth": []
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/ReqBodyRole"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/role/{id}": {
+			"put": {
+				"operationId": "Update",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Role"
+								}
+							}
+						}
+					}
+				},
+				"summary": "Update role by Id",
+				"tags": [
+					"Role"
+				],
+				"security": [
+					{
+						"jwt-auth": []
+					}
+				],
+				"parameters": [
+					{
+						"description": "The role identifier",
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/ReqBodyRole"
+							}
+						}
+					}
+				}
+			},
+			"delete": {
+				"operationId": "Delete",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Role"
+								}
+							}
+						}
+					}
+				},
+				"summary": "Delete role by Id",
+				"tags": [
+					"Role"
+				],
+				"security": [
+					{
+						"jwt-auth": []
+					}
+				],
+				"parameters": [
+					{
+						"description": "The role identifier",
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			}
+		},
+		"/subscription": {
+			"get": {
+				"operationId": "GetAll",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/Subscription"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"summary": "Get all subscriptions",
+				"tags": [
+					"Subscription"
+				],
+				"security": [
+					{
+						"jwt-auth": []
+					}
+				],
+				"parameters": []
+			},
+			"post": {
+				"operationId": "Create",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Subscription"
+								}
+							}
+						}
+					}
+				},
+				"summary": "Create new subscription",
+				"tags": [
+					"Subscription"
+				],
+				"security": [
+					{
+						"jwt-auth": []
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/ReqBodySubscription"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/subscription/{id}": {
+			"get": {
+				"operationId": "GetById",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Subscription"
+								}
+							}
+						}
+					}
+				},
+				"summary": "Get subscription by Id",
+				"tags": [
+					"Subscription"
+				],
+				"security": [
+					{
+						"jwt-auth": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			},
+			"put": {
+				"operationId": "Update",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Subscription"
+								}
+							}
+						}
+					}
+				},
+				"summary": "Update subscription by Id",
+				"tags": [
+					"Subscription"
+				],
+				"security": [
+					{
+						"jwt-auth": []
+					}
+				],
+				"parameters": [
+					{
+						"description": "The subscription identifier",
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/ReqBodySubscription"
+							}
+						}
+					}
+				}
+			},
+			"delete": {
+				"operationId": "Delete",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Subscription"
+								}
+							}
+						}
+					}
+				},
+				"summary": "Delete subscription by Id",
+				"tags": [
+					"Subscription"
+				],
+				"security": [
+					{
+						"jwt-auth": []
+					}
+				],
+				"parameters": [
+					{
+						"description": "The subscription identifier",
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			}
+		},
+		"/subscription/{id}/subscribe": {
+			"put": {
+				"operationId": "Subscribe",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "string"
+								}
+							}
+						}
+					}
+				},
+				"summary": "Subscribe",
+				"tags": [
+					"Subscription"
+				],
+				"security": [
+					{
+						"jwt-auth": []
+					}
+				],
+				"parameters": [
+					{
+						"description": "The subscription identifier",
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			}
+		},
+		"/user": {
+			"get": {
+				"operationId": "GetAll",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/Omit_User.password_"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"summary": "Get all Users",
+				"tags": [
+					"User"
+				],
+				"security": [
+					{
+						"jwt-auth": []
+					}
+				],
+				"parameters": []
+			},
+			"post": {
+				"operationId": "Create",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/User"
+								}
+							}
+						}
+					}
+				},
+				"summary": "Create new user by admin",
+				"tags": [
+					"User"
+				],
+				"security": [
+					{
+						"jwt-auth": []
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/ReqBody"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/user/{id}": {
+			"get": {
+				"operationId": "GetById",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/User"
+								}
+							}
+						}
+					}
+				},
+				"summary": "Get user by ID",
+				"tags": [
+					"User"
+				],
+				"security": [
+					{
+						"jwt-auth": []
+					}
+				],
+				"parameters": [
+					{
+						"description": "The user identifier",
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			},
+			"put": {
+				"operationId": "Update",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/User"
+								}
+							}
+						}
+					}
+				},
+				"summary": "Update user by ID",
+				"tags": [
+					"User"
+				],
+				"security": [
+					{
+						"jwt-auth": []
+					}
+				],
+				"parameters": [
+					{
+						"description": "The user identifier",
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/ReqBody"
+							}
+						}
+					}
+				}
+			},
+			"delete": {
+				"operationId": "Delete",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/User"
+								}
+							}
+						}
+					}
+				},
+				"summary": "Delete user by ID",
+				"tags": [
+					"User"
+				],
+				"security": [
+					{
+						"jwt-auth": []
+					}
+				],
+				"parameters": [
+					{
+						"description": "The user identifier",
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			}
+		},
+		"/user/signup": {
+			"post": {
+				"operationId": "SignUp",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"accessToken": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"accessToken"
+									],
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"summary": "Create new user",
+				"tags": [
+					"User"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/ReqBody"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/user/{userId}/changeRole": {
+			"put": {
+				"operationId": "ChangeRole",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/User"
+								}
+							}
+						}
+					}
+				},
+				"summary": "Change user role",
+				"tags": [
+					"User"
+				],
+				"security": [
+					{
+						"jwt-auth": []
+					}
+				],
+				"parameters": [
+					{
+						"description": "The user identifier",
+						"in": "path",
+						"name": "userId",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/ReqBody"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/user/history": {
+			"get": {
+				"operationId": "History",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"data": {
+											"properties": {
+												"raffleWins": {
+													"items": {
+														"$ref": "#/components/schemas/Raffle"
+													},
+													"type": "array"
+												},
+												"purchases": {
+													"items": {
+														"$ref": "#/components/schemas/Purchase"
+													},
+													"type": "array"
+												},
+												"loans": {
+													"items": {
+														"$ref": "#/components/schemas/Loan"
+													},
+													"type": "array"
+												}
+											},
+											"required": [
+												"raffleWins",
+												"purchases",
+												"loans"
+											],
+											"type": "object"
+										}
+									},
+									"required": [
+										"data"
+									],
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"summary": "User history",
+				"tags": [
+					"User"
+				],
+				"security": [
+					{
+						"jwt-auth": []
+					}
+				],
+				"parameters": []
+			}
+		}
+	},
+	"servers": [
+		{
+			"url": "http://localhost:3000",
+			"description": "Local development"
+		}
+	]
+}
